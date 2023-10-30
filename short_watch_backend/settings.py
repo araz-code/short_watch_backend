@@ -15,7 +15,8 @@ from pathlib import Path
 
 env = environ.Env(
     # set casting, default value
-    DEBUG=(bool, False)
+    DEBUG=(bool, False),
+    CSRF_TRUSTED_ORIGINS=(str, None)
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -35,6 +36,9 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = env('ALLOWED_HOSTS').split(" ")
+
+if env('CSRF_TRUSTED_ORIGINS'):
+    CSRF_TRUSTED_ORIGINS = env('CSRF_TRUSTED_ORIGINS').split(" ")
 
 
 # Application definition
