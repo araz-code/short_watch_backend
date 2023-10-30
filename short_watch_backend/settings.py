@@ -94,7 +94,7 @@ WSGI_APPLICATION = 'short_watch_backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'mysql.connector.django',
+        'ENGINE': env('DB_ENGINE'),
         'NAME': env('DB_NAME'),
         'USER': env('DB_USER'),
         'PASSWORD': env('DB_PASSWORD'),
@@ -169,8 +169,10 @@ JAZZMIN_SETTINGS = {
         "accounts.shortwatchuser": "fas fa-user",
         "shorts.shortedstock": "fa fa-university",
         "shorts.runstatus": "fa fa-check",
+        "shorts.symbolmap": "fa fa-map",
         "errors.error": "fa fa-exclamation-circle",
-        "request_logging.requestlog": "fa fa-code"
+        "request_logging.requestlog": "fa fa-code",
+        "rest_framework_api_key.apikey": "fa fa-key"
     },
     "show_ui_builder": False,
 }
