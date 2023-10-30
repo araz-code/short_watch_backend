@@ -1,0 +1,125 @@
+{% extends "admin/index.html" %}
+{% load i18n static jazzmin %}
+{% load static %}
+
+{% block content %}
+
+    {% get_side_menu using="app_list" as dashboard_list %}
+    {% if dashboard_list %}
+        {% widthratio dashboard_list|length 2 1 as middle %}
+    {% endif %}
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+<script src="{% static 'dashboard/js/script.js' %}"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-v4-grid-only@1.0.0/dist/bootstrap-grid.min.css">
+
+<div class="mb-3">
+    <ul class="nav nav-pills">
+        <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="{% url 'admin:index' %}">Overview</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="www.google.com">Seafarers</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="www.google.com">Vessels</a>
+        </li>
+    </ul>
+</div>
+
+<div class="col-12 block">
+    <form id="filterForm">
+        <label for="year">Choose a year:</label>
+        <select class="form-select" name="year" id="year"></select>
+        <input class="btn btn-primary" type="submit" value="Load" name="_load">
+
+    </form>
+</div>
+
+{% block charts %}
+
+<div class="container-fluid">
+    <h2 class="text-center">Summary</h2>
+    <div class="row justify-content-center mt-4">
+
+        <div class="col-4">
+            <div class="card">
+                <div class="card-header">
+                    <span id="totalSeafarersTitle"></span>
+                </div>
+                <div class="card-body text-center">
+                    <span id="totalSeafarers"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-4">
+            <div class="card">
+                <div class="card-header">
+                    <span id="totalActiveSeafarersTitle"></span>
+                </div>
+                <div class="card-body text-center">
+                    <span id="totalActiveSeafarers"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-4">
+            <div class="card">
+                <div class="card-header">
+                    <span id="activeSeafarersTodayTitle"></span>
+                </div>
+                <div class="card-body text-center">
+                    <span id="activeSeafarersToday"></span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row justify-content-center mt-4">
+
+        <div class="col-4">
+            <div class="card">
+                <div class="card-header">
+                    <span id="totalVesselsTitle"></span>
+                </div>
+                <div class="card-body text-center">
+                    <span id="totalVessels"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-4">
+            <div class="card">
+                <div class="card-header">
+                    <span id="totalActiveVesselsTitle"></span>
+                </div>
+                <div class="card-body text-center">
+                    <span id="totalActiveVessels"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-4">
+            <div class="card">
+                <div class="card-header">
+                    <span id="totalVesselsEtaComingWeekTitle"></span>
+                </div>
+                <div class="card-body text-center">
+                    <span id="totalVesselsEtaComingWeek"></span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="{% static 'dashboard/js/overview.js' %}"></script>
+
+{% endblock %}
+
+<script src="{% static 'dashboard/js/filter.js' %}"></script>
+
+{% endblock %}
