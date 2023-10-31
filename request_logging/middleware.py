@@ -11,7 +11,7 @@ class RequestLoggingMiddleware:
                 response = self.get_response(request)
                 return response
 
-            client_ip = request.META.get('REMOTE_ADDR')
+            client_ip = request.META.get('HTTP_X_REAL_IP', request.META.get('REMOTE_ADDR'))
             user_agent = request.META.get('HTTP_USER_AGENT', "")[:500]
             requested_url = request.build_absolute_uri()
 
