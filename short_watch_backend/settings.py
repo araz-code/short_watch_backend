@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'shorts',
     'errors',
     'request_logging',
+    'home_page',
     'debug_toolbar',
 ]
 

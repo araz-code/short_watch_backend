@@ -1,0 +1,38 @@
+{% load rest_framework %}
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Danish Short Watch</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+
+<header>
+    <h1>Danish Short Watch</h1>
+    <p>An Elegant and Simplified Solution for Accessing Information on Short Positions in Danish Stocks</p>
+</header>
+
+<div class="background-image">
+    <div class="white-overlay">
+        <img class="app-image" src={% static "images/app.png" %} alt="Floating Image">
+    </div>
+</div>
+
+<div class="container">
+    <a href="mailto:contact@yourapp.com"><img class="download-image" src={% static "images/app_store.png" %}
+        alt="Floating Image"></a>
+    <div class="contact">
+        <h2>Contact Us</h2>
+        <p>If you have any questions, feedback or need assistance, please email us at:</p>
+        <a href="mailto:danishshortwatch@gmail.com">danishshortwatch@gmail.com</a>
+    </div>
+</div>
+
+</body>
+</html>
