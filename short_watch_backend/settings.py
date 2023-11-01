@@ -45,7 +45,7 @@ if env('CSRF_TRUSTED_ORIGINS'):
 
 INSTALLED_APPS = [
     'jazzmin',
-    'django.contrib.admin',
+    'dashboard.apps.DashboardAdminConfig',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -148,6 +148,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
+    ("dashboard", os.path.join(BASE_DIR, 'dashboard/static')),
 )
 
 # Default primary key field type

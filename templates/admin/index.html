@@ -15,20 +15,6 @@
 <script src="{% static 'dashboard/js/script.js' %}"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-v4-grid-only@1.0.0/dist/bootstrap-grid.min.css">
 
-<div class="mb-3">
-    <ul class="nav nav-pills">
-        <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="{% url 'admin:index' %}">Overview</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="www.google.com">Seafarers</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="www.google.com">Vessels</a>
-        </li>
-    </ul>
-</div>
-
 <div class="col-12 block">
     <form id="filterForm">
         <label for="year">Choose a year:</label>
@@ -47,10 +33,10 @@
         <div class="col-4">
             <div class="card">
                 <div class="card-header">
-                    <span id="totalSeafarersTitle"></span>
+                    <span id="totalRequestsTitle"></span>
                 </div>
                 <div class="card-body text-center">
-                    <span id="totalSeafarers"></span>
+                    <span id="totalRequests"></span>
                 </div>
             </div>
         </div>
@@ -58,10 +44,10 @@
         <div class="col-4">
             <div class="card">
                 <div class="card-header">
-                    <span id="totalActiveSeafarersTitle"></span>
+                    <span id="uniqueIPsTitle"></span>
                 </div>
                 <div class="card-body text-center">
-                    <span id="totalActiveSeafarers"></span>
+                    <span id="uniqueIPs"></span>
                 </div>
             </div>
         </div>
@@ -69,10 +55,10 @@
         <div class="col-4">
             <div class="card">
                 <div class="card-header">
-                    <span id="activeSeafarersTodayTitle"></span>
+                    <span id="avgRequestsPerIPTitle"></span>
                 </div>
                 <div class="card-body text-center">
-                    <span id="activeSeafarersToday"></span>
+                    <span id="avgRequestsPerIP"></span>
                 </div>
             </div>
         </div>
@@ -83,10 +69,10 @@
         <div class="col-4">
             <div class="card">
                 <div class="card-header">
-                    <span id="totalVesselsTitle"></span>
+                    <span id="totalTodayRequestsTitle"></span>
                 </div>
                 <div class="card-body text-center">
-                    <span id="totalVessels"></span>
+                    <span id="totalTodayRequests"></span>
                 </div>
             </div>
         </div>
@@ -94,10 +80,10 @@
         <div class="col-4">
             <div class="card">
                 <div class="card-header">
-                    <span id="totalActiveVesselsTitle"></span>
+                    <span id="uniqueIPsTodayTitle"></span>
                 </div>
                 <div class="card-body text-center">
-                    <span id="totalActiveVessels"></span>
+                    <span id="uniqueIPsToday"></span>
                 </div>
             </div>
         </div>
@@ -105,10 +91,10 @@
         <div class="col-4">
             <div class="card">
                 <div class="card-header">
-                    <span id="totalVesselsEtaComingWeekTitle"></span>
+                    <span id="avgRequestsPerIPTodayTitle"></span>
                 </div>
                 <div class="card-body text-center">
-                    <span id="totalVesselsEtaComingWeek"></span>
+                    <span id="avgRequestsPerIPToday"></span>
                 </div>
             </div>
         </div>

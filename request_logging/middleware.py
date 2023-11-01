@@ -7,12 +7,13 @@ class RequestLoggingMiddleware:
 
     def __call__(self, request):
         try:
-            if request.path.startswith('/admin/'):
+            if request.path.startswith('/admin/') or request.path.startswith('/stats/'):
                 response = self.get_response(request)
                 return response
 
             client_ip = request.META.get('HTTP_X_REAL_IP', request.META.get('REMOTE_ADDR'))
             user_agent = request.META.get('HTTP_USER_AGENT', "")[:500]
+            referer = request.META.get('HTTP_REFERER', '')
             requested_url = request.build_absolute_uri()
 
             RequestLog.objects.create(client_ip=client_ip, user_agent=user_agent, requested_url=requested_url)
