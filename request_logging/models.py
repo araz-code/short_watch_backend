@@ -6,3 +6,5 @@ class RequestLog(models.Model):
     client_ip = models.GenericIPAddressField()
     user_agent = models.CharField(max_length=255)
     requested_url = models.TextField()
+    referer = models.CharField(max_length=255)
+
