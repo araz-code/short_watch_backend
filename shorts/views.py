@@ -22,7 +22,7 @@ class ShortedStockView(ReadOnlyModelViewSet):
 
         subquery = ShortedStock.objects.values('name').annotate(max_timestamp=Max('timestamp'))
         shorted_stocks = ShortedStock.objects \
-            .filter(timestamp__in=subquery.values('max_timestamp')).order_by('name')
+            .filter(timestamp__in=subquery.values('max_timestamp')).order_by('code')
 
         combined_data = []
         for stock in shorted_stocks:
