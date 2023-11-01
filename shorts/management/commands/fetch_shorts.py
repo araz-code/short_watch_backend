@@ -10,17 +10,20 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 
 from errors.models import Error
+from shorts.cache import Cache
 from shorts.models import ShortedStock, RunStatus
 
 copenhagen_timezone = pytz.timezone('Europe/Copenhagen')
 
 
 class Command(BaseCommand):
-    help = "Closes the specified poll for voting"
+    help = "Fetches newest short positions data"
+    cache = Cache()
 
     SITE_URL = 'https://oam.finanstilsynet.dk/#!/stats-and-extracts-short-net-positions'
 
-    def _get_webdriver(self):
+    @staticmethod
+    def _get_webdriver():
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--headless")
@@ -64,6 +67,9 @@ class Command(BaseCommand):
 
                     if existing_short is None:
                         short.save()
+
+            if short_data:
+                self.cache.clear_all()
 
             driver.quit()
 
