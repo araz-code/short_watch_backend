@@ -10,7 +10,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 
 from errors.models import Error
-from shorts.cache import Cache
 from shorts.models import ShortedStock, RunStatus
 
 copenhagen_timezone = pytz.timezone('Europe/Copenhagen')
@@ -18,7 +17,6 @@ copenhagen_timezone = pytz.timezone('Europe/Copenhagen')
 
 class Command(BaseCommand):
     help = "Fetches newest short positions data"
-    cache = Cache()
 
     SITE_URL = 'https://oam.finanstilsynet.dk/#!/stats-and-extracts-short-net-positions'
 
@@ -67,8 +65,6 @@ class Command(BaseCommand):
 
                     if existing_short is None:
                         short.save()
-
-            self.cache.clear_all()
 
             driver.quit()
 
