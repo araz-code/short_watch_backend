@@ -22,7 +22,7 @@ class ShortedStockView(ReadOnlyModelViewSet):
 
         subquery = ShortedStock.objects.values('name').annotate(max_timestamp=Max('timestamp'))
         shorted_stocks = ShortedStock.objects \
-            .filter(timestamp__in=subquery.values('max_timestamp')).order_by('code')
+            .filter(timestamp__in=subquery.values('max_timestamp'))
 
         combined_data = []
         for stock in shorted_stocks:
@@ -34,7 +34,7 @@ class ShortedStockView(ReadOnlyModelViewSet):
                 'timestamp': stock.timestamp,
             })
 
-        time.sleep(0.2)
+        combined_data.sort(key=lambda x: x['symbol'])
 
         serializer = self.serializer_class(combined_data, many=True)
         return Response(serializer.data)
