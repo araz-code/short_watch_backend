@@ -68,8 +68,7 @@ class Command(BaseCommand):
                     if existing_short is None:
                         short.save()
 
-            if short_data:
-                self.cache.clear_all()
+            self.cache.clear_all()
 
             driver.quit()
 
