@@ -5,6 +5,8 @@ from django.core.management.base import BaseCommand, CommandError
 import time
 
 from django.db import transaction
+from django.db.models import Max, F
+from django.utils import timezone
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
@@ -54,8 +56,10 @@ class Command(BaseCommand):
                                  timestamp=copenhagen_timezone.localize(corrected_datetime))
                 )
 
+            short_codes = []
             with transaction.atomic():
                 for short in short_data:
+                    short_codes.append(short.code)
                     existing_short = ShortedStock.objects.filter(
                         code=short.code,
                         name=short.name,
@@ -65,6 +69,16 @@ class Command(BaseCommand):
 
                     if existing_short is None:
                         short.save()
+
+            with transaction.atomic():
+                subquery = ShortedStock.objects.values('code', 'name').annotate(max_timestamp=Max('timestamp'))
+                distinct_stocks = ShortedStock.objects.filter(timestamp__in=subquery.values('max_timestamp'))
+                for short in distinct_stocks:
+                    if short.code not in short_codes:
+                        ShortedStock(code=short.code,
+                                     name=short.name,
+                                     value=0.0,
+                                     timestamp=timezone.now()).save()
 
             driver.quit()
 
