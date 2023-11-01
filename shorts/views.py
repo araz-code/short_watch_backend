@@ -47,7 +47,7 @@ class ShortedStockView(ReadOnlyModelViewSet):
 
     def retrieve(self, request, code=None, *args, **kwargs):
 
-        combined_data = self.cache.get()
+        combined_data = self.cache.get(code)
         if not combined_data:
             symbol_obj = SymbolMap.objects.filter(code=code).first()
 
