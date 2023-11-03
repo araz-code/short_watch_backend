@@ -44,31 +44,6 @@
         <div class="col-4">
             <div class="card">
                 <div class="card-header">
-                    <span id="uniqueIPsTitle"></span>
-                </div>
-                <div class="card-body text-center">
-                    <span id="uniqueIPs"></span>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-4">
-            <div class="card">
-                <div class="card-header">
-                    <span id="avgRequestsPerIPTitle"></span>
-                </div>
-                <div class="card-body text-center">
-                    <span id="avgRequestsPerIP"></span>
-                </div>
-            </div>
-        </div>
-
-    </div>
-    <div class="row justify-content-center mt-4">
-
-        <div class="col-4">
-            <div class="card">
-                <div class="card-header">
                     <span id="totalTodayRequestsTitle"></span>
                 </div>
                 <div class="card-body text-center">
@@ -80,27 +55,30 @@
         <div class="col-4">
             <div class="card">
                 <div class="card-header">
-                    <span id="uniqueIPsTodayTitle"></span>
+                    <span id="latestRequestTimestampTitle"></span>
                 </div>
                 <div class="card-body text-center">
-                    <span id="uniqueIPsToday"></span>
+                    <span id="latestRequestTimestamp"></span>
                 </div>
             </div>
         </div>
-
-        <div class="col-4">
-            <div class="card">
-                <div class="card-header">
-                    <span id="avgRequestsPerIPTodayTitle"></span>
-                </div>
-                <div class="card-body text-center">
-                    <span id="avgRequestsPerIPToday"></span>
-                </div>
-            </div>
-        </div>
-
     </div>
-</div>
+
+     <h2 class="text-center mt-3 mb-5">Tables</h2>
+
+    <div class="row justify-content-left">
+        <div class="col-7">
+            <table class="table caption-top table-bordered" id="requestedUrlsTable"></table>
+        </div>
+
+        <div class="col-7 mt-5">
+            <table class="table caption-top table-bordered" id="pickHistoricTable"></table>
+        </div>
+
+        <div class="col-7 mt-5">
+            <table class="table caption-top table-bordered" id="watchHistoricTable"></table>
+        </div>
+    </div>
 
 <script src="{% static 'dashboard/js/overview.js' %}"></script>
 

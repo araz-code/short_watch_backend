@@ -1,8 +1,10 @@
 function loadAllCharts(year) {
   loadNumber("totalRequests", `/stats/chart/requestlogging/total/${year}/`);
-  loadNumber("uniqueIPs", `/stats/chart/requestlogging/unique-ips/${year}/`);
-  loadNumber("avgRequestsPerIP", `/stats/chart/requestlogging/avg-requests-per-ip/${year}/`);
   loadNumber("totalTodayRequests", `/stats/chart/requestlogging/total-today/`);
-  loadNumber("uniqueIPsToday", `/stats/chart/requestlogging/unique-ips-today/`);
-  loadNumber("avgRequestsPerIPToday", `/stats/chart/requestlogging/avg-requests-per-ip-today/`);
+  loadNumber("latestRequestTimestamp", `/stats/chart/requestlogging/latest-request-timestamp/`);
+
+  loadTable("requestedUrlsTable", `/stats/chart/requestlogging/requested-urls/${year}/`);
+
+  loadTable("pickHistoricTable", `/stats/chart/requestlogging/pick-historic/${year}/`);
+  loadTable("watchHistoricTable", `/stats/chart/requestlogging/watch-historic/${year}/`);
 }
