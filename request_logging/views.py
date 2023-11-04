@@ -1,6 +1,6 @@
 import pytz
 from django.contrib.admin.views.decorators import staff_member_required
-from django.db.models import Count, Avg, Q, CharField, F
+from django.db.models import Count, Avg, Q, CharField, F, Max
 from django.db.models.functions import ExtractYear, ExtractMonth, ExtractDay, Substr
 from django.http import JsonResponse
 from django.utils import timezone
@@ -90,6 +90,8 @@ def get_pick_historic_chart(_: Request, year: str) -> JsonResponse:
 
     queryset = queryset.values('requested_url')\
         .annotate(count=Count('id')) \
+        .annotate(max_timestamp=Max('timestamp')) \
+        .order_by('-max_timestamp')
 
     symbol_map = SymbolMap.objects.all().values('code', 'name')
 
@@ -97,11 +99,14 @@ def get_pick_historic_chart(_: Request, year: str) -> JsonResponse:
 
     modified_data = []
     for entry in list(queryset):
-        modified_data.append({'symbol': get_symbol(entry['requested_url'], code_to_symbol), 'count': entry['count']})
+        modified_data.append({'symbol': get_symbol(entry['requested_url'], code_to_symbol),
+                              'count': entry['count'],
+                              'max_timestamp': entry['max_timestamp'].astimezone(copenhagen_timezone)
+                             .strftime("%Y-%m-%d, %H:%M")})
 
     return JsonResponse({
         'caption': f'List of historic data from pick ({year})',
-        'headers': ['Stock', 'Count'],
+        'headers': ['Stock', 'Count', 'Most recent lookup'],
         'data': modified_data
     })
 
