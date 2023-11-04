@@ -70,12 +70,20 @@ def get_requested_urls_chart(_: Request, year: str) -> JsonResponse:
 
     queryset = queryset.values('requested_url')\
         .annotate(count=Count('id')) \
-        .order_by('requested_url')
+        .annotate(max_timestamp=Max('timestamp')) \
+        .order_by('-max_timestamp')
+
+    modified_data = []
+    for entry in list(queryset):
+        modified_data.append({'requested_url': entry['requested_url'],
+                              'count': entry['count'],
+                              'max_timestamp': entry['max_timestamp'].astimezone(copenhagen_timezone)
+                             .strftime("%Y-%m-%d, %H:%M")})
 
     return JsonResponse({
         'caption': f'List of requested_url ({year})',
-        'headers': ['Rank', 'Count'],
-        'data': list(queryset)
+        'headers': ['Requested URL', 'Count', 'Most recent lookup'],
+        'data': modified_data
     })
 
 
