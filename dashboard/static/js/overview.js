@@ -7,4 +7,10 @@ function loadAllCharts(year) {
 
   loadTable("pickHistoricTable", `/stats/chart/requestlogging/pick-historic/${year}/`);
   loadTable("watchHistoricTable", `/stats/chart/requestlogging/watch-historic/${year}/`);
+
+  loadChart(requestsWeekChart, `/stats/chart/requestlogging/requests-week/`);
+
 }
+
+const requestsWeekChart = createBarChart("requestsWeekChart");
+

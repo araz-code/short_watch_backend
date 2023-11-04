@@ -9,6 +9,6 @@ urlpatterns = [
     path('chart/requestlogging/requested-urls/<str:year>/', views.get_requested_urls_chart),
     path('chart/requestlogging/pick-historic/<str:year>/', views.get_pick_historic_chart),
     path('chart/requestlogging/watch-historic/<str:year>/', views.get_watch_historic_chart),
-
+    path('chart/requestlogging/requests-week/', views.get_requests_week_chart),
 ]
 

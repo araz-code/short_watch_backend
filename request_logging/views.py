@@ -1,7 +1,10 @@
+from datetime import timedelta
+from typing import List, Union
+
 import pytz
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Count, Avg, Q, CharField, F, Max
-from django.db.models.functions import ExtractYear, ExtractMonth, ExtractDay, Substr
+from django.db.models.functions import ExtractYear, ExtractMonth, ExtractDay, Substr, ExtractWeekDay
 from django.http import JsonResponse
 from django.utils import timezone
 from rest_framework.request import Request
@@ -198,4 +201,44 @@ def get_avg_request_today_count(_: Request) -> JsonResponse:
     return JsonResponse({
         'title': f'Avg requests per IP per day',
         'count': int(average_entry_count['avg_entry_count']),
+    })
+
+
+WEEK_DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+
+COLOR_PRIMARY, COLOR_SECONDARY = 'rgba(33, 97, 140, 0.9)', 'rgba(161, 202, 193, 0.9)'
+
+
+def _rotate_week(lst: List[Union[str, int]]) -> List[Union[str, int]]:
+    week_day = timezone.now().isoweekday()
+    return lst[(week_day + 1) % 7:] + lst[:(week_day + 1) % 7:]
+
+
+@staff_member_required
+def get_requests_week_chart(_: Request) -> JsonResponse:
+    time_threshold = timezone.now() - timedelta(days=7)
+    queryset = RequestLog.objects.all().filter(timestamp__gte=time_threshold, timestamp__lte=timezone.now())
+
+    queryset = queryset.annotate(week_day=ExtractWeekDay('timestamp')) \
+        .values('week_day') \
+        .annotate(count=Count('id'))
+
+    values = [0] * 7
+    for value in queryset:
+        values[value['week_day'] - 1] = value['count']
+
+    return JsonResponse({
+        'title': f'Requests per day in week',
+        'data': {
+            'labels': _rotate_week(WEEK_DAYS)[:-1] + ['TODAY'],
+            'datasets': [
+                {
+                    'label': 'Requests',
+                    'data': _rotate_week(values),
+                    'backgroundColor': COLOR_PRIMARY,
+                    'borderColor': COLOR_PRIMARY,
+                    'borderWidth': 1
+                }
+            ]
+        },
     })

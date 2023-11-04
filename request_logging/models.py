@@ -8,3 +8,5 @@ class RequestLog(models.Model):
     requested_url = models.TextField()
     referer = models.CharField(max_length=255)
 
+    def __str__(self):
+        return f'{self.timestamp} - {self.requested_url}'
