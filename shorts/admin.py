@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from shorts.models import ShortedStock, RunStatus, SymbolMap
+from shorts.models import ShortedStock, RunStatus, SymbolMap, ShortSeller
 
 
 @admin.register(ShortedStock)
@@ -39,3 +39,19 @@ class RunStatusAdmin(admin.ModelAdmin):
 class NameSymbolMapAdmin(admin.ModelAdmin):
     list_display = ('name', 'code', 'symbol')
     ordering = ('name',)
+
+
+@admin.register(ShortSeller)
+class ShortSellerAdmin(admin.ModelAdmin):
+    list_display = ('date', 'name', 'business_id', 'stock_code', 'stock_name', 'value')
+    list_filter = ('name', 'date')
+    ordering = ('-date', 'name')
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return True

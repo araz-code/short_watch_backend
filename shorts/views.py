@@ -1,10 +1,11 @@
 from django.db.models import Max
+from rest_framework.generics import RetrieveAPIView
 from rest_framework.response import Response
-from rest_framework.viewsets import ReadOnlyModelViewSet
+from rest_framework.viewsets import ReadOnlyModelViewSet, GenericViewSet
 from rest_framework_api_key.permissions import HasAPIKey
 
-from shorts.models import ShortedStock, SymbolMap
-from shorts.serializers import ShortedStockSerializer
+from shorts.models import ShortedStock, SymbolMap, ShortSeller
+from shorts.serializers import ShortedStockSerializer, ShortSellerSerializer
 
 
 class ShortedStockView(ReadOnlyModelViewSet):
@@ -54,4 +55,17 @@ class ShortedStockView(ReadOnlyModelViewSet):
             })
 
         serializer = self.serializer_class(combined_data, many=True)
+        return Response(serializer.data)
+
+
+class ShortSellerView(GenericViewSet, RetrieveAPIView):
+    queryset = ShortSeller.objects.all()
+    serializer_class = ShortSellerSerializer
+    permission_classes = [HasAPIKey]
+    lookup_field = 'stock_code'
+
+    def retrieve(self, request, stock_code=None, *args, **kwargs):
+        sellers = self.get_queryset().filter(stock_code=stock_code).order_by('-date')
+
+        serializer = self.serializer_class(sellers, many=True)
         return Response(serializer.data)

@@ -176,6 +176,7 @@ JAZZMIN_SETTINGS = {
         "shorts.shortedstock": "fa fa-university",
         "shorts.runstatus": "fa fa-check",
         "shorts.symbolmap": "fa fa-map",
+        "shorts.shortseller": "fa fa-users",
         "errors.error": "fa fa-exclamation-circle",
         "request_logging.requestlog": "fa fa-code",
         "rest_framework_api_key.apikey": "fa fa-key"

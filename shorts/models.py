@@ -29,3 +29,13 @@ class SymbolMap(models.Model):
 
     def __str__(self):
         return f'{self.symbol} - {self.name}'
+
+
+class ShortSeller(models.Model):
+    name = models.CharField(max_length=50)
+    business_id = models.CharField(max_length=20)
+    stock_code = models.CharField(max_length=20)
+    stock_name = models.CharField(max_length=50)
+    value = models.FloatField()
+    date = models.DateField()
+

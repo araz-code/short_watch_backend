@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from shorts.models import ShortedStock
+from shorts.models import ShortedStock, ShortSeller
 
 
 class ShortedStockSerializer(serializers.ModelSerializer):
@@ -9,3 +9,9 @@ class ShortedStockSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShortedStock
         fields = ('code', 'name', 'symbol', 'value', 'timestamp')
+
+
+class ShortSellerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ShortSeller
+        fields = ('name', 'date', 'value')
