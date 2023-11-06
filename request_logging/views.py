@@ -96,6 +96,7 @@ def get_pick_historic_chart(_: Request, year: str) -> JsonResponse:
 
     queryset = queryset.filter(
         Q(requested_url__icontains="pick/") &
+        ~Q(requested_url__icontains="pick/sellers/") &
         Q(requested_url__iregex=r'[0-9]+$')
     )
 
