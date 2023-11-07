@@ -115,7 +115,7 @@ class Command(BaseCommand):
                 subquery = ShortedStock.objects.values('code', 'name').annotate(max_timestamp=Max('timestamp'))
                 distinct_stocks = ShortedStock.objects.filter(timestamp__in=subquery.values('max_timestamp'))
                 for short in distinct_stocks:
-                    if short.code not in short_codes:
+                    if short.code not in short_codes and short.value != 0:
                         ShortedStock(code=short.code,
                                      name=short.name,
                                      value=0.0,
