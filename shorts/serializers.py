@@ -5,7 +5,7 @@ from shorts.models import ShortedStock, ShortSeller
 
 class ShortedStockSerializer(serializers.ModelSerializer):
     symbol = serializers.CharField(max_length=20)
-    timestamp = serializers.DateTimeField(format='%Y-%m-%dT%H:%M:%S')
+    timestamp = serializers.DateTimeField(format='%Y-%m-%dT%H:%M:%S%z')
 
     class Meta:
         model = ShortedStock
