@@ -132,11 +132,14 @@ def get_watch_historic_chart(_: Request, year: str) -> JsonResponse:
 
     queryset = queryset.filter(
         Q(requested_url__icontains="watch/") &
+        ~Q(requested_url__icontains="watch/sellers/") &
         Q(requested_url__iregex=r'[0-9]+$')
     )
 
     queryset = queryset.values('requested_url')\
         .annotate(count=Count('id')) \
+        .annotate(max_timestamp=Max('timestamp')) \
+        .order_by('-max_timestamp')
 
     symbol_map = SymbolMap.objects.all().values('code', 'name')
 
@@ -144,13 +147,17 @@ def get_watch_historic_chart(_: Request, year: str) -> JsonResponse:
 
     modified_data = []
     for entry in list(queryset):
-        modified_data.append({'symbol': get_symbol(entry['requested_url'], code_to_symbol), 'count': entry['count']})
+        modified_data.append({'symbol': get_symbol(entry['requested_url'], code_to_symbol),
+                              'count': entry['count'],
+                              'max_timestamp': entry['max_timestamp'].astimezone(copenhagen_timezone)
+                             .strftime("%Y-%m-%d, %H:%M")})
 
     return JsonResponse({
         'caption': f'List of historic data from watch ({year})',
-        'headers': ['Stock', 'Count'],
+        'headers': ['Stock', 'Count', 'Most recent lookup'],
         'data': modified_data
     })
+
 
 @staff_member_required
 def get_unique_ips_today(_: Request) -> JsonResponse:
@@ -225,7 +232,7 @@ def _rotate_week(lst: List[Union[str, int]]) -> List[Union[str, int]]:
 
 @staff_member_required
 def get_requests_week_chart(_: Request) -> JsonResponse:
-    time_threshold = timezone.now() - timedelta(days=7)
+    time_threshold = timezone.now() - timedelta(days=6)
     queryset = RequestLog.objects.all().filter(timestamp__gte=time_threshold, timestamp__lte=timezone.now())
 
     queryset = queryset.annotate(week_day=ExtractWeekDay('timestamp')) \
