@@ -11,3 +11,11 @@ class PrivacyPolicyView(TemplateView):
 
 class TermsOfAgreementView(TemplateView):
     template_name = "home_page/terms_of_agreement.html"
+
+
+class PrivatlivspolitikView(TemplateView):
+    template_name = "home_page/privatlivspolitik.html"
+
+
+class AftalevilkaarView(TemplateView):
+    template_name = "home_page/aftalevilkaar.html"
