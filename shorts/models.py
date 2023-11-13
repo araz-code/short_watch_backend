@@ -39,3 +39,9 @@ class ShortSeller(models.Model):
     value = models.FloatField()
     date = models.DateField()
 
+
+class ShortedStockChart(models.Model):
+    code = models.CharField(max_length=20)
+    name = models.CharField(max_length=50)
+    value = models.FloatField()
+    date = models.DateField()

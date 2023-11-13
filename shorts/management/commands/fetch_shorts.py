@@ -12,7 +12,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 
 from errors.models import Error
-from shorts.models import ShortedStock, RunStatus, ShortSeller
+from shorts.models import ShortedStock, RunStatus, ShortSeller, ShortedStockChart
 
 copenhagen_timezone = pytz.timezone('Europe/Copenhagen')
 
@@ -111,15 +111,34 @@ class Command(BaseCommand):
                     if existing_short is None:
                         short.save()
 
+                    ShortedStockChart.objects.update_or_create(
+                        code=short.code,
+                        date=timezone.now(),
+                        defaults={
+                            'value': short.value,
+                            'name': short.name
+                        }
+                    )
+
             with transaction.atomic():
                 subquery = ShortedStock.objects.values('code', 'name').annotate(max_timestamp=Max('timestamp'))
                 distinct_stocks = ShortedStock.objects.filter(timestamp__in=subquery.values('max_timestamp'))
                 for short in distinct_stocks:
-                    if short.code not in short_codes and short.value != 0:
-                        ShortedStock(code=short.code,
-                                     name=short.name,
-                                     value=0.0,
-                                     timestamp=timezone.now()).save()
+                    if short.code not in short_codes:
+                        if short.value != 0:
+                            ShortedStock(code=short.code,
+                                         name=short.name,
+                                         value=0.0,
+                                         timestamp=timezone.now()).save()
+
+                        ShortedStockChart.objects.update_or_create(
+                            code=short.code,
+                            date=timezone.now(),
+                            defaults={
+                                'value': short.value,
+                                'name': short.name
+                            }
+                        )
 
             RunStatus.objects.create()
         except Exception as e:

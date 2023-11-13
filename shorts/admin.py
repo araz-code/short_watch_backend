@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from shorts.models import ShortedStock, RunStatus, SymbolMap, ShortSeller
+from shorts.models import ShortedStock, RunStatus, SymbolMap, ShortSeller, ShortedStockChart
 
 
 @admin.register(ShortedStock)
@@ -52,6 +52,22 @@ class ShortSellerAdmin(admin.ModelAdmin):
 
     def has_change_permission(self, request, obj=None):
         return False
+
+    def has_delete_permission(self, request, obj=None):
+        return True
+
+
+@admin.register(ShortedStockChart)
+class ShortedStockChartAdmin(admin.ModelAdmin):
+    list_display = ('date', 'code', 'name', 'value')
+    list_filter = ('name', 'code', 'date')
+    ordering = ('-date', 'code')
+
+    def has_add_permission(self, request):
+        return True
+
+    def has_change_permission(self, request, obj=None):
+        return True
 
     def has_delete_permission(self, request, obj=None):
         return True
