@@ -25,5 +25,6 @@ class ShortedStockChartSerializer(serializers.ModelSerializer):
 
 
 class ShortHistoricSerializer(serializers.Serializer):
-    chartValues = serializers.ListField(child=serializers.FloatField(), required=True)
-    historic = ShortedStockSerializer(many=True, required=True)
+    chartValues = serializers.ListField(child=serializers.FloatField())
+    historic = ShortedStockSerializer(many=True)
+    sellers = ShortSellerSerializer(many=True)

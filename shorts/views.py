@@ -75,13 +75,13 @@ class ShortSellerView(GenericViewSet, RetrieveAPIView):
         return Response(serializer.data)
 
 
-ShortHistoricResponse = namedtuple('ShortHistoricResponse', ['chartValues', 'historic'])
+ShortHistoricResponse = namedtuple('ShortHistoricResponse', ['chartValues', 'historic', 'sellers'])
 
 
 class ShortHistoricView(GenericViewSet, RetrieveAPIView):
     queryset = ShortedStock.objects.all()
     serializer_class = ShortHistoricSerializer
-    # permission_classes = [HasAPIKey]
+    permission_classes = [HasAPIKey]
     lookup_field = 'code'
 
     def retrieve(self, request, code=None, *args, **kwargs):
@@ -89,9 +89,9 @@ class ShortHistoricView(GenericViewSet, RetrieveAPIView):
 
         shorted_stocks = self.get_queryset().filter(code=code).order_by('-timestamp')
 
-        combined_data = []
+        historic = []
         for stock in shorted_stocks:
-            combined_data.append({
+            historic.append({
                 'code': stock.code,
                 'name': stock.name,
                 'symbol': symbol_obj.symbol if symbol_obj else stock.name,
@@ -99,10 +99,12 @@ class ShortHistoricView(GenericViewSet, RetrieveAPIView):
                 'timestamp': stock.timestamp,
             })
 
-        records = ShortedStockChart.objects.filter(code=code).order_by('date')[:7]
+        chart_values = ShortedStockChart.objects.filter(code=code).order_by('date')[:7]
 
-        values_list = list(records.values_list('value', flat=True))
+        chart_values_list = list(chart_values.values_list('value', flat=True))
 
-        response = ShortHistoricResponse(values_list, combined_data)
+        sellers = ShortSeller.objects.filter(stock_code=code).order_by('-date')
+
+        response = ShortHistoricResponse(chart_values_list, historic, sellers)
 
         return Response(self.get_serializer(response).data)
