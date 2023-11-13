@@ -64,6 +64,8 @@ def get_requested_urls_chart(_: Request, year: str) -> JsonResponse:
     queryset = queryset.filter(
         Q(requested_url__icontains="privacy-policy") |
         Q(requested_url__icontains="terms-of-agreement") |
+        Q(requested_url__icontains="privatlivspolitik") |
+        Q(requested_url__icontains="aftalevilkaar") |
         Q(requested_url="http://localhost:8000/") |
         Q(requested_url="http://www.zirium.dk/")
     )
