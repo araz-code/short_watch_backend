@@ -26,7 +26,7 @@ class ShortedStockChartSerializer(serializers.ModelSerializer):
 
 class CustomDateField(serializers.Field):
     def to_representation(self, value):
-        return value.strftime('%Y-%m-%dTT00:00:00+00:00') if value else None
+        return value.strftime('%Y-%m-%dTT00:00:00+0000') if value else None
 
 
 class ShortSellerSerializerV2(serializers.ModelSerializer):

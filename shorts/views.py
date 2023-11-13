@@ -81,7 +81,7 @@ ShortHistoricResponse = namedtuple('ShortHistoricResponse', ['chartValues', 'his
 class ShortHistoricView(GenericViewSet, RetrieveAPIView):
     queryset = ShortedStock.objects.all()
     serializer_class = ShortHistoricSerializer
-    #permission_classes = [HasAPIKey]
+    permission_classes = [HasAPIKey]
     lookup_field = 'code'
 
     def retrieve(self, request, code=None, *args, **kwargs):
