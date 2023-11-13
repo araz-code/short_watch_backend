@@ -1,3 +1,5 @@
+from collections import namedtuple
+
 from django.db.models import Max
 from django.db.models.functions import TruncDate
 from rest_framework.generics import RetrieveAPIView
@@ -6,7 +8,8 @@ from rest_framework.viewsets import ReadOnlyModelViewSet, GenericViewSet
 from rest_framework_api_key.permissions import HasAPIKey
 
 from shorts.models import ShortedStock, SymbolMap, ShortSeller, ShortedStockChart
-from shorts.serializers import ShortedStockSerializer, ShortSellerSerializer, ShortedStockChartSerializer
+from shorts.serializers import ShortedStockSerializer, ShortSellerSerializer, ShortedStockChartSerializer, \
+    ShortHistoricSerializer
 
 
 class ShortedStockView(ReadOnlyModelViewSet):
@@ -72,15 +75,34 @@ class ShortSellerView(GenericViewSet, RetrieveAPIView):
         return Response(serializer.data)
 
 
-class ShortedStockChartView(GenericViewSet, RetrieveAPIView):
-    queryset = ShortedStockChart.objects.all()
-    serializer_class = ShortedStockChartSerializer
+ShortHistoricResponse = namedtuple('ShortHistoricResponse', ['chartValues', 'historic'])
+
+
+class ShortHistoricView(GenericViewSet, RetrieveAPIView):
+    queryset = ShortedStock.objects.all()
+    serializer_class = ShortHistoricSerializer
     # permission_classes = [HasAPIKey]
     lookup_field = 'code'
 
     def retrieve(self, request, code=None, *args, **kwargs):
-        records = self.get_queryset().filter(code=code).order_by('date')[:7]
+        symbol_obj = SymbolMap.objects.filter(code=code).first()
+
+        shorted_stocks = self.get_queryset().filter(code=code).order_by('-timestamp')
+
+        combined_data = []
+        for stock in shorted_stocks:
+            combined_data.append({
+                'code': stock.code,
+                'name': stock.name,
+                'symbol': symbol_obj.symbol if symbol_obj else stock.name,
+                'value': stock.value,
+                'timestamp': stock.timestamp,
+            })
+
+        records = ShortedStockChart.objects.filter(code=code).order_by('date')[:7]
 
         values_list = list(records.values_list('value', flat=True))
 
-        return Response(values_list)
+        response = ShortHistoricResponse(values_list, combined_data)
+
+        return Response(self.get_serializer(response).data)
