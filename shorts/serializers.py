@@ -24,20 +24,20 @@ class ShortedStockChartSerializer(serializers.ModelSerializer):
         fields = ('value',)
 
 
-class CustomDateField(serializers.Field):
+class DateWithAddedTimeField(serializers.Field):
     def to_representation(self, value):
         return value.strftime('%Y-%m-%dT00:00:00+0000') if value else None
 
 
 class ShortSellerSerializerV2(serializers.ModelSerializer):
-    date = CustomDateField()
+    date = DateWithAddedTimeField()
 
     class Meta:
         model = ShortSeller
         fields = ('name', 'date', 'value')
 
 
-class ShortHistoricSerializer(serializers.Serializer):
+class ShortedStockDetailsSerializer(serializers.Serializer):
     chartValues = serializers.ListField(child=serializers.FloatField())
     historic = ShortedStockSerializer(many=True)
     sellers = ShortSellerSerializerV2(many=True)

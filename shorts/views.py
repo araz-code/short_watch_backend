@@ -9,7 +9,7 @@ from rest_framework_api_key.permissions import HasAPIKey
 
 from shorts.models import ShortedStock, SymbolMap, ShortSeller, ShortedStockChart
 from shorts.serializers import ShortedStockSerializer, ShortSellerSerializer, ShortedStockChartSerializer, \
-    ShortHistoricSerializer
+    ShortedStockDetailsSerializer
 
 
 class ShortedStockView(ReadOnlyModelViewSet):
@@ -75,12 +75,12 @@ class ShortSellerView(GenericViewSet, RetrieveAPIView):
         return Response(serializer.data)
 
 
-ShortHistoricResponse = namedtuple('ShortHistoricResponse', ['chartValues', 'historic', 'sellers'])
+ShortedStockDetailsResponse = namedtuple('ShortedStockDetailsResponse', ['chartValues', 'historic', 'sellers'])
 
 
-class ShortHistoricView(GenericViewSet, RetrieveAPIView):
+class ShortedStockDetailsView(GenericViewSet, RetrieveAPIView):
     queryset = ShortedStock.objects.all()
-    serializer_class = ShortHistoricSerializer
+    serializer_class = ShortedStockDetailsSerializer
     permission_classes = [HasAPIKey]
     lookup_field = 'code'
 
@@ -105,6 +105,6 @@ class ShortHistoricView(GenericViewSet, RetrieveAPIView):
 
         sellers = ShortSeller.objects.filter(stock_code=code).order_by('-date')
 
-        response = ShortHistoricResponse(chart_values_list, historic, sellers)
+        response = ShortedStockDetailsResponse(chart_values_list, historic, sellers)
 
         return Response(self.get_serializer(response).data)
