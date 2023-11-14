@@ -59,9 +59,9 @@ class ShortSellerAdmin(admin.ModelAdmin):
 
 @admin.register(ShortedStockChart)
 class ShortedStockChartAdmin(admin.ModelAdmin):
-    list_display = ('date', 'code', 'name', 'value')
+    list_display = ('timestamp', 'date', 'code', 'name', 'value')
     list_filter = ('name', 'code', 'date')
-    ordering = ('-date', 'code')
+    ordering = ('-timestamp', 'code')
 
     def has_add_permission(self, request):
         return True

@@ -45,3 +45,4 @@ class ShortedStockChart(models.Model):
     name = models.CharField(max_length=50)
     value = models.FloatField()
     date = models.DateField()
+    timestamp = models.DateTimeField()

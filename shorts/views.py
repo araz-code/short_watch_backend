@@ -99,13 +99,13 @@ class ShortedStockDetailsView(GenericViewSet, RetrieveAPIView):
                 'timestamp': stock.timestamp,
             })
 
-        chart_values = ShortedStockChart.objects.filter(code=code).order_by('-date')[:7]
+        chart_values = ShortedStockChart.objects.filter(code=code).order_by('-date')[:9]
 
-        chart_values_list = list(chart_values.values_list('value', flat=True))
-        chart_values_list.reverse()
+        ##chart_values_list = list(chart_values.values_list('value', flat=True))
+        ## chart_values_list.reverse()
 
         sellers = ShortSeller.objects.filter(stock_code=code).order_by('-date')
 
-        response = ShortedStockDetailsResponse(chart_values_list, historic, sellers)
+        response = ShortedStockDetailsResponse(chart_values, historic, sellers)
 
         return Response(self.get_serializer(response).data)

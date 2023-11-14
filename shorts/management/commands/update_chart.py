@@ -21,17 +21,21 @@ class Command(BaseCommand):
     help = "add data to the chart model"
 
     def handle(self, *args, **options):
-        today = datetime.now().date()
+        today = timezone.now()
+        print(today)
 
         # Generate the last 7 days, including today
-        last_seven_days = [today - timedelta(days=i) for i in range(7)]
+        last_seven_days = [today - timedelta(days=i) for i in range(9)]
         last_seven_days.reverse()
 
         unique_codes = ShortedStock.objects.values('code').distinct()
         code_list = [entry['code'] for entry in unique_codes]
 
         for code in code_list:
-            for day in last_seven_days:
+            for day_with_time in last_seven_days:
+                timestamp = day_with_time.replace(hour=22, minute=30, second=0)
+
+                day = timestamp.date()
                 short = self.get_closest_value_to_date(day, code)
 
                 ShortedStockChart.objects.update_or_create(
@@ -39,7 +43,8 @@ class Command(BaseCommand):
                     date=day,
                     defaults={
                         'value': short.value,
-                        'name': short.name
+                        'name': short.name,
+                        'timestamp': timestamp
                     }
                 )
 
