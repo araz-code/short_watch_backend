@@ -32,6 +32,8 @@ class ShortSellerSerializerV2(serializers.ModelSerializer):
 
 
 class ShortedStockChartSerializer(serializers.ModelSerializer):
+    timestamp = serializers.DateTimeField(format='%Y-%m-%dT%H:%M:%S%z')
+
     class Meta:
         model = ShortedStockChart
         fields = ('timestamp', 'value')
