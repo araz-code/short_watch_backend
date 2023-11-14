@@ -111,12 +111,14 @@ class Command(BaseCommand):
                     if existing_short is None:
                         short.save()
 
+                    now = timezone.now()
                     ShortedStockChart.objects.update_or_create(
                         code=short.code,
-                        date=timezone.now(),
+                        date=now,
                         defaults={
                             'value': short.value,
-                            'name': short.name
+                            'name': short.name,
+                            'timestamp': now
                         }
                     )
 
@@ -131,12 +133,14 @@ class Command(BaseCommand):
                                          value=0.0,
                                          timestamp=timezone.now()).save()
 
+                        now = timezone.now()
                         ShortedStockChart.objects.update_or_create(
                             code=short.code,
-                            date=timezone.now(),
+                            date=now,
                             defaults={
                                 'value': short.value,
-                                'name': short.name
+                                'name': short.name,
+                                'timestamp': now
                             }
                         )
 

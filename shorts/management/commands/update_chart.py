@@ -22,7 +22,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         today = timezone.now()
-        print(today)
 
         # Generate the last 7 days, including today
         last_seven_days = [today - timedelta(days=i) for i in range(9)]
