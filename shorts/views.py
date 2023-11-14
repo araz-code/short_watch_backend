@@ -81,7 +81,7 @@ ShortedStockDetailsResponse = namedtuple('ShortedStockDetailsResponse', ['chartV
 class ShortedStockDetailsView(GenericViewSet, RetrieveAPIView):
     queryset = ShortedStock.objects.all()
     serializer_class = ShortedStockDetailsSerializer
-    # permission_classes = [HasAPIKey]
+    permission_classes = [HasAPIKey]
     lookup_field = 'code'
 
     def retrieve(self, request, code=None, *args, **kwargs):
@@ -100,9 +100,6 @@ class ShortedStockDetailsView(GenericViewSet, RetrieveAPIView):
             })
 
         chart_values = ShortedStockChart.objects.filter(code=code).order_by('-date')[:9]
-
-        ##chart_values_list = list(chart_values.values_list('value', flat=True))
-        ## chart_values_list.reverse()
 
         sellers = ShortSeller.objects.filter(stock_code=code).order_by('-date')
 
