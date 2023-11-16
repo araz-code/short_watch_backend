@@ -1,3 +1,4 @@
+from collections import defaultdict
 from datetime import timedelta
 from typing import List, Union
 
@@ -112,11 +113,24 @@ def get_pick_historic_chart(_: Request, year: str) -> JsonResponse:
     code_to_symbol = {entry['code']: entry['name'] for entry in symbol_map}
 
     modified_data = []
+    symbol_data = defaultdict(lambda: {'count': 0, 'max_timestamp': None})
+
     for entry in list(queryset):
-        modified_data.append({'symbol': get_symbol(entry['requested_url'], code_to_symbol),
-                              'count': entry['count'],
-                              'max_timestamp': entry['max_timestamp'].astimezone(copenhagen_timezone)
-                             .strftime("%Y-%m-%d, %H:%M")})
+        symbol = get_symbol(entry['requested_url'], code_to_symbol)
+        count = entry['count']
+        timestamp = entry['max_timestamp'].astimezone(copenhagen_timezone)
+
+        if symbol_data[symbol]['max_timestamp'] is None or timestamp > symbol_data[symbol]['max_timestamp']:
+            symbol_data[symbol]['max_timestamp'] = timestamp
+
+        symbol_data[symbol]['count'] += count
+
+    for symbol, data in symbol_data.items():
+        modified_data.append({'symbol': symbol,
+                              'count': data['count'],
+                              'max_timestamp': data['max_timestamp'].strftime("%Y-%m-%d, %H:%M")})
+
+    modified_data = sorted(modified_data, key=lambda x: x['max_timestamp'], reverse=True)
 
     return JsonResponse({
         'caption': f'List of historic data from pick ({year})',
@@ -148,11 +162,24 @@ def get_watch_historic_chart(_: Request, year: str) -> JsonResponse:
     code_to_symbol = {entry['code']: entry['name'] for entry in symbol_map}
 
     modified_data = []
+    symbol_data = defaultdict(lambda: {'count': 0, 'max_timestamp': None})
+
     for entry in list(queryset):
-        modified_data.append({'symbol': get_symbol(entry['requested_url'], code_to_symbol),
-                              'count': entry['count'],
-                              'max_timestamp': entry['max_timestamp'].astimezone(copenhagen_timezone)
-                             .strftime("%Y-%m-%d, %H:%M")})
+        symbol = get_symbol(entry['requested_url'], code_to_symbol)
+        count = entry['count']
+        timestamp = entry['max_timestamp'].astimezone(copenhagen_timezone)
+
+        if symbol_data[symbol]['max_timestamp'] is None or timestamp > symbol_data[symbol]['max_timestamp']:
+            symbol_data[symbol]['max_timestamp'] = timestamp
+
+        symbol_data[symbol]['count'] += count
+
+    for symbol, data in symbol_data.items():
+        modified_data.append({'symbol': symbol,
+                              'count': data['count'],
+                              'max_timestamp': data['max_timestamp'].strftime("%Y-%m-%d, %H:%M")})
+
+    modified_data = sorted(modified_data, key=lambda x: x['max_timestamp'], reverse=True)
 
     return JsonResponse({
         'caption': f'List of historic data from watch ({year})',
