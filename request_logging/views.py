@@ -90,16 +90,15 @@ def get_requested_urls_chart(_: Request, year: str) -> JsonResponse:
     })
 
 
-@staff_member_required
-def get_pick_historic_chart(_: Request, year: str) -> JsonResponse:
+def get_historic_chart(_: Request, year: str, prefix: str) -> JsonResponse:
     queryset = RequestLog.objects.all()
 
     if year.isnumeric():
         queryset = queryset.filter(created_at__year=year)
 
     queryset = queryset.filter(
-        Q(requested_url__icontains="pick/") &
-        ~Q(requested_url__icontains="pick/sellers/") &
+        Q(requested_url__icontains=f"{prefix}/") &
+        ~Q(requested_url__icontains=f"{prefix}/sellers/") &
         Q(requested_url__iregex=r'[0-9]+$')
     )
 
@@ -109,7 +108,6 @@ def get_pick_historic_chart(_: Request, year: str) -> JsonResponse:
         .order_by('-max_timestamp')
 
     symbol_map = SymbolMap.objects.all().values('code', 'name')
-
     code_to_symbol = {entry['code']: entry['name'] for entry in symbol_map}
 
     modified_data = []
@@ -133,59 +131,20 @@ def get_pick_historic_chart(_: Request, year: str) -> JsonResponse:
     modified_data = sorted(modified_data, key=lambda x: x['max_timestamp'], reverse=True)
 
     return JsonResponse({
-        'caption': f'List of historic data from pick ({year})',
+        'caption': f'List of historic data from {prefix} ({year})',
         'headers': ['Stock', 'Count', 'Most recent lookup'],
         'data': modified_data
     })
 
 
 @staff_member_required
-def get_watch_historic_chart(_: Request, year: str) -> JsonResponse:
-    queryset = RequestLog.objects.all()
+def get_pick_historic_chart(request: Request, year: str) -> JsonResponse:
+    return get_historic_chart(request, year, "pick")
 
-    if year.isnumeric():
-        queryset = queryset.filter(created_at__year=year)
 
-    queryset = queryset.filter(
-        Q(requested_url__icontains="watch/") &
-        ~Q(requested_url__icontains="watch/sellers/") &
-        Q(requested_url__iregex=r'[0-9]+$')
-    )
-
-    queryset = queryset.values('requested_url')\
-        .annotate(count=Count('id')) \
-        .annotate(max_timestamp=Max('timestamp')) \
-        .order_by('-max_timestamp')
-
-    symbol_map = SymbolMap.objects.all().values('code', 'name')
-
-    code_to_symbol = {entry['code']: entry['name'] for entry in symbol_map}
-
-    modified_data = []
-    symbol_data = defaultdict(lambda: {'count': 0, 'max_timestamp': None})
-
-    for entry in list(queryset):
-        symbol = get_symbol(entry['requested_url'], code_to_symbol)
-        count = entry['count']
-        timestamp = entry['max_timestamp'].astimezone(copenhagen_timezone)
-
-        if symbol_data[symbol]['max_timestamp'] is None or timestamp > symbol_data[symbol]['max_timestamp']:
-            symbol_data[symbol]['max_timestamp'] = timestamp
-
-        symbol_data[symbol]['count'] += count
-
-    for symbol, data in symbol_data.items():
-        modified_data.append({'symbol': symbol,
-                              'count': data['count'],
-                              'max_timestamp': data['max_timestamp'].strftime("%Y-%m-%d, %H:%M")})
-
-    modified_data = sorted(modified_data, key=lambda x: x['max_timestamp'], reverse=True)
-
-    return JsonResponse({
-        'caption': f'List of historic data from watch ({year})',
-        'headers': ['Stock', 'Count', 'Most recent lookup'],
-        'data': modified_data
-    })
+@staff_member_required
+def get_watch_historic_chart(request: Request, year: str) -> JsonResponse:
+    return get_historic_chart(request, year, "watch")
 
 
 @staff_member_required
