@@ -5,7 +5,7 @@ from typing import List, Union
 import pytz
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Count, Avg, Q, CharField, F, Max
-from django.db.models.functions import ExtractYear, ExtractMonth, ExtractDay, Substr, ExtractWeekDay
+from django.db.models.functions import ExtractYear, ExtractMonth, ExtractDay, Substr, ExtractWeekDay, TruncDate
 from django.http import JsonResponse
 from django.utils import timezone
 from rest_framework.request import Request
@@ -301,4 +301,31 @@ def get_request_per_hour_chart(request: Request) -> JsonResponse:
                 }
             ]
         }
+    })
+
+
+def get_unique_user_agents_per_day_chart(_: Request, year: str) -> JsonResponse:
+    queryset = RequestLog.objects.all()
+
+    if year.isnumeric():
+        queryset = queryset.filter(created_at__year=year)
+
+    queryset = queryset.annotate(date=TruncDate('timestamp')) \
+        .values('date') \
+        .annotate(unique_user_agents=Count('user_agent', distinct=True)) \
+        .order_by('date')
+
+    modified_data = []
+    for entry in list(queryset):
+        modified_data.append({
+            'date': entry['date'].strftime("%Y-%m-%d"),
+            'num user agents': entry['unique_user_agents']
+        })
+
+    modified_data.reverse()
+
+    return JsonResponse({
+        'caption': f'List of unique user agents per day ({year})',
+        'headers': ['Date', 'Count'],
+        'data': modified_data
     })

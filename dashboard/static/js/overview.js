@@ -8,6 +8,8 @@ function loadAllCharts(year) {
   loadTable("pickHistoricTable", `/stats/chart/requestlogging/pick-historic/${year}/`);
   loadTable("watchHistoricTable", `/stats/chart/requestlogging/watch-historic/${year}/`);
 
+  loadTable("userAgentsTable", `/stats/chart/requestlogging/user-agents/${year}/`);
+
   loadChart(requestsWeekChart, `/stats/chart/requestlogging/requests-week/`);
   loadChart(requestsHourlyChart, `/stats/chart/requestlogging/requests-hourly/`);
 }

@@ -11,5 +11,6 @@ urlpatterns = [
     path('chart/requestlogging/watch-historic/<str:year>/', views.get_watch_historic_chart),
     path('chart/requestlogging/requests-week/', views.get_requests_week_chart),
     path('chart/requestlogging/requests-hourly/', views.get_request_per_hour_chart),
+    path('chart/requestlogging/user-agents/<str:year>/', views.get_unique_user_agents_per_day_chart),
 ]
 
