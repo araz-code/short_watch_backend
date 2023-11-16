@@ -246,3 +246,73 @@ def get_requests_week_chart(_: Request) -> JsonResponse:
             ]
         },
     })
+
+
+@staff_member_required
+def get_request_per_hour_chart_today(request: Request) -> JsonResponse:
+    today = timezone.now()
+
+    queryset = RequestLog.objects.filter(timestamp__date=today.date()) \
+        .values('timestamp__hour') \
+        .annotate(count=Count('id')) \
+        .order_by('timestamp__hour')
+
+    labels = [str(hour) + ":00" for hour in range(24)]
+    data_today = [0] * 24
+
+    for entry in queryset:
+        hour = entry['timestamp__hour']
+        count = entry['count']
+        data_today[hour] = count
+
+    return JsonResponse({
+        'title': 'Requests per Hour (Today)',
+        'data': {
+            'labels': labels,
+            'datasets': [
+                {
+                    'label': 'Requests',
+                    'data': data_today,
+                    'backgroundColor': COLOR_PRIMARY,
+                    'borderColor': COLOR_PRIMARY,
+                    'borderWidth': 1
+                }
+            ]
+        }
+    })
+
+
+@staff_member_required
+def get_request_per_hour_chart_yesterday(request: Request) -> JsonResponse:
+    today = timezone.now()
+    yesterday = today - timedelta(days=1)
+
+    queryset = RequestLog.objects.filter(timestamp__date=yesterday.date()) \
+        .values('timestamp__hour') \
+        .annotate(count=Count('id')) \
+        .order_by('timestamp__hour')
+
+    labels = [str(hour) + ":00" for hour in range(24)]
+    data_yesterday = [0] * 24
+
+    for entry in queryset:
+        hour = entry['timestamp__hour']
+        count = entry['count']
+        data_yesterday[hour] = count
+
+    return JsonResponse({
+        'title': 'Requests per Hour (Today)',
+        'data': {
+            'labels': labels,
+            'datasets': [
+                {
+                    'label': 'Requests',
+                    'data': data_yesterday,
+                    'backgroundColor': COLOR_PRIMARY,
+                    'borderColor': COLOR_PRIMARY,
+                    'borderWidth': 1
+                }
+            ]
+        }
+    })
+
