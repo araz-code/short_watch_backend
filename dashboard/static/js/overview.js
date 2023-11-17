@@ -12,8 +12,13 @@ function loadAllCharts(year) {
 
   loadChart(requestsWeekChart, `/stats/chart/requestlogging/requests-week/`);
   loadChart(requestsHourlyChart, `/stats/chart/requestlogging/requests-hourly/`);
+  loadChart(pickRequestsHourlyChart, `/stats/chart/requestlogging/pick-requests-hourly/`);
+  loadChart(watchRequestsHourlyChart, `/stats/chart/requestlogging/watch-requests-hourly/`);
 }
 
 const requestsWeekChart = createBarChart("requestsWeekChart");
 const requestsHourlyChart = createBarChart("requestsHourlyChart");
+const pickRequestsHourlyChart = createBarChart("pickRequestsHourlyChart");
+const watchRequestsHourlyChart = createBarChart("watchRequestsHourlyChart");
+
 

@@ -301,6 +301,118 @@ def get_request_per_hour_chart(request: Request) -> JsonResponse:
     })
 
 
+@staff_member_required
+def get_pick_request_per_hour_chart(request: Request) -> JsonResponse:
+    today = timezone.now()
+
+    queryset = RequestLog.objects.filter(timestamp__date=today.date(), requested_url__regex=r'pick$') \
+        .values('timestamp__hour') \
+        .annotate(count=Count('id')) \
+        .order_by('timestamp__hour')
+
+    labels = [str(hour) + ":00" for hour in range(24)]
+    data_today = [0] * 24
+
+    for entry in queryset:
+        hour = entry['timestamp__hour']
+        count = entry['count']
+        data_today[hour] = count
+
+    yesterday = today - timedelta(days=1)
+
+    queryset = RequestLog.objects.filter(timestamp__date=yesterday.date(),  requested_url__regex=r'pick$') \
+        .values('timestamp__hour') \
+        .annotate(count=Count('id')) \
+        .order_by('timestamp__hour')
+
+    labels = [str(hour) + ":00" for hour in range(24)]
+    data_yesterday = [0] * 24
+
+    for entry in queryset:
+        hour = entry['timestamp__hour']
+        count = entry['count']
+        data_yesterday[hour] = count
+
+    return JsonResponse({
+        'title': 'Pick requests per Hour',
+        'data': {
+            'labels': labels,
+            'datasets': [
+                {
+                    'label': 'Yesterday',
+                    'data': data_yesterday,
+                    'backgroundColor': COLOR_SECONDARY,
+                    'borderColor': COLOR_SECONDARY,
+                    'borderWidth': 1
+                },
+                {
+                    'label': 'Today',
+                    'data': data_today,
+                    'backgroundColor': COLOR_PRIMARY,
+                    'borderColor': COLOR_PRIMARY,
+                    'borderWidth': 1
+                }
+            ]
+        }
+    })
+
+
+@staff_member_required
+def get_watch_request_per_hour_chart(request: Request) -> JsonResponse:
+    today = timezone.now()
+
+    queryset = RequestLog.objects.filter(timestamp__date=today.date(), requested_url__regex=r'watch$') \
+        .values('timestamp__hour') \
+        .annotate(count=Count('id')) \
+        .order_by('timestamp__hour')
+
+    labels = [str(hour) + ":00" for hour in range(24)]
+    data_today = [0] * 24
+
+    for entry in queryset:
+        hour = entry['timestamp__hour']
+        count = entry['count']
+        data_today[hour] = count
+
+    yesterday = today - timedelta(days=1)
+
+    queryset = RequestLog.objects.filter(timestamp__date=yesterday.date(),  requested_url__regex=r'watch$') \
+        .values('timestamp__hour') \
+        .annotate(count=Count('id')) \
+        .order_by('timestamp__hour')
+
+    labels = [str(hour) + ":00" for hour in range(24)]
+    data_yesterday = [0] * 24
+
+    for entry in queryset:
+        hour = entry['timestamp__hour']
+        count = entry['count']
+        data_yesterday[hour] = count
+
+    return JsonResponse({
+        'title': 'Watch requests per Hour',
+        'data': {
+            'labels': labels,
+            'datasets': [
+                {
+                    'label': 'Yesterday',
+                    'data': data_yesterday,
+                    'backgroundColor': COLOR_SECONDARY,
+                    'borderColor': COLOR_SECONDARY,
+                    'borderWidth': 1
+                },
+                {
+                    'label': 'Today',
+                    'data': data_today,
+                    'backgroundColor': COLOR_PRIMARY,
+                    'borderColor': COLOR_PRIMARY,
+                    'borderWidth': 1
+                }
+            ]
+        }
+    })
+
+
 def get_unique_user_agents_per_day_chart(_: Request, year: str) -> JsonResponse:
     queryset = RequestLog.objects.all()
 
