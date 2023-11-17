@@ -180,11 +180,8 @@ def get_avg_request_count(_: Request, year: str) -> JsonResponse:
 
 @staff_member_required
 def get_total_requests_today(_: Request) -> JsonResponse:
-    current_date = timezone.now()
-    start_of_day = current_date.replace(hour=0, minute=0, second=0, microsecond=0)
-    end_of_day = current_date.replace(hour=23, minute=59, second=59, microsecond=999999)
-
-    queryset = RequestLog.objects.filter(timestamp__range=(start_of_day, end_of_day))
+    today = timezone.now()
+    queryset = RequestLog.objects.filter(timestamp__date=today.date())
 
     return JsonResponse({
         'title': f'Total requests today',
