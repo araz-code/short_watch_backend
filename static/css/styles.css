@@ -63,19 +63,9 @@ section {
 	display: inline-block;
 	position: relative;
 	margin: 30px;
-	width: 40%;
-    height: auto;
-}
-
-.app-image {
-    height: auto;
-}
-
-@media (max-width: 767px) {
-    .app-image {
-        width: 80%;
-        height: auto;
-    }
+	width: 80%;
+	max-width: 500px;
+	height: auto;
 }
 
 .white-overlay {
