@@ -23,6 +23,9 @@ class Command(BaseCommand):
     SHORTS_SITE_URL = 'https://oam.finanstilsynet.dk/#!/stats-and-extracts-short-net-positions'
     HOLDERS_SITE_URL = 'https://oam.finanstilsynet.dk/#!/stats-and-extracts-individual-short-net-positions'
 
+    MAX_RETRIES = 2
+    RETRY_SLEEP_INTERVAL = 60
+
     @staticmethod
     def _get_webdriver():
         chrome_options = webdriver.ChromeOptions()
@@ -75,63 +78,45 @@ class Command(BaseCommand):
             raise CommandError(f'Error occurred: {str(e)}')
 
     def fetch_short_positions(self, driver):
-        try:
-            driver.get(self.SHORTS_SITE_URL)
-            time.sleep(7)
+        retry_count = 0
 
-            dropdown = Select(driver.find_element(By.TAG_NAME, "select"))
-            dropdown.select_by_index(3)
-            time.sleep(7)
+        while retry_count < self.MAX_RETRIES:
 
-            elements = driver.find_elements(By.CSS_SELECTOR, '.ui-grid-cell-contents.ng-binding.ng-scope')
+            try:
+                driver.get(self.SHORTS_SITE_URL)
+                time.sleep(7)
 
-            short_data = []
+                dropdown = Select(driver.find_element(By.TAG_NAME, "select"))
+                dropdown.select_by_index(3)
+                time.sleep(7)
 
-            for i in range(0, len(elements), 4):
-                corrected_datetime = datetime.strptime(elements[i + 3].text, '%d-%m-%Y %H:%M:%S')
+                elements = driver.find_elements(By.CSS_SELECTOR, '.ui-grid-cell-contents.ng-binding.ng-scope')
 
-                short_data.append(
-                    ShortedStock(code=elements[i].text,
-                                 name=elements[i + 1].text,
-                                 value=float(elements[i + 2].text.replace(',', '.')),
-                                 timestamp=copenhagen_timezone.localize(corrected_datetime))
-                )
+                short_data = []
 
-            short_codes = []
-            with transaction.atomic():
-                for short in short_data:
-                    short_codes.append(short.code)
-                    existing_short = ShortedStock.objects.filter(
-                        code=short.code,
-                        name=short.name,
-                        value=short.value,
-                        timestamp=short.timestamp,
-                    ).first()
+                for i in range(0, len(elements), 4):
+                    corrected_datetime = datetime.strptime(elements[i + 3].text, '%d-%m-%Y %H:%M:%S')
 
-                    if existing_short is None:
-                        short.save()
-
-                    now = timezone.now()
-                    ShortedStockChart.objects.update_or_create(
-                        code=short.code,
-                        date=now,
-                        defaults={
-                            'value': short.value,
-                            'name': short.name,
-                            'timestamp': now
-                        }
+                    short_data.append(
+                        ShortedStock(code=elements[i].text,
+                                     name=elements[i + 1].text,
+                                     value=float(elements[i + 2].text.replace(',', '.')),
+                                     timestamp=copenhagen_timezone.localize(corrected_datetime))
                     )
 
-            with transaction.atomic():
-                subquery = ShortedStock.objects.values('code', 'name').annotate(max_timestamp=Max('timestamp'))
-                distinct_stocks = ShortedStock.objects.filter(timestamp__in=subquery.values('max_timestamp'))
-                for short in distinct_stocks:
-                    if short.code not in short_codes:
-                        if short.value != 0:
-                            ShortedStock(code=short.code,
-                                         name=short.name,
-                                         value=0.0,
-                                         timestamp=timezone.now()).save()
+                short_codes = []
+                with transaction.atomic():
+                    for short in short_data:
+                        short_codes.append(short.code)
+                        existing_short = ShortedStock.objects.filter(
+                            code=short.code,
+                            name=short.name,
+                            value=short.value,
+                            timestamp=short.timestamp,
+                        ).first()
+
+                        if existing_short is None:
+                            short.save()
 
                         now = timezone.now()
                         ShortedStockChart.objects.update_or_create(
@@ -144,9 +129,40 @@ class Command(BaseCommand):
                             }
                         )
 
-            RunStatus.objects.create()
-        except Exception as e:
-            Error.objects.create(message=str(e)[:500])
-            raise CommandError(f'Error occurred: {str(e)}')
+                with transaction.atomic():
+                    subquery = ShortedStock.objects.values('code', 'name').annotate(max_timestamp=Max('timestamp'))
+                    distinct_stocks = ShortedStock.objects.filter(timestamp__in=subquery.values('max_timestamp'))
+                    for short in distinct_stocks:
+                        if short.code not in short_codes:
+                            if short.value != 0:
+                                ShortedStock(code=short.code,
+                                             name=short.name,
+                                             value=0.0,
+                                             timestamp=timezone.now()).save()
+
+                            now = timezone.now()
+                            ShortedStockChart.objects.update_or_create(
+                                code=short.code,
+                                date=now,
+                                defaults={
+                                    'value': short.value,
+                                    'name': short.name,
+                                    'timestamp': now
+                                }
+                            )
+
+                RunStatus.objects.create()
+                break
+            except Exception as e:
+                retry_count += 1
+                Error.objects.create(message=f'Retrying ({retry_count}/{self.MAX_RETRIES}) after '
+                                             f'{self.RETRY_SLEEP_INTERVAL} seconds., Error occurred: {str(e)[:500]}')
+
+                time.sleep(self.RETRY_SLEEP_INTERVAL)
+
+        else:
+            message = f'Max retries ({self.MAX_RETRIES}) reached. Command failed.'
+            Error.objects.create(message=message)
+            raise CommandError(message)
 
 
