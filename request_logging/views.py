@@ -4,8 +4,8 @@ from typing import List, Union
 
 import pytz
 from django.contrib.admin.views.decorators import staff_member_required
-from django.db.models import Count, Avg, Q, CharField, F, Max
-from django.db.models.functions import ExtractYear, ExtractMonth, ExtractDay, Substr, ExtractWeekDay, TruncDate
+from django.db.models import Count, Avg, Q, Max
+from django.db.models.functions import ExtractYear, ExtractMonth, ExtractDay, ExtractWeekDay, TruncDate
 from django.http import JsonResponse
 from django.utils import timezone
 from rest_framework.request import Request
@@ -217,8 +217,10 @@ def _rotate_week(lst: List[Union[str, int]]) -> List[Union[str, int]]:
 
 @staff_member_required
 def get_requests_week_chart(_: Request) -> JsonResponse:
-    time_threshold = timezone.now() - timedelta(days=6)
-    queryset = RequestLog.objects.all().filter(timestamp__gte=time_threshold, timestamp__lte=timezone.now())
+    time_threshold = timezone.now().replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(days=6)
+    queryset = RequestLog.objects.all().filter(timestamp__gte=time_threshold,
+                                               timestamp__lte=timezone.now()
+                                               .replace(hour=23, minute=59, second=59, microsecond=999999))
 
     queryset = queryset.annotate(week_day=ExtractWeekDay('timestamp')) \
         .values('week_day') \
