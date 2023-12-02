@@ -226,9 +226,23 @@ def get_requests_week_chart(_: Request) -> JsonResponse:
         .values('week_day') \
         .annotate(count=Count('id'))
 
-    values = [0] * 7
+    this_week_values = [0] * 7
     for value in queryset:
-        values[value['week_day'] - 1] = value['count']
+        this_week_values[value['week_day'] - 1] = value['count']
+
+    time_threshold_start = timezone.now().replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(days=13)
+    time_threshold_end = timezone.now().replace(hour=23, minute=59, second=59, microsecond=999999)- timedelta(days=7)
+
+    queryset = RequestLog.objects.all().filter(timestamp__gte=time_threshold_start,
+                                               timestamp__lte=time_threshold_end)
+
+    queryset = queryset.annotate(week_day=ExtractWeekDay('timestamp')) \
+        .values('week_day') \
+        .annotate(count=Count('id'))
+
+    last_week_values = [0] * 7
+    for value in queryset:
+        last_week_values[value['week_day'] - 1] = value['count']
 
     return JsonResponse({
         'title': f'Requests per day in week',
@@ -236,8 +250,15 @@ def get_requests_week_chart(_: Request) -> JsonResponse:
             'labels': _rotate_week(WEEK_DAYS)[:-1] + ['TODAY'],
             'datasets': [
                 {
-                    'label': 'Requests',
-                    'data': _rotate_week(values),
+                    'label': 'Last week',
+                    'data': _rotate_week(last_week_values),
+                    'backgroundColor': COLOR_SECONDARY,
+                    'borderColor': COLOR_SECONDARY,
+                    'borderWidth': 1
+                },
+                {
+                    'label': 'This week',
+                    'data': _rotate_week(this_week_values),
                     'backgroundColor': COLOR_PRIMARY,
                     'borderColor': COLOR_PRIMARY,
                     'borderWidth': 1
