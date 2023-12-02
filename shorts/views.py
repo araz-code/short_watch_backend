@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet, GenericViewSet
 from rest_framework_api_key.permissions import HasAPIKey
 
-from shorts.models import ShortPosition, Stock, ShortSeller, ShortPositionChart
+from shorts.models import ShortPosition, Stock, ShortSeller
 from shorts.serializers import ShortPositionSerializer, ShortSellerSerializerOld, ShortPositionDetailSerializer
 
 
@@ -17,46 +17,18 @@ class ShortPositionView(ReadOnlyModelViewSet):
     lookup_field = 'code'
 
     def list(self, request, *args, **kwargs):
-
-        symbol_map = Stock.objects.all().values('name', 'symbol')
-
-        name_to_symbol = {entry['name']: entry['symbol'] for entry in symbol_map}
-
         subquery = ShortPosition.objects.values('name').annotate(max_timestamp=Max('timestamp'))
-        shorted_stocks = ShortPosition.objects \
-            .filter(timestamp__in=subquery.values('max_timestamp'))
+        most_recent_short_positions = ShortPosition.objects.filter(timestamp__in=subquery.values('max_timestamp'))
 
-        combined_data = []
-        for stock in shorted_stocks:
-            combined_data.append({
-                'code': stock.code,
-                'name': stock.name,
-                'symbol': name_to_symbol.get(stock.name, stock.name),
-                'value': stock.value,
-                'timestamp': stock.timestamp,
-            })
+        sorted_data = sorted(most_recent_short_positions, key=lambda x: x.stock.symbol)
 
-        combined_data.sort(key=lambda x: x['symbol'])
-
-        serializer = self.serializer_class(combined_data, many=True)
+        serializer = self.serializer_class(sorted_data, many=True)
         return Response(serializer.data)
 
     def retrieve(self, request, code=None, *args, **kwargs):
-        symbol_obj = Stock.objects.filter(code=code).first()
+        short_positions_for_code = self.get_queryset().filter(stock__code=code).order_by('-timestamp')
 
-        shorted_stocks = self.get_queryset().filter(code=code).order_by('-timestamp')
-
-        combined_data = []
-        for stock in shorted_stocks:
-            combined_data.append({
-                'code': stock.code,
-                'name': stock.name,
-                'symbol': symbol_obj.symbol if symbol_obj else stock.name,
-                'value': stock.value,
-                'timestamp': stock.timestamp,
-            })
-
-        serializer = self.serializer_class(combined_data, many=True)
+        serializer = self.serializer_class(short_positions_for_code, many=True)
         return Response(serializer.data)
 
 
@@ -64,10 +36,10 @@ class ShortSellerView(GenericViewSet, RetrieveAPIView):
     queryset = ShortSeller.objects.all()
     serializer_class = ShortSellerSerializerOld
     permission_classes = [HasAPIKey]
-    lookup_field = 'stock_code'
+    lookup_field = 'code'
 
-    def retrieve(self, request, stock_code=None, *args, **kwargs):
-        sellers = self.get_queryset().filter(stock_code=stock_code).order_by('-date')
+    def retrieve(self, request, code=None, *args, **kwargs):
+        sellers = self.get_queryset().filter(stock__code=code).order_by('-date')
 
         serializer = self.serializer_class(sellers, many=True)
         return Response(serializer.data)
@@ -83,24 +55,18 @@ class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
     lookup_field = 'code'
 
     def retrieve(self, request, code=None, *args, **kwargs):
-        symbol_obj = Stock.objects.filter(code=code).first()
+        try:
+            stock = Stock.objects.prefetch_related('shortposition_set', 'shortpositionchart_set',
+                                                   'shortseller_set').get(code=code)
 
-        shorted_stocks = self.get_queryset().filter(code=code).order_by('-timestamp')
+            historic = stock.shortposition_set.all().order_by('-timestamp')[:30]
 
-        historic = []
-        for stock in shorted_stocks:
-            historic.append({
-                'code': stock.code,
-                'name': stock.name,
-                'symbol': symbol_obj.symbol if symbol_obj else stock.name,
-                'value': stock.value,
-                'timestamp': stock.timestamp,
-            })
+            chart_values = stock.shortpositionchart_set.all().order_by('-date')[:9]
 
-        chart_values = ShortPositionChart.objects.filter(code=code).order_by('-date')[:9]
+            sellers = stock.shortseller_set.all().order_by('-date')
 
-        sellers = ShortSeller.objects.filter(stock_code=code).order_by('-date')
+            response = ShortedStockDetailsResponse(chart_values, historic, sellers)
 
-        response = ShortedStockDetailsResponse(chart_values, historic, sellers)
-
-        return Response(self.get_serializer(response).data)
+            return Response(self.get_serializer(response).data)
+        except Stock.DoesNotExist:
+            return Response(self.get_serializer(ShortedStockDetailsResponse([], [], [])).data)
