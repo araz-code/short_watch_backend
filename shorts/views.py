@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet, GenericViewSet
 from rest_framework_api_key.permissions import HasAPIKey
 
-from shorts.models import ShortedStock, SymbolMap, ShortSeller, ShortedStockChart
+from shorts.models import ShortPosition, Stock, ShortSeller, ShortPositionChart
 from shorts.serializers import ShortedStockSerializer, ShortSellerSerializer, ShortedStockChartSerializer, \
     ShortedStockDetailsSerializer
 
@@ -15,17 +15,17 @@ from shorts.serializers import ShortedStockSerializer, ShortSellerSerializer, Sh
 class ShortedStockView(ReadOnlyModelViewSet):
     permission_classes = [HasAPIKey]
     serializer_class = ShortedStockSerializer
-    queryset = ShortedStock.objects.all()
+    queryset = ShortPosition.objects.all()
     lookup_field = 'code'
 
     def list(self, request, *args, **kwargs):
 
-        symbol_map = SymbolMap.objects.all().values('name', 'symbol')
+        symbol_map = Stock.objects.all().values('name', 'symbol')
 
         name_to_symbol = {entry['name']: entry['symbol'] for entry in symbol_map}
 
-        subquery = ShortedStock.objects.values('name').annotate(max_timestamp=Max('timestamp'))
-        shorted_stocks = ShortedStock.objects \
+        subquery = ShortPosition.objects.values('name').annotate(max_timestamp=Max('timestamp'))
+        shorted_stocks = ShortPosition.objects \
             .filter(timestamp__in=subquery.values('max_timestamp'))
 
         combined_data = []
@@ -44,7 +44,7 @@ class ShortedStockView(ReadOnlyModelViewSet):
         return Response(serializer.data)
 
     def retrieve(self, request, code=None, *args, **kwargs):
-        symbol_obj = SymbolMap.objects.filter(code=code).first()
+        symbol_obj = Stock.objects.filter(code=code).first()
 
         shorted_stocks = self.get_queryset().filter(code=code).order_by('-timestamp')
 
@@ -79,13 +79,13 @@ ShortedStockDetailsResponse = namedtuple('ShortedStockDetailsResponse', ['chartV
 
 
 class ShortedStockDetailsView(GenericViewSet, RetrieveAPIView):
-    queryset = ShortedStock.objects.all()
+    queryset = ShortPosition.objects.all()
     serializer_class = ShortedStockDetailsSerializer
     permission_classes = [HasAPIKey]
     lookup_field = 'code'
 
     def retrieve(self, request, code=None, *args, **kwargs):
-        symbol_obj = SymbolMap.objects.filter(code=code).first()
+        symbol_obj = Stock.objects.filter(code=code).first()
 
         shorted_stocks = self.get_queryset().filter(code=code).order_by('-timestamp')
 
@@ -99,7 +99,8 @@ class ShortedStockDetailsView(GenericViewSet, RetrieveAPIView):
                 'timestamp': stock.timestamp,
             })
 
-        chart_values = ShortedStockChart.objects.filter(code=code).order_by('-date')[:9]
+        chart_values = ShortPositionChart.objects.filter(code=code).order_by('-date')[:9]
+
 
         sellers = ShortSeller.objects.filter(stock_code=code).order_by('-date')
 

@@ -173,11 +173,11 @@ JAZZMIN_SETTINGS = {
     "order_with_respect_to": ["accounts", "shorts"],
     "icons": {
         "accounts.shortwatchuser": "fas fa-user",
-        "shorts.shortedstock": "fa fa-university",
+        "shorts.shortposition": "fa fa-university",
         "shorts.runstatus": "fa fa-check",
-        "shorts.symbolmap": "fa fa-map",
+        "shorts.stock": "fa fa-map",
         "shorts.shortseller": "fa fa-users",
-        "shorts.shortedstockchart": "fas fa-chart-bar",
+        "shorts.shortpositionchart": "fas fa-chart-bar",
         "errors.error": "fa fa-exclamation-circle",
         "request_logging.requestlog": "fa fa-code",
         "rest_framework_api_key.apikey": "fa fa-key"

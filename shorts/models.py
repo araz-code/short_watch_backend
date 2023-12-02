@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class ShortedStock(models.Model):
+class ShortPosition(models.Model):
     code = models.CharField(max_length=20)
     name = models.CharField(max_length=50)
     value = models.FloatField()
@@ -22,8 +22,8 @@ class RunStatus(models.Model):
         verbose_name_plural = 'run status'
 
 
-class SymbolMap(models.Model):
-    code = models.CharField(max_length=20)
+class Stock(models.Model):
+    code = models.CharField(max_length=20, primary_key=True)
     name = models.CharField(max_length=50)
     symbol = models.CharField(max_length=20)
 
@@ -40,7 +40,7 @@ class ShortSeller(models.Model):
     date = models.DateField()
 
 
-class ShortedStockChart(models.Model):
+class ShortPositionChart(models.Model):
     code = models.CharField(max_length=20)
     name = models.CharField(max_length=50)
     value = models.FloatField()

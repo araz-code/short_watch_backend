@@ -12,7 +12,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 
 from errors.models import Error
-from shorts.models import ShortedStock, RunStatus, ShortSeller, ShortedStockChart
+from shorts.models import ShortPosition, RunStatus, ShortSeller, ShortPositionChart
 
 copenhagen_timezone = pytz.timezone('Europe/Copenhagen')
 
@@ -98,17 +98,17 @@ class Command(BaseCommand):
                     corrected_datetime = datetime.strptime(elements[i + 3].text, '%d-%m-%Y %H:%M:%S')
 
                     short_data.append(
-                        ShortedStock(code=elements[i].text,
-                                     name=elements[i + 1].text,
-                                     value=float(elements[i + 2].text.replace(',', '.')),
-                                     timestamp=copenhagen_timezone.localize(corrected_datetime))
+                        ShortPosition(code=elements[i].text,
+                                      name=elements[i + 1].text,
+                                      value=float(elements[i + 2].text.replace(',', '.')),
+                                      timestamp=copenhagen_timezone.localize(corrected_datetime))
                     )
 
                 short_codes = []
                 with transaction.atomic():
                     for short in short_data:
                         short_codes.append(short.code)
-                        existing_short = ShortedStock.objects.filter(
+                        existing_short = ShortPosition.objects.filter(
                             code=short.code,
                             name=short.name,
                             value=short.value,
@@ -119,7 +119,7 @@ class Command(BaseCommand):
                             short.save()
 
                         now = timezone.now()
-                        ShortedStockChart.objects.update_or_create(
+                        ShortPositionChart.objects.update_or_create(
                             code=short.code,
                             date=now,
                             defaults={
@@ -130,18 +130,18 @@ class Command(BaseCommand):
                         )
 
                 with transaction.atomic():
-                    subquery = ShortedStock.objects.values('code', 'name').annotate(max_timestamp=Max('timestamp'))
-                    distinct_stocks = ShortedStock.objects.filter(timestamp__in=subquery.values('max_timestamp'))
+                    subquery = ShortPosition.objects.values('code', 'name').annotate(max_timestamp=Max('timestamp'))
+                    distinct_stocks = ShortPosition.objects.filter(timestamp__in=subquery.values('max_timestamp'))
                     for short in distinct_stocks:
                         if short.code not in short_codes:
                             if short.value != 0:
-                                ShortedStock(code=short.code,
-                                             name=short.name,
-                                             value=0.0,
-                                             timestamp=timezone.now()).save()
+                                ShortPosition(code=short.code,
+                                              name=short.name,
+                                              value=0.0,
+                                              timestamp=timezone.now()).save()
 
                             now = timezone.now()
-                            ShortedStockChart.objects.update_or_create(
+                            ShortPositionChart.objects.update_or_create(
                                 code=short.code,
                                 date=now,
                                 defaults={

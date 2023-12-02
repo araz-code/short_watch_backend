@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from shorts.models import ShortedStock, ShortSeller, ShortedStockChart
+from shorts.models import ShortPosition, ShortSeller, ShortPositionChart
 
 
 class ShortedStockSerializer(serializers.ModelSerializer):
@@ -8,7 +8,7 @@ class ShortedStockSerializer(serializers.ModelSerializer):
     timestamp = serializers.DateTimeField(format='%Y-%m-%dT%H:%M:%S%z')
 
     class Meta:
-        model = ShortedStock
+        model = ShortPosition
         fields = ('code', 'name', 'symbol', 'value', 'timestamp')
 
 
@@ -35,7 +35,7 @@ class ShortedStockChartSerializer(serializers.ModelSerializer):
     timestamp = serializers.DateTimeField(format='%Y-%m-%dT%H:%M:%S%z')
 
     class Meta:
-        model = ShortedStockChart
+        model = ShortPositionChart
         fields = ('timestamp', 'value')
 
 

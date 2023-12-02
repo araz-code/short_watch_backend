@@ -11,7 +11,7 @@ from django.utils import timezone
 from rest_framework.request import Request
 
 from request_logging.models import RequestLog
-from shorts.models import SymbolMap
+from shorts.models import Stock
 
 copenhagen_timezone = pytz.timezone('Europe/Copenhagen')
 
@@ -107,7 +107,7 @@ def get_historic_chart(_: Request, year: str, prefix: str) -> JsonResponse:
         .annotate(max_timestamp=Max('timestamp')) \
         .order_by('-max_timestamp')
 
-    symbol_map = SymbolMap.objects.all().values('code', 'name')
+    symbol_map = Stock.objects.all().values('code', 'name')
     code_to_symbol = {entry['code']: entry['name'] for entry in symbol_map}
 
     modified_data = []

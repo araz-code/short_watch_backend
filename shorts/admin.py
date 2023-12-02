@@ -1,9 +1,9 @@
 from django.contrib import admin
 
-from shorts.models import ShortedStock, RunStatus, SymbolMap, ShortSeller, ShortedStockChart
+from shorts.models import ShortPosition, RunStatus, Stock, ShortSeller, ShortPositionChart
 
 
-@admin.register(ShortedStock)
+@admin.register(ShortPosition)
 class ShortedStockAdmin(admin.ModelAdmin):
     list_display = ('timestamp', 'code', 'name', 'value')
     list_filter = ('name', 'timestamp')
@@ -35,7 +35,7 @@ class RunStatusAdmin(admin.ModelAdmin):
         return True
 
 
-@admin.register(SymbolMap)
+@admin.register(Stock)
 class NameSymbolMapAdmin(admin.ModelAdmin):
     list_display = ('name', 'code', 'symbol')
     ordering = ('name',)
@@ -57,7 +57,7 @@ class ShortSellerAdmin(admin.ModelAdmin):
         return True
 
 
-@admin.register(ShortedStockChart)
+@admin.register(ShortPositionChart)
 class ShortedStockChartAdmin(admin.ModelAdmin):
     list_display = ('timestamp', 'date', 'code', 'name', 'value')
     list_filter = ('name', 'code', 'date')
