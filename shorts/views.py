@@ -41,7 +41,7 @@ class ShortSellerView(GenericViewSet, RetrieveAPIView):
     lookup_field = 'code'
 
     def retrieve(self, request, code=None, *args, **kwargs):
-        sellers = self.get_queryset().select_related('stock').filter(stock__code=code).order_by('-date')
+        sellers = self.get_queryset().filter(stock__code=code).order_by('-date')
 
         serializer = self.serializer_class(sellers, many=True)
         return Response(serializer.data)
