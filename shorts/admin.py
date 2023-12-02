@@ -4,7 +4,7 @@ from shorts.models import ShortPosition, RunStatus, Stock, ShortSeller, ShortPos
 
 
 @admin.register(ShortPosition)
-class ShortedStockAdmin(admin.ModelAdmin):
+class ShortPositionAdmin(admin.ModelAdmin):
     list_display = ('timestamp', 'code', 'name', 'value')
     list_filter = ('name', 'timestamp')
     ordering = ('-timestamp', 'code')
@@ -13,7 +13,7 @@ class ShortedStockAdmin(admin.ModelAdmin):
         return False
 
     def has_change_permission(self, request, obj=None):
-        return True
+        return False
 
     def has_delete_permission(self, request, obj=None):
         return True
@@ -36,7 +36,7 @@ class RunStatusAdmin(admin.ModelAdmin):
 
 
 @admin.register(Stock)
-class NameSymbolMapAdmin(admin.ModelAdmin):
+class StockMapAdmin(admin.ModelAdmin):
     list_display = ('name', 'code', 'symbol')
     ordering = ('name',)
 
@@ -58,7 +58,7 @@ class ShortSellerAdmin(admin.ModelAdmin):
 
 
 @admin.register(ShortPositionChart)
-class ShortedStockChartAdmin(admin.ModelAdmin):
+class ShortPositionChartAdmin(admin.ModelAdmin):
     list_display = ('timestamp', 'date', 'code', 'name', 'value')
     list_filter = ('name', 'code', 'date')
     ordering = ('-timestamp', 'code')

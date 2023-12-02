@@ -3,7 +3,7 @@ from rest_framework import serializers
 from shorts.models import ShortPosition, ShortSeller, ShortPositionChart
 
 
-class ShortedStockSerializer(serializers.ModelSerializer):
+class ShortPositionSerializer(serializers.ModelSerializer):
     symbol = serializers.CharField(max_length=20)
     timestamp = serializers.DateTimeField(format='%Y-%m-%dT%H:%M:%S%z')
 
@@ -12,7 +12,7 @@ class ShortedStockSerializer(serializers.ModelSerializer):
         fields = ('code', 'name', 'symbol', 'value', 'timestamp')
 
 
-class ShortSellerSerializer(serializers.ModelSerializer):
+class ShortSellerSerializerOld(serializers.ModelSerializer):
     class Meta:
         model = ShortSeller
         fields = ('name', 'date', 'value')
@@ -23,7 +23,7 @@ class DateWithAddedTimeField(serializers.Field):
         return value.strftime('%Y-%m-%dT00:00:00+0000') if value else None
 
 
-class ShortSellerSerializerV2(serializers.ModelSerializer):
+class ShortSellerSerializer(serializers.ModelSerializer):
     date = DateWithAddedTimeField()
 
     class Meta:
@@ -31,7 +31,7 @@ class ShortSellerSerializerV2(serializers.ModelSerializer):
         fields = ('name', 'date', 'value')
 
 
-class ShortedStockChartSerializer(serializers.ModelSerializer):
+class ShortPositionChartSerializer(serializers.ModelSerializer):
     timestamp = serializers.DateTimeField(format='%Y-%m-%dT%H:%M:%S%z')
 
     class Meta:
@@ -39,7 +39,7 @@ class ShortedStockChartSerializer(serializers.ModelSerializer):
         fields = ('timestamp', 'value')
 
 
-class ShortedStockDetailsSerializer(serializers.Serializer):
-    chartValues = ShortedStockChartSerializer(many=True)
-    historic = ShortedStockSerializer(many=True)
-    sellers = ShortSellerSerializerV2(many=True)
+class ShortPositionDetailSerializer(serializers.Serializer):
+    chartValues = ShortPositionChartSerializer(many=True)
+    historic = ShortPositionSerializer(many=True)
+    sellers = ShortSellerSerializer(many=True)

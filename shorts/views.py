@@ -1,20 +1,18 @@
 from collections import namedtuple
 
 from django.db.models import Max
-from django.db.models.functions import TruncDate
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet, GenericViewSet
 from rest_framework_api_key.permissions import HasAPIKey
 
 from shorts.models import ShortPosition, Stock, ShortSeller, ShortPositionChart
-from shorts.serializers import ShortedStockSerializer, ShortSellerSerializer, ShortedStockChartSerializer, \
-    ShortedStockDetailsSerializer
+from shorts.serializers import ShortPositionSerializer, ShortSellerSerializerOld, ShortPositionDetailSerializer
 
 
-class ShortedStockView(ReadOnlyModelViewSet):
+class ShortPositionView(ReadOnlyModelViewSet):
     permission_classes = [HasAPIKey]
-    serializer_class = ShortedStockSerializer
+    serializer_class = ShortPositionSerializer
     queryset = ShortPosition.objects.all()
     lookup_field = 'code'
 
@@ -64,7 +62,7 @@ class ShortedStockView(ReadOnlyModelViewSet):
 
 class ShortSellerView(GenericViewSet, RetrieveAPIView):
     queryset = ShortSeller.objects.all()
-    serializer_class = ShortSellerSerializer
+    serializer_class = ShortSellerSerializerOld
     permission_classes = [HasAPIKey]
     lookup_field = 'stock_code'
 
@@ -78,9 +76,9 @@ class ShortSellerView(GenericViewSet, RetrieveAPIView):
 ShortedStockDetailsResponse = namedtuple('ShortedStockDetailsResponse', ['chartValues', 'historic', 'sellers'])
 
 
-class ShortedStockDetailsView(GenericViewSet, RetrieveAPIView):
+class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
     queryset = ShortPosition.objects.all()
-    serializer_class = ShortedStockDetailsSerializer
+    serializer_class = ShortPositionDetailSerializer
     permission_classes = [HasAPIKey]
     lookup_field = 'code'
 
@@ -100,7 +98,6 @@ class ShortedStockDetailsView(GenericViewSet, RetrieveAPIView):
             })
 
         chart_values = ShortPositionChart.objects.filter(code=code).order_by('-date')[:9]
-
 
         sellers = ShortSeller.objects.filter(stock_code=code).order_by('-date')
 

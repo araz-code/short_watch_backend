@@ -12,7 +12,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 
 from errors.models import Error
-from shorts.models import ShortPosition, RunStatus, ShortSeller, ShortPositionChart
+from shorts.models import ShortPosition, RunStatus, ShortSeller, ShortPositionChart, Stock
 
 copenhagen_timezone = pytz.timezone('Europe/Copenhagen')
 
@@ -59,12 +59,15 @@ class Command(BaseCommand):
 
             for i in range(0, len(elements), 6):
                 corrected_date = datetime.strptime(elements[i + 5].text, '%d-%m-%Y')
+                stock_code = elements[i + 2].text
+                stock_name = elements[i + 3].text
 
                 holders_data.append(
-                    ShortSeller(name=elements[i].text,
+                    ShortSeller(stock=self.get_or_create_stock(stock_code, stock_name),
+                                name=elements[i].text,
                                 business_id=elements[i + 1].text,
-                                stock_code=elements[i + 2].text,
-                                stock_name=elements[i + 3].text,
+                                stock_code=stock_code,
+                                stock_name=stock_name,
                                 value=float(elements[i + 4].text.replace(',', '.')),
                                 date=corrected_date)
                 )
@@ -96,10 +99,13 @@ class Command(BaseCommand):
 
                 for i in range(0, len(elements), 4):
                     corrected_datetime = datetime.strptime(elements[i + 3].text, '%d-%m-%Y %H:%M:%S')
+                    code = elements[i].text
+                    name = elements[i + 1].text
 
                     short_data.append(
-                        ShortPosition(code=elements[i].text,
-                                      name=elements[i + 1].text,
+                        ShortPosition(stock=self.get_or_create_stock(code, name),
+                                      code=code,
+                                      name=name,
                                       value=float(elements[i + 2].text.replace(',', '.')),
                                       timestamp=copenhagen_timezone.localize(corrected_datetime))
                     )
@@ -109,6 +115,7 @@ class Command(BaseCommand):
                     for short in short_data:
                         short_codes.append(short.code)
                         existing_short = ShortPosition.objects.filter(
+                            stock=short.stock,
                             code=short.code,
                             name=short.name,
                             value=short.value,
@@ -120,6 +127,7 @@ class Command(BaseCommand):
 
                         now = timezone.now()
                         ShortPositionChart.objects.update_or_create(
+                            stock=short.stock,
                             code=short.code,
                             date=now,
                             defaults={
@@ -135,13 +143,15 @@ class Command(BaseCommand):
                     for short in distinct_stocks:
                         if short.code not in short_codes:
                             if short.value != 0:
-                                ShortPosition(code=short.code,
+                                ShortPosition(stock=short.stock,
+                                              code=short.code,
                                               name=short.name,
                                               value=0.0,
                                               timestamp=timezone.now()).save()
 
                             now = timezone.now()
                             ShortPositionChart.objects.update_or_create(
+                                stock=short.stock,
                                 code=short.code,
                                 date=now,
                                 defaults={
@@ -165,4 +175,14 @@ class Command(BaseCommand):
             Error.objects.create(message=message)
             raise CommandError(message)
 
+    @staticmethod
+    def get_or_create_stock(code, name):
+        try:
+            # Try to get the existing stock
+            stock = Stock.objects.get(code=code)
+        except Stock.DoesNotExist:
+            # If it doesn't exist, create a new one
+            stock = Stock(code=code, name=name, symbol=name[:20])
+            stock.save()
 
+        return stock
