@@ -18,7 +18,8 @@ class ShortPositionView(ReadOnlyModelViewSet):
 
     def list(self, request, *args, **kwargs):
         subquery = ShortPosition.objects.values('name').annotate(max_timestamp=Max('timestamp'))
-        most_recent_short_positions = ShortPosition.objects.filter(timestamp__in=subquery.values('max_timestamp'))
+        most_recent_short_positions = ShortPosition.objects.select_related('stock')\
+            .filter(timestamp__in=subquery.values('max_timestamp'))
 
         sorted_data = sorted(most_recent_short_positions, key=lambda x: x.stock.symbol)
 
@@ -26,7 +27,8 @@ class ShortPositionView(ReadOnlyModelViewSet):
         return Response(serializer.data)
 
     def retrieve(self, request, code=None, *args, **kwargs):
-        short_positions_for_code = self.get_queryset().filter(stock__code=code).order_by('-timestamp')
+        short_positions_for_code = self.get_queryset().select_related('stock')\
+            .filter(stock__code=code).order_by('-timestamp')
 
         serializer = self.serializer_class(short_positions_for_code, many=True)
         return Response(serializer.data)
@@ -39,7 +41,7 @@ class ShortSellerView(GenericViewSet, RetrieveAPIView):
     lookup_field = 'code'
 
     def retrieve(self, request, code=None, *args, **kwargs):
-        sellers = self.get_queryset().filter(stock__code=code).order_by('-date')
+        sellers = self.get_queryset().select_related('stock').filter(stock__code=code).order_by('-date')
 
         serializer = self.serializer_class(sellers, many=True)
         return Response(serializer.data)

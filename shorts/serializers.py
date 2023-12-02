@@ -4,6 +4,10 @@ from shorts.models import ShortPosition, ShortSeller, ShortPositionChart
 
 
 class ShortPositionSerializer(serializers.ModelSerializer):
+    code = type('SerializerMethodField', (serializers.SerializerMethodField,
+                                          serializers.CharField), dict())()
+    name = type('SerializerMethodField', (serializers.SerializerMethodField,
+                                          serializers.CharField), dict())()
     symbol = type('SerializerMethodField', (serializers.SerializerMethodField,
                                             serializers.CharField), dict())()
     timestamp = serializers.DateTimeField(format='%Y-%m-%dT%H:%M:%S%z')
@@ -11,6 +15,14 @@ class ShortPositionSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShortPosition
         fields = ('code', 'name', 'symbol', 'value', 'timestamp')
+
+    @staticmethod
+    def get_code(instance) -> str:
+        return instance.stock.code
+
+    @staticmethod
+    def get_name(instance) -> str:
+        return instance.stock.name
 
     @staticmethod
     def get_symbol(instance) -> str:
