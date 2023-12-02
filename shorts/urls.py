@@ -4,6 +4,8 @@ from rest_framework import routers
 from shorts.views import ShortedStockView, ShortSellerView, ShortedStockDetailsView
 
 router = routers.DefaultRouter(trailing_slash=False)
+
+
 router.register('pick', ShortedStockView)
 router.register('watch', ShortedStockView)
 router.register('pick/sellers', ShortSellerView)
@@ -17,30 +19,13 @@ router.register('test/watch/sellers', ShortSellerView)
 router.register('test/watch/details', ShortedStockDetailsView)
 router.register('test/pick/details', ShortedStockDetailsView)
 
-router.register('iphone/pick', ShortedStockView)
-router.register('ipad/pick', ShortedStockView)
-router.register('iwatch/pick', ShortedStockView)
-router.register('iphone/watch', ShortedStockView)
-router.register('ipad/watch', ShortedStockView)
-router.register('iwatch/watch', ShortedStockView)
-router.register('iphone/watch/details', ShortedStockDetailsView)
-router.register('ipad/watch/details', ShortedStockDetailsView)
-router.register('iwatch/watch/details', ShortedStockDetailsView)
-router.register('iphone/pick/details', ShortedStockDetailsView)
-router.register('ipad/pick/details', ShortedStockDetailsView)
-router.register('iwatch/pick/details', ShortedStockDetailsView)
-router.register('iphone/test/pick', ShortedStockView)
-router.register('ipad/test/pick', ShortedStockView)
-router.register('iwatch/test/pick', ShortedStockView)
-router.register('iphone/test/watch', ShortedStockView)
-router.register('ipad/test/watch', ShortedStockView)
-router.register('iwatch/test/watch', ShortedStockView)
-router.register('iphone/test/watch/details', ShortedStockDetailsView)
-router.register('ipad/test/watch/details', ShortedStockDetailsView)
-router.register('iwatch/test/watch/details', ShortedStockDetailsView)
-router.register('iphone/test/pick/details', ShortedStockDetailsView)
-router.register('ipad/test/pick/details', ShortedStockDetailsView)
-router.register('iwatch/test/pick/details', ShortedStockDetailsView)
+devices = ['iphone', 'ipad', 'iwatch']
+
+for category in ['pick', 'watch']:
+    for test_prefix in ['', 'test/']:
+        for device in devices:
+            router.register(f'{device}/{test_prefix}{category}', ShortedStockView)
+            router.register(f'{device}/{test_prefix}{category}/details', ShortedStockDetailsView)
 
 
 urlpatterns = [
