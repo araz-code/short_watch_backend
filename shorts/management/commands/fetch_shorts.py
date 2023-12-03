@@ -5,7 +5,7 @@ from django.core.management.base import BaseCommand, CommandError
 import time
 
 from django.db import transaction
-from django.db.models import Max, F
+from django.db.models import Max
 from django.utils import timezone
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -66,8 +66,6 @@ class Command(BaseCommand):
                     ShortSeller(stock=self.get_or_create_stock(stock_code, stock_name),
                                 name=elements[i].text,
                                 business_id=elements[i + 1].text,
-                                stock_code=stock_code,
-                                stock_name=stock_name,
                                 value=float(elements[i + 4].text.replace(',', '.')),
                                 date=corrected_date)
                 )
@@ -104,8 +102,6 @@ class Command(BaseCommand):
 
                     short_data.append(
                         ShortPosition(stock=self.get_or_create_stock(code, name),
-                                      code=code,
-                                      name=name,
                                       value=float(elements[i + 2].text.replace(',', '.')),
                                       timestamp=copenhagen_timezone.localize(corrected_datetime))
                     )
@@ -113,11 +109,9 @@ class Command(BaseCommand):
                 short_codes = []
                 with transaction.atomic():
                     for short in short_data:
-                        short_codes.append(short.code)
+                        short_codes.append(short.stock.code)
                         existing_short = ShortPosition.objects.filter(
                             stock=short.stock,
-                            code=short.code,
-                            name=short.name,
                             value=short.value,
                             timestamp=short.timestamp,
                         ).first()
@@ -128,35 +122,30 @@ class Command(BaseCommand):
                         now = timezone.now()
                         ShortPositionChart.objects.update_or_create(
                             stock=short.stock,
-                            code=short.code,
                             date=now,
                             defaults={
                                 'value': short.value,
-                                'name': short.name,
                                 'timestamp': now
                             }
                         )
 
                 with transaction.atomic():
-                    subquery = ShortPosition.objects.values('code', 'name').annotate(max_timestamp=Max('timestamp'))
+                    subquery = ShortPosition.objects.values('stock__code', 'stock__name')\
+                        .annotate(max_timestamp=Max('timestamp'))
                     distinct_stocks = ShortPosition.objects.filter(timestamp__in=subquery.values('max_timestamp'))
                     for short in distinct_stocks:
-                        if short.code not in short_codes:
+                        if short.stock.code not in short_codes:
                             if short.value != 0:
                                 ShortPosition(stock=short.stock,
-                                              code=short.code,
-                                              name=short.name,
                                               value=0.0,
                                               timestamp=timezone.now()).save()
 
                             now = timezone.now()
                             ShortPositionChart.objects.update_or_create(
                                 stock=short.stock,
-                                code=short.code,
                                 date=now,
                                 defaults={
-                                    'value': short.value,
-                                    'name': short.name,
+                                    'value': 0.0,
                                     'timestamp': now
                                 }
                             )

@@ -17,6 +17,16 @@ class Command(BaseCommand):
         # show meta information about the history (requires history() to be called first)
         y = msft.history_metadata
 
+        # show holders
+        a = msft.major_holders
+        b = msft.institutional_holders
+        c = msft.mutualfund_holders
+
+        # Show future and historic earnings dates, returns at most next 4 quarters and last 8 quarters by default.
+        # Note: If more are needed use msft.get_earnings_dates(limit=XX) with increased limit argument.
+        d = msft.earnings_dates
+
+
         pass
 
 

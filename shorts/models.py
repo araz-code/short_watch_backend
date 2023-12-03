@@ -12,13 +12,13 @@ class Stock(models.Model):
 
 class ShortPosition(models.Model):
     stock = models.ForeignKey(Stock, on_delete=models.PROTECT)
-    code = models.CharField(max_length=20)
-    name = models.CharField(max_length=50)
+    # code = models.CharField(max_length=20)
+    # name = models.CharField(max_length=50)
     value = models.FloatField()
     timestamp = models.DateTimeField()
 
     def __str__(self):
-        return f'{self.code} - {self.name}'
+        return f'{self.stock.code} - {self.stock.name}'
 
 
 class RunStatus(models.Model):
@@ -36,16 +36,16 @@ class ShortSeller(models.Model):
     stock = models.ForeignKey(Stock, on_delete=models.PROTECT)
     name = models.CharField(max_length=50)
     business_id = models.CharField(max_length=20)
-    stock_code = models.CharField(max_length=20)
-    stock_name = models.CharField(max_length=50)
+    # stock_code = models.CharField(max_length=20)
+    # stock_name = models.CharField(max_length=50)
     value = models.FloatField()
     date = models.DateField()
 
 
 class ShortPositionChart(models.Model):
     stock = models.ForeignKey(Stock, on_delete=models.PROTECT)
-    code = models.CharField(max_length=20)
-    name = models.CharField(max_length=50)
+    # code = models.CharField(max_length=20)
+    # name = models.CharField(max_length=50)
     value = models.FloatField()
     date = models.DateField()
     timestamp = models.DateTimeField()

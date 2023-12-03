@@ -1,13 +1,35 @@
 from django.contrib import admin
+from django.contrib.admin import display
 
 from shorts.models import ShortPosition, RunStatus, Stock, ShortSeller, ShortPositionChart
 
 
 @admin.register(ShortPosition)
 class ShortPositionAdmin(admin.ModelAdmin):
-    list_display = ('timestamp', 'code', 'name', 'value')
-    list_filter = ('name', 'timestamp')
-    ordering = ('-timestamp', 'code')
+    list_display = ('timestamp', 'code', 'symbol', 'name', 'value')
+    list_filter = ('stock__name', 'timestamp')
+    ordering = ('-timestamp', 'stock__code')
+
+    @staticmethod
+    @display(description='code', ordering='stock__code')
+    def code(obj: ShortPosition) -> str:
+        if obj.stock:
+            return obj.stock.code
+        return '-'
+
+    @staticmethod
+    @display(description='symbol', ordering='stock__symbol')
+    def symbol(obj: ShortPosition) -> str:
+        if obj.stock:
+            return obj.stock.symbol
+        return '-'
+
+    @staticmethod
+    @display(description='name', ordering='stock__name')
+    def name(obj: ShortPosition) -> str:
+        if obj.stock:
+            return obj.stock.name
+        return '-'
 
     def has_add_permission(self, request):
         return False
@@ -36,16 +58,37 @@ class RunStatusAdmin(admin.ModelAdmin):
 
 
 @admin.register(Stock)
-class StockMapAdmin(admin.ModelAdmin):
+class StockAdmin(admin.ModelAdmin):
     list_display = ('name', 'code', 'symbol')
     ordering = ('name',)
 
 
 @admin.register(ShortSeller)
 class ShortSellerAdmin(admin.ModelAdmin):
-    list_display = ('date', 'name', 'business_id', 'stock_code', 'stock_name', 'value')
-    list_filter = ('name', 'date')
-    ordering = ('-date', 'name')
+    list_display = ('date', 'name', 'business_id', 'stock_code', 'stock_symbol', 'stock_name', 'value')
+    list_filter = ('stock__name', 'date')
+    ordering = ('-date', 'stock__name')
+
+    @staticmethod
+    @display(description='stock code', ordering='stock__code')
+    def stock_code(obj: ShortPosition) -> str:
+        if obj.stock:
+            return obj.stock.code
+        return '-'
+
+    @staticmethod
+    @display(description='stock symbol', ordering='stock__symbol')
+    def stock_symbol(obj: ShortPosition) -> str:
+        if obj.stock:
+            return obj.stock.symbol
+        return '-'
+
+    @staticmethod
+    @display(description='stock name', ordering='stock__name')
+    def stock_name(obj: ShortPosition) -> str:
+        if obj.stock:
+            return obj.stock.name
+        return '-'
 
     def has_add_permission(self, request):
         return False
@@ -59,9 +102,30 @@ class ShortSellerAdmin(admin.ModelAdmin):
 
 @admin.register(ShortPositionChart)
 class ShortPositionChartAdmin(admin.ModelAdmin):
-    list_display = ('timestamp', 'date', 'code', 'name', 'value')
-    list_filter = ('name', 'code', 'date')
-    ordering = ('-timestamp', 'code')
+    list_display = ('timestamp', 'date', 'code', 'symbol', 'name', 'value')
+    list_filter = ('stock__name', 'date')
+    ordering = ('-timestamp', 'stock__code')
+
+    @staticmethod
+    @display(description='code', ordering='stock__code')
+    def code(obj: ShortPosition) -> str:
+        if obj.stock:
+            return obj.stock.code
+        return '-'
+
+    @staticmethod
+    @display(description='symbol', ordering='stock__symbol')
+    def symbol(obj: ShortPosition) -> str:
+        if obj.stock:
+            return obj.stock.symbol
+        return '-'
+
+    @staticmethod
+    @display(description='name', ordering='stock__name')
+    def name(obj: ShortPosition) -> str:
+        if obj.stock:
+            return obj.stock.name
+        return '-'
 
     def has_add_permission(self, request):
         return True
