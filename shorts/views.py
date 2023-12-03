@@ -17,7 +17,7 @@ class ShortPositionView(ReadOnlyModelViewSet):
     lookup_field = 'code'
 
     def list(self, request, *args, **kwargs):
-        subquery = ShortPosition.objects.values('name').annotate(max_timestamp=Max('timestamp'))
+        subquery = ShortPosition.objects.values('stock__name').annotate(max_timestamp=Max('timestamp'))
         most_recent_short_positions = ShortPosition.objects.select_related('stock')\
             .filter(timestamp__in=subquery.values('max_timestamp'))
 
