@@ -40,9 +40,18 @@ class Command(BaseCommand):
 
         self.fetch_short_positions(driver)
 
-        self.fetch_short_sellers(driver)
+        if self.is_within_range_around_whole_hour():
+            self.fetch_short_sellers(driver)
 
         driver.quit()
+
+    @staticmethod
+    def is_within_range_around_whole_hour(minutes_around=4):
+        current_time = datetime.now().time()
+        current_minutes = current_time.minute
+
+        # Check if the current time is within the specified range around whole hours
+        return current_minutes <= minutes_around or current_minutes >= 60 - minutes_around
 
     def fetch_short_sellers(self, driver):
         try:
@@ -155,7 +164,7 @@ class Command(BaseCommand):
             except Exception as e:
                 retry_count += 1
                 Error.objects.create(message=f'Retrying ({retry_count}/{self.MAX_RETRIES}) after '
-                                             f'{self.RETRY_SLEEP_INTERVAL} seconds., Error occurred: {str(e)[:500]}')
+                                             f'{self.RETRY_SLEEP_INTERVAL} seconds., Error occurred: {str(e)}'[:500])
 
                 time.sleep(self.RETRY_SLEEP_INTERVAL)
 
