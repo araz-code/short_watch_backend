@@ -285,7 +285,7 @@ def get_request_per_hour_chart(request: Request) -> JsonResponse:
         count = entry['count']
         data_today[hour] = count
 
-    yesterday = today - timedelta(days=1)
+    yesterday = today - timedelta(days=7)
 
     queryset = RequestLog.objects.filter(timestamp__date=yesterday.date()) \
         .values('timestamp__hour') \
@@ -306,7 +306,7 @@ def get_request_per_hour_chart(request: Request) -> JsonResponse:
             'labels': labels,
             'datasets': [
                 {
-                    'label': 'Yesterday',
+                    'label': 'Week ago',
                     'data': data_yesterday,
                     'backgroundColor': COLOR_SECONDARY,
                     'borderColor': COLOR_SECONDARY,
@@ -341,7 +341,7 @@ def get_pick_request_per_hour_chart(request: Request) -> JsonResponse:
         count = entry['count']
         data_today[hour] = count
 
-    yesterday = today - timedelta(days=1)
+    yesterday = today - timedelta(days=7)
 
     queryset = RequestLog.objects.filter(timestamp__date=yesterday.date(),  requested_url__regex=r'pick$') \
         .values('timestamp__hour') \
@@ -362,7 +362,7 @@ def get_pick_request_per_hour_chart(request: Request) -> JsonResponse:
             'labels': labels,
             'datasets': [
                 {
-                    'label': 'Yesterday',
+                    'label': 'Week ago',
                     'data': data_yesterday,
                     'backgroundColor': COLOR_SECONDARY,
                     'borderColor': COLOR_SECONDARY,
@@ -397,7 +397,7 @@ def get_watch_request_per_hour_chart(request: Request) -> JsonResponse:
         count = entry['count']
         data_today[hour] = count
 
-    yesterday = today - timedelta(days=1)
+    yesterday = today - timedelta(days=7)
 
     queryset = RequestLog.objects.filter(timestamp__date=yesterday.date(),  requested_url__regex=r'watch$') \
         .values('timestamp__hour') \
@@ -418,7 +418,7 @@ def get_watch_request_per_hour_chart(request: Request) -> JsonResponse:
             'labels': labels,
             'datasets': [
                 {
-                    'label': 'Yesterday',
+                    'label': 'Week ago',
                     'data': data_yesterday,
                     'backgroundColor': COLOR_SECONDARY,
                     'borderColor': COLOR_SECONDARY,
