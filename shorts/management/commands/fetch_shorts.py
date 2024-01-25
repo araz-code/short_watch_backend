@@ -108,10 +108,14 @@ class Command(BaseCommand):
                     corrected_datetime = datetime.strptime(elements[i + 3].text, '%d-%m-%Y %H:%M:%S')
                     code = elements[i].text
                     name = elements[i + 1].text
+                    try:
+                        value = float(elements[i + 2].text.replace(',', '.'))
+                    except ValueError as e:
+                        continue
 
                     short_data.append(
                         ShortPosition(stock=self.get_or_create_stock(code, name),
-                                      value=float(elements[i + 2].text.replace(',', '.')),
+                                      value=value,
                                       timestamp=copenhagen_timezone.localize(corrected_datetime))
                     )
 
