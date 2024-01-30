@@ -445,7 +445,7 @@ def get_unique_user_agents_per_day_chart(_: Request, year: str) -> JsonResponse:
     queryset = queryset.annotate(date=TruncDate('timestamp')) \
         .values('date') \
         .annotate(unique_user_agents=Count('user_agent', distinct=True)) \
-        .order_by('date')[10]
+        .order_by('date')[:10]
 
     modified_data = []
     for entry in list(queryset):
