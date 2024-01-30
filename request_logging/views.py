@@ -454,8 +454,6 @@ def get_unique_user_agents_per_day_chart(_: Request, year: str) -> JsonResponse:
             'num user agents': entry['unique_user_agents']
         })
 
-    #modified_data.reverse()
-
     return JsonResponse({
         'caption': f'List of unique user agents per day ({year})',
         'headers': ['Date', 'Count'],
