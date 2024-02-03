@@ -52,7 +52,7 @@ const HomePage: React.FC = () => {
           </p>
         </section>
       </div>
-      <section className="grid grid-cols sm:grid-cols-3 gap-6 place-items-center place-content-center mt-[150px] sm:mt-12 sm:w-11/12 lg:w-[1200px] mx-auto mb-[100px]">
+      <section className="grid grid-cols sm:grid-cols-3 gap-6 place-items-center place-content-center mt-[150px] md:mt-12 sm:w-11/12 lg:w-[1200px] mx-auto mb-[100px]">
         <BoxWithIcon
           icon={faChartSimple}
           title="Personal list"
