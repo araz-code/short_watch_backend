@@ -11,7 +11,7 @@ import BoxWithIcon from "../components/BoxWithIcon";
 const HomePage: React.FC = () => {
   return (
     <>
-      <div className="flex flex-col h-screen">
+      <div className="flex flex-col sm:h-screen sm:min-h-[850px]">
         <div className="bg-wave-pattern sm:h-[15rem] bg-cover bg-no-repeat bg-bottom grow flex flex-col pb-2 sm:pb-0">
           <Header />
 
@@ -43,7 +43,11 @@ const HomePage: React.FC = () => {
                 </a>
               </div>
             </div>
-            <img className="h-[50vh] v-auto" src={appImages} alt="app images" />
+            <img
+              className="max-h-[500px] v-auto"
+              src={appImages}
+              alt="app images"
+            />
           </main>
         </div>
         <section className=" text-gray-800 m-auto">
@@ -52,7 +56,7 @@ const HomePage: React.FC = () => {
           </p>
         </section>
       </div>
-      <section className="grid grid-cols sm:grid-cols-3 gap-6 place-items-center place-content-center mt-[150px] md:mt-12 sm:w-11/12 lg:w-[1200px] mx-auto mb-[100px]">
+      <section className="grid grid-cols sm:grid-cols-3 gap-6 place-items-center place-content-center sm:mt-10 sm:w-11/12 lg:w-[1200px] mx-auto mb-[100px]">
         <BoxWithIcon
           icon={faChartSimple}
           title="Personal list"
