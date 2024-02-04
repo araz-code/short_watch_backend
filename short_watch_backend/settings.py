@@ -223,3 +223,5 @@ JAZZMIN_UI_TWEAKS = {
     },
     "actions_sticky_top": True
 }
+
+CORS_ALLOW_ALL_ORIGINS = True

@@ -6,4 +6,5 @@ django-jazzmin==2.6.0
 selenium==4.14.0
 djangorestframework-api-key==3.0.0
 django-environ==0.11.2
+django-cors-headers==4.3.1
 
