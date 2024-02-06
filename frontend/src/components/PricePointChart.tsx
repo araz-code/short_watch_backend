@@ -48,10 +48,10 @@ const PricePointChart: React.FC<{ data: PricePoint[] }> = ({
   if (minY < 0.3) minY = 0;
 
   return (
-    <ResponsiveContainer width="100%" height={250}>
+    <ResponsiveContainer width="100%" height={220}>
       <AreaChart
         width={500}
-        height={400}
+        height={200}
         data={pricePoints}
         margin={{
           top: 10,

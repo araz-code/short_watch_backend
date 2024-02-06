@@ -119,7 +119,7 @@ const ShortPositionDetailsPage: React.FC = () => {
           </div>
 
           {selectedDetailOption === "Historic data" && (
-            <div className="min-h-[250px] h-[calc(100vh-36rem)]">
+            <div className="min-h-[150px] h-[calc(100vh-33rem)]">
               <div className="overflow-y-auto h-full">
                 <ul className="mx-4">
                   {data.historic.map((short: PricePoint) => (
@@ -137,10 +137,12 @@ const ShortPositionDetailsPage: React.FC = () => {
               <div className="overflow-y-auto h-full">
                 <ul className="mx-4">
                   {data.sellers.length == 0 && (
-                    <p className="text-center mt-10">
-                      No short sellers with positions equal to or greater than
-                      0.50%
-                    </p>
+                    <div className="flex justify-center mt-10">
+                      <p className="text-wrap">
+                        No short sellers with positions equal to or greater than
+                        0.50%
+                      </p>
+                    </div>
                   )}
                   {data.sellers.length > 0 &&
                     data.sellers.map((short: PricePoint) => (

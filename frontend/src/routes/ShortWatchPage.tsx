@@ -58,7 +58,7 @@ const ShortWatchPage: React.FC = () => {
     );
   } else if (data) {
     content = (
-      <div className="overflow-y-auto h-[calc(100vh-20rem)]">
+      <div className="overflow-y-auto min-h-[300px] h-[calc(100vh-20rem)]">
         <ul>
           {sort(
             data.filter(
@@ -80,7 +80,7 @@ const ShortWatchPage: React.FC = () => {
   }
 
   return (
-    <div className="h-screen overflow-hidden">
+    <div className="h-screen min-h-[620px] overflow-hidden">
       <PageTemplate>
         <div className="w-screen lg:w-[900px] m-auto">
           <p className="text-xl lg:text-3xl text-center font-bold py-6">
@@ -104,8 +104,6 @@ const ShortWatchPage: React.FC = () => {
               />
             </div>
             {content}
-          </section>
-          <section>
             <div className="flex mt-5">
               <div className="ml-3 mr-10">
                 <Link
