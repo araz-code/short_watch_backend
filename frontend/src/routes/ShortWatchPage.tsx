@@ -100,7 +100,7 @@ const ShortWatchPage: React.FC = () => {
                 onSelectMenuItemChange={setSelectedSorting}
               />
             </div>
-            <div className="overflow-y-auto min-h-[300px] h-[calc(100vh-25rem)] xl:h-[calc(100vh-20rem)]">
+            <div className="overflow-y-auto min-h-[150px] h-[calc(100vh-25rem)] xl:h-[calc(100vh-20rem)]">
               {content}
             </div>
             <div className="flex mt-5">

@@ -132,7 +132,7 @@ const ShortPositionDetailsPage: React.FC = () => {
           )}
 
           {selectedDetailOption === "Largest sellers" && (
-            <div className="min-h-[150px] h-[calc(100vh-38rem)] xl:h-[calc(100vh-36rem)]">
+            <div className="min-h-[150px] h-[calc(100vh-41rem)] xl:h-[calc(100vh-36rem)]">
               <div className="overflow-y-auto h-full">
                 <ul className="mx-4">
                   {data.sellers.length == 0 && (
