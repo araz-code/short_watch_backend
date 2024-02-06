@@ -61,7 +61,6 @@ const ShortPositionDetailsPage: React.FC = () => {
     queryKey: [code],
     queryFn: ({ signal }) =>
       fetchShortPositionDetails({ signal, category: "pick", code: code ?? "" }),
-    staleTime: 60000,
   });
 
   let content;
