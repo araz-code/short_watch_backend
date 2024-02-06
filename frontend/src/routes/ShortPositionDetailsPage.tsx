@@ -48,7 +48,7 @@ const processChartValues = (
 };
 
 const ShortPositionDetailsPage: React.FC = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [selectedDetailOption, setSelectedDetailOption] = useState(
     detailOptions[0]
