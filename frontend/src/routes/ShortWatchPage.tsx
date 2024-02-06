@@ -57,24 +57,22 @@ const ShortWatchPage: React.FC = () => {
     );
   } else if (data) {
     content = (
-      <div className="overflow-y-auto min-h-[300px] h-[calc(100vh-20rem)]">
-        <ul>
-          {sort(
-            data.filter(
-              (item: PricePoint) =>
-                item.symbol.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                item.name.toLowerCase().includes(searchTerm.toLowerCase())
-            ),
-            selectedSorting
-          ).map((short: PricePoint) => (
-            <li key={short.code} className="">
-              <Link to={short.code}>
-                <ShortPositionRow {...short} />
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <ul>
+        {sort(
+          data.filter(
+            (item: PricePoint) =>
+              item.symbol.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              item.name.toLowerCase().includes(searchTerm.toLowerCase())
+          ),
+          selectedSorting
+        ).map((short: PricePoint) => (
+          <li key={short.code} className="">
+            <Link to={short.code}>
+              <ShortPositionRow {...short} />
+            </Link>
+          </li>
+        ))}
+      </ul>
     );
   }
 
@@ -102,26 +100,28 @@ const ShortWatchPage: React.FC = () => {
                 onSelectMenuItemChange={setSelectedSorting}
               />
             </div>
-            {content}
-            <div className="flex mt-5">
-              <div className="ml-3 mr-10">
-                <Link
-                  to="/privacy-policy"
-                  className="text-blue-500 underline text-sm"
-                >
-                  Privacy policy
-                </Link>
-              </div>
-              <div>
-                <Link
-                  to="/terms-of-agreement"
-                  className="text-blue-500 underline text-sm"
-                >
-                  Terms of agreement
-                </Link>
-              </div>
+            <div className="overflow-y-auto min-h-[300px] h-[calc(100vh-20rem)]">
+              {content}
             </div>
           </section>
+        </div>
+        <div className="flex mt-5">
+          <div className="ml-3 mr-10">
+            <Link
+              to="/privacy-policy"
+              className="text-blue-500 underline text-sm"
+            >
+              Privacy policy
+            </Link>
+          </div>
+          <div>
+            <Link
+              to="/terms-of-agreement"
+              className="text-blue-500 underline text-sm"
+            >
+              Terms of agreement
+            </Link>
+          </div>
         </div>
       </PageTemplate>
     </div>
