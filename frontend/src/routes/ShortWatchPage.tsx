@@ -57,7 +57,7 @@ const ShortWatchPage: React.FC = () => {
     );
   } else if (data) {
     content = (
-      <div className="overflow-y-auto min-h-[300px] h-[calc(100vh-25rem)] sm:h-[calc(100vh-20rem)]">
+      <div className="overflow-y-auto min-h-[300px] h-[calc(100vh-20rem)]">
         <ul>
           {sort(
             data.filter(
