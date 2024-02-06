@@ -1,6 +1,17 @@
 from request_logging.models import RequestLog
 
 
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+
+    if request.META.get('HTTP_X_REAL_IP'):
+        ip = request.META.get('HTTP_X_REAL_IP')
+    elif x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
 class RequestLoggingMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
@@ -10,8 +21,7 @@ class RequestLoggingMiddleware:
             if request.path.startswith('/admin/') or request.path.startswith('/stats/'):
                 response = self.get_response(request)
                 return response
-
-            client_ip = request.META.get('HTTP_X_REAL_IP', request.META.get('REMOTE_ADDR'))
+            client_ip = get_client_ip(request)
             user_agent = request.META.get('HTTP_USER_AGENT', "")[:255]
             referer = request.META.get('HTTP_REFERER', '')[:255]
             requested_url = request.build_absolute_uri()
