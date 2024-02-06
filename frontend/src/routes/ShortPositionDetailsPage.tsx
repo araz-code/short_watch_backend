@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
 import PricePoint from "../models/PricePoint";
 import PricePointRow from "../components/PricePointRow";
-import { useParams, useNavigate } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { fetchShortPositionDetails } from "../apis/ShortPositionAPI";
 import PricePointChart from "../components/PricePointChart";
 import ToggleSwitch from "../components/UI/RadioButtonToggle";
@@ -48,7 +48,7 @@ const processChartValues = (
 };
 
 const ShortPositionDetailsPage: React.FC = () => {
-  const { code } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const [selectedDetailOption, setSelectedDetailOption] = useState(
     detailOptions[0]
@@ -58,9 +58,13 @@ const ShortPositionDetailsPage: React.FC = () => {
   );
 
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: [code],
+    queryKey: [searchParams.get("code")],
     queryFn: ({ signal }) =>
-      fetchShortPositionDetails({ signal, category: "pick", code: code ?? "" }),
+      fetchShortPositionDetails({
+        signal,
+        category: "pick",
+        code: searchParams.get("code") ?? "",
+      }),
   });
 
   let content;
@@ -94,7 +98,7 @@ const ShortPositionDetailsPage: React.FC = () => {
     content = (
       <>
         <p className="text-xl text-center font-bold pb-5">
-          {data.historic.length > 0 && data.historic[0].name}
+          {searchParams.get("name")}
         </p>
         <div className="mb-1 pr-8 grid w-full place-items-end">
           <ToggleSwitch
