@@ -23,7 +23,7 @@ const router = createBrowserRouter([
     element: <ShortWatchPage />,
   },
   {
-    path: "short-watch/:code",
+    path: "short-watch-details/:code",
     element: <ShortPositionDetailsPage />,
   },
   {

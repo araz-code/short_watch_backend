@@ -67,7 +67,7 @@ const ShortWatchPage: React.FC = () => {
           selectedSorting
         ).map((short: PricePoint) => (
           <li key={short.code} className="">
-            <Link to={short.code}>
+            <Link to={`/short-watch-details/${short.code}`}>
               <ShortPositionRow {...short} />
             </Link>
           </li>
@@ -100,7 +100,7 @@ const ShortWatchPage: React.FC = () => {
                 onSelectMenuItemChange={setSelectedSorting}
               />
             </div>
-            <div className="overflow-y-auto min-h-[300px] h-[calc(100vh-25rem)] xl:h-[calc(100vh-20rem)]">
+            <div className="overflow-y-auto min-h-[300px] h-[calc(100vh-25rem)]">
               {content}
             </div>
             <div className="flex mt-5">
