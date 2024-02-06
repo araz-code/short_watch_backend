@@ -1,3 +1,4 @@
+import ipaddress
 from collections import defaultdict
 from datetime import timedelta
 from typing import List, Union
@@ -150,17 +151,18 @@ def get_watch_historic_chart(request: Request, year: str) -> JsonResponse:
 
 @staff_member_required
 def get_unique_ips_today(_: Request) -> JsonResponse:
-    current_date = timezone.now()
-    start_of_day = current_date.replace(hour=0, minute=0, second=0, microsecond=0)
-    end_of_day = current_date.replace(hour=23, minute=59, second=59, microsecond=999999)
+    today = timezone.now()
+    queryset = RequestLog.objects.filter(timestamp__date=today.date()).values('client_ip')
 
-    queryset = RequestLog.objects.filter(timestamp__range=(start_of_day, end_of_day))
+    # Filter out private IPs
+    queryset = [entry['client_ip'] for entry in queryset if not ipaddress.ip_address(entry['client_ip']).is_private]
 
-    unique_ip_count = queryset.values('client_ip').distinct().count()
+    # Count distinct IPs
+    distinct_ips = len(set(queryset))
 
     return JsonResponse({
-        'title': f'Unique IP\'s today',
-        'count': unique_ip_count,
+        'title': f'Total IP\'s today',
+        'count': distinct_ips,
     })
 
 
@@ -176,6 +178,17 @@ def get_avg_request_count(_: Request, year: str) -> JsonResponse:
     return JsonResponse({
         'title': f'Avg requests per IP ({year})',
         'count': int(average_entry_count['avg_entry_count']),
+    })
+
+
+@staff_member_required
+def get_total_requests_today(_: Request) -> JsonResponse:
+    today = timezone.now()
+    queryset = RequestLog.objects.filter(timestamp__date=today.date())
+
+    return JsonResponse({
+        'title': f'Total requests today',
+        'count': queryset.count(),
     })
 
 

@@ -1,6 +1,8 @@
 function loadAllCharts(year) {
   loadNumber("totalRequests", `/stats/chart/requestlogging/total/${year}/`);
   loadNumber("totalTodayRequests", `/stats/chart/requestlogging/total-today/`);
+   loadNumber("totalTodayIPs", `/stats/chart/requestlogging/total-unique-ips-today/`);
+
   loadNumber("latestRequestTimestamp", `/stats/chart/requestlogging/latest-request-timestamp/`);
 
   loadTable("requestedUrlsTable", `/stats/chart/requestlogging/requested-urls/${year}/`);

@@ -6,6 +6,7 @@ urlpatterns = [
     path('chart/requestlogging/total/<str:year>/', views.get_total_requests),
     path('chart/requestlogging/latest-request-timestamp/', views.get_latest_request_timestamp),
     path('chart/requestlogging/total-today/', views.get_total_requests_today),
+    path('chart/requestlogging/total-unique-ips-today/', views.get_unique_ips_today),
     path('chart/requestlogging/requested-urls/<str:year>/', views.get_requested_urls_chart),
     path('chart/requestlogging/pick-historic/<str:year>/', views.get_pick_historic_chart),
     path('chart/requestlogging/watch-historic/<str:year>/', views.get_watch_historic_chart),
