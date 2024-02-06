@@ -67,7 +67,7 @@ const ShortPositionDetailsPage: React.FC = () => {
 
   if (isLoading) {
     content = (
-      <div className="grid place-items-center h-screen">
+      <div className="grid place-items-center h-[calc(100dvh)]">
         <LoadingIndicator />;
       </div>
     );
@@ -159,7 +159,7 @@ const ShortPositionDetailsPage: React.FC = () => {
   }
 
   return (
-    <div className="h-[calc(100vh-7rem)] sm:h-screen ">
+    <div className="h-[calc(100vh-7rem)] sm:h-[calc(100dvh)] ">
       <PageTemplate>
         <div className="w-full lg:w-[900px] lg:m-auto">
           <button
