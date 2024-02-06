@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createHashRouter, RouterProvider } from "react-router-dom";
 import { QueryClientProvider } from "react-query";
 
 import "./index.css";
@@ -13,7 +13,7 @@ import ShortWatchPage from "./routes/ShortWatchPage.tsx";
 import { queryClient } from "./apis/ShortPositionAPI.tsx";
 import ShortPositionDetailsPage from "./routes/ShortPositionDetailsPage.tsx";
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: "/",
     element: <HomePage />,
