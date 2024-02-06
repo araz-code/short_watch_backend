@@ -97,7 +97,7 @@ const ShortPositionDetailsPage: React.FC = () => {
         : 30;
     content = (
       <>
-        <p className="text-xl text-center font-bold pb-5">
+        <p className="text-lg text-center font-bold pb-5">
           {searchParams.get("name")}
         </p>
         <div className="mb-1 pr-8 grid w-full place-items-end">
