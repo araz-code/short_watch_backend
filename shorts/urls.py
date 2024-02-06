@@ -14,7 +14,7 @@ router.register('watch/details', ShortPositionDetailView)
 router.register('pick/details', ShortPositionDetailView)
 
 
-devices = ['iphone', 'ipad', 'iwatch']
+devices = ['iphone', 'ipad', 'iwatch', 'web']
 
 for category in ['pick', 'watch']:
     for test_prefix in ['', 'test/']:
