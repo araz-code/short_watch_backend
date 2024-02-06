@@ -2,17 +2,30 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { QueryClientProvider } from "react-query";
+
 import "./index.css";
 import HomePage from "./routes/HomePage.tsx";
 import ErrorPage from "./routes/ErrorPage.tsx";
 import PrivacyPolicy from "./routes/PrivacyPolicyPage.tsx";
 import TermsOfAgreement from "./routes/TermsOfAgreementPage.tsx";
+import ShortWatchPage from "./routes/ShortWatchPage.tsx";
+import { queryClient } from "./apis/ShortPositionAPI.tsx";
+import ShortPositionDetailsPage from "./routes/ShortPositionDetailsPage.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <HomePage />,
     errorElement: <ErrorPage />,
+  },
+  {
+    path: "short-watch",
+    element: <ShortWatchPage />,
+  },
+  {
+    path: "short-watch/:code",
+    element: <ShortPositionDetailsPage />,
   },
   {
     path: "privacy-policy",
@@ -34,6 +47,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
   </React.StrictMode>
 );

@@ -1,12 +1,13 @@
 import appImages from "../static/app.png";
 import appStoreLogo from "../static/app-store.png";
 import Header from "../components/Header";
+import { Link } from "react-router-dom";
 import {
   faChartSimple,
   faClockRotateLeft,
   faPerson,
 } from "@fortawesome/free-solid-svg-icons";
-import BoxWithIcon from "../components/BoxWithIcon";
+import BoxWithIcon from "../components/UI/BoxWithIcon";
 
 const HomePage: React.FC = () => {
   return (
@@ -15,18 +16,18 @@ const HomePage: React.FC = () => {
         <div className="bg-wave-pattern sm:h-[15rem] bg-cover bg-no-repeat bg-bottom grow flex flex-col pb-2 sm:pb-0">
           <Header />
 
-          <main className="grid grid-cols sm:grid-cols-2 place-items-center sm:place-items-end max-w-[1000px] mx-auto">
+          <main className="grid grid-cols sm:grid-cols-2 place-items-center sm:place-items-end max-w-[1000px] mx-auto mt-[40px] sm:mt-[60px]">
             <div className="flex flex-col justify-center justify-items-center grow px-10 pb-10 sm:pb-0 text-white m-auto">
-              <p className="text-3xl sm:text-4xl font-bold pb-5">
+              <p className="text-2xl text-center sm:text-left sm:text-4xl font-bold pb-5">
                 Danish Short Watch
               </p>
-              <p className="sm:text-lg pb-5 text-wrap text-left">
+              <p className="sm:text-lg pb-5 text-wrap">
                 An elegant and simplified solution for accessing information on
                 short positions in Danish stocks.
               </p>
-              <p className="sm:text-lg pb-5 text-wrap text-left">
+              <p className="sm:text-lg pb-5 text-wrap">
                 Download the app from the App Store for iPhone, iPad, and Apple
-                Watch.
+                Watch, or access the web service.
               </p>
 
               <div className="flex justify-center items-center">
@@ -41,6 +42,11 @@ const HomePage: React.FC = () => {
                     alt="Floating Image"
                   />
                 </a>
+                <Link to="/short-watch">
+                  <button className="text-white border border-white rounded px-4 py-2 transition duration-300 ease-in-out bg-gradient-to-r from-gray-800 via-black to-gray-800">
+                    Web service
+                  </button>
+                </Link>
               </div>
             </div>
             <img
@@ -91,13 +97,3 @@ const HomePage: React.FC = () => {
 };
 
 export default HomePage;
-
-/*
-
-, or access the web service
-
-            <button className="text-white border border-white rounded px-4 py-2 transition duration-300 ease-in-out bg-gradient-to-r from-gray-800 via-black to-gray-800 hover:from-gray-900 hover:via-black hover:to-gray-900">
-                  Web service
-                </button>
-
-                */

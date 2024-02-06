@@ -3,7 +3,7 @@ import PageTemplate from "../components/PageTemplate";
 const englishVersion = () => {
   return (
     <>
-      <div className="m-auto mb-12">
+      <div className="m-auto mb-12 mt-4">
         <h1 className="text-4xl font-bold text-center">
           Terms of Agreement for use of the Danish Short Watch App
         </h1>
