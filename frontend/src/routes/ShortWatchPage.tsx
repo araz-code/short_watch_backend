@@ -100,28 +100,28 @@ const ShortWatchPage: React.FC = () => {
                 onSelectMenuItemChange={setSelectedSorting}
               />
             </div>
-            <div className="overflow-y-auto min-h-[300px] h-[calc(100vh-25rem)] sm:h-[calc(100vh-20rem)]">
+            <div className="overflow-y-auto min-h-[300px] h-[calc(100vh-25rem)] xl:h-[calc(100vh-20rem)]">
               {content}
             </div>
+            <div className="flex mt-5">
+              <div className="ml-3 mr-10">
+                <Link
+                  to="/privacy-policy"
+                  className="text-blue-500 underline text-sm"
+                >
+                  Privacy policy
+                </Link>
+              </div>
+              <div>
+                <Link
+                  to="/terms-of-agreement"
+                  className="text-blue-500 underline text-sm"
+                >
+                  Terms of agreement
+                </Link>
+              </div>
+            </div>
           </section>
-        </div>
-        <div className="flex mt-5">
-          <div className="ml-3 mr-10">
-            <Link
-              to="/privacy-policy"
-              className="text-blue-500 underline text-sm"
-            >
-              Privacy policy
-            </Link>
-          </div>
-          <div>
-            <Link
-              to="/terms-of-agreement"
-              className="text-blue-500 underline text-sm"
-            >
-              Terms of agreement
-            </Link>
-          </div>
         </div>
       </PageTemplate>
     </div>
