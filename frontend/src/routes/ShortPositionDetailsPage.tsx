@@ -119,7 +119,7 @@ const ShortPositionDetailsPage: React.FC = () => {
           </div>
 
           {selectedDetailOption === "Historic data" && (
-            <div className="min-h-[150px] h-[calc(100vh-36rem)] sm:h-[calc(100vh-33rem)]">
+            <div className="min-h-[130px] h-[calc(100vh-35rem)] sm:h-[calc(100vh-33rem)]">
               <div className="overflow-y-auto h-full">
                 <ul className="mx-4">
                   {data.historic.map((short: PricePoint) => (
@@ -133,7 +133,7 @@ const ShortPositionDetailsPage: React.FC = () => {
           )}
 
           {selectedDetailOption === "Largest sellers" && (
-            <div className="min-h-[150px] h-[calc(100vh-36rem)] sm:h-[calc(100vh-36rem)]">
+            <div className="min-h-[130px] h-[calc(100vh-35rem)] sm:h-[calc(100vh-36rem)]">
               <div className="overflow-y-auto h-full">
                 <ul className="mx-4">
                   {data.sellers.length == 0 && (
@@ -160,7 +160,7 @@ const ShortPositionDetailsPage: React.FC = () => {
   }
 
   return (
-    <div className="h-[calc(100vh-6rem)] sm:h-screen ">
+    <div className="h-[calc(100vh-5rem)] sm:h-screen ">
       <PageTemplate>
         <div className="w-full lg:w-[900px] lg:m-auto">
           <button
