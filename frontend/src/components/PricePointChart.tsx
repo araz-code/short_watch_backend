@@ -13,7 +13,7 @@ import {
   NameType,
 } from "recharts/types/component/DefaultTooltipContent";
 import PricePoint from "../models/PricePoint";
-import { formatTimestampAsDateOnly } from "../utils/dates";
+import { formatTimestamp } from "../utils/dates";
 
 const CustomTooltip: React.FC<TooltipProps<ValueType, NameType>> = ({
   active,
@@ -23,8 +23,9 @@ const CustomTooltip: React.FC<TooltipProps<ValueType, NameType>> = ({
   if (active && payload && payload.length) {
     return (
       <div className="border rounded-md shadow-md p-3 bg-gray-100">
-        <p className="text-center mb-2">{`${formatTimestampAsDateOnly(
-          label!
+        <p className="text-center mb-2">{`${formatTimestamp(
+          label!,
+          "dateOnly"
         )}`}</p>
         <p className="text-center">{`${payload[0].value}%`}</p>
       </div>

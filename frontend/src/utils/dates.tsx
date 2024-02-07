@@ -1,19 +1,33 @@
-export const formatTimestampAsDateAndTime = (timestamp: string) => {
+export const formatTimestamp = (
+  timestamp: string,
+  formatType: "dateAndTime" | "dateOnly" = "dateAndTime"
+) => {
   const date = new Date(timestamp);
+  const today = new Date();
 
-  const options: Intl.DateTimeFormatOptions = {
-    month: "2-digit",
-    day: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  };
+  if (
+    date.getDate() === today.getDate() &&
+    date.getMonth() === today.getMonth() &&
+    date.getFullYear() === today.getFullYear()
+  ) {
+    const options: Intl.DateTimeFormatOptions = {
+      hour: "2-digit",
+      minute: "2-digit",
+    };
+    const time = date.toLocaleTimeString(undefined, options);
+    return formatType === "dateAndTime" ? `Today, ${time}` : `Today`;
+  }
 
-  return date.toLocaleDateString(undefined, options);
-};
-
-export const formatTimestampAsDateOnly = (timestamp: string) => {
-  const date = new Date(timestamp);
+  if (formatType === "dateAndTime") {
+    const options: Intl.DateTimeFormatOptions = {
+      month: "2-digit",
+      day: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    };
+    return date.toLocaleDateString(undefined, options);
+  }
 
   const options: Intl.DateTimeFormatOptions = {
     month: "2-digit",

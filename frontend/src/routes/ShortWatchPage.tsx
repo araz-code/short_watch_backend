@@ -66,7 +66,7 @@ const ShortWatchPage: React.FC = () => {
           ),
           selectedSorting
         ).map((short: PricePoint) => (
-          <li key={short.code} className="">
+          <li key={short.code}>
             <Link
               to={`/short-watch-details?code=${
                 short.code
