@@ -4,7 +4,7 @@ import PageTemplate from "../components/PageTemplate";
 import ShortPositionRow from "../components/ShortPositionRow";
 import PricePoint from "../models/PricePoint";
 import { Link } from "react-router-dom";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DropDownMenu from "../components/UI/DropDownMenu";
 import ErrorBlock from "../components/UI/ErrorBlock";
 import LoadingIndicator from "../components/UI/LoadingIndicator";
@@ -30,13 +30,20 @@ const sort = (list: PricePoint[], selectedSorting: string) => {
 
 const ShortWatchPage: React.FC = () => {
   const searchElement = useRef<HTMLInputElement>(null);
-  const [selectedSorting, setSelectedSorting] = useState(options[0]);
+  const [selectedSorting, setSelectedSorting] = useState<string>(() => {
+    const savedSorting = localStorage.getItem("selectedSorting");
+    return savedSorting ? savedSorting : options[0];
+  });
 
   const [searchTerm, setSearchTerm] = useState("");
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["shorts"],
     queryFn: ({ signal }) => fetchShortPositions({ signal, category: "pick" }),
   });
+
+  useEffect(() => {
+    localStorage.setItem("selectedSorting", selectedSorting);
+  }, [selectedSorting]);
 
   let content;
 

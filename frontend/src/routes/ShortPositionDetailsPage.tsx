@@ -5,7 +5,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import { fetchShortPositionDetails } from "../apis/ShortPositionAPI";
 import PricePointChart from "../components/PricePointChart";
 import ToggleSwitch from "../components/UI/RadioButtonToggle";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ShortSellerRow from "../components/ShortSellerRow";
 import PageTemplate from "../components/PageTemplate";
 import ErrorBlock from "../components/UI/ErrorBlock";
@@ -53,9 +53,10 @@ const ShortPositionDetailsPage: React.FC = () => {
   const [selectedDetailOption, setSelectedDetailOption] = useState(
     detailOptions[0]
   );
-  const [selectedPeriodOption, setSelectedPeriodOption] = useState(
-    periodOptions[0]
-  );
+  const [selectedPeriod, setSelectedPeriod] = useState<string>(() => {
+    const savedSorting = localStorage.getItem("selectedPeriod");
+    return savedSorting ? savedSorting : periodOptions[0];
+  });
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: [searchParams.get("code")],
@@ -66,6 +67,10 @@ const ShortPositionDetailsPage: React.FC = () => {
         code: searchParams.get("code") ?? "",
       }),
   });
+
+  useEffect(() => {
+    localStorage.setItem("selectedPeriod", selectedPeriod);
+  }, [selectedPeriod]);
 
   let content;
 
@@ -90,11 +95,7 @@ const ShortPositionDetailsPage: React.FC = () => {
     );
   } else if (data) {
     const numberOfdays =
-      selectedPeriodOption === "7 days"
-        ? 7
-        : selectedPeriodOption === "14 days"
-        ? 14
-        : 30;
+      selectedPeriod === "7 days" ? 7 : selectedPeriod === "14 days" ? 14 : 30;
     content = (
       <>
         <p className="text-lg text-center font-bold pb-5">
@@ -103,8 +104,8 @@ const ShortPositionDetailsPage: React.FC = () => {
         <div className="mb-1 pr-8 grid w-full place-items-end">
           <ToggleSwitch
             options={periodOptions}
-            selectedOption={selectedPeriodOption}
-            onSelectChange={setSelectedPeriodOption}
+            selectedOption={selectedPeriod}
+            onSelectChange={setSelectedPeriod}
           />
         </div>
         <div className="">
