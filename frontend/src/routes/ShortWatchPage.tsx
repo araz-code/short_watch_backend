@@ -8,6 +8,8 @@ import { useEffect, useRef, useState } from "react";
 import DropDownMenu from "../components/UI/DropDownMenu";
 import ErrorBlock from "../components/UI/ErrorBlock";
 import LoadingIndicator from "../components/UI/LoadingIndicator";
+import Modal from "../components/UI/Modal";
+import Info from "../components/Info";
 
 const options = ["Symbol", "Date", "Value"];
 
@@ -34,7 +36,7 @@ const ShortWatchPage: React.FC = () => {
     const savedSorting = localStorage.getItem("selectedSorting");
     return savedSorting ? savedSorting : options[0];
   });
-
+  const [showInfo, setShowInfo] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["shorts"],
@@ -104,12 +106,20 @@ const ShortWatchPage: React.FC = () => {
                 className="flex-1 border p-2 rounded-l focus:outline-none w-full"
               />
             </div>
-            <div className="p-2 pb-4">
-              <DropDownMenu
-                options={options}
-                selectedMenuItem={selectedSorting}
-                onSelectMenuItemChange={setSelectedSorting}
-              />
+            <div className="flex">
+              <div className="p-2 pb-4">
+                <DropDownMenu
+                  options={options}
+                  selectedMenuItem={selectedSorting}
+                  onSelectMenuItemChange={setSelectedSorting}
+                />
+              </div>
+              <button
+                className="text-blue-500 text-center align-middle bg-transparent border-none text-lg ml-4"
+                onClick={() => setShowInfo(true)}
+              >
+                Info
+              </button>
             </div>
             <div className="overflow-y-auto min-h-[300px] h-[calc(100vh-25rem)]">
               {content}
@@ -135,6 +145,14 @@ const ShortWatchPage: React.FC = () => {
           </section>
         </div>
       </PageTemplate>
+
+      {showInfo && (
+        <div className="w-screen lg:w-[900px] m-auto">
+          <Modal title="Information" onClose={() => setShowInfo(false)}>
+            <Info />
+          </Modal>
+        </div>
+      )}
     </div>
   );
 };
