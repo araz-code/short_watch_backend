@@ -76,11 +76,7 @@ const ShortWatchPage: React.FC = () => {
           selectedSorting
         ).map((short: PricePoint) => (
           <li key={short.code}>
-            <Link
-              to={`/short-watch-details?code=${
-                short.code
-              }&name=${encodeURIComponent(short.name)}`}
-            >
+            <Link to={`/short-watch-details?code=${short.code}`}>
               <ShortPositionRow {...short} />
             </Link>
           </li>
@@ -106,7 +102,7 @@ const ShortWatchPage: React.FC = () => {
                 className="flex-1 border p-2 rounded-l focus:outline-none w-full"
               />
             </div>
-            <div className="flex">
+            <div className="flex item-center">
               <div className="p-2 pb-4">
                 <DropDownMenu
                   options={options}

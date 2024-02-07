@@ -12,7 +12,7 @@ import ErrorBlock from "../components/UI/ErrorBlock";
 import LoadingIndicator from "../components/UI/LoadingIndicator";
 
 const detailOptions = ["Historic data", "Largest sellers"];
-const periodOptions = ["7 days", "14 days", "30 days"];
+const periodOptions = ["7 days", "14 days", "30 days", "90 days"];
 
 const processChartValues = (
   pricePoints: PricePoint[],
@@ -95,11 +95,18 @@ const ShortPositionDetailsPage: React.FC = () => {
     );
   } else if (data) {
     const numberOfdays =
-      selectedPeriod === "7 days" ? 7 : selectedPeriod === "14 days" ? 14 : 30;
+      selectedPeriod === "7 days"
+        ? 7
+        : selectedPeriod === "14 days"
+        ? 14
+        : selectedPeriod === "30 days"
+        ? 30
+        : 90;
+
     content = (
       <>
         <p className="text-lg text-center font-bold pb-5">
-          {searchParams.get("name")}
+          {data.historic.length > 0 && data.historic[0].name}
         </p>
         <div className="mb-1 pr-8 grid w-full place-items-end">
           <ToggleSwitch
