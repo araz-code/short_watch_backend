@@ -115,7 +115,7 @@ const ShortWatchPage: React.FC = () => {
                 />
               </div>
               <button
-                className="text-blue-500 text-center align-middle bg-transparent border-none text-lg ml-4"
+                className="text-blue-500 text-center font-medium align-middle bg-transparent border-none text-lg ml-4"
                 onClick={() => setShowInfo(true)}
               >
                 Info
