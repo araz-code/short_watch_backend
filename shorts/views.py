@@ -63,7 +63,7 @@ class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
 
             historic = stock.shortposition_set.all().order_by('-timestamp')[:60]
 
-            chart_values = stock.shortpositionchart_set.all().order_by('-date')[:32]
+            chart_values = stock.shortpositionchart_set.all().order_by('-date')[:92]
 
             sellers = stock.shortseller_set.all().order_by('-date')
 
