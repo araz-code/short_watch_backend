@@ -191,7 +191,7 @@ JAZZMIN_SETTINGS = {
         "request_logging.requestlog": "fa fa-code",
         "rest_framework_api_key.apikey": "fa fa-key"
     },
-    "show_ui_builder": False,
+    "show_ui_builder": True,
 }
 
 JAZZMIN_UI_TWEAKS = {
@@ -201,7 +201,7 @@ JAZZMIN_UI_TWEAKS = {
     "brand_small_text": False,
     "brand_colour": False,
     "accent": "accent-primary",
-    "navbar": "navbar-white navbar-light",
+    "navbar": "navbar-dark",
     "no_navbar_border": False,
     "navbar_fixed": True,
     "layout_boxed": False,
@@ -223,7 +223,7 @@ JAZZMIN_UI_TWEAKS = {
         "danger": "btn-danger",
         "success": "btn-success"
     },
-    "actions_sticky_top": True
+    "actions_sticky_top": True,
 }
 
 CORS_ALLOW_ALL_ORIGINS = True
