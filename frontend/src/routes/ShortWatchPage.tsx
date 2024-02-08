@@ -36,16 +36,29 @@ const ShortWatchPage: React.FC = () => {
     const savedSorting = localStorage.getItem("selectedSorting");
     return savedSorting ? savedSorting : options[0];
   });
+  const [showMyList, setShowMyList] = useState<boolean>(() => {
+    const savedShowMyList = localStorage.getItem("showMyList");
+    return savedShowMyList ? JSON.parse(savedShowMyList) : false;
+  });
+  const [myList] = useState<string[]>(() => {
+    const savedMyList = localStorage.getItem("myList");
+    return savedMyList ? JSON.parse(savedMyList) : [];
+  });
   const [showInfo, setShowInfo] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["shorts"],
-    queryFn: ({ signal }) => fetchShortPositions({ signal, category: "pick" }),
+    queryFn: ({ signal }) =>
+      fetchShortPositions({
+        signal,
+        category: showMyList ? "watch" : "pick",
+      }),
   });
 
   useEffect(() => {
     localStorage.setItem("selectedSorting", selectedSorting);
-  }, [selectedSorting]);
+    localStorage.setItem("showMyList", JSON.stringify(showMyList));
+  }, [selectedSorting, showMyList]);
 
   let content;
 
@@ -65,22 +78,33 @@ const ShortWatchPage: React.FC = () => {
       />
     );
   } else if (data) {
+    let filteredData = data.filter(
+      (item: PricePoint) =>
+        item.symbol.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    filteredData = showMyList
+      ? filteredData.filter((item: PricePoint) => myList.includes(item.code))
+      : filteredData;
+
     content = (
       <ul>
-        {sort(
-          data.filter(
-            (item: PricePoint) =>
-              item.symbol.toLowerCase().includes(searchTerm.toLowerCase()) ||
-              item.name.toLowerCase().includes(searchTerm.toLowerCase())
-          ),
-          selectedSorting
-        ).map((short: PricePoint) => (
-          <li key={short.code}>
-            <Link to={`/short-watch-details?code=${short.code}`}>
-              <ShortPositionRow {...short} />
-            </Link>
-          </li>
-        ))}
+        {filteredData.length === 0 && (
+          <p className="text-center font-medium m-10">
+            {showMyList && searchTerm.length == 0
+              ? "Select stocks to my list by clicking + on details page (top right corner)"
+              : "No results found"}
+          </p>
+        )}
+        {filteredData.length > 0 &&
+          sort(filteredData, selectedSorting).map((short: PricePoint) => (
+            <li key={short.code}>
+              <Link to={`/short-watch-details?code=${short.code}`}>
+                <ShortPositionRow {...short} />
+              </Link>
+            </li>
+          ))}
       </ul>
     );
   }
@@ -102,20 +126,28 @@ const ShortWatchPage: React.FC = () => {
                 className="flex-1 border p-2 rounded-l focus:outline-none w-full"
               />
             </div>
-            <div className="flex item-center">
-              <div className="p-2 pb-4">
-                <DropDownMenu
-                  options={options}
-                  selectedMenuItem={selectedSorting}
-                  onSelectMenuItemChange={setSelectedSorting}
-                />
+            <div className="p-2 pb-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <DropDownMenu
+                    options={options}
+                    selectedMenuItem={selectedSorting}
+                    onSelectMenuItemChange={setSelectedSorting}
+                  />
+                  <button
+                    className="text-blue-500 text-center font-medium align-middle bg-transparent border-none text ml-5"
+                    onClick={() => setShowMyList(!showMyList)}
+                  >
+                    {showMyList ? "My list" : "All shorts"}
+                  </button>
+                </div>
+                <button
+                  className="text-blue-500 text-center font-medium align-middle bg-transparent border-none ml-4"
+                  onClick={() => setShowInfo(true)}
+                >
+                  Info
+                </button>
               </div>
-              <button
-                className="text-blue-500 text-center font-medium align-middle bg-transparent border-none text-lg ml-4"
-                onClick={() => setShowInfo(true)}
-              >
-                Info
-              </button>
             </div>
             <div className="overflow-y-auto min-h-[300px] h-[calc(100vh-25rem)]">
               {content}

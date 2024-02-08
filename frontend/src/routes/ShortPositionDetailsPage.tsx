@@ -10,6 +10,8 @@ import ShortSellerRow from "../components/ShortSellerRow";
 import PageTemplate from "../components/PageTemplate";
 import ErrorBlock from "../components/UI/ErrorBlock";
 import LoadingIndicator from "../components/UI/LoadingIndicator";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 const detailOptions = ["Historic data", "Largest sellers"];
 const periodOptions = ["7 days", "14 days", "30 days", "90 days"];
@@ -57,20 +59,39 @@ const ShortPositionDetailsPage: React.FC = () => {
     const savedSorting = localStorage.getItem("selectedPeriod");
     return savedSorting ? savedSorting : periodOptions[0];
   });
+  const [myList, setMyList] = useState<string[]>(() => {
+    const savedMyList = localStorage.getItem("myList");
+    return savedMyList ? JSON.parse(savedMyList) : [];
+  });
+  const code = searchParams.get("code");
+  const isFavorite = code ? myList.includes(code) : false;
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: [searchParams.get("code")],
     queryFn: ({ signal }) =>
       fetchShortPositionDetails({
         signal,
-        category: "pick",
-        code: searchParams.get("code") ?? "",
+        category: isFavorite ? "watch" : "pick",
+        code: code ?? "",
       }),
   });
 
   useEffect(() => {
     localStorage.setItem("selectedPeriod", selectedPeriod);
-  }, [selectedPeriod]);
+    localStorage.setItem("myList", JSON.stringify(myList));
+  }, [selectedPeriod, myList]);
+
+  const addToMyList = () => {
+    if (code) {
+      setMyList((prev) => [...prev, code]);
+    }
+  };
+
+  const removeFromMyList = () => {
+    if (code) {
+      setMyList((prev) => prev.filter((item) => item !== code));
+    }
+  };
 
   let content;
 
@@ -174,12 +195,24 @@ const ShortPositionDetailsPage: React.FC = () => {
     <div className="h-[calc(100dvh)] ">
       <PageTemplate>
         <div className="w-full lg:w-[900px] lg:m-auto">
-          <button
-            className="text-blue-500 underline bg-transparent border-none text-lg pl-4 pt-4 w-full text-left"
-            onClick={() => navigate("/short-watch")}
-          >
-            Back
-          </button>
+          <div className="flex items-center justify-between">
+            <button
+              className="text-blue-500 underline bg-transparent border-none text-lg pl-4 pt-4 w-full text-left"
+              onClick={() => navigate("/short-watch")}
+            >
+              Back
+            </button>
+            <button
+              className="text-blue-500 underline bg-transparent border-none text-lg pr-4 pt-4 w-full text-end"
+              onClick={() => (isFavorite ? removeFromMyList() : addToMyList())}
+            >
+              {isFavorite ? (
+                <FontAwesomeIcon icon={faTrash} />
+              ) : (
+                <FontAwesomeIcon icon={faPlus} />
+              )}
+            </button>
+          </div>
           {content}
         </div>
       </PageTemplate>
