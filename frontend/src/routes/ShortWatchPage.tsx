@@ -97,7 +97,7 @@ const ShortWatchPage: React.FC = () => {
     content = (
       <ul>
         {filteredData.length === 0 && (
-          <p className="text-center font-medium m-10">
+          <p className="text-center font-medium m-10 dark:text-white">
             {showMyList && searchTerm.length == 0
               ? t("emptyMyList")
               : t("noSearchResult")}
@@ -119,7 +119,7 @@ const ShortWatchPage: React.FC = () => {
     <div className="h-[calc(100dvh - 5rem)] xl:h-[calc(100dvh)] min-h-[620px] overflow-hidden">
       <PageTemplate>
         <div className="w-screen lg:w-[900px] m-auto">
-          <p className="text-xl lg:text-3xl text-center font-bold py-6">
+          <p className="text-xl lg:text-3xl text-center font-bold py-6 dark:text-white">
             Danish Short Watch
           </p>
           <section className="w-full">
@@ -129,7 +129,7 @@ const ShortWatchPage: React.FC = () => {
                 placeholder={t("search")}
                 ref={searchElement}
                 onChange={(event) => setSearchTerm(event.target.value)}
-                className="flex-1 border p-2 rounded-l focus:outline-none w-full"
+                className="flex-1 border p-2 rounded-l focus:outline-none w-full dark:bg-[#212121] dark:text-white"
               />
             </div>
             <div className="p-2 pb-4">

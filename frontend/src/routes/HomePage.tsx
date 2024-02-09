@@ -11,7 +11,7 @@ import BoxWithIcon from "../components/UI/BoxWithIcon";
 
 const HomePage: React.FC = () => {
   return (
-    <>
+    <div className="dark:bg-white">
       <div className="flex flex-col sm:h-screen sm:min-h-[850px]">
         <div className="bg-wave-pattern sm:h-[15rem] bg-cover bg-no-repeat bg-bottom grow flex flex-col pb-2 sm:pb-0">
           <Header />
@@ -92,7 +92,7 @@ const HomePage: React.FC = () => {
           </a>
         </div>
       </footer>
-    </>
+    </div>
   );
 };
 

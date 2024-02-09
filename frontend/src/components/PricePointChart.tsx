@@ -22,7 +22,7 @@ const CustomTooltip: React.FC<TooltipProps<ValueType, NameType>> = ({
 }) => {
   if (active && payload && payload.length) {
     return (
-      <div className="border rounded-md shadow-md p-3 bg-gray-100">
+      <div className="border rounded-md shadow-md p-3 bg-gray-100 dark:bg-[#212121] dark:text-white">
         <p className="text-center mb-2">{`${formatTimestamp(
           label!,
           "dateOnly"
@@ -63,11 +63,11 @@ const PricePointChart: React.FC<{ data: PricePoint[] }> = ({
       >
         <defs>
           <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-            <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
+            <stop offset="5%" stopColor="#007AFF" stopOpacity={0.8} />
+            <stop offset="95%" stopColor="#007AFF" stopOpacity={0} />
           </linearGradient>
         </defs>
-        <CartesianGrid strokeDasharray="3 3" />
+        <CartesianGrid strokeDasharray="3 3" vertical={false} />
         <XAxis dataKey="timestamp" hide />
         <YAxis
           type="number"
@@ -86,7 +86,7 @@ const PricePointChart: React.FC<{ data: PricePoint[] }> = ({
         <Area
           type="monotone"
           dataKey="value"
-          stroke="#8884d8"
+          stroke="#007AFF"
           fill="url(#colorUv)"
         />
       </AreaChart>

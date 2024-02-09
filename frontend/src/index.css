@@ -12,6 +12,13 @@ body {
   font-optical-sizing: auto;
   font-weight: 300;
   font-style: normal;
+  background-color: white;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #121212;
+  }
 }
 
 .modal {

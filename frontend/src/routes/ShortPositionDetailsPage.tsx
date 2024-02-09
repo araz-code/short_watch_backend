@@ -130,7 +130,7 @@ const ShortPositionDetailsPage: React.FC = () => {
 
     content = (
       <>
-        <p className="text-lg text-center font-bold pb-5">
+        <p className="text-lg text-center font-bold pb-5 dark:text-white">
           {data.historic.length > 0 && data.historic[0].name}
         </p>
         <div className="mb-1 pr-8 grid w-full place-items-end">
@@ -173,7 +173,7 @@ const ShortPositionDetailsPage: React.FC = () => {
               <div className="overflow-y-auto h-full">
                 <ul className="mx-4">
                   {data.sellers.length == 0 && (
-                    <div className="flex justify-center mt-10">
+                    <div className="flex justify-center mt-10 dark:text-white">
                       <p className="text-wrap">{t("noSellers")}</p>
                     </div>
                   )}
@@ -193,7 +193,7 @@ const ShortPositionDetailsPage: React.FC = () => {
   }
 
   return (
-    <div className="h-[calc(100dvh)] ">
+    <div className="h-[calc(100dvh)] dark:bg-[#121212]">
       <PageTemplate>
         <div className="w-full lg:w-[900px] lg:m-auto">
           <div className="flex items-center justify-between">

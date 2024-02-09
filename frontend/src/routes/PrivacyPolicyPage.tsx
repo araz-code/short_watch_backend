@@ -442,7 +442,7 @@ const danishVersion = () => {
 const PrivacyPolicy: React.FC<{ language: string }> = ({ language }) => {
   return (
     <PageTemplate>
-      <div className="px-10">
+      <div className="px-10 dark:text-white">
         {language === "danish" ? danishVersion() : englishVersion()}
       </div>
     </PageTemplate>
