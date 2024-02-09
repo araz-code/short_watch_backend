@@ -450,22 +450,19 @@ def get_watch_request_per_hour_chart(request: Request) -> JsonResponse:
     })
 
 
-def get_unique_user_agents_per_day_chart(_: Request, year: str) -> JsonResponse:
-    queryset = RequestLog.objects.all()
-
-    if year.isnumeric():
-        queryset = queryset.filter(created_at__year=year)
-
-    queryset = queryset.annotate(date=TruncDate('timestamp')) \
-        .values('date') \
-        .annotate(unique_user_agents=Count('user_agent', distinct=True)) \
+def get_unique_ips_per_day_table(_: Request, year: str) -> JsonResponse:
+    queryset = RequestLog.objects.values('date', 'client_ip') \
+        .annotate(unique_ips=Count('client_ip', distinct=True)) \
         .order_by('-date')[:10]
+
+    # Filter out private IPs
+    queryset = [entry for entry in queryset if not ipaddress.ip_address(entry['client_ip']).is_private]
 
     modified_data = []
     for entry in list(queryset):
         modified_data.append({
             'date': entry['date'].strftime("%Y-%m-%d"),
-            'num user agents': entry['unique_user_agents']
+            'num ips': entry['unique_ips']  # Corrected key name here
         })
 
     return JsonResponse({
@@ -473,3 +470,28 @@ def get_unique_user_agents_per_day_chart(_: Request, year: str) -> JsonResponse:
         'headers': ['Date', 'Count'],
         'data': modified_data
     })
+
+
+# def get_unique_user_agents_per_day_chart(_: Request, year: str) -> JsonResponse:
+#     queryset = RequestLog.objects.all()
+#
+#     if year.isnumeric():
+#         queryset = queryset.filter(created_at__year=year)
+#
+#     queryset = queryset.annotate(date=TruncDate('timestamp')) \
+#         .values('date') \
+#         .annotate(unique_user_agents=Count('user_agent', distinct=True)) \
+#         .order_by('-date')[:10]
+#
+#     modified_data = []
+#     for entry in list(queryset):
+#         modified_data.append({
+#             'date': entry['date'].strftime("%Y-%m-%d"),
+#             'num user agents': entry['unique_user_agents']
+#         })
+#
+#     return JsonResponse({
+#         'caption': f'List of unique user agents per day ({year})',
+#         'headers': ['Date', 'Count'],
+#         'data': modified_data
+#     })
