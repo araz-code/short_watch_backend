@@ -12,9 +12,10 @@ import ErrorBlock from "../components/UI/ErrorBlock";
 import LoadingIndicator from "../components/UI/LoadingIndicator";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { useTranslation } from "react-i18next";
 
-const detailOptions = ["Historic data", "Largest sellers"];
-const periodOptions = ["7 days", "14 days", "30 days", "90 days"];
+const detailOptions = ["historicData", "largestSellers"];
+const periodOptions = ["7Days", "14Days", "30Days", "90Days"];
 
 const processChartValues = (
   pricePoints: PricePoint[],
@@ -50,14 +51,17 @@ const processChartValues = (
 };
 
 const ShortPositionDetailsPage: React.FC = () => {
+  const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [selectedDetailOption, setSelectedDetailOption] = useState(
     detailOptions[0]
   );
   const [selectedPeriod, setSelectedPeriod] = useState<string>(() => {
-    const savedSorting = localStorage.getItem("selectedPeriod");
-    return savedSorting ? savedSorting : periodOptions[0];
+    const savedSelectedPeriod = localStorage.getItem("selectedPeriod");
+    return savedSelectedPeriod && periodOptions.includes(savedSelectedPeriod)
+      ? savedSelectedPeriod
+      : periodOptions[0];
   });
   const [myList, setMyList] = useState<string[]>(() => {
     const savedMyList = localStorage.getItem("myList");
@@ -116,11 +120,11 @@ const ShortPositionDetailsPage: React.FC = () => {
     );
   } else if (data) {
     const numberOfdays =
-      selectedPeriod === "7 days"
+      selectedPeriod === "7Days"
         ? 7
-        : selectedPeriod === "14 days"
+        : selectedPeriod === "14Days"
         ? 14
-        : selectedPeriod === "30 days"
+        : selectedPeriod === "30Days"
         ? 30
         : 90;
 
@@ -150,7 +154,7 @@ const ShortPositionDetailsPage: React.FC = () => {
             />
           </div>
 
-          {selectedDetailOption === "Historic data" && (
+          {selectedDetailOption === "historicData" && (
             <div className="min-h-[150px] h-[calc(100vh-39rem)]">
               <div className="overflow-y-auto h-full">
                 <ul className="mx-4">
@@ -164,16 +168,13 @@ const ShortPositionDetailsPage: React.FC = () => {
             </div>
           )}
 
-          {selectedDetailOption === "Largest sellers" && (
+          {selectedDetailOption === "largestSellers" && (
             <div className="min-h-[150px] h-[calc(100vh-39rem)]">
               <div className="overflow-y-auto h-full">
                 <ul className="mx-4">
                   {data.sellers.length == 0 && (
                     <div className="flex justify-center mt-10">
-                      <p className="text-wrap">
-                        No short sellers with positions equal to or greater than
-                        0.50%
-                      </p>
+                      <p className="text-wrap">{t("noSellers")}</p>
                     </div>
                   )}
                   {data.sellers.length > 0 &&
@@ -200,7 +201,7 @@ const ShortPositionDetailsPage: React.FC = () => {
               className="text-blue-500 underline bg-transparent border-none text-lg pl-4 pt-4 w-full text-left"
               onClick={() => navigate("/short-watch")}
             >
-              Back
+              {t("back")}
             </button>
             <button
               className="text-blue-500 underline bg-transparent border-none text-lg pr-4 pt-4 w-full text-end"

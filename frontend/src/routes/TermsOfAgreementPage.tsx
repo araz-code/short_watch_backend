@@ -45,7 +45,7 @@ const englishVersion = () => {
 const danishVersion = () => {
   return (
     <>
-      <div className="m-auto mb-12">
+      <div className="m-auto mb-12 mt-4">
         <h1 className="text-4xl font-bold text-center">
           Aftalevilkår for brug af Danish Short Watch app{" "}
         </h1>

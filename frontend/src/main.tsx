@@ -11,6 +11,7 @@ import TermsOfAgreement from "./routes/TermsOfAgreementPage.tsx";
 import ShortWatchPage from "./routes/ShortWatchPage.tsx";
 import { queryClient } from "./apis/ShortPositionAPI.tsx";
 import ShortPositionDetailsPage from "./routes/ShortPositionDetailsPage.tsx";
+import "./utils/i18n.ts";
 
 const router = createBrowserRouter([
   {

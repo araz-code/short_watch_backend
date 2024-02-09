@@ -10,8 +10,9 @@ import ErrorBlock from "../components/UI/ErrorBlock";
 import LoadingIndicator from "../components/UI/LoadingIndicator";
 import Modal from "../components/UI/Modal";
 import Info from "../components/Info";
+import { useTranslation } from "react-i18next";
 
-const options = ["Symbol", "Date", "Value"];
+const options = ["symbol", "date", "value"];
 
 const sort = (list: PricePoint[], selectedSorting: string) => {
   return list.sort((a, b) => {
@@ -31,10 +32,13 @@ const sort = (list: PricePoint[], selectedSorting: string) => {
 };
 
 const ShortWatchPage: React.FC = () => {
+  const { t, i18n } = useTranslation();
   const searchElement = useRef<HTMLInputElement>(null);
   const [selectedSorting, setSelectedSorting] = useState<string>(() => {
     const savedSorting = localStorage.getItem("selectedSorting");
-    return savedSorting ? savedSorting : options[0];
+    return savedSorting && options.includes(savedSorting)
+      ? savedSorting
+      : options[0];
   });
   const [showMyList, setShowMyList] = useState<boolean>(() => {
     const savedShowMyList = localStorage.getItem("showMyList");
@@ -54,6 +58,8 @@ const ShortWatchPage: React.FC = () => {
         category: showMyList ? "watch" : "pick",
       }),
   });
+
+  console.log(i18n.language);
 
   useEffect(() => {
     localStorage.setItem("selectedSorting", selectedSorting);
@@ -93,8 +99,8 @@ const ShortWatchPage: React.FC = () => {
         {filteredData.length === 0 && (
           <p className="text-center font-medium m-10">
             {showMyList && searchTerm.length == 0
-              ? "Select stocks to my list by clicking + on details page (top right corner)"
-              : "No results found"}
+              ? t("emptyMyList")
+              : t("noSearchResult")}
           </p>
         )}
         {filteredData.length > 0 &&
@@ -120,7 +126,7 @@ const ShortWatchPage: React.FC = () => {
             <div className="flex items-center mx-2">
               <input
                 type="search"
-                placeholder="Search"
+                placeholder={t("search")}
                 ref={searchElement}
                 onChange={(event) => setSearchTerm(event.target.value)}
                 className="flex-1 border p-2 rounded-l focus:outline-none w-full"
@@ -138,7 +144,7 @@ const ShortWatchPage: React.FC = () => {
                     className="text-blue-500 text-center font-medium align-middle bg-transparent border-none text ml-5"
                     onClick={() => setShowMyList(!showMyList)}
                   >
-                    {showMyList ? "My list" : "All shorts"}
+                    {showMyList ? t("myList") : t("allShorts")}
                   </button>
                 </div>
                 <button
@@ -152,22 +158,37 @@ const ShortWatchPage: React.FC = () => {
             <div className="overflow-y-auto min-h-[300px] h-[calc(100vh-25rem)]">
               {content}
             </div>
-            <div className="flex mt-5">
-              <div className="ml-3 mr-10">
-                <Link
-                  to="/privacy-policy"
-                  className="text-blue-500 underline text-sm"
+            <div className="mx-3 mt-5">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <Link
+                    to={
+                      i18n.language === "da" || i18n.language === "da-DK"
+                        ? "/privatlivspolitik"
+                        : "/privacy-policy"
+                    }
+                    className="text-blue-500 underline text-sm"
+                  >
+                    {t("privacyPolicy")}
+                  </Link>
+
+                  <Link
+                    to={
+                      i18n.language === "da" || i18n.language === "da-DK"
+                        ? "/aftalevilkaar"
+                        : "/terms-of-agreement"
+                    }
+                    className="text-blue-500 underline text-sm ml-5"
+                  >
+                    {t("termsOfAgreement")}
+                  </Link>
+                </div>
+                <a
+                  href="mailto:contact@zirium.dk"
+                  className="text-blue-500 underline text-sm "
                 >
-                  Privacy policy
-                </Link>
-              </div>
-              <div>
-                <Link
-                  to="/terms-of-agreement"
-                  className="text-blue-500 underline text-sm"
-                >
-                  Terms of agreement
-                </Link>
+                  {t("contact")}
+                </a>
               </div>
             </div>
           </section>

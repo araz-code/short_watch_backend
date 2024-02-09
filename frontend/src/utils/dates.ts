@@ -1,3 +1,5 @@
+import i18n from "./i18n";
+
 export const formatTimestamp = (
   timestamp: string,
   formatType: "dateAndTime" | "dateOnly" = "dateAndTime"
@@ -15,7 +17,9 @@ export const formatTimestamp = (
       minute: "2-digit",
     };
     const time = date.toLocaleTimeString(undefined, options);
-    return formatType === "dateAndTime" ? `Today, ${time}` : `Today`;
+    return formatType === "dateAndTime"
+      ? `${i18n.t("today")}, ${time}`
+      : `${i18n.t("today")}`;
   }
 
   if (formatType === "dateAndTime") {

@@ -1,9 +1,12 @@
 import { PropsWithChildren } from "react";
 import { createPortal } from "react-dom";
+import { useTranslation } from "react-i18next";
 
 const Modal: React.FC<
   PropsWithChildren<{ title: string; onClose: () => void }>
 > = ({ children, title, onClose }) => {
+  const { t } = useTranslation();
+
   return createPortal(
     <>
       <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
@@ -35,7 +38,7 @@ const Modal: React.FC<
                 type="button"
                 onClick={onClose}
               >
-                Close
+                {t("close")}
               </button>
             </div>
           </div>
