@@ -147,30 +147,34 @@ class Command(BaseCommand):
                     subquery = ShortPosition.objects.values('stock__code', 'stock__name')\
                         .annotate(max_timestamp=Max('timestamp'))
                     distinct_stocks = ShortPosition.objects.filter(timestamp__in=subquery.values('max_timestamp'))
+
                     for short in distinct_stocks:
                         if short.stock.code not in short_codes:
                             if short.value != 0:
-                                ShortPosition(stock=short.stock,
-                                              value=0.0,
-                                              timestamp=timezone.now()).save()
-
                                 count_new_closed_shorts += 1
 
-                            now = timezone.now()
-                            ShortPositionChart.objects.update_or_create(
-                                stock=short.stock,
-                                date=now,
-                                defaults={
-                                    'value': 0.0,
-                                    'timestamp': now
-                                }
-                            )
+                    if count_new_closed_shorts > 2:
+                        Error.objects.create(message=f'An unexpected number of shorts got closed: '
+                                                     f'{count_new_closed_shorts}. Most be an error.')
+                    else:
+                        for short in distinct_stocks:
+                            if short.stock.code not in short_codes:
+                                if short.value != 0:
+                                    ShortPosition(stock=short.stock,
+                                                  value=0.0,
+                                                  timestamp=timezone.now()).save()
+
+                                now = timezone.now()
+                                ShortPositionChart.objects.update_or_create(
+                                    stock=short.stock,
+                                    date=now,
+                                    defaults={
+                                        'value': 0.0,
+                                        'timestamp': now
+                                    }
+                                )
 
                 RunStatus.objects.create()
-
-                if count_new_closed_shorts > 3:
-                    Error.objects.create(message=f'An unexpected number of shorts got closed: '
-                                                 f'{count_new_closed_shorts}. Most be an error.')
 
                 break
             except Exception as e:
