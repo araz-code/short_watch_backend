@@ -164,6 +164,9 @@ class Command(BaseCommand):
                                                   value=0.0,
                                                   timestamp=timezone.now()).save()
 
+                                    Error.objects.create(message=f'Short position for {short.stock.symbol} got closed!'
+                                                                 f' Check if error.')
+
                                 now = timezone.now()
                                 ShortPositionChart.objects.update_or_create(
                                     stock=short.stock,
