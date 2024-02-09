@@ -12,7 +12,7 @@ urlpatterns = [
     path('chart/requestlogging/watch-historic/<str:year>/', views.get_watch_historic_chart),
     path('chart/requestlogging/requests-week/', views.get_requests_week_chart),
     path('chart/requestlogging/requests-hourly/', views.get_request_per_hour_chart),
-    path('chart/requestlogging/unique_ips', views.get_unique_ips_per_day_table),
+    path('chart/requestlogging/unique_ips/', views.get_unique_ips_per_day_table),
     path('chart/requestlogging/pick-requests-hourly/', views.get_pick_request_per_hour_chart),
     path('chart/requestlogging/watch-requests-hourly/', views.get_watch_request_per_hour_chart),
 
