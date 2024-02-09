@@ -1,6 +1,6 @@
 import ipaddress
 from collections import defaultdict
-from datetime import timedelta
+from datetime import timedelta, datetime
 from typing import List, Union
 
 import pytz
@@ -64,10 +64,10 @@ def get_requested_urls_chart(_: Request, year: str) -> JsonResponse:
         queryset = queryset.filter(created_at__year=year)
 
     queryset = queryset.filter(
-        Q(requested_url__endswith="privacy-policy") |
-        Q(requested_url__endswith="terms-of-agreement") |
-        Q(requested_url__endswith="privatlivspolitik") |
-        Q(requested_url__endswith="aftalevilkaar") |
+        Q(requested_url__iendswith="privacy-policy") |
+        Q(requested_url__iendswith="terms-of-agreement") |
+        Q(requested_url__iendswith="privatlivspolitik") |
+        Q(requested_url__iendswith="aftalevilkaar") |
         Q(requested_url="http://localhost:8000/") |
         Q(requested_url="http://www.zirium.dk/") |
         Q(requested_url="https://www.zirium.dk/")
@@ -342,7 +342,7 @@ def get_request_per_hour_chart(request: Request) -> JsonResponse:
 def get_pick_request_per_hour_chart(request: Request) -> JsonResponse:
     today = timezone.now()
 
-    queryset = RequestLog.objects.filter(timestamp__date=today.date(), requested_url__regex=r'pick$') \
+    queryset = RequestLog.objects.filter(timestamp__date=today.date(), requested_url__iendswith='pick') \
         .values('timestamp__hour') \
         .annotate(count=Count('id')) \
         .order_by('timestamp__hour')
@@ -357,7 +357,7 @@ def get_pick_request_per_hour_chart(request: Request) -> JsonResponse:
 
     yesterday = today - timedelta(days=7)
 
-    queryset = RequestLog.objects.filter(timestamp__date=yesterday.date(),  requested_url__regex=r'pick$') \
+    queryset = RequestLog.objects.filter(timestamp__date=yesterday.date(),  requested_url__iendswith='pick') \
         .values('timestamp__hour') \
         .annotate(count=Count('id')) \
         .order_by('timestamp__hour')
@@ -398,7 +398,7 @@ def get_pick_request_per_hour_chart(request: Request) -> JsonResponse:
 def get_watch_request_per_hour_chart(request: Request) -> JsonResponse:
     today = timezone.now()
 
-    queryset = RequestLog.objects.filter(timestamp__date=today.date(), requested_url__regex=r'watch$') \
+    queryset = RequestLog.objects.filter(timestamp__date=today.date(), requested_url__iendswith='watch') \
         .values('timestamp__hour') \
         .annotate(count=Count('id')) \
         .order_by('timestamp__hour')
@@ -413,7 +413,7 @@ def get_watch_request_per_hour_chart(request: Request) -> JsonResponse:
 
     yesterday = today - timedelta(days=7)
 
-    queryset = RequestLog.objects.filter(timestamp__date=yesterday.date(),  requested_url__regex=r'watch$') \
+    queryset = RequestLog.objects.filter(timestamp__date=yesterday.date(),  requested_url__iendswith='watch') \
         .values('timestamp__hour') \
         .annotate(count=Count('id')) \
         .order_by('timestamp__hour')
@@ -450,23 +450,26 @@ def get_watch_request_per_hour_chart(request: Request) -> JsonResponse:
     })
 
 
-def get_unique_ips_per_day_table(_: Request, year: str) -> JsonResponse:
-    queryset = RequestLog.objects.values('date', 'client_ip') \
+def get_unique_ips_per_day_table(_: Request) -> JsonResponse:
+    start_date = datetime(2024, 2, 6).date()
+    queryset = RequestLog.objects.filter(timestamp__date__gt=start_date) \
+        .annotate(date=TruncDate('timestamp')) \
+        .exclude(Q(client_ip__istartswith='192.168.') |
+                 Q(client_ip__istartswith='10.') |
+                 Q(client_ip__istartswith='172.16.')) \
+        .values('date') \
         .annotate(unique_ips=Count('client_ip', distinct=True)) \
         .order_by('-date')[:10]
 
-    # Filter out private IPs
-    queryset = [entry for entry in queryset if not ipaddress.ip_address(entry['client_ip']).is_private]
-
     modified_data = []
-    for entry in list(queryset):
+    for entry in queryset:
         modified_data.append({
             'date': entry['date'].strftime("%Y-%m-%d"),
-            'num ips': entry['unique_ips']  # Corrected key name here
+            'num_ips': entry['unique_ips']
         })
 
     return JsonResponse({
-        'caption': f'List of unique user agents per day ({year})',
+        'caption': 'List of unique IPs per day',
         'headers': ['Date', 'Count'],
         'data': modified_data
     })
