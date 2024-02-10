@@ -30,6 +30,7 @@
     "today": "Today",
     "privacyPolicy": "Privacy policy",
     "termsOfAgreement": "Terms of agreement",
-    "contact": "Contact"
+    "contact": "Contact",
+    "helpRowsClickable": "You can get more details by clicking on a row"
   }
 }

@@ -59,8 +59,6 @@ const ShortWatchPage: React.FC = () => {
       }),
   });
 
-  console.log(i18n.language);
-
   useEffect(() => {
     localStorage.setItem("selectedSorting", selectedSorting);
     localStorage.setItem("showMyList", JSON.stringify(showMyList));
@@ -156,6 +154,7 @@ const ShortWatchPage: React.FC = () => {
               </div>
             </div>
             <div className="overflow-y-auto min-h-[300px] h-[calc(100vh-25rem)]">
+              <p className="text-sm pl-2">{t("helpRowsClickable")}</p>
               {content}
             </div>
             <div className="mx-3 mt-5">
