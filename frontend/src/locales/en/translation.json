@@ -31,6 +31,10 @@
     "privacyPolicy": "Privacy policy",
     "termsOfAgreement": "Terms of agreement",
     "contact": "Contact",
-    "helpRowsClickable": "You can get more details by clicking on a row"
+    "helpRowsClickable": "You can get more details by clicking on a row",
+    "errorTitle": "An error occurred",
+    "failedFetchShorts": "Failed to fetch short positions.",
+    "unknownStock": "Unknown stock",
+    "failedFetchDetails": "Failed to fetch details."
   }
 }

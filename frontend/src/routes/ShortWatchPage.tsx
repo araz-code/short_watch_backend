@@ -77,8 +77,8 @@ const ShortWatchPage: React.FC = () => {
 
     content = (
       <ErrorBlock
-        title="An error occurred"
-        message={errorInfo.info?.message || "Failed to fetch short positions."}
+        title={t("errorTitle")}
+        message={errorInfo.info?.message || t("failedFetchShorts")}
       />
     );
   } else if (data) {

@@ -111,13 +111,13 @@ const ShortPositionDetailsPage: React.FC = () => {
 
     content = (
       <ErrorBlock
-        title="An error occurred"
-        message={errorInfo.info?.message || "Failed to fetch details."}
+        title={t("errorTitle")}
+        message={errorInfo.info?.message || t("failedFetchDetails")}
       />
     );
   } else if (data && data.historic.length === 0) {
     content = (
-      <ErrorBlock title="Unknown stock" message={"Failed to fetch details."} />
+      <ErrorBlock title={t("unknownStock")} message={t("failedFetchDetails")} />
     );
   } else if (data) {
     const numberOfdays =

@@ -31,6 +31,10 @@
     "privacyPolicy": "Privatlivspolitik",
     "termsOfAgreement": "Aftalevilkår",
     "contact": "Kontakt",
-    "helpRowsClickable": "Du kan få flere detaljer ved at klikke på en række"
+    "helpRowsClickable": "Du kan få flere detaljer ved at klikke på en række",
+    "errorOTitle": "Der opstod en fejl",
+    "failedFetchShorts": "Kunne ikke hente shortpositioner.",
+    "unknownStock": "Ukendt aktie",
+    "failedFetchDetails": "Kunne ikke hente detajler"
   }
 }
