@@ -56,7 +56,7 @@ const PricePointChart: React.FC<{ data: PricePoint[] }> = ({
         data={pricePoints}
         margin={{
           top: 10,
-          right: 0,
+          right: 3,
           left: 30,
           bottom: 0,
         }}
@@ -72,7 +72,7 @@ const PricePointChart: React.FC<{ data: PricePoint[] }> = ({
         <YAxis
           type="number"
           unit="%"
-          tick={{ fontSize: 10 }}
+          tick={{ fontSize: 11, fill: "#999" }}
           tickFormatter={(value) => value.toFixed(2)}
           allowDecimals={true}
           orientation="right"

@@ -1,6 +1,6 @@
-import Short from "../models/PricePoint";
+import ShortSeller from "../models/ShortSeller";
 
-const ShortSellerRow: React.FC<Short> = (props) => {
+const ShortSellerRow: React.FC<ShortSeller> = (props) => {
   const { name, value } = props;
 
   return (

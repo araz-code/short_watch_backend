@@ -13,6 +13,7 @@ import LoadingIndicator from "../components/UI/LoadingIndicator";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
+import ShortSeller from "../models/ShortSeller";
 
 const detailOptions = ["historicData", "largestSellers"];
 const periodOptions = ["7Days", "14Days", "30Days", "90Days"];
@@ -178,9 +179,9 @@ const ShortPositionDetailsPage: React.FC = () => {
                     </div>
                   )}
                   {data.sellers.length > 0 &&
-                    data.sellers.map((short: PricePoint) => (
-                      <li key={short.timestamp}>
-                        <ShortSellerRow {...short} />
+                    data.sellers.map((seller: ShortSeller) => (
+                      <li key={`${seller.name}-${seller.date}`}>
+                        <ShortSellerRow {...seller} />
                       </li>
                     ))}
                 </ul>

@@ -103,7 +103,7 @@ const ShortWatchPage: React.FC = () => {
         )}
         {filteredData.length > 0 &&
           sort(filteredData, selectedSorting).map((short: PricePoint) => (
-            <li key={short.code}>
+            <li key={`${short.code}-${short.timestamp}`}>
               <Link to={`/short-watch-details?code=${short.code}`}>
                 <ShortPositionRow {...short} />
               </Link>
@@ -154,7 +154,9 @@ const ShortWatchPage: React.FC = () => {
               </div>
             </div>
             <div className="overflow-y-auto min-h-[300px] h-[calc(100vh-25rem)]">
-              <p className="text-sm pl-2">{t("helpRowsClickable")}</p>
+              <p className="text-sm pl-2 dark:text-white">
+                {t("helpRowsClickable")}
+              </p>
               {content}
             </div>
             <div className="mx-3 mt-5">
