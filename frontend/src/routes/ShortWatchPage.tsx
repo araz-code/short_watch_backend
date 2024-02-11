@@ -57,6 +57,8 @@ const ShortWatchPage: React.FC = () => {
         signal,
         category: showMyList ? "watch" : "pick",
       }),
+    staleTime: 60000,
+    cacheTime: 120000,
   });
 
   useEffect(() => {

@@ -79,6 +79,8 @@ const ShortPositionDetailsPage: React.FC = () => {
         category: isFavorite ? "watch" : "pick",
         code: code ?? "",
       }),
+    staleTime: 60000,
+    cacheTime: 120000,
   });
 
   useEffect(() => {
