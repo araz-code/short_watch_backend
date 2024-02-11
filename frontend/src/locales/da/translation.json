@@ -35,6 +35,17 @@
     "errorOTitle": "Der opstod en fejl",
     "failedFetchShorts": "Kunne ikke hente shortpositioner.",
     "unknownStock": "Ukendt aktie",
-    "failedFetchDetails": "Kunne ikke hente detajler"
+    "failedFetchDetails": "Kunne ikke hente detajler",
+    "ElegantSolution": "En elegant og forenklet løsning til at få adgang til oplysninger om shortpositioner i danske aktier.",
+    "downloadApp": "Download appen fra App Store til iPhone, iPad og Apple Watch, eller brug webapplikationen.",
+    "webApplication": "Webapplikation",
+    "personalList": "Personlig liste",
+    "customizeWatchList": "Opret din egen overvågningsliste ved at vælge shortede danske aktier, som fanger din interesse eller som allerede er i din portefølje.",
+    "historicDataHomepage": "Historisk data",
+    "delveHistoricData": "Dyk ned i de historiske data for shortpositioner på danske aktier, præsenteret både i tabelformat og visualiseret gennem grafer.",
+    "shortSellers": "Shortsælgere",
+    "listShortSellers": "Se en liste over shortsælgere, der har positioner på 0,50 % eller derover for en given dansk aktie.",
+    "contactUs": "Kontakt Os",
+    "questionsFeedback": "Hvis du har spørgsmål, feedback eller brug for hjælp, er du velkommen til at sende os en e-mail på:"
   }
 }

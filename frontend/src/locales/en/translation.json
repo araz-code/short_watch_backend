@@ -35,6 +35,17 @@
     "errorTitle": "An error occurred",
     "failedFetchShorts": "Failed to fetch short positions.",
     "unknownStock": "Unknown stock",
-    "failedFetchDetails": "Failed to fetch details."
+    "failedFetchDetails": "Failed to fetch details.",
+    "ElegantSolution": "An elegant and simplified solution for accessing information on short positions in Danish stocks.",
+    "downloadApp": "Download the app from the App Store for iPhone, iPad, and Apple Watch, or access the web application.",
+    "webApplication": "Web application",
+    "personalList": "Personal list",
+    "customizeWatchList": "Build your own watchlist by selecting shorted Danish stocks that capture your interest or that you have in your portfolio.",
+    "historicDataHomepage": "Historic data",
+    "delveHistoricData": "Delve into the historical data of short positions for Danish stocks, presented in both tabular formats and visualized through comprehensive charts.",
+    "shortSellers": "Short sellers",
+    "listShortSellers": "See a list of short sellers who hold positions equal to or exceeding 0.50% for a given Danish stock.",
+    "contactUs": "Contact us",
+    "questionsFeedback": "If you have any questions, feedback, or need assistance, please email us at:"
   }
 }

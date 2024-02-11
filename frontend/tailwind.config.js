@@ -4,14 +4,11 @@ export default {
   theme: {
     extend: {
       backgroundImage: {
-        "wave-pattern": "url('/src/static/pattern.svg')",
+        "wave-pattern": "url('/src/static/wave.svg')",
       },
       backgroundSize: {
         "50%": "100%",
         16: "4rem",
-      },
-      fontFamily: {
-        display: ["Verdana"],
       },
     },
   },
