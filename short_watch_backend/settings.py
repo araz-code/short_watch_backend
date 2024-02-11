@@ -76,7 +76,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'request_logging.middleware.RequestLoggingMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
-    'home_page.middleware.CacheControlMiddleware',
+    # 'home_page.middleware.CacheControlMiddleware',
 ]
 
 ROOT_URLCONF = 'short_watch_backend.urls'
