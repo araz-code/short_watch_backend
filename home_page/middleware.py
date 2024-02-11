@@ -3,6 +3,9 @@ class CacheControlMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
+        if request.path == '/favicon.png':
+            return self.get_response(request)
+
         response = self.get_response(request)
         response['Cache-Control'] = 'no-cache, no-store, must-revalidate'
         response['Pragma'] = 'no-cache'
