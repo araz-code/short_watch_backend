@@ -15,8 +15,8 @@ import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
 import ShortSeller from "../models/ShortSeller";
 
-const detailOptions = ["historicData", "largestSellers"];
-const periodOptions = ["7Days", "14Days", "30Days", "90Days"];
+const detailOptions = ["Historic data", "Largest sellers"];
+const periodOptions = ["7 days", "14 days", "30 days", "90 days"];
 
 const processChartValues = (
   pricePoints: PricePoint[],
@@ -111,21 +111,24 @@ const ShortPositionDetailsPage: React.FC = () => {
 
     content = (
       <ErrorBlock
-        title={t("errorTitle")}
-        message={errorInfo.info?.message || t("failedFetchDetails")}
+        title={t("An error occurred")}
+        message={errorInfo.info?.message || t("Failed to fetch details.")}
       />
     );
   } else if (data && data.historic.length === 0) {
     content = (
-      <ErrorBlock title={t("unknownStock")} message={t("failedFetchDetails")} />
+      <ErrorBlock
+        title={t("Unknown stock")}
+        message={t("Failed to fetch details.")}
+      />
     );
   } else if (data) {
     const numberOfdays =
-      selectedPeriod === "7Days"
+      selectedPeriod === "7 days"
         ? 7
-        : selectedPeriod === "14Days"
+        : selectedPeriod === "14 days"
         ? 14
-        : selectedPeriod === "30Days"
+        : selectedPeriod === "30 days"
         ? 30
         : 90;
 
@@ -155,7 +158,7 @@ const ShortPositionDetailsPage: React.FC = () => {
             />
           </div>
 
-          {selectedDetailOption === "historicData" && (
+          {selectedDetailOption === "Historic data" && (
             <div className="min-h-[150px] h-[calc(100vh-39rem)]">
               <div className="overflow-y-auto h-full">
                 <ul className="mx-4">
@@ -169,13 +172,17 @@ const ShortPositionDetailsPage: React.FC = () => {
             </div>
           )}
 
-          {selectedDetailOption === "largestSellers" && (
+          {selectedDetailOption === "Largest sellers" && (
             <div className="min-h-[150px] h-[calc(100vh-39rem)]">
               <div className="overflow-y-auto h-full">
                 <ul className="mx-4">
                   {data.sellers.length == 0 && (
                     <div className="flex justify-center mt-10 dark:text-white">
-                      <p className="text-wrap">{t("noSellers")}</p>
+                      <p className="text-wrap">
+                        {t(
+                          "No short sellers with positions equal to or greater than 0.50%"
+                        )}
+                      </p>
                     </div>
                   )}
                   {data.sellers.length > 0 &&
@@ -202,7 +209,7 @@ const ShortPositionDetailsPage: React.FC = () => {
               className="text-blue-500 underline bg-transparent border-none text-lg pl-4 pt-4 w-full text-left"
               onClick={() => navigate("/short-watch")}
             >
-              {t("back")}
+              {t("Back")}
             </button>
             <button
               className="text-blue-500 underline bg-transparent border-none text-lg pr-4 pt-4 w-full text-end"

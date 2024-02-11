@@ -18,8 +18,8 @@ export const formatTimestamp = (
     };
     const time = date.toLocaleTimeString(undefined, options);
     return formatType === "dateAndTime"
-      ? `${i18n.t("today")}, ${time}`
-      : `${i18n.t("today")}`;
+      ? `${i18n.t("Today")}, ${time}`
+      : `${i18n.t("Today")}`;
   }
 
   if (formatType === "dateAndTime") {

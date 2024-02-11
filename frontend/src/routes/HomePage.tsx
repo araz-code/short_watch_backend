@@ -25,9 +25,15 @@ const HomePage: React.FC = () => {
                 Danish Short Watch
               </p>
               <p className="sm:text-lg pb-5 text-wrap">
-                {t("ElegantSolution")}
+                {t(
+                  "An elegant and simplified solution for accessing information on short positions in Danish stocks."
+                )}
               </p>
-              <p className="sm:text-lg pb-5 text-wrap">{t("downloadApp")}</p>
+              <p className="sm:text-lg pb-5 text-wrap">
+                {t(
+                  "Download the app from the App Store for iPhone, iPad, and Apple Watch, or access the web application."
+                )}
+              </p>
 
               <div className="flex justify-center items-center">
                 <a
@@ -43,7 +49,7 @@ const HomePage: React.FC = () => {
                 </a>
                 <Link to="/short-watch">
                   <button className="text-white border border-white rounded px-4 py-2 transition duration-300 ease-in-out bg-gradient-to-r from-gray-800 via-black to-gray-800">
-                    {t("webApplication")}
+                    {t("Web application")}
                   </button>
                 </Link>
               </div>
@@ -68,25 +74,35 @@ const HomePage: React.FC = () => {
       <section className="grid grid-cols sm:grid-cols-3 gap-6 place-items-center place-content-center sm:mt-10 sm:w-11/12 lg:w-[1200px] mx-auto mb-[100px]">
         <BoxWithIcon
           icon={faChartSimple}
-          title={t("personalList")}
-          content={t("customizeWatchList")}
+          title={t("Personal list")}
+          content={t(
+            "Build your own watchlist by selecting shorted Danish stocks that capture your interest or that you have in your portfolio."
+          )}
         />
         <BoxWithIcon
           icon={faClockRotateLeft}
-          title={t("historicDataHomepage")}
-          content={t("delveHistoricData")}
+          title={t("Historic data")}
+          content={t(
+            "Delve into the historical data of short positions for Danish stocks, presented in both tabular formats and visualized through comprehensive charts."
+          )}
         />
         <BoxWithIcon
           icon={faPerson}
-          title={t("shortSellers")}
-          content={t("listShortSellers")}
+          title={t("Short sellers")}
+          content={t(
+            "See a list of short sellers who hold positions equal to or exceeding 0.50% for a given Danish stock."
+          )}
         />
       </section>
 
       <footer className="py-4 bg-white text-gray-800 text-center">
         <div>
-          <h2>{t("contactUs")}</h2>
-          <p>{t("questionsFeedback")}</p>
+          <h2>{t("Contact Us")}</h2>
+          <p>
+            {t(
+              "If you have any questions, feedback, or need assistance, please email us at:"
+            )}
+          </p>
           <a href="mailto:contact@zirium.dk" className="underline">
             contact@zirium.dk
           </a>

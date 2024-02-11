@@ -12,7 +12,7 @@ import Modal from "../components/UI/Modal";
 import Info from "../components/Info";
 import { useTranslation } from "react-i18next";
 
-const options = ["symbol", "date", "value"];
+const options = ["Symbol", "Date", "Value"];
 
 const sort = (list: PricePoint[], selectedSorting: string) => {
   return list.sort((a, b) => {
@@ -77,8 +77,10 @@ const ShortWatchPage: React.FC = () => {
 
     content = (
       <ErrorBlock
-        title={t("errorTitle")}
-        message={errorInfo.info?.message || t("failedFetchShorts")}
+        title={t("An error occurred")}
+        message={
+          errorInfo.info?.message || t("Failed to fetch short positions.")
+        }
       />
     );
   } else if (data) {
@@ -97,8 +99,10 @@ const ShortWatchPage: React.FC = () => {
         {filteredData.length === 0 && (
           <p className="text-center font-medium m-10 dark:text-white">
             {showMyList && searchTerm.length == 0
-              ? t("emptyMyList")
-              : t("noSearchResult")}
+              ? t(
+                  'Select stocks to "My list" by clicking + on details page (top right corner)'
+                )
+              : t("No results found")}
           </p>
         )}
         {filteredData.length > 0 &&
@@ -121,13 +125,31 @@ const ShortWatchPage: React.FC = () => {
             Danish Short Watch
           </p>
           <section className="w-full">
-            <div className="flex items-center mx-2">
+            <div className="relative mx-2 flex items-center">
+              <div className="absolute inset-y-0 left-0 flex items-center ps-3 pointer-events-none">
+                <svg
+                  className="w-4 h-4 text-gray-500 dark:text-gray-400 mr-3"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                  />
+                </svg>
+              </div>
               <input
                 type="search"
-                placeholder={t("search")}
+                id="search"
+                placeholder={t("Search")}
                 ref={searchElement}
                 onChange={(event) => setSearchTerm(event.target.value)}
-                className="flex-1 border p-2 rounded-l focus:outline-none w-full dark:bg-[#212121] dark:text-white"
+                className="flex-1 border p-2 pl-9 rounded-l focus:outline-none w-full dark:bg-[#212121] dark:text-white"
               />
             </div>
             <div className="p-2 pb-4">
@@ -142,7 +164,7 @@ const ShortWatchPage: React.FC = () => {
                     className="text-blue-500 text-center font-medium align-middle bg-transparent border-none text ml-5"
                     onClick={() => setShowMyList(!showMyList)}
                   >
-                    {showMyList ? t("myList") : t("allShorts")}
+                    {showMyList ? t("My list") : t("All shorts")}
                   </button>
                 </div>
                 <button
@@ -155,7 +177,7 @@ const ShortWatchPage: React.FC = () => {
             </div>
             <div className="overflow-y-auto min-h-[300px] h-[calc(100vh-25rem)]">
               <p className="text-sm pl-2 dark:text-white">
-                {t("helpRowsClickable")}
+                {t("You can get more details by clicking on a row")}
               </p>
               {content}
             </div>
@@ -170,7 +192,7 @@ const ShortWatchPage: React.FC = () => {
                     }
                     className="text-blue-500 underline text-sm"
                   >
-                    {t("privacyPolicy")}
+                    {t("Privacy policy")}
                   </Link>
 
                   <Link
@@ -181,14 +203,14 @@ const ShortWatchPage: React.FC = () => {
                     }
                     className="text-blue-500 underline text-sm ml-5"
                   >
-                    {t("termsOfAgreement")}
+                    {t("Terms of agreement")}
                   </Link>
                 </div>
                 <a
                   href="mailto:contact@zirium.dk"
                   className="text-blue-500 underline text-sm "
                 >
-                  {t("contact")}
+                  {t("Contact")}
                 </a>
               </div>
             </div>
