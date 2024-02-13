@@ -10,6 +10,9 @@ export default {
         "50%": "100%",
         16: "4rem",
       },
+      height: {
+        screen: ["100svh /* fallback for Opera, IE and etc. */", "100dvh"],
+      },
     },
   },
   plugins: [],

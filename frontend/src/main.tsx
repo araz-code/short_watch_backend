@@ -13,6 +13,14 @@ import { queryClient } from "./apis/ShortPositionAPI.tsx";
 import ShortPositionDetailsPage from "./routes/ShortPositionDetailsPage.tsx";
 import "./utils/i18n.ts";
 
+const vh = window.innerHeight * 0.01;
+document.documentElement.style.setProperty("--vh", `${vh}px`);
+
+window.addEventListener("resize", () => {
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty("--vh", `${vh}px`);
+});
+
 const router = createBrowserRouter([
   {
     path: "/",

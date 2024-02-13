@@ -16,26 +16,26 @@ const HomePage: React.FC = () => {
   return (
     <div className="dark:bg-white">
       <div className="flex flex-col sm:h-screen sm:min-h-[850px]">
-        <div className="bg-wave-pattern sm:h-[15rem] bg-cover bg-no-repeat bg-bottom grow flex flex-col pb-2 sm:pb-0">
+        <div className="bg-wave-pattern bg-cover bg-no-repeat bg-bottom h-full flex flex-col pb-2 sm:pb-0">
           <Header />
 
-          <main className="grid grid-cols sm:grid-cols-2 place-items-center sm:place-items-end max-w-[1000px] mx-auto mt-[40px] sm:mt-[60px]">
-            <div className="flex flex-col justify-center justify-items-center grow px-10 pb-10 sm:pb-0 text-white m-auto">
-              <p className="text-2xl text-center sm:text-left sm:text-4xl font-bold pb-5">
+          <main className="flex flex-col sm:flex-row sm:max-w-[1000px] sm:justify-end gap-10 sm:h-[70%] mt-10 mx-5 self-center sm:px-[20px]">
+            <div className="flex flex-col justify-center justify-items-center sm:pb-0 text-white gap-5 sm:w-[450px]">
+              <p className="text-2xl text-center sm:text-left sm:text-4xl font-bold">
                 Danish Short Watch
               </p>
-              <p className="sm:text-lg pb-5 text-wrap">
+              <p className="sm:text-lg text-wrap">
                 {t(
                   "An elegant and simplified solution for accessing information on short positions in Danish stocks."
                 )}
               </p>
-              <p className="sm:text-lg pb-5 text-wrap">
+              <p className="sm:text-lg text-wrap">
                 {t(
                   "Download the app from the App Store for iPhone, iPad, and Apple Watch, or access the web application."
                 )}
               </p>
 
-              <div className="flex justify-center items-center">
+              <div className="flex flex-wrap justify-center align-center items-center">
                 <a
                   href="https://apps.apple.com/dk/app/danish-short-watch/id6471075439"
                   target="_blank"
@@ -55,7 +55,7 @@ const HomePage: React.FC = () => {
               </div>
             </div>
             <img
-              className="max-h-[500px] v-auto"
+              className="max-h-[500px] w-auto self-center"
               src={
                 i18n.language === "da" || i18n.language === "da-DK"
                   ? appDaImages
@@ -71,7 +71,7 @@ const HomePage: React.FC = () => {
           </p>
         </section>
       </div>
-      <section className="grid grid-cols sm:grid-cols-3 gap-6 place-items-center place-content-center sm:mt-10 sm:w-11/12 lg:w-[1200px] mx-auto mb-[100px]">
+      <section className="flex flex-wrap gap-2 justify-center sm:mt-10 mb-[80px]">
         <BoxWithIcon
           icon={faChartSimple}
           title={t("Personal list")}
@@ -79,6 +79,7 @@ const HomePage: React.FC = () => {
             "Build your own watchlist by selecting shorted Danish stocks that capture your interest or that you have in your portfolio."
           )}
         />
+
         <BoxWithIcon
           icon={faClockRotateLeft}
           title={t("Historic data")}
@@ -86,6 +87,7 @@ const HomePage: React.FC = () => {
             "Delve into the historical data of short positions for Danish stocks, presented in both tabular formats and visualized through comprehensive charts."
           )}
         />
+
         <BoxWithIcon
           icon={faPerson}
           title={t("Short sellers")}
