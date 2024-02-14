@@ -22,13 +22,13 @@ export default BoxWithIcon;*/
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 
-const BoxWithIcon: React.FC<{
+const Card: React.FC<{
   icon: IconDefinition;
   title: string;
   content: string;
 }> = ({ icon, title, content }) => {
   return (
-    <div className="p-4 max-w-sm">
+    <figure className="p-4 max-w-sm text-gray-800">
       <div className="flex flex-col border p-5 rounded-md shadow-md h-full">
         <div className="flex flex-col items-center mb-3">
           <div className="mb-2 text-[#305f9e]">
@@ -40,8 +40,8 @@ const BoxWithIcon: React.FC<{
           <p className="leading-relaxed">{content}</p>
         </div>
       </div>
-    </div>
+    </figure>
   );
 };
 
-export default BoxWithIcon;
+export default Card;

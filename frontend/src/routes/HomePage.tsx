@@ -1,18 +1,39 @@
-import appEnImages from "../static/app-en.png";
-import appDaImages from "../static/app-da.png";
-import appStoreLogo from "../static/app-store.png";
 import Header from "../components/Header";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChartSimple,
   faClockRotateLeft,
   faPerson,
+  faArrowRight,
 } from "@fortawesome/free-solid-svg-icons";
-import BoxWithIcon from "../components/UI/BoxWithIcon";
+import Card from "../components/UI/Card";
 import { useTranslation } from "react-i18next";
+import AppImage from "../components/Homepage/AppImage";
+
+const cards = [
+  {
+    icon: faChartSimple,
+    title: "Personal list",
+    content:
+      "Build your own watchlist by selecting shorted Danish stocks that capture your interest or that you have in your portfolio.",
+  },
+  {
+    icon: faClockRotateLeft,
+    title: "Historic data",
+    content:
+      "Delve into the historical data of short positions for Danish stocks, presented in both tabular formats and visualized through comprehensive charts.",
+  },
+  {
+    icon: faPerson,
+    title: "Short sellers",
+    content:
+      "See a list of short sellers who hold positions equal to or exceeding 0.50% for a given Danish stock.",
+  },
+];
 
 const HomePage: React.FC = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   return (
     <div className="dark:bg-white">
       <div className="flex flex-col sm:h-screen sm:min-h-[850px]">
@@ -35,66 +56,63 @@ const HomePage: React.FC = () => {
                 )}
               </p>
 
-              <div className="flex flex-wrap justify-center align-center items-center">
+              <div className="flex flex-wrap justify-center gap-4 align-stretch">
                 <a
                   href="https://apps.apple.com/dk/app/danish-short-watch/id6471075439"
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="text-white bg-black border border-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2.5 flex items-center h-[45px]"
                 >
-                  <img
-                    className="inline-block box-shadow-none m-2 h-10"
-                    src={appStoreLogo}
-                    alt="Floating Image"
-                  />
+                  <svg
+                    className="w-7 h-7 me-2 -ms-3"
+                    aria-hidden="true"
+                    focusable="false"
+                    data-prefix="fab"
+                    data-icon="apple"
+                    role="img"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 384 512"
+                  >
+                    <path
+                      fill="currentColor"
+                      d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"
+                    ></path>
+                  </svg>
+                  <div className="text-left leading-4">
+                    <p className="text-[9px]">Available on the</p>
+                    <p className="text-[16px]">App Store</p>
+                  </div>
                 </a>
+
                 <Link to="/short-watch">
-                  <button className="text-white border border-white rounded m-4 sm:m-0 px-4 py-2 transition duration-300 ease-in-out bg-gradient-to-r from-gray-800 via-black to-gray-800 whitespace-nowrap">
-                    {t("Web application")}
+                  <button className="text-white bg-[#3498DB] border border-white hover:bg-[#85C1E9] focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2.5 flex items-center h-[45px]">
+                    <p className="text-[16px]"> {t("Web application")}</p>
+                    <FontAwesomeIcon
+                      className="ml-2 align-middle"
+                      icon={faArrowRight}
+                    />
                   </button>
                 </Link>
               </div>
             </div>
-            <img
-              className="max-h-[500px] w-auto self-center"
-              src={
-                i18n.language === "da" || i18n.language === "da-DK"
-                  ? appDaImages
-                  : appEnImages
-              }
-              alt="app images"
-            />
+            <AppImage />
           </main>
         </div>
-        <section className=" text-gray-800 m-auto">
-          <p className="text-3xl sm:text-4xl font-bold text-center my-10 sm:my-0">
+        <section className="text-gray-800">
+          <p className="text-3xl sm:text-4xl font-bold text-center my-10 sm:my-0 text-gray-800">
             Features
           </p>
         </section>
       </div>
+
       <section className="flex flex-wrap gap-2 justify-center sm:mt-10 mb-[80px]">
-        <BoxWithIcon
-          icon={faChartSimple}
-          title={t("Personal list")}
-          content={t(
-            "Build your own watchlist by selecting shorted Danish stocks that capture your interest or that you have in your portfolio."
-          )}
-        />
-
-        <BoxWithIcon
-          icon={faClockRotateLeft}
-          title={t("Historic data")}
-          content={t(
-            "Delve into the historical data of short positions for Danish stocks, presented in both tabular formats and visualized through comprehensive charts."
-          )}
-        />
-
-        <BoxWithIcon
-          icon={faPerson}
-          title={t("Short sellers")}
-          content={t(
-            "See a list of short sellers who hold positions equal to or exceeding 0.50% for a given Danish stock."
-          )}
-        />
+        {cards.map((item) => (
+          <Card
+            icon={item.icon}
+            title={t(item.title)}
+            content={t(item.content)}
+          />
+        ))}
       </section>
 
       <footer className="py-4 bg-white text-gray-800 text-center">
@@ -115,3 +133,17 @@ const HomePage: React.FC = () => {
 };
 
 export default HomePage;
+
+/*
+   <a
+                  href="https://apps.apple.com/dk/app/danish-short-watch/id6471075439"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    className="inline-block box-shadow-none m-2 h-10 "
+                    src={appStoreLogo}
+                    alt="Floating Image"
+                  />
+                </a>
+*/

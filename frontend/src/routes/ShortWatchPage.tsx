@@ -210,7 +210,7 @@ const ShortWatchPage: React.FC = () => {
                   href="mailto:contact@zirium.dk"
                   className="text-blue-500 underline text-sm "
                 >
-                  {t("Contact")}
+                  Feedback
                 </a>
               </div>
             </div>
