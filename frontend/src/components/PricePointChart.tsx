@@ -27,7 +27,9 @@ const CustomTooltip: React.FC<TooltipProps<ValueType, NameType>> = ({
           label!,
           "dateOnly"
         )}`}</p>
-        <p className="text-center">{`${payload[0].value}%`}</p>
+        <p className="text-center">{`${(+(payload[0].value ?? 0)).toFixed(
+          2
+        )}%`}</p>
       </div>
     );
   }

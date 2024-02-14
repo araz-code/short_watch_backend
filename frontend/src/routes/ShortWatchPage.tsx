@@ -12,13 +12,15 @@ import Modal from "../components/UI/Modal";
 import Info from "../components/Info";
 import { useTranslation } from "react-i18next";
 
-const options = ["Symbol", "Date", "Value"];
+const options = ["Symbol", "Name", "Date", "Value"];
 
 const sort = (list: PricePoint[], selectedSorting: string) => {
   return list.sort((a, b) => {
     switch (selectedSorting) {
       case "Symbol":
         return a.symbol.localeCompare(b.symbol);
+      case "Name":
+        return a.name.localeCompare(b.name);
       case "Date":
         return (
           new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
