@@ -65,8 +65,8 @@ const PricePointChart: React.FC<{ data: PricePoint[] }> = ({
       >
         <defs>
           <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#007AFF" stopOpacity={0.8} />
-            <stop offset="95%" stopColor="#007AFF" stopOpacity={0} />
+            <stop offset="5%" stopColor="#007AFF" stopOpacity={1} />
+            <stop offset="95%" stopColor="#007AFF" stopOpacity={0.19} />
           </linearGradient>
         </defs>
         <CartesianGrid strokeDasharray="3 3" vertical={false} />
