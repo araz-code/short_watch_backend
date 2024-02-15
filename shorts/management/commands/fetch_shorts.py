@@ -56,11 +56,11 @@ class Command(BaseCommand):
     def fetch_short_sellers(self, driver):
         try:
             driver.get(self.HOLDERS_SITE_URL)
-            time.sleep(7)
+            time.sleep(15)
 
             dropdown = Select(driver.find_element(By.TAG_NAME, "select"))
             dropdown.select_by_index(3)
-            time.sleep(7)
+            time.sleep(15)
 
             elements = driver.find_elements(By.CSS_SELECTOR, '.ui-grid-cell-contents.ng-binding.ng-scope')
 
