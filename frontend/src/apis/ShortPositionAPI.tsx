@@ -77,3 +77,13 @@ export async function fetchShortPositionDetails({
 
   return shortDetails;
 }
+
+export async function clicked(code: string) {
+  const url = `https://www.zirium.dk/stats/clicked/${code}/`;
+
+  fetch(url, {
+    headers: {
+      Authorization: `API-Key ${"CK1OkkoF.2t0M6oZMc186nNJFlZdNOMxWC0u3YCQ5"}`,
+    },
+  });
+}

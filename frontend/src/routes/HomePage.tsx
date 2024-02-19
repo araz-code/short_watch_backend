@@ -10,6 +10,7 @@ import {
 import Card from "../components/UI/Card";
 import { useTranslation } from "react-i18next";
 import AppImage from "../components/Homepage/AppImage";
+import { clicked } from "../apis/ShortPositionAPI";
 
 const cards = [
   {
@@ -62,6 +63,7 @@ const HomePage: React.FC = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-white bg-black border border-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2.5 flex items-center h-[45px]"
+                  onClick={() => clicked("app-store")}
                 >
                   <svg
                     className="w-7 h-7 me-2 -ms-3"
@@ -85,7 +87,10 @@ const HomePage: React.FC = () => {
                 </a>
 
                 <Link to="/short-watch">
-                  <button className="text-white bg-[#3498DB] border border-white hover:bg-[#85C1E9] focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2.5 flex items-center h-[45px]">
+                  <button
+                    className="text-white bg-[#3498DB] border border-white hover:bg-[#85C1E9] focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2.5 flex items-center h-[45px]"
+                    onClick={() => clicked("web-application")}
+                  >
                     <p className="text-[16px]"> {t("Web application")}</p>
                     <FontAwesomeIcon
                       className="ml-2 align-middle"
@@ -123,7 +128,11 @@ const HomePage: React.FC = () => {
               "If you have any questions, feedback, or need assistance, please email us at:"
             )}
           </p>
-          <a href="mailto:contact@zirium.dk" className="underline">
+          <a
+            href="mailto:contact@zirium.dk"
+            className="underline"
+            onClick={() => clicked("contact")}
+          >
             contact@zirium.dk
           </a>
         </div>

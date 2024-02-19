@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { fetchShortPositions } from "../apis/ShortPositionAPI";
+import { clicked, fetchShortPositions } from "../apis/ShortPositionAPI";
 import PageTemplate from "../components/PageTemplate";
 import ShortPositionRow from "../components/ShortPositionRow";
 import PricePoint from "../models/PricePoint";
@@ -60,6 +60,11 @@ const ShortWatchPage: React.FC = () => {
         category: showMyList ? "watch" : "pick",
       }),
   });
+
+  const handleInfo = () => {
+    clicked("info");
+    setShowInfo(true);
+  };
 
   useEffect(() => {
     localStorage.setItem("selectedSorting", selectedSorting);
@@ -171,7 +176,7 @@ const ShortWatchPage: React.FC = () => {
                 </div>
                 <button
                   className="text-blue-500 text-center font-medium align-middle bg-transparent border-none ml-4"
-                  onClick={() => setShowInfo(true)}
+                  onClick={handleInfo}
                 >
                   Info
                 </button>
@@ -210,7 +215,8 @@ const ShortWatchPage: React.FC = () => {
                 </div>
                 <a
                   href="mailto:contact@zirium.dk"
-                  className="text-blue-500 underline text-sm "
+                  className="text-blue-500 underline text-sm"
+                  onClick={() => clicked("feedback")}
                 >
                   Feedback
                 </a>
