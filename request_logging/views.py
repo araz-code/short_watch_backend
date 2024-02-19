@@ -10,6 +10,7 @@ from django.db.models.functions import ExtractYear, ExtractMonth, ExtractDay, Ex
 from django.http import JsonResponse
 from django.utils import timezone
 from rest_framework.request import Request
+from rest_framework.response import Response
 
 from request_logging.models import RequestLog
 from shorts.models import Stock
@@ -474,6 +475,9 @@ def get_unique_ips_per_day_table(_: Request) -> JsonResponse:
         'data': modified_data
     })
 
+
+def clicked(code: str):
+    return Response(status=204)
 
 # def get_unique_user_agents_per_day_chart(_: Request, year: str) -> JsonResponse:
 #     queryset = RequestLog.objects.all()

@@ -9,7 +9,6 @@ const errorMessage = (error: unknown): string => {
   } else if (typeof error === "string") {
     return error;
   } else {
-    console.error(error);
     return "Unknown error";
   }
 };
