@@ -18,7 +18,8 @@ class RequestLoggingMiddleware:
 
     def __call__(self, request):
         try:
-            if request.path.startswith('/admin/') or request.path.startswith('/stats/'):
+            if request.path.startswith('/admin/') or request.path.startswith('/stats/') \
+                    and not request.path.startswith('/stats/clicked'):
                 response = self.get_response(request)
                 return response
             client_ip = get_client_ip(request)
