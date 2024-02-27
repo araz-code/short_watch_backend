@@ -21,7 +21,10 @@ copenhagen_timezone = pytz.timezone('Europe/Copenhagen')
 def get_symbol(url, symbol_map):
     parts = url.split('/')
     last_part = parts[-1]
-    return symbol_map[last_part]
+    try:
+        return symbol_map[last_part]
+    except KeyError:
+        return last_part
 
 
 @staff_member_required
