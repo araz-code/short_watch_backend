@@ -251,7 +251,6 @@ const ShortPositionDetailsPage: React.FC = () => {
               <img
                 className="max-h-[350px] w-auto self-center pr-3"
                 src={advertisement}
-                onLoad={() => clicked("stresstilbud_appeared_detail")}
               />
             </a>
           </div>
