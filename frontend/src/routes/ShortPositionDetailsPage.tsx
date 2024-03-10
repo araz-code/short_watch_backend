@@ -2,7 +2,7 @@ import { useQuery } from "react-query";
 import PricePoint from "../models/PricePoint";
 import PricePointRow from "../components/PricePointRow";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { fetchShortPositionDetails } from "../apis/ShortPositionAPI";
+import { clicked, fetchShortPositionDetails } from "../apis/ShortPositionAPI";
 import PricePointChart from "../components/PricePointChart";
 import ToggleSwitch from "../components/UI/RadioButtonToggle";
 import { useEffect, useState } from "react";
@@ -14,6 +14,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
 import ShortSeller from "../models/ShortSeller";
+import advertisement from "../static/stresstilbud.jpg";
 
 const detailOptions = ["Historic data", "Largest sellers"];
 const periodOptions = ["7 days", "14 days", "30 days", "90 days"];
@@ -203,26 +204,57 @@ const ShortPositionDetailsPage: React.FC = () => {
   return (
     <div className="h-screen dark:bg-[#121212]">
       <PageTemplate>
-        <div className="w-full lg:w-[900px] lg:m-auto">
-          <div className="flex items-center justify-between">
-            <button
-              className="text-blue-500 underline bg-transparent border-none text-lg pl-4 pt-4 w-full text-left"
-              onClick={() => navigate("/short-watch")}
+        <div className="w-screen lg:flex lg:justify-center lg:gap-4  m-auto">
+          <div className="w-1/3 justify-start items-center hidden lg:flex">
+            <a
+              href="https://norskovcoaching.com/stresstilbud/"
+              onClick={() => clicked("stresstilbud_clicked_detail")}
+              target="_blank"
             >
-              {t("Back")}
-            </button>
-            <button
-              className="text-blue-500 underline bg-transparent border-none text-lg pr-4 pt-4 w-full text-end"
-              onClick={() => (isFavorite ? removeFromMyList() : addToMyList())}
-            >
-              {isFavorite ? (
-                <FontAwesomeIcon icon={faTrash} />
-              ) : (
-                <FontAwesomeIcon icon={faPlus} />
-              )}
-            </button>
+              <img
+                className="max-h-[350px] w-auto self-center pl-3"
+                src={advertisement}
+                onLoad={() => clicked("stresstilbud_appeared_detail")}
+              />
+            </a>
           </div>
-          {content}
+          <div className="lg:w-[900px]">
+            <div className="flex items-center justify-between">
+              <button
+                className="text-blue-500 underline bg-transparent border-none text-lg pl-4 pt-4 w-full text-left"
+                onClick={() => navigate("/short-watch")}
+              >
+                {t("Back")}
+              </button>
+              <button
+                className="text-blue-500 underline bg-transparent border-none text-lg pr-4 pt-4 w-full text-end"
+                onClick={() =>
+                  isFavorite ? removeFromMyList() : addToMyList()
+                }
+              >
+                {isFavorite ? (
+                  <FontAwesomeIcon icon={faTrash} />
+                ) : (
+                  <FontAwesomeIcon icon={faPlus} />
+                )}
+              </button>
+            </div>
+            {content}
+          </div>
+
+          <div className="w-1/3 justify-end items-center hidden lg:flex">
+            <a
+              href="https://norskovcoaching.com/stresstilbud/"
+              onClick={() => clicked("stresstilbud_clicked_detail")}
+              target="_blank"
+            >
+              <img
+                className="max-h-[350px] w-auto self-center pr-3"
+                src={advertisement}
+                onLoad={() => clicked("stresstilbud_appeared_detail")}
+              />
+            </a>
+          </div>
         </div>
       </PageTemplate>
     </div>

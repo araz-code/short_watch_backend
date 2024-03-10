@@ -11,6 +11,7 @@ import LoadingIndicator from "../components/UI/LoadingIndicator";
 import Modal from "../components/UI/Modal";
 import Info from "../components/Info";
 import { useTranslation } from "react-i18next";
+import advertisement from "../static/stresstilbud.jpg";
 
 const options = ["Symbol", "Name", "Date", "Value"];
 
@@ -127,102 +128,130 @@ const ShortWatchPage: React.FC = () => {
   return (
     <div className="h-screen xl:h-[calc(100dvh)] min-h-[620px] overflow-hidden">
       <PageTemplate>
-        <div className="w-screen lg:w-[900px] m-auto">
-          <p className="text-xl lg:text-3xl text-center font-bold py-6 dark:text-white">
-            Danish Short Watch
-          </p>
-          <section className="w-full">
-            <div className="relative mx-2 flex items-center">
-              <div className="absolute inset-y-0 left-0 flex items-center ps-3 pointer-events-none">
-                <svg
-                  className="w-4 h-4 text-gray-500 dark:text-gray-400 mr-3"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                  />
-                </svg>
-              </div>
-              <input
-                type="search"
-                id="search"
-                placeholder={t("Search")}
-                ref={searchElement}
-                onChange={(event) => setSearchTerm(event.target.value)}
-                className="flex-1 border p-2 pl-9 rounded-l focus:outline-none w-full dark:bg-[#212121] dark:text-white"
+        <div className="w-screen lg:flex lg:justify-center lg:gap-4  m-auto">
+          <div className="w-1/3 justify-start items-center hidden lg:flex">
+            <a
+              href="https://norskovcoaching.com/stresstilbud/"
+              onClick={() => clicked("stresstilbud_clicked_main")}
+              target="_blank"
+            >
+              <img
+                className="max-h-[350px] w-auto self-center pl-3"
+                src={advertisement}
+                onLoad={() => clicked("stresstilbud_appeared_main")}
               />
-            </div>
-            <div className="p-2 pb-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <DropDownMenu
-                    options={options}
-                    selectedMenuItem={selectedSorting}
-                    onSelectMenuItemChange={setSelectedSorting}
-                  />
-                  <button
-                    className="text-blue-500 text-center font-medium align-middle bg-transparent border-none text ml-5"
-                    onClick={() => setShowMyList(!showMyList)}
+            </a>
+          </div>
+          <div className="lg:w-[900px]">
+            <p className="text-xl lg:text-3xl text-center font-bold py-6 dark:text-white">
+              Danish Short Watch
+            </p>
+            <section className="w-full">
+              <div className="relative mx-2 flex items-center">
+                <div className="absolute inset-y-0 left-0 flex items-center ps-3 pointer-events-none">
+                  <svg
+                    className="w-4 h-4 text-gray-500 dark:text-gray-400 mr-3"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 20 20"
                   >
-                    {showMyList ? t("My list") : t("All shorts")}
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                    />
+                  </svg>
+                </div>
+                <input
+                  type="search"
+                  id="search"
+                  placeholder={t("Search")}
+                  ref={searchElement}
+                  onChange={(event) => setSearchTerm(event.target.value)}
+                  className="flex-1 border p-2 pl-9 rounded-l focus:outline-none w-full dark:bg-[#212121] dark:text-white"
+                />
+              </div>
+              <div className="p-2 pb-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <DropDownMenu
+                      options={options}
+                      selectedMenuItem={selectedSorting}
+                      onSelectMenuItemChange={setSelectedSorting}
+                    />
+                    <button
+                      className="text-blue-500 text-center font-medium align-middle bg-transparent border-none text ml-5"
+                      onClick={() => setShowMyList(!showMyList)}
+                    >
+                      {showMyList ? t("My list") : t("All shorts")}
+                    </button>
+                  </div>
+                  <button
+                    className="text-blue-500 text-center font-medium align-middle bg-transparent border-none ml-4"
+                    onClick={handleInfo}
+                  >
+                    Info
                   </button>
                 </div>
-                <button
-                  className="text-blue-500 text-center font-medium align-middle bg-transparent border-none ml-4"
-                  onClick={handleInfo}
-                >
-                  Info
-                </button>
               </div>
-            </div>
-            <div className="overflow-y-auto min-h-[300px] h-[calc(100svh-20rem)]">
-              <p className="text-sm pl-2 dark:text-white">
-                {t("You can get more details by clicking on a row")}
-              </p>
-              {content}
-            </div>
-            <div className="mx-3 mt-5">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <Link
-                    to={
-                      i18n.language === "da" || i18n.language === "da-DK"
-                        ? "/privatlivspolitik"
-                        : "/privacy-policy"
-                    }
-                    className="text-blue-500 underline text-sm"
-                  >
-                    {t("Privacy policy")}
-                  </Link>
+              <div className="overflow-y-auto min-h-[300px] h-[calc(100svh-20rem)]">
+                <p className="text-sm pl-2 dark:text-white">
+                  {t("You can get more details by clicking on a row")}
+                </p>
+                {content}
+              </div>
+              <div className="mx-3 mt-5">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <Link
+                      to={
+                        i18n.language === "da" || i18n.language === "da-DK"
+                          ? "/privatlivspolitik"
+                          : "/privacy-policy"
+                      }
+                      className="text-blue-500 underline text-sm"
+                    >
+                      {t("Privacy policy")}
+                    </Link>
 
-                  <Link
-                    to={
-                      i18n.language === "da" || i18n.language === "da-DK"
-                        ? "/aftalevilkaar"
-                        : "/terms-of-agreement"
-                    }
-                    className="text-blue-500 underline text-sm ml-5"
+                    <Link
+                      to={
+                        i18n.language === "da" || i18n.language === "da-DK"
+                          ? "/aftalevilkaar"
+                          : "/terms-of-agreement"
+                      }
+                      className="text-blue-500 underline text-sm ml-5"
+                    >
+                      {t("Terms of agreement")}
+                    </Link>
+                  </div>
+                  <a
+                    href="mailto:contact@zirium.dk"
+                    className="text-blue-500 underline text-sm"
+                    onClick={() => clicked("feedback")}
+                    target="_blank"
                   >
-                    {t("Terms of agreement")}
-                  </Link>
+                    Feedback
+                  </a>
                 </div>
-                <a
-                  href="mailto:contact@zirium.dk"
-                  className="text-blue-500 underline text-sm"
-                  onClick={() => clicked("feedback")}
-                >
-                  Feedback
-                </a>
               </div>
-            </div>
-          </section>
+            </section>
+          </div>
+          <div className="w-1/3 justify-end items-center hidden lg:flex">
+            <a
+              href="https://norskovcoaching.com/stresstilbud/"
+              onClick={() => clicked("stresstilbud_clicked_main")}
+            >
+              <img
+                className="max-h-[350px] w-auto self-center pr-3"
+                src={advertisement}
+                onLoad={() => clicked("stresstilbud_appeared_main")}
+              />
+            </a>
+          </div>
         </div>
       </PageTemplate>
 
