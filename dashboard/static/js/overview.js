@@ -5,7 +5,12 @@ function loadAllCharts(year) {
 
   loadNumber("latestRequestTimestamp", `/stats/chart/requestlogging/latest-request-timestamp/`);
 
+
+
   loadTable("requestedUrlsTable", `/stats/chart/requestlogging/requested-urls/${year}/`);
+
+  loadTable("advertisementTable", `/stats/chart/requestlogging/advertisement-clicked/`);
+
 
   loadTable("pickHistoricTable", `/stats/chart/requestlogging/pick-historic/${year}/`);
   loadTable("watchHistoricTable", `/stats/chart/requestlogging/watch-historic/${year}/`);

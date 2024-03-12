@@ -479,6 +479,33 @@ def get_unique_ips_per_day_table(_: Request) -> JsonResponse:
     })
 
 
+@staff_member_required
+def get_requested_advertisement(_: Request) -> JsonResponse:
+    queryset = RequestLog.objects.all()
+
+    queryset = queryset.filter(
+        Q(requested_url__iendswith="stresstilbud_appeared_main/") |
+        Q(requested_url__iendswith="stresstilbud_appeared_detail/") |
+        Q(requested_url__iendswith="stresstilbud_clicked_main/") |
+        Q(requested_url__iendswith="stresstilbud_clicked_detail/")
+    )
+
+    appeared = {}
+    clicked = {}
+    for entry in list(queryset):
+        if entry.requested_url.endswith('stresstilbud_appeared_main/') or \
+                entry.requested_url.endswith('stresstilbud_appeared_detail/'):
+            appeared[entry.client_ip] = appeared.get(entry.client_ip, 0) + 1
+        else:
+            clicked[entry.client_ip] = clicked.get(entry.client_ip, 0) + 1
+
+    return JsonResponse({
+        'caption': 'Advertisement clicked',
+        'headers': ['Type', 'Count'],
+        'data': [{'type': 'Appeared', 'count': len(appeared.keys())}, {'type': 'Clicked', 'count': len(clicked.keys())}]
+    })
+
+
 def clicked(code: str):
     return Response(status=204)
 
