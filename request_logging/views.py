@@ -45,9 +45,8 @@ def get_total_requests(_: Request, year: str) -> JsonResponse:
         queryset = queryset.filter(timestamp__year=year)
 
     two_months_ago = datetime.now() - timedelta(days=60)
-    records_to_delete = RequestLog.objects.filter(timestamp__lt=two_months_ago)[:500]
-    if records_to_delete:
-        records_to_delete.delete()
+    pks = list(RequestLog.objects.filter(timestamp__lt=two_months_ago).values_list('pk', flat=True))[:5000]
+    RequestLog.objects.filter(pk__in=pks).delete()
 
     return JsonResponse({
         'title': f'Total requests ({year})',
