@@ -11,7 +11,7 @@ import LoadingIndicator from "../components/UI/LoadingIndicator";
 import Modal from "../components/UI/Modal";
 import Info from "../components/Info";
 import { useTranslation } from "react-i18next";
-import advertisement from "../static/stresstilbud.jpg";
+//import advertisement from "../static/stresstilbud.jpg";
 
 const options = ["Symbol", "Name", "Date", "Value"];
 
@@ -129,19 +129,7 @@ const ShortWatchPage: React.FC = () => {
     <div className="h-screen xl:h-[calc(100dvh)] min-h-[620px] overflow-hidden">
       <PageTemplate>
         <div className="w-screen lg:flex lg:justify-center lg:gap-4  m-auto">
-          <div className="w-1/3 justify-start items-center hidden">
-            <a
-              href="https://norskovcoaching.com/stresstilbud/"
-              onClick={() => clicked("stresstilbud_clicked_main")}
-              target="_blank"
-            >
-              <img
-                className="max-h-[350px] w-auto self-center pl-3"
-                src={advertisement}
-                onLoad={() => clicked("stresstilbud_appeared_main")}
-              />
-            </a>
-          </div>
+          <div className="w-1/3 justify-start items-center hidden"></div>
           <div className="lg:w-[900px]">
             <p className="text-xl lg:text-3xl text-center font-bold py-6 dark:text-white">
               Danish Short Watch
@@ -240,17 +228,7 @@ const ShortWatchPage: React.FC = () => {
               </div>
             </section>
           </div>
-          <div className="w-1/3 justify-end items-center hidden">
-            <a
-              href="https://norskovcoaching.com/stresstilbud/"
-              onClick={() => clicked("stresstilbud_clicked_main")}
-            >
-              <img
-                className="max-h-[350px] w-auto self-center pr-3"
-                src={advertisement}
-              />
-            </a>
-          </div>
+          <div className="w-1/3 justify-end items-center hidden"></div>
         </div>
       </PageTemplate>
 

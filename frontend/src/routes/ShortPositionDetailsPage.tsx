@@ -14,7 +14,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
 import ShortSeller from "../models/ShortSeller";
-import advertisement from "../static/stresstilbud.jpg";
+//import advertisement from "../static/stresstilbud.jpg";
 
 const detailOptions = ["Historic data", "Largest sellers"];
 const periodOptions = ["7 days", "14 days", "30 days", "90 days"];
@@ -205,19 +205,8 @@ const ShortPositionDetailsPage: React.FC = () => {
     <div className="h-screen dark:bg-[#121212]">
       <PageTemplate>
         <div className="w-screen lg:flex lg:justify-center lg:gap-4  m-auto">
-          <div className="w-1/3 justify-start items-center hidden">
-            <a
-              href="https://norskovcoaching.com/stresstilbud/"
-              onClick={() => clicked("stresstilbud_clicked_detail")}
-              target="_blank"
-            >
-              <img
-                className="max-h-[350px] w-auto self-center pl-3"
-                src={advertisement}
-                onLoad={() => clicked("stresstilbud_appeared_detail")}
-              />
-            </a>
-          </div>
+          <div className="w-1/3 justify-end items-center hidden"></div>
+
           <div className="lg:w-[900px]">
             <div className="flex items-center justify-between">
               <button
@@ -242,18 +231,7 @@ const ShortPositionDetailsPage: React.FC = () => {
             {content}
           </div>
 
-          <div className="w-1/3 justify-end items-center hidden">
-            <a
-              href="https://norskovcoaching.com/stresstilbud/"
-              onClick={() => clicked("stresstilbud_clicked_detail")}
-              target="_blank"
-            >
-              <img
-                className="max-h-[350px] w-auto self-center pr-3"
-                src={advertisement}
-              />
-            </a>
-          </div>
+          <div className="w-1/3 justify-end items-center hidden"></div>
         </div>
       </PageTemplate>
     </div>
@@ -261,3 +239,21 @@ const ShortPositionDetailsPage: React.FC = () => {
 };
 
 export default ShortPositionDetailsPage;
+
+/**
+ * 
+ *           <div className="w-1/3 justify-start items-center hidden">
+            
+            <a
+              href="https://norskovcoaching.com/stresstilbud/"
+              onClick={() => clicked("stresstilbud_clicked_detail")}
+              target="_blank"
+            >
+              <img
+                className="max-h-[350px] w-auto self-center pl-3"
+                src={advertisement}
+                onLoad={() => clicked("stresstilbud_appeared_detail")}
+              />
+            </a>
+          </div>
+ */
