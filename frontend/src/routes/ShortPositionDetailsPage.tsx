@@ -205,7 +205,7 @@ const ShortPositionDetailsPage: React.FC = () => {
     <div className="h-screen dark:bg-[#121212]">
       <PageTemplate>
         <div className="w-screen lg:flex lg:justify-center lg:gap-4  m-auto">
-          <div className="w-1/3 justify-start items-center hidden lg:flex">
+          <div className="w-1/3 justify-start items-center hidden">
             <a
               href="https://norskovcoaching.com/stresstilbud/"
               onClick={() => clicked("stresstilbud_clicked_detail")}
@@ -242,7 +242,7 @@ const ShortPositionDetailsPage: React.FC = () => {
             {content}
           </div>
 
-          <div className="w-1/3 justify-end items-center hidden lg:flex">
+          <div className="w-1/3 justify-end items-center hidden">
             <a
               href="https://norskovcoaching.com/stresstilbud/"
               onClick={() => clicked("stresstilbud_clicked_detail")}

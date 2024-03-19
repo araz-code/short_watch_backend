@@ -129,7 +129,7 @@ const ShortWatchPage: React.FC = () => {
     <div className="h-screen xl:h-[calc(100dvh)] min-h-[620px] overflow-hidden">
       <PageTemplate>
         <div className="w-screen lg:flex lg:justify-center lg:gap-4  m-auto">
-          <div className="w-1/3 justify-start items-center hidden lg:flex">
+          <div className="w-1/3 justify-start items-center hidden">
             <a
               href="https://norskovcoaching.com/stresstilbud/"
               onClick={() => clicked("stresstilbud_clicked_main")}
@@ -240,7 +240,7 @@ const ShortWatchPage: React.FC = () => {
               </div>
             </section>
           </div>
-          <div className="w-1/3 justify-end items-center hidden lg:flex">
+          <div className="w-1/3 justify-end items-center hidden">
             <a
               href="https://norskovcoaching.com/stresstilbud/"
               onClick={() => clicked("stresstilbud_clicked_main")}
@@ -266,3 +266,7 @@ const ShortWatchPage: React.FC = () => {
 };
 
 export default ShortWatchPage;
+
+// Activate advertisement by inserting lg:flex like this:
+
+// <div className="w-1/3 justify-end items-center hidden lg:flex">
