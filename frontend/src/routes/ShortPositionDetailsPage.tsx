@@ -2,7 +2,7 @@ import { useQuery } from "react-query";
 import PricePoint from "../models/PricePoint";
 import PricePointRow from "../components/PricePointRow";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { clicked, fetchShortPositionDetails } from "../apis/ShortPositionAPI";
+import { fetchShortPositionDetails } from "../apis/ShortPositionAPI";
 import PricePointChart from "../components/PricePointChart";
 import ToggleSwitch from "../components/UI/RadioButtonToggle";
 import { useEffect, useState } from "react";
