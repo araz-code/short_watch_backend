@@ -30,6 +30,7 @@ urlpatterns = [
     path('v5/shorts/', include('shorts.urls')),
     path('v6/shorts/', include('shorts.urls')),
     path('v7/shorts/', include('shorts.urls')),
+    path('v8/shorts/', include('shorts.urls')),
     path('stats/', include('request_logging.urls')),
     path('', TemplateView.as_view(template_name="index.html")),
     re_path(r'^(?:.*)/?$', TemplateView.as_view(template_name="index.html")),

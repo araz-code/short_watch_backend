@@ -17,7 +17,7 @@ import ShortSeller from "../models/ShortSeller";
 //import advertisement from "../static/stresstilbud.jpg";
 
 const detailOptions = ["Historic data", "Largest sellers"];
-const periodOptions = ["7 days", "14 days", "30 days", "90 days"];
+const periodOptions = ["7 days", "30 days", "90 days", "180 days"];
 
 const processChartValues = (
   pricePoints: PricePoint[],
@@ -127,11 +127,11 @@ const ShortPositionDetailsPage: React.FC = () => {
     const numberOfdays =
       selectedPeriod === "7 days"
         ? 7
-        : selectedPeriod === "14 days"
-        ? 14
         : selectedPeriod === "30 days"
         ? 30
-        : 90;
+        : selectedPeriod === "90 days"
+        ? 90
+        : 180;
 
     content = (
       <>
