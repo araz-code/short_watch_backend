@@ -94,11 +94,11 @@ class Command(BaseCommand):
 
             try:
                 driver.get(self.SHORTS_SITE_URL)
-                time.sleep(7)
+                time.sleep(9)
 
                 dropdown = Select(driver.find_element(By.TAG_NAME, "select"))
                 dropdown.select_by_index(3)
-                time.sleep(7)
+                time.sleep(13)
 
                 elements = driver.find_elements(By.CSS_SELECTOR, '.ui-grid-cell-contents.ng-binding.ng-scope')
 
