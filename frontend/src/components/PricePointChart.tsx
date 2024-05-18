@@ -86,7 +86,7 @@ const PricePointChart: React.FC<{ data: PricePoint[] }> = ({
           )}
         />
         <Area
-          type="monotone"
+          type="step"
           dataKey="value"
           stroke="#007AFF"
           fill="url(#colorUv)"

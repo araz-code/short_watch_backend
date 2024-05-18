@@ -1,12 +1,14 @@
 from collections import namedtuple
+from datetime import timedelta, datetime
 
 from django.db.models import Max
+from django.utils import timezone
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet, GenericViewSet
 from rest_framework_api_key.permissions import HasAPIKey
 
-from shorts.models import ShortPosition, Stock, ShortSeller
+from shorts.models import ShortPosition, Stock, ShortSeller, ShortPositionChart
 from shorts.serializers import ShortPositionSerializer, ShortSellerSerializerOld, ShortPositionDetailSerializer
 
 
@@ -49,6 +51,8 @@ class ShortSellerView(GenericViewSet, RetrieveAPIView):
 
 ShortedStockDetailsResponse = namedtuple('ShortedStockDetailsResponse', ['chartValues', 'historic', 'sellers'])
 
+NUM_CHART_VALUES = 182
+
 
 class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
     queryset = ShortPosition.objects.all()
@@ -63,7 +67,20 @@ class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
 
             historic = stock.shortposition_set.all().order_by('-timestamp')[:100]
 
-            chart_values = stock.shortpositionchart_set.all().order_by('-date')[:182]
+            chart_values = list(stock.shortpositionchart_set.all().order_by('-date')[:NUM_CHART_VALUES])
+
+            missing_count = NUM_CHART_VALUES - len(chart_values)
+
+            if missing_count > 0:
+                earliest_date = chart_values[-1].date
+
+                for i in range(missing_count):
+                    missing_date = earliest_date - timedelta(days=i + 1)
+                    missing_datetime = datetime.combine(missing_date, datetime.min.time(), tzinfo=timezone.utc)
+                    chart_values.append(
+                        ShortPositionChart(stock=stock, value=0, date=missing_date, timestamp=missing_datetime))
+
+                chart_values = sorted(chart_values, key=lambda x: x.date, reverse=True)
 
             sellers = stock.shortseller_set.all().order_by('-date')
 
