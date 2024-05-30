@@ -90,6 +90,7 @@ const PricePointChart: React.FC<{ data: PricePoint[] }> = ({
           dataKey="value"
           stroke="#007AFF"
           fill="url(#colorUv)"
+          isAnimationActive={false}
         />
       </AreaChart>
     </ResponsiveContainer>
