@@ -513,18 +513,40 @@ def get_requested_advertisement(_: Request) -> JsonResponse:
 @staff_member_required
 def get_referer(_: Request) -> JsonResponse:
     time_threshold = timezone.now().replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(days=1)
-    queryset = RequestLog.objects.filter(timestamp__date__gt=time_threshold).values('referer')
+    queryset = RequestLog.objects.filter(timestamp__date__gt=time_threshold).values('referer',
+                                                                                    'requested_url', 'client_ip')
 
     referer = {}
+    client_ips = []
+    iwatch = 0
+    iphone = 0
+    ipad = 0
+    web = 0
     for entry in list(queryset):
+        if entry['client_ip'] not in client_ips:
+            if "/iwatch/" in entry['requested_url']:
+                iwatch += 1
+            elif "/iphone/" in entry['requested_url']:
+                iphone += 1
+            elif "/ipad/" in entry['requested_url']:
+                ipad += 1
+            elif "/web/" in entry['requested_url']:
+                web += 1
+
+            client_ips.append(entry['client_ip'])
+
         if entry['referer'] == '' or 'zirium.dk' in entry['referer']:
             continue
-
         referer[entry['referer']] = referer.get(entry['referer'], 0) + 1
 
     referer_list = [{'referer': a, 'count': referer[a]} for a in referer.keys()]
 
     sorted_referer_list = sorted(referer_list, key=lambda x: x['count'], reverse=True)
+    sorted_referer_list.append({'referer': 'iPhone', 'count': iphone})
+    sorted_referer_list.append({'referer': 'iPad', 'count': ipad})
+    sorted_referer_list.append({'referer': 'Watch', 'count': iwatch})
+    sorted_referer_list.append({'referer': 'Web', 'count': web})
+
 
     return JsonResponse({
         'caption': 'Advertisement clicked',
