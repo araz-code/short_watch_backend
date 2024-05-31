@@ -526,14 +526,16 @@ def get_referer(_: Request) -> JsonResponse:
         if entry['client_ip'] not in client_ips:
             if "/iwatch/" in entry['requested_url']:
                 iwatch += 1
+                client_ips.append(entry['client_ip'])
             elif "/iphone/" in entry['requested_url']:
                 iphone += 1
+                client_ips.append(entry['client_ip'])
             elif "/ipad/" in entry['requested_url']:
                 ipad += 1
+                client_ips.append(entry['client_ip'])
             elif "/web/" in entry['requested_url']:
                 web += 1
-
-            client_ips.append(entry['client_ip'])
+                client_ips.append(entry['client_ip'])
 
         if entry['referer'] == '' or 'zirium.dk' in entry['referer']:
             continue
