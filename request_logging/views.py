@@ -512,8 +512,8 @@ def get_requested_advertisement(_: Request) -> JsonResponse:
 
 @staff_member_required
 def get_referer(_: Request) -> JsonResponse:
-    time_threshold = timezone.now().replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(days=1)
-    queryset = RequestLog.objects.filter(timestamp__date__gt=time_threshold).values('referer',
+    time_threshold = timezone.now()
+    queryset = RequestLog.objects.filter(timestamp__date=time_threshold).values('referer',
                                                                                     'requested_url', 'client_ip')
 
     referer = {}
