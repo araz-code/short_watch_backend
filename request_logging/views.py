@@ -517,25 +517,19 @@ def get_referer(_: Request) -> JsonResponse:
                                                                                     'requested_url', 'client_ip')
 
     referer = {}
-    client_ips = []
-    iwatch = 0
-    iphone = 0
-    ipad = 0
-    web = 0
+    client_ips_iwatch = []
+    client_ips_iphone = []
+    client_ips_ipad = []
+    client_ips_web = []
     for entry in list(queryset):
-        if entry['client_ip'] not in client_ips:
-            if "/iwatch/" in entry['requested_url']:
-                iwatch += 1
-                client_ips.append(entry['client_ip'])
-            elif "/iphone/" in entry['requested_url']:
-                iphone += 1
-                client_ips.append(entry['client_ip'])
-            elif "/ipad/" in entry['requested_url']:
-                ipad += 1
-                client_ips.append(entry['client_ip'])
-            elif "/web/" in entry['requested_url']:
-                web += 1
-                client_ips.append(entry['client_ip'])
+        if "/iwatch/" in entry['requested_url'] and entry['client_ip'] not in client_ips_iwatch:
+            client_ips_iwatch.append(entry['client_ip'])
+        elif "/iphone/" in entry['requested_url'] and entry['client_ip'] not in client_ips_iphone:
+            client_ips_iphone.append(entry['client_ip'])
+        elif "/ipad/" in entry['requested_url'] and entry['client_ip'] not in client_ips_ipad:
+            client_ips_ipad.append(entry['client_ip'])
+        elif "/web/" in entry['requested_url'] and entry['client_ip'] not in client_ips_web:
+            client_ips_web.append(entry['client_ip'])
 
         if entry['referer'] == '' or 'zirium.dk' in entry['referer']:
             continue
