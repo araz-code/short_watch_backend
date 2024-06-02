@@ -1,10 +1,13 @@
 import ipaddress
-from collections import defaultdict
+import json
+from collections import defaultdict, OrderedDict
 from datetime import timedelta, datetime
 from typing import List, Union
+import re
 
 import pytz
 from django.contrib.admin.views.decorators import staff_member_required
+from django.db import transaction, IntegrityError
 from django.db.models import Count, Avg, Q, Max
 from django.db.models.functions import ExtractYear, ExtractMonth, ExtractDay, ExtractWeekDay, TruncDate
 from django.http import JsonResponse
@@ -12,7 +15,7 @@ from django.utils import timezone
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from request_logging.models import RequestLog
+from request_logging.models import RequestLog, Visitor, VisitorLock
 from shorts.models import Stock
 
 copenhagen_timezone = pytz.timezone('Europe/Copenhagen')
@@ -47,6 +50,8 @@ def get_total_requests(_: Request, year: str) -> JsonResponse:
     two_months_ago = datetime.now() - timedelta(days=60)
     pks = list(RequestLog.objects.filter(timestamp__lt=two_months_ago).values_list('pk', flat=True))[:5000]
     RequestLog.objects.filter(pk__in=pks).delete()
+
+    process_visits()
 
     return JsonResponse({
         'title': f'Total requests ({year})',
@@ -521,6 +526,7 @@ def get_referer(_: Request) -> JsonResponse:
     client_ips_iphone = []
     client_ips_ipad = []
     client_ips_web = []
+    # unknown = []
     for entry in list(queryset):
         if "/iwatch/" in entry['requested_url'] and entry['client_ip'] not in client_ips_iwatch:
             client_ips_iwatch.append(entry['client_ip'])
@@ -535,6 +541,14 @@ def get_referer(_: Request) -> JsonResponse:
             continue
         referer[entry['referer']] = referer.get(entry['referer'], 0) + 1
 
+    # for entry in list(queryset):
+    #     if entry['client_ip'] not in client_ips_iwatch and entry['client_ip'] not in client_ips_iphone and \
+    #             entry['client_ip'] not in client_ips_ipad and entry['client_ip'] not in client_ips_ipad and \
+    #             entry['client_ip'] not in client_ips_web and entry['client_ip'] not in unknown:
+    #         unknown.append(entry['client_ip'])
+    #
+    # print(unknown)
+
     referer_list = [{'referer': a, 'count': referer[a]} for a in referer.keys()]
 
     sorted_referer_list = sorted(referer_list, key=lambda x: x['count'], reverse=True)
@@ -542,7 +556,6 @@ def get_referer(_: Request) -> JsonResponse:
     sorted_referer_list.append({'referer': 'iPad', 'count': len(client_ips_ipad)})
     sorted_referer_list.append({'referer': 'Watch', 'count': len(client_ips_iwatch)})
     sorted_referer_list.append({'referer': 'Web', 'count': len(client_ips_web)})
-
 
     return JsonResponse({
         'caption': 'Advertisement clicked',
@@ -577,3 +590,102 @@ def clicked(code: str):
 #         'headers': ['Date', 'Count'],
 #         'data': modified_data
 #     })
+
+
+device_pattern = re.compile(r'/shorts/(web|iphone|ipad|iwatch)')
+action_pattern = re.compile(r'/(watch|pick)')
+code_pattern = re.compile(r'/details/(\w+)', re.IGNORECASE)
+version_pattern = re.compile(r'/(v\d+)')
+referer_pattern = re.compile(r'(google|facebook|proinvestor)')
+
+
+def process_visits():
+
+    with transaction.atomic():
+        try:
+            VisitorLock.objects.create()
+        except IntegrityError:
+            print('NOPE NOPE')
+
+            return
+
+    try:
+        queryset = RequestLog.objects.filter(processed=False).order_by('timestamp')[:1500]
+        today = timezone.now().date()
+
+        for request_log in queryset:
+            device_match = device_pattern.search(request_log.requested_url)
+            action_match = action_pattern.search(request_log.requested_url)
+            code_match = code_pattern.search(request_log.requested_url)
+            version_match = version_pattern.search(request_log.requested_url)
+            referer_match = referer_pattern.search(request_log.referer)
+
+            device = device_match.group(1) if device_match else None
+            action = action_match.group(1) if action_match else None
+            code = Stock.objects.get(code=code_match.group(1)).symbol if code_match else None
+            version = version_match.group(1) if version_match else None
+            referer = referer_match.group(1) if referer_match else None
+
+            visitor, created = Visitor.objects.get_or_create(
+                client_ip=request_log.client_ip,
+                defaults={
+                    'first': request_log.timestamp,
+                    'previous': request_log.timestamp,
+                    'last': request_log.timestamp,
+                    'visits': 1,
+                    'visits_today': 1 if request_log.timestamp.date() == today else 0,
+                    'watch': json.dumps({code: 1}) if action == 'watch' and code else '{}',
+                    'pick': json.dumps({code: 1}) if action == 'pick' and code else '{}',
+                    'web': request_log.timestamp if device == 'web' else None,
+                    'visits_web': 1 if device == 'web' else 0,
+                    'iphone': request_log.timestamp if device == 'iphone' else None,
+                    'visits_iphone': 1 if device == 'iphone' else 0,
+                    'ipad': request_log.timestamp if device == 'ipad' else None,
+                    'visits_ipad': 1 if device == 'ipad' else 0,
+                    'iwatch': request_log.timestamp if device == 'iwatch' else None,
+                    'visits_iwatch': 1 if device == 'iwatch' else 0,
+                    'version': version,
+                    'referer': json.dumps({referer: 1}) if referer else '{}'
+                }
+            )
+
+            if not created:
+                visitor.visits_today = visitor.visits_today + 1 if request_log.timestamp.date() == today else 0
+                if visitor.last - visitor.previous > timedelta(hours=1):
+                    visitor.previous = visitor.last
+                visitor.last = request_log.timestamp
+                visitor.visits += 1
+
+                if action == 'watch' and code:
+                    visitor.watch = update_json_count(visitor.watch, code)
+                if action == 'pick' and code:
+                    visitor.pick= update_json_count(visitor.pick, code)
+
+                visitor.web = request_log.timestamp if device == 'web' else visitor.web
+                visitor.visits_web = visitor.visits_web + 1 if device == 'web' else visitor.visits_web
+                visitor.iphone = request_log.timestamp if device == 'iphone' else visitor.iphone
+                visitor.visits_iphone = visitor.visits_iphone + 1 if device == 'iphone' else visitor.visits_iphone
+                visitor.ipad = request_log.timestamp if device == 'ipad' else visitor.ipad
+                visitor.visits_ipad = visitor.visits_ipad + 1 if device == 'ipad' else visitor.visits_ipad
+                visitor.iwatch = request_log.timestamp if device == 'iwatch' else visitor.iwatch
+                visitor.visits_iwatch = visitor.visits_iwatch + 1 if device == 'iwatch' else visitor.visits_iwatch
+                visitor.version = version
+                if referer and referer:
+                    visitor.referer = update_json_count(visitor.referer, referer)
+
+            visitor.save()
+            request_log.processed = True
+            request_log.save()
+
+        VisitorLock.objects.all().delete()
+    finally:
+        VisitorLock.objects.all().delete()
+
+
+def update_json_count(field, code):
+    field_dict = json.loads(field)
+    field_dict[code] = field_dict.get(code, 0) + 1
+
+    sorted_field_dict = OrderedDict(sorted(field_dict.items(), key=lambda item: item[1], reverse=True))
+
+    return json.dumps(sorted_field_dict)
