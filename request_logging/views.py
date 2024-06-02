@@ -610,7 +610,7 @@ def process_visits():
             return
 
     try:
-        queryset = RequestLog.objects.filter(processed=False).order_by('timestamp')[:1500]
+        queryset = RequestLog.objects.filter(processed=False).order_by('timestamp')[:15000]
         today = timezone.now().date()
 
         for request_log in queryset:
