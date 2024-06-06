@@ -12,6 +12,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 
 from errors.models import Error
+from request_logging.service import delete_old_logs, process_visits
 from shorts.models import ShortPosition, RunStatus, ShortSeller, ShortPositionChart, Stock
 
 copenhagen_timezone = pytz.timezone('Europe/Copenhagen')
@@ -44,6 +45,9 @@ class Command(BaseCommand):
             self.fetch_short_sellers(driver)
 
         driver.quit()
+
+        delete_old_logs()
+        process_visits()
 
     @staticmethod
     def is_within_range_around_whole_hour(minutes_around=4):
