@@ -1,5 +1,4 @@
 import {
-  AreaChart,
   CartesianGrid,
   Area,
   XAxis,
@@ -7,6 +6,10 @@ import {
   Tooltip,
   ResponsiveContainer,
   TooltipProps,
+  ComposedChart,
+  Scatter,
+  Bar,
+  Legend,
 } from "recharts";
 import {
   ValueType,
@@ -14,6 +17,7 @@ import {
 } from "recharts/types/component/DefaultTooltipContent";
 import PricePoint from "../models/PricePoint";
 import { formatTimestamp } from "../utils/dates";
+import ChartPricePoint from "../models/ChartPricePoint";
 
 const CustomTooltip: React.FC<TooltipProps<ValueType, NameType>> = ({
   active,
@@ -30,6 +34,10 @@ const CustomTooltip: React.FC<TooltipProps<ValueType, NameType>> = ({
         <p className="text-center">{`${(+(payload[0].value ?? 0)).toFixed(
           2
         )}%`}</p>
+        <p className="text-center">{`${(+(
+          (payload[1] && payload[1].value) ??
+          0
+        )).toFixed(2)}DKK`}</p>
       </div>
     );
   }
@@ -37,7 +45,7 @@ const CustomTooltip: React.FC<TooltipProps<ValueType, NameType>> = ({
   return null;
 };
 
-const PricePointChart: React.FC<{ data: PricePoint[] }> = ({
+const PricePointChart: React.FC<{ data: ChartPricePoint[] }> = ({
   data: pricePoints,
 }) => {
   const maxY: number =
@@ -48,11 +56,23 @@ const PricePointChart: React.FC<{ data: PricePoint[] }> = ({
     pricePoints.reduce((min, point) => Math.min(min, point.value), Infinity) -
     0.2;
 
+  let maxPriceY: number =
+    pricePoints.reduce((max, point) => Math.max(max, point.close), -Infinity) +
+    0;
+
+  let minPriceY: number =
+    pricePoints
+      .filter((x) => x.close)
+      .reduce((min, point) => Math.min(min, point.close), Infinity) - 0;
+
+  maxPriceY = maxPriceY + maxPriceY * 0.1;
+  minPriceY = minPriceY - minPriceY * 0.2;
+
   if (minY < 0.3) minY = 0;
 
   return (
     <ResponsiveContainer width="100%" height={220}>
-      <AreaChart
+      <ComposedChart
         width={500}
         height={200}
         data={pricePoints}
@@ -72,6 +92,7 @@ const PricePointChart: React.FC<{ data: PricePoint[] }> = ({
         <CartesianGrid strokeDasharray="3 3" vertical={false} />
         <XAxis dataKey="timestamp" hide />
         <YAxis
+          dataKey="value"
           type="number"
           unit="%"
           tick={{ fontSize: 11, fill: "#999" }}
@@ -79,20 +100,54 @@ const PricePointChart: React.FC<{ data: PricePoint[] }> = ({
           allowDecimals={true}
           orientation="right"
           domain={[minY, maxY]}
+          allowDataOverflow
+          yAxisId="1"
+        />
+        <YAxis
+          dataKey="close"
+          unit="DKK"
+          tick={{ fontSize: 11, fill: "#999" }}
+          tickFormatter={(value) => value.toFixed(0)}
+          orientation="left"
+          type="number"
+          yAxisId="2"
+          domain={[minPriceY, maxPriceY]}
+        />
+        <YAxis
+          dataKey="close"
+          unit="DKK"
+          tick={{ fontSize: 11, fill: "#999" }}
+          tickFormatter={(value) => value.toFixed(0)}
+          type="number"
+          yAxisId="3"
+          domain={[0, 11000000]}
+          hide
         />
         <Tooltip
           content={({ active, payload, label }) => (
             <CustomTooltip active={active} payload={payload} label={label} />
           )}
         />
+        {false && <Legend verticalAlign="top" height={36} />}
         <Area
           type="step"
           dataKey="value"
           stroke="#007AFF"
           fill="url(#colorUv)"
           isAnimationActive={false}
+          yAxisId="1"
+          name="Short"
         />
-      </AreaChart>
+        <Scatter
+          dataKey="close"
+          stroke="#FFBF00"
+          fill="#FFBF00"
+          yAxisId="2"
+          type="bumpX"
+          name="Close Price"
+        />
+        <Bar dataKey="volume" yAxisId="3" name="Volume" />
+      </ComposedChart>
     </ResponsiveContainer>
   );
 };

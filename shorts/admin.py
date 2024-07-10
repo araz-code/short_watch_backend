@@ -102,7 +102,7 @@ class ShortSellerAdmin(admin.ModelAdmin):
 
 @admin.register(ShortPositionChart)
 class ShortPositionChartAdmin(admin.ModelAdmin):
-    list_display = ('timestamp', 'date', 'code', 'symbol', 'name', 'value')
+    list_display = ('timestamp', 'date', 'code', 'symbol', 'name', 'value', 'close', 'volume')
     list_filter = ('stock__name', 'date')
     ordering = ('-timestamp', 'stock__code')
 

@@ -14,13 +14,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
 import ShortSeller from "../models/ShortSeller";
+import ChartPricePoint from "../models/ChartPricePoint";
 //import advertisement from "../static/stresstilbud.jpg";
 
 const detailOptions = ["Historic data", "Largest sellers"];
 const periodOptions = ["7 days", "30 days", "90 days", "180 days"];
 
 const processChartValues = (
-  pricePoints: PricePoint[],
+  pricePoints: ChartPricePoint[],
   numberOfdays: number
 ): PricePoint[] => {
   const newestEntries: { [key: string]: PricePoint } = {};

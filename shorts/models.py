@@ -49,3 +49,5 @@ class ShortPositionChart(models.Model):
     value = models.FloatField()
     date = models.DateField()
     timestamp = models.DateTimeField()
+    close = models.FloatField(null=True)
+    volume = models.PositiveBigIntegerField(null=True)
