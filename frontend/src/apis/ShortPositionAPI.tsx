@@ -21,7 +21,7 @@ export async function fetchShortPositions({
   signal?: AbortSignal;
   category: string;
 }) {
-  const url = `https://www.zirium.dk/v8/shorts/web/${category}`;
+  const url = `https://www.zirium.dk/v9/shorts/web/${category}`;
 
   const response = await fetch(url, {
     signal,
@@ -54,7 +54,7 @@ export async function fetchShortPositionDetails({
   category: string;
   code: string;
 }) {
-  const url = `https://www.zirium.dk/v8/shorts/web/${category}/details/${code}`;
+  const url = `https://www.zirium.dk/v9/shorts/web/${category}/details/${code}`;
 
   const response = await fetch(url, {
     signal,
