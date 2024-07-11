@@ -69,7 +69,7 @@ class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
 
             chart_values = list(stock.shortpositionchart_set.all().order_by('-date'))
 
-            days_difference = (date.today() - FIRST_ENTRY_DATE - 1).days
+            days_difference = (date.today() - FIRST_ENTRY_DATE).days
 
             missing_count = days_difference - len(chart_values)
 
