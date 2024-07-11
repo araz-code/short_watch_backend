@@ -17,11 +17,11 @@ import ShortSeller from "../models/ShortSeller";
 //import advertisement from "../static/stresstilbud.jpg";
 
 const detailOptions = ["Historic data", "Largest sellers"];
-const periodOptions = ["7 days", "30 days", "90 days", "180 days"];
+const periodOptions = ["1W", "1M", "3M", "6M", "YTD", "Max."];
 
 const processChartValues = (
   pricePoints: PricePoint[],
-  numberOfdays: number
+  period: string
 ): PricePoint[] => {
   const newestEntries: { [key: string]: PricePoint } = {};
 
@@ -49,7 +49,46 @@ const processChartValues = (
     a.timestamp.localeCompare(b.timestamp)
   );
 
-  return sortedChartData.slice(-numberOfdays);
+  const getFilteredData = (days: number): PricePoint[] => {
+    const cutoffDate = new Date();
+    cutoffDate.setDate(cutoffDate.getDate() - days);
+    return sortedChartData.filter(
+      (pricePoint) => new Date(pricePoint.timestamp) >= cutoffDate
+    );
+  };
+
+  const getFilteredDataByMonths = (months: number): PricePoint[] => {
+    const cutoffDate = new Date();
+    cutoffDate.setMonth(cutoffDate.getMonth() - months);
+    return sortedChartData.filter(
+      (pricePoint) => new Date(pricePoint.timestamp) >= cutoffDate
+    );
+  };
+
+  const getFilteredDataYTD = (): PricePoint[] => {
+    const currentYear = new Date().getFullYear();
+    return sortedChartData.filter(
+      (pricePoint) =>
+        new Date(pricePoint.timestamp).getFullYear() === currentYear
+    );
+  };
+
+  switch (period) {
+    case "1W":
+      return getFilteredData(7);
+    case "1M":
+      return getFilteredDataByMonths(1);
+    case "3M":
+      return getFilteredDataByMonths(3);
+    case "6M":
+      return getFilteredDataByMonths(6);
+    case "YTD":
+      return getFilteredDataYTD();
+    case "Max.":
+      return sortedChartData;
+    default:
+      throw new Error("Invalid period");
+  }
 };
 
 const ShortPositionDetailsPage: React.FC = () => {
@@ -124,31 +163,24 @@ const ShortPositionDetailsPage: React.FC = () => {
       />
     );
   } else if (data) {
-    const numberOfdays =
-      selectedPeriod === "7 days"
-        ? 7
-        : selectedPeriod === "30 days"
-        ? 30
-        : selectedPeriod === "90 days"
-        ? 90
-        : 180;
-
     content = (
       <>
         <p className="text-lg text-center font-bold pb-5 dark:text-white">
           {data.historic.length > 0 && data.historic[0].name}
         </p>
-        <div className="mb-1 pr-8 grid w-full place-items-end">
-          <ToggleSwitch
-            options={periodOptions}
-            selectedOption={selectedPeriod}
-            onSelectChange={setSelectedPeriod}
-          />
+        <div className="mb-1 px-8 grid w-full place-content-end">
+          <div className="overflow-x-auto w-full pb-3">
+            <ToggleSwitch
+              options={periodOptions}
+              selectedOption={selectedPeriod}
+              onSelectChange={setSelectedPeriod}
+            />
+          </div>
         </div>
         <div className="">
           <div className="mb-5">
             <PricePointChart
-              data={processChartValues(data.chartValues, numberOfdays)}
+              data={processChartValues(data.chartValues, selectedPeriod)}
             />
           </div>
           <div className="mb-5 grid w-full place-items-center">
@@ -160,7 +192,7 @@ const ShortPositionDetailsPage: React.FC = () => {
           </div>
 
           {selectedDetailOption === "Historic data" && (
-            <div className="min-h-[150px] h-[calc(100svh-32rem)]">
+            <div className="min-h-[150px] h-[calc(100svh-32.3rem)]">
               <div className="overflow-y-auto h-full">
                 <ul className="mx-4">
                   {data.historic.map((short: PricePoint) => (
@@ -174,7 +206,7 @@ const ShortPositionDetailsPage: React.FC = () => {
           )}
 
           {selectedDetailOption === "Largest sellers" && (
-            <div className="min-h-[150px] h-[calc(100svh-32rem)]">
+            <div className="min-h-[150px] h-[calc(100svh-32.3rem)]">
               <div className="overflow-y-auto h-full">
                 <ul className="mx-4">
                   {data.sellers.length == 0 && (
@@ -219,6 +251,9 @@ const ShortPositionDetailsPage: React.FC = () => {
                 className="text-blue-500 underline bg-transparent border-none text-lg pr-4 pt-4 w-full text-end"
                 onClick={() =>
                   isFavorite ? removeFromMyList() : addToMyList()
+                }
+                title={
+                  isFavorite ? t("Remove from my list") : t("Add to my list")
                 }
               >
                 {isFavorite ? (

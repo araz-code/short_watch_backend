@@ -53,13 +53,12 @@ const PricePointChart: React.FC<{ data: PricePoint[] }> = ({
   return (
     <ResponsiveContainer width="100%" height={220}>
       <AreaChart
-        width={500}
         height={200}
         data={pricePoints}
         margin={{
           top: 10,
-          right: 3,
-          left: 30,
+          right: -5,
+          left: 25,
           bottom: 0,
         }}
       >
@@ -74,11 +73,13 @@ const PricePointChart: React.FC<{ data: PricePoint[] }> = ({
         <YAxis
           type="number"
           unit="%"
-          tick={{ fontSize: 11, fill: "#999" }}
-          tickFormatter={(value) => value.toFixed(2)}
+          tick={{ fontSize: 11, fill: "#999", dx: -5 }}
+          tickFormatter={(value) => value.toFixed(1)}
           allowDecimals={true}
           orientation="right"
           domain={[minY, maxY]}
+          tickLine={false}
+          axisLine={false}
         />
         <Tooltip
           content={({ active, payload, label }) => (
