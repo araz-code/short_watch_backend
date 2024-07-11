@@ -73,7 +73,7 @@ class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
 
             missing_count = days_difference - len(chart_values)
 
-            if missing_count > 0:
+            if missing_count >= 0:
                 earliest_date = chart_values[-1].date
 
                 for i in range(missing_count):
