@@ -1,5 +1,5 @@
 from collections import namedtuple
-from datetime import timedelta, datetime
+from datetime import timedelta, datetime, date
 
 from django.db.models import Max
 from django.utils import timezone
@@ -51,7 +51,7 @@ class ShortSellerView(GenericViewSet, RetrieveAPIView):
 
 ShortedStockDetailsResponse = namedtuple('ShortedStockDetailsResponse', ['chartValues', 'historic', 'sellers'])
 
-NUM_CHART_VALUES = 182
+FIRST_ENTRY_DATE = date(2023, 11, 6)
 
 
 class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
@@ -67,9 +67,11 @@ class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
 
             historic = stock.shortposition_set.all().order_by('-timestamp')[:100]
 
-            chart_values = list(stock.shortpositionchart_set.all().order_by('-date')[:NUM_CHART_VALUES])
+            chart_values = list(stock.shortpositionchart_set.all().order_by('-date'))
 
-            missing_count = NUM_CHART_VALUES - len(chart_values)
+            days_difference = (date.today() - FIRST_ENTRY_DATE).days
+
+            missing_count = days_difference - len(chart_values)
 
             if missing_count > 0:
                 earliest_date = chart_values[-1].date
