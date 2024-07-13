@@ -116,6 +116,7 @@ const HomePage: React.FC = () => {
             icon={item.icon}
             title={t(item.title)}
             content={t(item.content)}
+            key={item.title}
           />
         ))}
       </section>
