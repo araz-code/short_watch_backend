@@ -17,9 +17,10 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.generic import TemplateView
-
+from django.views.static import serve
 
 from short_watch_backend import settings
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -33,9 +34,15 @@ urlpatterns = [
     path('v8/shorts/', include('shorts.urls')),
     path('v9/shorts/', include('shorts.urls')),
     path('stats/', include('request_logging.urls')),
+    path('favicon.png', serve, {'path': 'images/favicon.png', 'document_root': settings.STATIC_ROOT}),
     path('', TemplateView.as_view(template_name="index.html")),
     re_path(r'^(?:.*)/?$', TemplateView.as_view(template_name="index.html")),
 ]
+
+# Serve the favicon
+urlpatterns += [
+]
+
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
