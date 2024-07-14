@@ -51,7 +51,7 @@ const englishVersion = () => {
           <p className="pb-1">Zirium</p>
           <p className="pb-1">Nordre Fasanvej 64, 4. 44</p>
           <p className="pb-1">2000 Frederiksberg</p>
-          <p className="pb-1">contact@zirium.dk</p>
+          <p className="pb-1">zirium.consultancy@gmail.com</p>
         </div>
 
         <h2 className="pb-5 text-2xl font-semibold">
@@ -270,7 +270,7 @@ const danishVersion = () => {
           <p className="pb-1">Zirium</p>
           <p className="pb-1">Nordre Fasanvej 64, 4. 44</p>
           <p className="pb-1">2000 Frederiksberg</p>
-          <p className="pb-1">contact@zirium.dk</p>
+          <p className="pb-1">zirium.consultancy@gmail.com</p>
         </div>
 
         <h2 className="pb-5 text-2xl font-semibold">

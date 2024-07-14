@@ -130,11 +130,11 @@ const HomePage: React.FC = () => {
             )}
           </p>
           <a
-            href="mailto:contact@zirium.dk"
+            href="mailto:zirium.consultancy@gmail.com"
             className="underline"
             onClick={() => clicked("contact")}
           >
-            contact@zirium.dk
+            zirium.consultancy@gmail.com
           </a>
         </div>
       </footer>

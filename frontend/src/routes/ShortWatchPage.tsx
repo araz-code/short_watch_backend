@@ -217,7 +217,7 @@ const ShortWatchPage: React.FC = () => {
                     </Link>
                   </div>
                   <a
-                    href="mailto:contact@zirium.dk"
+                    href="mailto:zirium.consultancy@gmail.com"
                     className="text-blue-500 underline text-sm"
                     onClick={() => clicked("feedback")}
                     target="_blank"
