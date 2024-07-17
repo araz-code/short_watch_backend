@@ -21,8 +21,8 @@ def delete_old_logs():
     pks = list(RequestLog.objects.filter(timestamp__lt=two_months_ago).values_list('pk', flat=True))[:5000]
     RequestLog.objects.filter(pk__in=pks).delete()
 
-def process_visits():
 
+def process_visits():
     with transaction.atomic():
         try:
             VisitorLock.objects.create()
@@ -42,7 +42,10 @@ def process_visits():
 
             device = device_match.group(1) if device_match else None
             action = action_match.group(1) if action_match else None
-            code = Stock.objects.get(code=code_match.group(1)).symbol if code_match else None
+            try:
+                code = Stock.objects.get(code=code_match.group(1)).symbol if code_match else None
+            except Stock.DoesNotExist:
+                continue
             version = version_match.group(1) if version_match else None
             referer = referer_match.group(1) if referer_match else None
 
