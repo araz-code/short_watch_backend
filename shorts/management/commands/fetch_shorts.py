@@ -159,7 +159,7 @@ class Command(BaseCommand):
                         Error.objects.create(message=f"Could not create announcement: {str(item)[:450]}]")
             else:
                 Error.objects.create(message=f"Failed to fetch announcements. Status code: {response.status_code}")
-                raise CommandError(f'Error occurred: {str(e)}')
+                raise CommandError(f'Error occurred')
 
         except Exception as e:
             Error.objects.create(message=str(e)[:500])
@@ -297,4 +297,7 @@ class Command(BaseCommand):
             except CompanyMap.DoesNotExist:
                 CompanyMap.objects.create(announced_company_name=announced_company_name,
                                           issuer_name=issuer_name)
+
+                Error.objects.create(message=f'A new company was created and needs to be handled: {stock_name}')
+
                 return None
