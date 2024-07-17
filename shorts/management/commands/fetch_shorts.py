@@ -34,6 +34,17 @@ class Command(BaseCommand):
         'Authorization': f'Bearer {ANNOUNCEMENT_API_KEY}'
     }
 
+    ANNOUNCEMENTS_BODY = {
+        'SortField': 'RegistrationDate',
+        'Ascending': False,
+        'Skip': 0,
+        'Take': 100,
+        'Status': [
+            'Not Published'
+        ],
+        'IncludeHistoric': True
+    }
+
     MAX_RETRIES = 2
     RETRY_SLEEP_INTERVAL = 60
 
@@ -105,62 +116,50 @@ class Command(BaseCommand):
 
     def fetch_announcements(self):
         try:
-            for i in range(0, 30):
+            response = requests.post(self.ANNOUNCEMENTS_SITE_URL, json=self.ANNOUNCEMENTS_BODY,
+                                     headers=self.ANNOUNCEMENTS_HEADER)
 
-                body = {
-                    "SortField": "RegistrationDate",
-                    "Ascending": False,
-                    "Skip": i*100,
-                    "Take": 100,
-                    "Status": [
-                        "Not Published"
-                    ],
-                    "IncludeHistoric": True
-                }
+            if response.status_code == 200:
+                announcements = response.json()['data']
+                for item in announcements:
+                    stock = self.get_stock_for_announcement(item.get('IssuerName'),
+                                                            item.get('AnnouncedCompanyName'))
 
-                response = requests.post(self.ANNOUNCEMENTS_SITE_URL, json=body, headers=self.ANNOUNCEMENTS_HEADER)
+                    if not stock:
+                        continue
 
-                if response.status_code == 200:
-                    announcements = response.json()['data']
-                    for item in announcements:
-                        stock = self.get_stock_for_announcement(item.get('IssuerName'),
-                                                                item.get('AnnouncedCompanyName'))
-
-                        if not stock:
-                            continue
-
-                        try:
-                            _ = Announcement.objects.update_or_create(
-                                stock=stock,
-                                announcement_number=item["AnnouncementNumber"],
-                                issuer_name=item["IssuerName"],
-                                defaults={
-                                    "announced_company_name": item.get("AnnouncedCompanyName"),
-                                    "cvr_company_name": item.get("CVRCompanyName"),
-                                    "headline": item.get("Headline"),
-                                    "headline_danish": item.get("HeadlineDanish"),
-                                    "shortselling_type": item.get("ShortsellingType"),
-                                    "status": item.get("Status"),
-                                    "type": item.get("Type"),
-                                    "notification_datetime_to_company": parse_datetime(
-                                        item.get("NotificationDateTimeToCompany"))
-                                    if item.get("NotificationDateTimeToCompany") else None,
-                                    "publication_date": parse_datetime(item.get("PublicationDate"))
-                                    if item.get("PublicationDate") else None,
-                                    "published_date": parse_datetime(item.get("PublishedDate")),
-                                    "registration_date": parse_datetime(item.get("RegistrationDate")),
-                                    "registration_datetime": parse_datetime(item.get("RegistrationDateTime")),
-                                    "is_historic": item.get("IsHistoric", False),
-                                    "shortselling_country": item.get("ShortsellingCountry"),
-                                    "shortselling_country_danish": item.get("ShortsellingCountryDanish"),
-                                    "dfsa_id": item.get("Id", ""),
-                                }
-                            )
-                        except Exception as e:
-                            Error.objects.create(message=f"Could not create announcement: {str(item)[:450]}]")
-                else:
-                    Error.objects.create(message=f"Failed to fetch announcements. Status code: {response.status_code}")
-                    raise CommandError(f'Error occurred: {str(e)}')
+                    try:
+                        _ = Announcement.objects.update_or_create(
+                            stock=stock,
+                            announcement_number=item["AnnouncementNumber"],
+                            issuer_name=item["IssuerName"],
+                            defaults={
+                                "announced_company_name": item.get("AnnouncedCompanyName"),
+                                "cvr_company_name": item.get("CVRCompanyName"),
+                                "headline": item.get("Headline"),
+                                "headline_danish": item.get("HeadlineDanish"),
+                                "shortselling_type": item.get("ShortsellingType"),
+                                "status": item.get("Status"),
+                                "type": item.get("Type"),
+                                "notification_datetime_to_company": parse_datetime(
+                                    item.get("NotificationDateTimeToCompany"))
+                                if item.get("NotificationDateTimeToCompany") else None,
+                                "publication_date": parse_datetime(item.get("PublicationDate"))
+                                if item.get("PublicationDate") else None,
+                                "published_date": parse_datetime(item.get("PublishedDate")),
+                                "registration_date": parse_datetime(item.get("RegistrationDate")),
+                                "registration_datetime": parse_datetime(item.get("RegistrationDateTime")),
+                                "is_historic": item.get("IsHistoric", False),
+                                "shortselling_country": item.get("ShortsellingCountry"),
+                                "shortselling_country_danish": item.get("ShortsellingCountryDanish"),
+                                "dfsa_id": item.get("Id", ""),
+                            }
+                        )
+                    except Exception as e:
+                        Error.objects.create(message=f"Could not create announcement: {str(item)[:450]}]")
+            else:
+                Error.objects.create(message=f"Failed to fetch announcements. Status code: {response.status_code}")
+                raise CommandError(f'Error occurred: {str(e)}')
 
         except Exception as e:
             Error.objects.create(message=str(e)[:500])
