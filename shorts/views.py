@@ -49,7 +49,8 @@ class ShortSellerView(GenericViewSet, RetrieveAPIView):
         return Response(serializer.data)
 
 
-ShortedStockDetailsResponse = namedtuple('ShortedStockDetailsResponse', ['chartValues', 'historic', 'sellers'])
+ShortedStockDetailsResponse = namedtuple('ShortedStockDetailsResponse', ['chartValues', 'historic', 'sellers',
+                                                                         'announcements'])
 
 FIRST_ENTRY_DATE = date(2023, 11, 6)
 
@@ -69,6 +70,10 @@ class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
 
             chart_values = list(stock.shortpositionchart_set.all().order_by('-date'))
 
+            one_month_ago = datetime.now() - timedelta(days=30)
+            announcements = stock.announcement_set.filter(published_date__gte=one_month_ago).order_by(
+                '-published_date')
+
             days_difference = (date.today() - FIRST_ENTRY_DATE).days
 
             missing_count = days_difference + 1 - len(chart_values)
@@ -86,7 +91,7 @@ class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
 
             sellers = stock.shortseller_set.all().order_by('-date')
 
-            response = ShortedStockDetailsResponse(chart_values, historic, sellers)
+            response = ShortedStockDetailsResponse(chart_values, historic, sellers, announcements)
 
             return Response(self.get_serializer(response).data)
         except Stock.DoesNotExist:

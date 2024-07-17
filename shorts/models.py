@@ -49,3 +49,35 @@ class ShortPositionChart(models.Model):
     value = models.FloatField()
     date = models.DateField()
     timestamp = models.DateTimeField()
+
+
+class Announcement(models.Model):
+    stock = models.ForeignKey(Stock, on_delete=models.PROTECT)
+    announced_company_name = models.CharField(max_length=150)
+    announcement_number = models.CharField(max_length=20)
+    cvr_company_name = models.CharField(max_length=150, null=True, blank=True)
+    headline = models.CharField(max_length=600)
+    headline_danish = models.CharField(max_length=600)
+    issuer_name = models.CharField(max_length=150, null=True, blank=True)
+    shortselling_type = models.CharField(max_length=30, null=True, blank=True)
+    status = models.CharField(max_length=30)
+    type = models.CharField(max_length=30)
+    notification_datetime_to_company = models.DateTimeField(null=True, blank=True)
+    publication_date = models.DateTimeField(null=True, blank=True)
+    published_date = models.DateTimeField()
+    registration_date = models.DateTimeField()
+    registration_datetime = models.DateTimeField()
+    is_historic = models.BooleanField(null=True, blank=True)
+    shortselling_country = models.CharField(max_length=70, null=True, blank=True)
+    shortselling_country_danish = models.CharField(max_length=70, null=True, blank=True)
+    dfsa_id = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.announcement_number
+
+
+class CompanyMap(models.Model):
+    announced_company_name = models.CharField(max_length=150)
+    issuer_name = models.CharField(max_length=150, null=True, blank=True)
+    stock = models.ForeignKey(Stock, on_delete=models.PROTECT, null=True, blank=True)
+    handled = models.BooleanField(default=False)

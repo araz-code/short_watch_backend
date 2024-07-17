@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from shorts.models import ShortPosition, ShortSeller, ShortPositionChart
+from shorts.models import ShortPosition, ShortSeller, ShortPositionChart, Announcement
 
 
 class ShortPositionSerializer(serializers.ModelSerializer):
@@ -56,7 +56,20 @@ class ShortPositionChartSerializer(serializers.ModelSerializer):
         fields = ('timestamp', 'value')
 
 
+class AnnouncementSerializer(serializers.ModelSerializer):
+    publishedDate = serializers.DateTimeField(source='published_date', format='%Y-%m-%dT%H:%M:%S%z')
+    headlineDanish = serializers.DateTimeField(source='headline_danish')
+    dfsaId = serializers.DateTimeField(source='dfsa_id')
+
+    class Meta:
+        model = Announcement
+        fields = ('publishedDate', 'headline', 'headlineDanish', 'type', 'dfsaId')
+
+
 class ShortPositionDetailSerializer(serializers.Serializer):
     chartValues = ShortPositionChartSerializer(many=True)
     historic = ShortPositionSerializer(many=True)
     sellers = ShortSellerSerializer(many=True)
+    announcements = AnnouncementSerializer(many=True)
+
+

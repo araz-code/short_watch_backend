@@ -3,17 +3,21 @@ from datetime import datetime
 import pytz
 from django.core.management.base import BaseCommand, CommandError
 import time
+import requests
 
 from django.db import transaction
-from django.db.models import Max
+from django.db.models import Max, Q
 from django.utils import timezone
+from django.utils.dateparse import parse_datetime
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 
 from errors.models import Error
 from request_logging.service import delete_old_logs, process_visits
-from shorts.models import ShortPosition, RunStatus, ShortSeller, ShortPositionChart, Stock
+from short_watch_backend.settings import ANNOUNCEMENT_API_KEY
+from shorts.models import ShortPosition, RunStatus, ShortSeller, ShortPositionChart, Stock, Announcement, \
+    CompanyMap
 
 copenhagen_timezone = pytz.timezone('Europe/Copenhagen')
 
@@ -23,6 +27,12 @@ class Command(BaseCommand):
 
     SHORTS_SITE_URL = 'https://oam.finanstilsynet.dk/#!/stats-and-extracts-short-net-positions'
     HOLDERS_SITE_URL = 'https://oam.finanstilsynet.dk/#!/stats-and-extracts-individual-short-net-positions'
+    ANNOUNCEMENTS_SITE_URL = 'https://ft-api.prod.oam.finanstilsynet.dk/external/v0.1/trigger/dfsa-search-announcement'
+
+    ANNOUNCEMENTS_HEADER = {
+        'Content-Type': 'application/json',
+        'Authorization': f'Bearer {ANNOUNCEMENT_API_KEY}'
+    }
 
     MAX_RETRIES = 2
     RETRY_SLEEP_INTERVAL = 60
@@ -38,6 +48,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         driver = self._get_webdriver()
+
+        self.fetch_announcements()
 
         self.fetch_short_positions(driver)
 
@@ -86,6 +98,69 @@ class Command(BaseCommand):
             ShortSeller.objects.all().delete()
 
             ShortSeller.objects.bulk_create(holders_data)
+
+        except Exception as e:
+            Error.objects.create(message=str(e)[:500])
+            raise CommandError(f'Error occurred: {str(e)}')
+
+    def fetch_announcements(self):
+        try:
+            for i in range(0, 30):
+
+                body = {
+                    "SortField": "RegistrationDate",
+                    "Ascending": False,
+                    "Skip": i*100,
+                    "Take": 100,
+                    "Status": [
+                        "Not Published"
+                    ],
+                    "IncludeHistoric": True
+                }
+
+                response = requests.post(self.ANNOUNCEMENTS_SITE_URL, json=body, headers=self.ANNOUNCEMENTS_HEADER)
+
+                if response.status_code == 200:
+                    announcements = response.json()['data']
+                    for item in announcements:
+                        stock = self.get_stock_for_announcement(item.get('IssuerName'),
+                                                                item.get('AnnouncedCompanyName'))
+
+                        if not stock:
+                            continue
+
+                        try:
+                            _ = Announcement.objects.update_or_create(
+                                stock=stock,
+                                announcement_number=item["AnnouncementNumber"],
+                                issuer_name=item["IssuerName"],
+                                defaults={
+                                    "announced_company_name": item.get("AnnouncedCompanyName"),
+                                    "cvr_company_name": item.get("CVRCompanyName"),
+                                    "headline": item.get("Headline"),
+                                    "headline_danish": item.get("HeadlineDanish"),
+                                    "shortselling_type": item.get("ShortsellingType"),
+                                    "status": item.get("Status"),
+                                    "type": item.get("Type"),
+                                    "notification_datetime_to_company": parse_datetime(
+                                        item.get("NotificationDateTimeToCompany"))
+                                    if item.get("NotificationDateTimeToCompany") else None,
+                                    "publication_date": parse_datetime(item.get("PublicationDate"))
+                                    if item.get("PublicationDate") else None,
+                                    "published_date": parse_datetime(item.get("PublishedDate")),
+                                    "registration_date": parse_datetime(item.get("RegistrationDate")),
+                                    "registration_datetime": parse_datetime(item.get("RegistrationDateTime")),
+                                    "is_historic": item.get("IsHistoric", False),
+                                    "shortselling_country": item.get("ShortsellingCountry"),
+                                    "shortselling_country_danish": item.get("ShortsellingCountryDanish"),
+                                    "dfsa_id": item.get("Id", ""),
+                                }
+                            )
+                        except Exception as e:
+                            Error.objects.create(message=f"Could not create announcement: {str(item)[:450]}]")
+                else:
+                    Error.objects.create(message=f"Failed to fetch announcements. Status code: {response.status_code}")
+                    raise CommandError(f'Error occurred: {str(e)}')
 
         except Exception as e:
             Error.objects.create(message=str(e)[:500])
@@ -148,7 +223,7 @@ class Command(BaseCommand):
 
                 count_new_closed_shorts = 0
                 with transaction.atomic():
-                    subquery = ShortPosition.objects.values('stock__code', 'stock__name')\
+                    subquery = ShortPosition.objects.values('stock__code', 'stock__name') \
                         .annotate(max_timestamp=Max('timestamp'))
                     distinct_stocks = ShortPosition.objects.filter(timestamp__in=subquery.values('max_timestamp'))
 
@@ -199,11 +274,28 @@ class Command(BaseCommand):
     @staticmethod
     def get_or_create_stock(code, name):
         try:
-            # Try to get the existing stock
             stock = Stock.objects.get(code=code)
         except Stock.DoesNotExist:
-            # If it doesn't exist, create a new one
             stock = Stock(code=code, name=name, symbol=name[:20])
             stock.save()
 
         return stock
+
+    @staticmethod
+    def get_stock_for_announcement(issuer_name, announced_company_name):
+        stock_name = issuer_name if issuer_name else announced_company_name
+
+        try:
+            return Stock.objects.get(name=stock_name)
+        except Stock.DoesNotExist:
+            try:
+                if issuer_name:
+                    return CompanyMap.objects.get(issuer_name=issuer_name).stock
+                elif announced_company_name:
+                    return CompanyMap.objects.get(announced_company_name=announced_company_name).stock
+                else:
+                    return None
+            except CompanyMap.DoesNotExist:
+                CompanyMap.objects.create(announced_company_name=announced_company_name,
+                                          issuer_name=issuer_name)
+                return None

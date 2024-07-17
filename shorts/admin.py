@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.admin import display
 
-from shorts.models import ShortPosition, RunStatus, Stock, ShortSeller, ShortPositionChart
+from shorts.models import ShortPosition, RunStatus, Stock, ShortSeller, ShortPositionChart, CompanyMap, Announcement
 
 
 @admin.register(ShortPosition)
@@ -135,3 +135,58 @@ class ShortPositionChartAdmin(admin.ModelAdmin):
 
     def has_delete_permission(self, request, obj=None):
         return True
+
+
+@admin.register(CompanyMap)
+class CompanyMapAdmin(admin.ModelAdmin):
+    list_display = ('announced_company_name', 'issuer_name', 'code', 'symbol', 'name', 'handled')
+    ordering = ('announced_company_name', 'issuer_name')
+    list_filter = ('handled',)
+
+    @staticmethod
+    @display(description='code', ordering='stock__code')
+    def code(obj: ShortPosition) -> str:
+        if obj.stock:
+            return obj.stock.code
+        return '-'
+
+    @staticmethod
+    @display(description='symbol', ordering='stock__symbol')
+    def symbol(obj: ShortPosition) -> str:
+        if obj.stock:
+            return obj.stock.symbol
+        return '-'
+
+    @staticmethod
+    @display(description='name', ordering='stock__name')
+    def name(obj: ShortPosition) -> str:
+        if obj.stock:
+            return obj.stock.name
+        return '-'
+
+
+@admin.register(Announcement)
+class AnnouncementAdmin(admin.ModelAdmin):
+    list_display = ('published_date', 'name', 'headline')
+    ordering = ('published_date',)
+
+    @staticmethod
+    @display(description='code', ordering='stock__code')
+    def code(obj: ShortPosition) -> str:
+        if obj.stock:
+            return obj.stock.code
+        return '-'
+
+    @staticmethod
+    @display(description='symbol', ordering='stock__symbol')
+    def symbol(obj: ShortPosition) -> str:
+        if obj.stock:
+            return obj.stock.symbol
+        return '-'
+
+    @staticmethod
+    @display(description='name', ordering='stock__name')
+    def name(obj: ShortPosition) -> str:
+        if obj.stock:
+            return obj.stock.name
+        return '-'
