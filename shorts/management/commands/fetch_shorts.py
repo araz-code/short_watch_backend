@@ -257,7 +257,8 @@ class Command(BaseCommand):
                     short_data = []
 
                     for short_position in short_positions:
-                        corrected_datetime = datetime.strptime(short_position['LastReported'], '%Y-%m-%dT%H:%M:%S.%fZ')
+                        corrected_datetime = datetime.strptime(short_position['LastReported'],
+                                                               '%Y-%m-%dT%H:%M:%S.%fZ')
                         code = short_position['IssuerCode']
                         name = short_position['IssuerName2']
                         value = round(short_position['TotalPercentageShareCapital'], 2)
@@ -273,10 +274,15 @@ class Command(BaseCommand):
                     with transaction.atomic():
                         for short in short_data:
                             short_codes.append(short.stock.code)
+
+                            timestamp_start = short.timestamp.replace(microsecond=0)
+                            timestamp_end = timestamp_start + timedelta(seconds=1)
+
                             existing_short = ShortPosition.objects.filter(
                                 stock=short.stock,
                                 value=short.value,
-                                timestamp=short.timestamp,
+                                timestamp__gte=timestamp_start,
+                                timestamp__lt=timestamp_end,
                             ).first()
 
                             if existing_short is None:
@@ -381,10 +387,15 @@ class Command(BaseCommand):
                 with transaction.atomic():
                     for short in short_data:
                         short_codes.append(short.stock.code)
+
+                        timestamp_start = short.timestamp.replace(microsecond=0)
+                        timestamp_end = timestamp_start + timedelta(seconds=1)
+
                         existing_short = ShortPosition.objects.filter(
                             stock=short.stock,
                             value=short.value,
-                            timestamp=short.timestamp,
+                            timestamp__gte=timestamp_start,
+                            timestamp__lt=timestamp_end,
                         ).first()
 
                         if existing_short is None:
