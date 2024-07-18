@@ -27,6 +27,7 @@ class Command(BaseCommand):
 
     SHORTS_SITE_URL = 'https://oam.finanstilsynet.dk/#!/stats-and-extracts-short-net-positions'
     HOLDERS_SITE_URL = 'https://oam.finanstilsynet.dk/#!/stats-and-extracts-individual-short-net-positions'
+
     ANNOUNCEMENTS_SITE_URL = 'https://ft-api.prod.oam.finanstilsynet.dk/external/v0.1/trigger/dfsa-search-announcement'
 
     ANNOUNCEMENTS_HEADERS = {
@@ -67,6 +68,26 @@ class Command(BaseCommand):
         'sortedFields': []
     }
 
+    import requests
+
+    SHORT_POSITIONS_URL = "https://ft-api.prod.oam.finanstilsynet.dk/api/v0.1/widget/" \
+                          "ad758542-8116-4055-95b3-ad57011ba36a/data"
+
+    SHORT_POSITIONS_HEADERS = {
+        'authorization': ANNOUNCEMENT_API_KEY,
+        'workersiteid': 'cc2aa132-ec77-4a8c-95af-abb101459cbc',
+    }
+
+    SHORT_POSITIONS_BODY = {
+        'Pagination': {'PageIndex': 1, 'PageSize': 75},
+        'clauses': None,
+        'container': {
+            'ContainerId': '7c3b384b-0762-49b0-a07e-ad57011c2812',
+            'ContainerType': 'WidgetContainer'
+        },
+        'sortedFields': []
+    }
+
     MAX_RETRIES = 2
     RETRY_SLEEP_INTERVAL = 60
 
@@ -84,10 +105,10 @@ class Command(BaseCommand):
 
         self.fetch_announcements()
 
-        self.fetch_short_positions(driver)
+        self.fetch_short_positions_requests(driver)
 
         # if self.is_within_range_around_whole_hour():
-        self.fetch_short_sellers_request(driver)
+        self.fetch_short_sellers_requests(driver)
 
         driver.quit()
 
@@ -102,7 +123,7 @@ class Command(BaseCommand):
         # Check if the current time is within the specified range around whole hours
         return current_minutes <= minutes_around or current_minutes >= 60 - minutes_around
 
-    def fetch_short_sellers_request(self, driver):
+    def fetch_short_sellers_requests(self, driver):
         try:
             response = requests.post(self.SHORT_SELLER_URL, headers=self.SHORT_SELLER_HEADERS,
                                      json=self.SHORT_SELLER_BODY)
@@ -222,7 +243,109 @@ class Command(BaseCommand):
             Error.objects.create(message=str(e)[:500])
             raise CommandError(f'Error occurred: {str(e)}')
 
-    def fetch_short_positions(self, driver):
+    def fetch_short_positions_requests(self, driver):
+        retry_count = 0
+
+        while retry_count < self.MAX_RETRIES:
+            try:
+                response = requests.post(self.SHORT_POSITIONS_URL, headers=self.SHORT_POSITIONS_HEADERS,
+                                         json=self.SHORT_POSITIONS_BODY)
+
+                if response.status_code == 200:
+                    short_positions = response.json()['data']
+
+
+                    short_data = []
+
+                    for short_position in short_positions:
+                        corrected_datetime = datetime.strptime(short_position['LastReported'], '%Y-%m-%dT%H:%M:%S.%fZ')
+                        code = short_position['IssuerCode']
+                        name = short_position['IssuerName2']
+                        value = short_position['TotalPercentageShareCapital']
+
+                        short_data.append(
+                            ShortPosition(stock=self.get_or_create_stock(code, name),
+                                          value=value,
+                                          timestamp=copenhagen_timezone.localize(corrected_datetime))
+                        )
+
+                    short_codes = []
+                    with transaction.atomic():
+                        for short in short_data:
+                            short_codes.append(short.stock.code)
+                            existing_short = ShortPosition.objects.filter(
+                                stock=short.stock,
+                                value=short.value,
+                                timestamp=short.timestamp,
+                            ).first()
+
+                            if existing_short is None:
+                                short.save()
+
+                            now = timezone.now()
+                            ShortPositionChart.objects.update_or_create(
+                                stock=short.stock,
+                                date=now,
+                                defaults={
+                                    'value': short.value,
+                                    'timestamp': now
+                                }
+                            )
+
+                    count_new_closed_shorts = 0
+                    with transaction.atomic():
+                        subquery = ShortPosition.objects.values('stock__code', 'stock__name') \
+                            .annotate(max_timestamp=Max('timestamp'))
+                        distinct_stocks = ShortPosition.objects.filter(timestamp__in=subquery.values('max_timestamp'))
+
+                        for short in distinct_stocks:
+                            if short.stock.code not in short_codes:
+                                if short.value != 0:
+                                    count_new_closed_shorts += 1
+
+                        if count_new_closed_shorts > 2:
+                            Error.objects.create(message=f'An unexpected number of shorts got closed: '
+                                                         f'{count_new_closed_shorts}. Most be an error.')
+                        else:
+                            for short in distinct_stocks:
+                                if short.stock.code not in short_codes:
+                                    if short.value != 0:
+                                        ShortPosition(stock=short.stock,
+                                                      value=0.0,
+                                                      timestamp=timezone.now()).save()
+
+                                        Error.objects.create(message=f'Short position for {short.stock.symbol} got closed!'
+                                                                     f' Check if error.')
+
+                                    now = timezone.now()
+                                    ShortPositionChart.objects.update_or_create(
+                                        stock=short.stock,
+                                        date=now,
+                                        defaults={
+                                            'value': 0.0,
+                                            'timestamp': now
+                                        }
+                                    )
+
+                    RunStatus.objects.create()
+                else:
+                    Error.objects.create(message="fetch_short_positions_selenium was run instead")
+                    self.fetch_short_positions_selenium(driver)
+
+                break
+            except Exception as e:
+                retry_count += 1
+                Error.objects.create(message=f'Retrying ({retry_count}/{self.MAX_RETRIES}) after '
+                                             f'{self.RETRY_SLEEP_INTERVAL} seconds., Error occurred: {str(e)}'[:500])
+
+                time.sleep(self.RETRY_SLEEP_INTERVAL)
+
+        else:
+            message = f'Max retries ({self.MAX_RETRIES}) reached. Command failed.'
+            Error.objects.create(message=message)
+            raise CommandError(message)
+
+    def fetch_short_positions_selenium(self, driver):
         retry_count = 0
 
         while retry_count < self.MAX_RETRIES:
