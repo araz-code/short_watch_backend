@@ -86,8 +86,8 @@ class Command(BaseCommand):
 
         self.fetch_short_positions(driver)
 
-        if self.is_within_range_around_whole_hour():
-            self.fetch_short_sellers_request(driver)
+        # if self.is_within_range_around_whole_hour():
+        self.fetch_short_sellers_request(driver)
 
         driver.quit()
 
