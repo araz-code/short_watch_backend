@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import pytz
 from django.core.management.base import BaseCommand, CommandError
@@ -6,7 +6,7 @@ import time
 import requests
 
 from django.db import transaction
-from django.db.models import Max, Q
+from django.db.models import Max
 from django.utils import timezone
 from django.utils.dateparse import parse_datetime
 from selenium import webdriver
@@ -29,7 +29,7 @@ class Command(BaseCommand):
     HOLDERS_SITE_URL = 'https://oam.finanstilsynet.dk/#!/stats-and-extracts-individual-short-net-positions'
     ANNOUNCEMENTS_SITE_URL = 'https://ft-api.prod.oam.finanstilsynet.dk/external/v0.1/trigger/dfsa-search-announcement'
 
-    ANNOUNCEMENTS_HEADER = {
+    ANNOUNCEMENTS_HEADERS = {
         'Content-Type': 'application/json',
         'Authorization': f'Bearer {ANNOUNCEMENT_API_KEY}'
     }
@@ -43,6 +43,28 @@ class Command(BaseCommand):
             'Not Published'
         ],
         'IncludeHistoric': True
+    }
+
+    SHORT_SELLER_URL = 'https://ft-api.prod.oam.finanstilsynet.dk/api/v0.1/widget/' \
+                       'd158b82c-e9b7-4384-b8d2-ad570127ba11/data'
+
+    SHORT_SELLER_HEADERS = {
+        f'authorization': ANNOUNCEMENT_API_KEY,
+        'content-type': 'application/json',
+        'workersiteid': 'cc2aa132-ec77-4a8c-95af-abb101459cbc',
+    }
+
+    SHORT_SELLER_BODY = {
+        'Pagination': {
+            'PageIndex': 1,
+            'PageSize': 75
+        },
+        'clauses': None,
+        'container': {
+            'ContainerId': 'a4939c8d-510e-44e2-8b75-ad5701285484',
+            'ContainerType': 'WidgetContainer'
+        },
+        'sortedFields': []
     }
 
     MAX_RETRIES = 2
@@ -64,8 +86,8 @@ class Command(BaseCommand):
 
         self.fetch_short_positions(driver)
 
-        # if self.is_within_range_around_whole_hour():
-        self.fetch_short_sellers(driver)
+        if self.is_within_range_around_whole_hour():
+            self.fetch_short_sellers_request(driver)
 
         driver.quit()
 
@@ -80,7 +102,42 @@ class Command(BaseCommand):
         # Check if the current time is within the specified range around whole hours
         return current_minutes <= minutes_around or current_minutes >= 60 - minutes_around
 
-    def fetch_short_sellers(self, driver):
+    def fetch_short_sellers_request(self, driver):
+        try:
+            response = requests.post(self.SHORT_SELLER_URL, headers=self.SHORT_SELLER_HEADERS,
+                                     json=self.SHORT_SELLER_BODY)
+
+            if response.status_code == 200:
+                sellers = response.json()['data']
+
+                holders_data = []
+
+                for seller in sellers:
+                    # The site itself has +1 day for some reason.
+                    corrected_date = datetime.strptime(seller['PositionDate'], '%Y-%m-%dT%H:%M:%SZ') + timedelta(days=1)
+                    stock_code = seller['IssuerCode']
+                    stock_name = seller['IssuerName']
+
+                    holders_data.append(
+                        ShortSeller(stock=self.get_or_create_stock(stock_code, stock_name),
+                                    name=seller['Positionsholder'],
+                                    business_id=seller['PositionsholderCVR'],
+                                    value=float(seller['TotalPercentageShareCapital']),
+                                    date=corrected_date.strftime('%Y-%m-%d'))
+                    )
+
+                ShortSeller.objects.all().delete()
+
+                ShortSeller.objects.bulk_create(holders_data)
+            else:
+                Error.objects.create(message="fetch_short_sellers_selenium was run instead")
+                self.fetch_short_sellers_selenium(driver)
+
+        except Exception as e:
+            Error.objects.create(message=str(e)[:500])
+            raise CommandError(f'Error occurred: {str(e)}')
+
+    def fetch_short_sellers_selenium(self, driver):
         try:
             driver.get(self.HOLDERS_SITE_URL)
             time.sleep(15)
@@ -117,7 +174,7 @@ class Command(BaseCommand):
     def fetch_announcements(self):
         try:
             response = requests.post(self.ANNOUNCEMENTS_SITE_URL, json=self.ANNOUNCEMENTS_BODY,
-                                     headers=self.ANNOUNCEMENTS_HEADER)
+                                     headers=self.ANNOUNCEMENTS_HEADERS)
 
             if response.status_code == 200:
                 announcements = response.json()['data']
