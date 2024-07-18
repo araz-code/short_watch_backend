@@ -105,7 +105,7 @@ class Command(BaseCommand):
 
         self.fetch_announcements()
 
-        self.fetch_short_positions_selenium(driver)
+        self.fetch_short_positions_requests(driver)
 
         # if self.is_within_range_around_whole_hour():
         self.fetch_short_sellers_requests(driver)
@@ -254,19 +254,19 @@ class Command(BaseCommand):
                 if response.status_code == 200:
                     short_positions = response.json()['data']
 
-
                     short_data = []
 
                     for short_position in short_positions:
                         corrected_datetime = datetime.strptime(short_position['LastReported'], '%Y-%m-%dT%H:%M:%S.%fZ')
                         code = short_position['IssuerCode']
                         name = short_position['IssuerName2']
-                        value = short_position['TotalPercentageShareCapital']
+                        value = round(short_position['TotalPercentageShareCapital'], 2)
 
+                        utc_datetime = pytz.utc.localize(corrected_datetime)
                         short_data.append(
                             ShortPosition(stock=self.get_or_create_stock(code, name),
                                           value=value,
-                                          timestamp=copenhagen_timezone.localize(corrected_datetime))
+                                          timestamp=utc_datetime.astimezone(copenhagen_timezone))
                         )
 
                     short_codes = []
