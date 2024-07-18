@@ -105,7 +105,7 @@ class Command(BaseCommand):
 
         self.fetch_announcements()
 
-        self.fetch_short_positions_requests(driver)
+        self.fetch_short_positions_selenium(driver)
 
         # if self.is_within_range_around_whole_hour():
         self.fetch_short_sellers_requests(driver)
