@@ -11,7 +11,7 @@ const RadioButtonToggle: React.FC<{
     <div className="">
       <div className="inline-flex rounded-xl">
         {options.map((option, index) => (
-          <div key={option} >
+          <div key={option}>
             <input
               type="radio"
               name={`${option}-${index}`}
@@ -23,8 +23,7 @@ const RadioButtonToggle: React.FC<{
             />
             <label
               htmlFor={`${option}-${index}`}
-              className="block text-sm cursor-pointer select-none rounded-xl px-3 py-1 text-center peer-checked:bg-blue-500 peer-checked:font-medium peer-checked:text-white dark:text-white"
-
+              className="block text-xs-plus sm:text-sm cursor-pointer select-none rounded-xl px-3 py-1 text-center peer-checked:bg-blue-500 peer-checked:font-medium peer-checked:text-white dark:text-white"
             >
               {t(option)}
             </label>

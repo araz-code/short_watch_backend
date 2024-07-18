@@ -14,9 +14,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
 import ShortSeller from "../models/ShortSeller";
+import Announcement from "../models/Announcement";
+import AnnouncementRow from "../components/AnnouncementRow";
+
 //import advertisement from "../static/stresstilbud.jpg";
 
-const detailOptions = ["Historic data", "Largest sellers"];
+const detailOptions = ["Historic data", "Largest sellers", "Announcements"];
 const periodOptions = ["1W", "1M", "3M", "6M", "YTD", "Max."];
 
 const processChartValues = (
@@ -108,6 +111,12 @@ const ShortPositionDetailsPage: React.FC = () => {
     const savedMyList = localStorage.getItem("myList");
     return savedMyList ? JSON.parse(savedMyList) : [];
   });
+  const [isChartVisible, setIsChartVisible] = useState(
+    selectedDetailOption !== "Announcements"
+  );
+  const [chartDisplay, setChartDisplay] = useState(true);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
   const code = searchParams.get("code");
   const isFavorite = code ? myList.includes(code) : false;
 
@@ -121,10 +130,31 @@ const ShortPositionDetailsPage: React.FC = () => {
       }),
   });
 
+  const handleResize = () => {
+    setIsMobile(window.innerWidth <= 768);
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   useEffect(() => {
     localStorage.setItem("selectedPeriod", selectedPeriod);
     localStorage.setItem("myList", JSON.stringify(myList));
   }, [selectedPeriod, myList]);
+
+  useEffect(() => {
+    if (selectedDetailOption !== "Announcements") {
+      setIsChartVisible(true);
+      setChartDisplay(true);
+    } else if (isMobile) {
+      setIsChartVisible(false);
+      setTimeout(() => setChartDisplay(false), 190);
+    }
+  }, [selectedDetailOption, isMobile]);
 
   const addToMyList = () => {
     if (code) {
@@ -168,21 +198,34 @@ const ShortPositionDetailsPage: React.FC = () => {
         <p className="text-lg text-center font-bold pb-5 dark:text-white">
           {data.historic.length > 0 && data.historic[0].name}
         </p>
-        <div className="mb-1 px-8 grid w-full place-content-end">
-          <div className="overflow-x-auto w-full pb-3">
-            <ToggleSwitch
-              options={periodOptions}
-              selectedOption={selectedPeriod}
-              onSelectChange={setSelectedPeriod}
-            />
+        {chartDisplay && (
+          <div
+            className={`mb-1 px-8 grid w-full place-content-end ${
+              isChartVisible ? "animate-fadeIn" : "animate-fadeOut"
+            }`}
+          >
+            <div className="overflow-x-auto w-full pb-3">
+              <ToggleSwitch
+                options={periodOptions}
+                selectedOption={selectedPeriod}
+                onSelectChange={setSelectedPeriod}
+              />
+            </div>
           </div>
-        </div>
+        )}
+
         <div className="">
-          <div className="mb-5">
-            <PricePointChart
-              data={processChartValues(data.chartValues, selectedPeriod)}
-            />
-          </div>
+          {chartDisplay && (
+            <div
+              className={`mb-5 ${
+                isChartVisible ? "animate-fadeIn" : "animate-fadeOut"
+              }`}
+            >
+              <PricePointChart
+                data={processChartValues(data.chartValues, selectedPeriod)}
+              />
+            </div>
+          )}
           <div className="mb-5 grid w-full place-items-center">
             <ToggleSwitch
               options={detailOptions}
@@ -222,6 +265,30 @@ const ShortPositionDetailsPage: React.FC = () => {
                     data.sellers.map((seller: ShortSeller) => (
                       <li key={`${seller.name}-${seller.date}`}>
                         <ShortSellerRow {...seller} />
+                      </li>
+                    ))}
+                </ul>
+              </div>
+            </div>
+          )}
+
+          {selectedDetailOption === "Announcements" && (
+            <div className="min-h-[150px] h-[calc(100svh-15rem)]">
+              <div className="overflow-y-auto h-full">
+                <ul className="mx-4">
+                  {data.announcements.length == 0 && (
+                    <div className="flex justify-center mt-10 dark:text-white">
+                      <p className="text-wrap">
+                        {t("No announcements in the last month")}
+                      </p>
+                    </div>
+                  )}
+                  {data.announcements.length > 0 &&
+                    data.announcements.map((announcement: Announcement) => (
+                      <li
+                        key={`${announcement.headline}-${announcement.publishedDate}`}
+                      >
+                        <AnnouncementRow {...announcement} />
                       </li>
                     ))}
                 </ul>

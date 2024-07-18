@@ -19,6 +19,8 @@
     "Max.": "Maks.",
     "Back": "Tilbage",
     "Largest sellers": "Største sælgere",
+    "Announcements": "Indberetninger",
+    "No announcements in the last month": "Ingen meddelelser i den sidste måned",
     "No short sellers with positions equal to or greater than 0.50%": "Ingen short-sælgere med positioner lig med eller større end 0,50%",
     "Data Source": "Datakilde",
     "Every 15 minutes, the data in the app is updated with data from the Danish FSA's website, where information about short positions is continuously published. The timestamps for updates of short positions are based on the Danish FSA's data, not on the time when we fetched the information.": "Hver 15. minut opdateres data i appen med data fra Finanstilsynets hjemmeside, hvor oplysninger om shortpositioner løbende offentliggøres. Tidsstemplerne for opdateringerne af shortpositioner er baseret på Finanstilsynets data, ikke på det tidspunkt, hvor vi har hentet informationerne.",
