@@ -174,7 +174,7 @@ const ShortWatchPage: React.FC = () => {
                       className="text-blue-500 text-center font-medium align-middle bg-transparent border-none text ml-5"
                       onClick={() => setShowMyList(!showMyList)}
                     >
-                      {showMyList ? t("My list") : t("All shorts")}
+                      {showMyList ? t("All shorts") : t("My list")}
                     </button>
                   </div>
                   <button
