@@ -158,12 +158,12 @@ const ShortPositionDetailsPage: React.FC = () => {
     }
 
     if (selectedDetailOption === "Announcements") {
-      clicked("announcements-clicked");
+      clicked(`announcements-clicked-${code && code.toLowerCase()}`);
     }
     if (selectedDetailOption === "Largest sellers") {
-      clicked("largest-sellers-clicked");
+      clicked(`largest-sellers-clicked-${code && code.toLowerCase()}`);
     }
-  }, [selectedDetailOption, isMobile]);
+  }, [selectedDetailOption, isMobile, code]);
 
   const addToMyList = () => {
     if (code) {
