@@ -2,7 +2,7 @@ import { useQuery } from "react-query";
 import PricePoint from "../models/PricePoint";
 import PricePointRow from "../components/PricePointRow";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { fetchShortPositionDetails } from "../apis/ShortPositionAPI";
+import { clicked, fetchShortPositionDetails } from "../apis/ShortPositionAPI";
 import PricePointChart from "../components/PricePointChart";
 import ToggleSwitch from "../components/UI/RadioButtonToggle";
 import { useEffect, useState } from "react";
@@ -75,6 +75,8 @@ const processChartValues = (
         new Date(pricePoint.timestamp).getFullYear() === currentYear
     );
   };
+
+  clicked(`period-changed-to-${period.toLowerCase()}`);
 
   switch (period) {
     case "1W":
@@ -154,17 +156,26 @@ const ShortPositionDetailsPage: React.FC = () => {
       setIsChartVisible(false);
       setTimeout(() => setChartDisplay(false), 190);
     }
+
+    if (selectedDetailOption === "Announcements") {
+      clicked("announcements-clicked");
+    }
+    if (selectedDetailOption === "Largest sellers") {
+      clicked("largest-sellers-clicked");
+    }
   }, [selectedDetailOption, isMobile]);
 
   const addToMyList = () => {
     if (code) {
       setMyList((prev) => [...prev, code]);
+      clicked(`added-to-list-${code.toLowerCase()}`);
     }
   };
 
   const removeFromMyList = () => {
     if (code) {
       setMyList((prev) => prev.filter((item) => item !== code));
+      clicked(`removed-from-list-${code.toLowerCase()}`);
     }
   };
 
