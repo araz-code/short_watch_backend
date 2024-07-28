@@ -284,7 +284,7 @@ const ShortPositionDetailsPage: React.FC = () => {
           )}
 
           {selectedDetailOption === "Announcements" && (
-            <div className="min-h-[150px] h-[calc(100svh-15rem)]">
+            <div className="min-h-[150px] h-[calc(100svh-14.3rem)] sm:h-[calc(100svh-32.3rem)]">
               <div className="overflow-y-auto h-full">
                 <ul className="mx-4">
                   {data.announcements.length == 0 && (
