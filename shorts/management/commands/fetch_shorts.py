@@ -458,7 +458,8 @@ class Command(BaseCommand):
                             aps=messaging.Aps(
                                 alert=messaging.ApsAlert(
                                     loc_key='YOUR_WATCHLIST_WAS_UPDATED',
-                                )
+                                ),
+                                sound='default'
                             )
                         )
                     ),
