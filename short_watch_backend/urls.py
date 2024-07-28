@@ -34,6 +34,7 @@ urlpatterns = [
     path('v8/shorts/', include('shorts.urls')),
     path('v9/shorts/', include('shorts.urls')),
     path('v10/shorts/', include('shorts.urls')),
+    path('v10/users/', include('users.urls')),
     path('stats/', include('request_logging.urls')),
     path('favicon.png', serve, {'path': 'images/favicon.png', 'document_root': settings.STATIC_ROOT}),
     path('apple-touch-icon-57x57.png', serve,

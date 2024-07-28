@@ -60,10 +60,10 @@ INSTALLED_APPS = [
     "corsheaders",
     'accounts',
     'shorts',
+    'users',
     'errors',
     'request_logging',
     'home_page',
-    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -77,7 +77,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'request_logging.middleware.RequestLoggingMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
     # 'home_page.middleware.CacheControlMiddleware',
 ]
 

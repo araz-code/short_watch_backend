@@ -9,6 +9,8 @@ from django.db import transaction
 from django.db.models import Max
 from django.utils import timezone
 from django.utils.dateparse import parse_datetime
+from firebase_admin.exceptions import InvalidArgumentError
+from firebase_admin.messaging import UnregisteredError
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
@@ -19,7 +21,13 @@ from short_watch_backend.settings import ANNOUNCEMENT_API_KEY
 from shorts.models import ShortPosition, RunStatus, ShortSeller, ShortPositionChart, Stock, Announcement, \
     CompanyMap
 
+import firebase_admin
+from firebase_admin import credentials, messaging
+
 copenhagen_timezone = pytz.timezone('Europe/Copenhagen')
+
+cred = credentials.Certificate("./service-account.json")
+firebase_admin.initialize_app(cred)
 
 
 class Command(BaseCommand):
@@ -270,70 +278,7 @@ class Command(BaseCommand):
                                           timestamp=utc_datetime.astimezone(copenhagen_timezone))
                         )
 
-                    short_codes = []
-                    with transaction.atomic():
-                        for short in short_data:
-                            short_codes.append(short.stock.code)
-
-                            timestamp_start = short.timestamp.replace(microsecond=0)
-                            timestamp_end = timestamp_start + timedelta(seconds=1)
-
-                            existing_short = ShortPosition.objects.filter(
-                                stock=short.stock,
-                                value=short.value,
-                                timestamp__gte=timestamp_start,
-                                timestamp__lt=timestamp_end,
-                            ).first()
-
-                            if existing_short is None:
-                                short.save()
-
-                            now = timezone.now()
-                            ShortPositionChart.objects.update_or_create(
-                                stock=short.stock,
-                                date=now,
-                                defaults={
-                                    'value': short.value,
-                                    'timestamp': now
-                                }
-                            )
-
-                    count_new_closed_shorts = 0
-                    with transaction.atomic():
-                        subquery = ShortPosition.objects.values('stock__code', 'stock__name') \
-                            .annotate(max_timestamp=Max('timestamp'))
-                        distinct_stocks = ShortPosition.objects.filter(timestamp__in=subquery.values('max_timestamp'))
-
-                        for short in distinct_stocks:
-                            if short.stock.code not in short_codes:
-                                if short.value != 0:
-                                    count_new_closed_shorts += 1
-
-                        if count_new_closed_shorts > 2:
-                            Error.objects.create(message=f'An unexpected number of shorts got closed: '
-                                                         f'{count_new_closed_shorts}. Most be an error.')
-                        else:
-                            for short in distinct_stocks:
-                                if short.stock.code not in short_codes:
-                                    if short.value != 0:
-                                        ShortPosition(stock=short.stock,
-                                                      value=0.0,
-                                                      timestamp=timezone.now()).save()
-
-                                        Error.objects.create(message=f'Short position for {short.stock.symbol} got closed!'
-                                                                     f' Check if error.')
-
-                                    now = timezone.now()
-                                    ShortPositionChart.objects.update_or_create(
-                                        stock=short.stock,
-                                        date=now,
-                                        defaults={
-                                            'value': 0.0,
-                                            'timestamp': now
-                                        }
-                                    )
-
-                    RunStatus.objects.create()
+                    self.fetch_short_positions(short_data)
                 else:
                     Error.objects.create(message="fetch_short_positions_selenium was run instead")
                     self.fetch_short_positions_selenium(driver)
@@ -350,6 +295,79 @@ class Command(BaseCommand):
             message = f'Max retries ({self.MAX_RETRIES}) reached. Command failed.'
             Error.objects.create(message=message)
             raise CommandError(message)
+
+    @staticmethod
+    def fetch_short_positions(short_data):
+        short_codes = []
+        users_to_notify = set()
+        with transaction.atomic():
+            for short in short_data:
+                short_codes.append(short.stock.code)
+
+                timestamp_start = short.timestamp.replace(microsecond=0)
+                timestamp_end = timestamp_start + timedelta(seconds=1)
+
+                existing_short = ShortPosition.objects.filter(
+                    stock=short.stock,
+                    value=short.value,
+                    timestamp__gte=timestamp_start,
+                    timestamp__lt=timestamp_end,
+                ).first()
+
+                if existing_short is None:
+                    short.save()
+                    for app_user in short.stock.app_users.all():
+                        users_to_notify.add(app_user)
+
+                now = timezone.now()
+                ShortPositionChart.objects.update_or_create(
+                    stock=short.stock,
+                    date=now,
+                    defaults={
+                        'value': short.value,
+                        'timestamp': now
+                    }
+                )
+        count_new_closed_shorts = 0
+        with transaction.atomic():
+            subquery = ShortPosition.objects.values('stock__code', 'stock__name') \
+                .annotate(max_timestamp=Max('timestamp'))
+            distinct_stocks = ShortPosition.objects.filter(timestamp__in=subquery.values('max_timestamp'))
+
+            for short in distinct_stocks:
+                if short.stock.code not in short_codes:
+                    if short.value != 0:
+                        count_new_closed_shorts += 1
+
+            if count_new_closed_shorts > 2:
+                Error.objects.create(message=f'An unexpected number of shorts got closed: '
+                                             f'{count_new_closed_shorts}. Most be an error.')
+            else:
+                for short in distinct_stocks:
+                    if short.stock.code not in short_codes:
+                        if short.value != 0:
+                            ShortPosition(stock=short.stock,
+                                          value=0.0,
+                                          timestamp=timezone.now()).save()
+
+                            Error.objects.create(message=f'Short position for {short.stock.symbol} got closed!'
+                                                         f' Check if error.')
+
+                            for app_user in short.stock.app_users.all():
+                                users_to_notify.add(app_user)
+
+                        now = timezone.now()
+                        ShortPositionChart.objects.update_or_create(
+                            stock=short.stock,
+                            date=now,
+                            defaults={
+                                'value': 0.0,
+                                'timestamp': now
+                            }
+                        )
+        RunStatus.objects.create()
+        for app_user in users_to_notify:
+            Command.send_push_notification(app_user)
 
     def fetch_short_positions_selenium(self, driver):
         retry_count = 0
@@ -383,70 +401,7 @@ class Command(BaseCommand):
                                       timestamp=copenhagen_timezone.localize(corrected_datetime))
                     )
 
-                short_codes = []
-                with transaction.atomic():
-                    for short in short_data:
-                        short_codes.append(short.stock.code)
-
-                        timestamp_start = short.timestamp.replace(microsecond=0)
-                        timestamp_end = timestamp_start + timedelta(seconds=1)
-
-                        existing_short = ShortPosition.objects.filter(
-                            stock=short.stock,
-                            value=short.value,
-                            timestamp__gte=timestamp_start,
-                            timestamp__lt=timestamp_end,
-                        ).first()
-
-                        if existing_short is None:
-                            short.save()
-
-                        now = timezone.now()
-                        ShortPositionChart.objects.update_or_create(
-                            stock=short.stock,
-                            date=now,
-                            defaults={
-                                'value': short.value,
-                                'timestamp': now
-                            }
-                        )
-
-                count_new_closed_shorts = 0
-                with transaction.atomic():
-                    subquery = ShortPosition.objects.values('stock__code', 'stock__name') \
-                        .annotate(max_timestamp=Max('timestamp'))
-                    distinct_stocks = ShortPosition.objects.filter(timestamp__in=subquery.values('max_timestamp'))
-
-                    for short in distinct_stocks:
-                        if short.stock.code not in short_codes:
-                            if short.value != 0:
-                                count_new_closed_shorts += 1
-
-                    if count_new_closed_shorts > 2:
-                        Error.objects.create(message=f'An unexpected number of shorts got closed: '
-                                                     f'{count_new_closed_shorts}. Most be an error.')
-                    else:
-                        for short in distinct_stocks:
-                            if short.stock.code not in short_codes:
-                                if short.value != 0:
-                                    ShortPosition(stock=short.stock,
-                                                  value=0.0,
-                                                  timestamp=timezone.now()).save()
-
-                                    Error.objects.create(message=f'Short position for {short.stock.symbol} got closed!'
-                                                                 f' Check if error.')
-
-                                now = timezone.now()
-                                ShortPositionChart.objects.update_or_create(
-                                    stock=short.stock,
-                                    date=now,
-                                    defaults={
-                                        'value': 0.0,
-                                        'timestamp': now
-                                    }
-                                )
-
-                RunStatus.objects.create()
+                self.fetch_short_positions(short_data)
 
                 break
             except Exception as e:
@@ -492,3 +447,31 @@ class Command(BaseCommand):
                 Error.objects.create(message=f'A new company was created and needs to be handled: {stock_name}')
 
                 return None
+
+    @staticmethod
+    def send_push_notification(app_user):
+        try:
+            if not app_user.invalid:
+                message = messaging.Message(
+                    apns=messaging.APNSConfig(
+                        payload=messaging.APNSPayload(
+                            aps=messaging.Aps(
+                                alert=messaging.ApsAlert(
+                                    loc_key='YOUR_WATCHLIST_WAS_UPDATED',
+                                )
+                            )
+                        )
+                    ),
+                    token=app_user.fcm_token,
+                )
+                messaging.send(message)
+                app_user.notifications_sent = app_user.notifications_sent + 1
+                app_user.save()
+        except UnregisteredError:
+            Error.objects.create(message=f"FCM token doesn't exist: {app_user.user_id}")
+            app_user.invalid = timezone.now()
+            app_user.save()
+        except InvalidArgumentError:
+            Error.objects.create(message=f"FCM token is invalid: {app_user.user_id}")
+            app_user.invalid = timezone.now()
+            app_user.save()
