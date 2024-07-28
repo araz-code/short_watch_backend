@@ -15,7 +15,7 @@ const ShortPositionRow: React.FC<ShortPositionRowProps> = (props) => {
 
   return (
     <div className="border px-3 py-2 m-2 grid grid-cols-2 place-content-between hover:bg-blue-100 dark:hover:bg-[#aaaaaa] dark:bg-[#212121] dark:text-white">
-      <div className="flex items-center space-x-2">
+      <div className="flex items-baseline space-x-2">
         <div className="font-semibold">{symbol}</div>
         {showCheckmark && (
           <FontAwesomeIcon
