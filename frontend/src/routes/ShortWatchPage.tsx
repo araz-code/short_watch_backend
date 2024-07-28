@@ -188,7 +188,7 @@ const ShortWatchPage: React.FC = () => {
                   </button>
                 </div>
               </div>
-              <div className="overflow-y-auto min-h-[300px] h-[calc(100svh-19.1rem)]">
+              <div className="overflow-y-auto min-h-[300px] h-[calc(100svh-19.1rem)] sm:h-[calc(100svh-20.3rem)]">
                 <p className="text-sm pl-2 dark:text-white">
                   {t("You can get more details by clicking on a row")}
                 </p>
