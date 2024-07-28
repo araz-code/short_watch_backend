@@ -2,16 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: "Open Sans";
-  src: url("fonts/OpenSans-VariableFont_wdth,wght.ttf") format("woff2");
-}
-
-@font-face {
-  font-family: "Inter";
-  src: url("fonts/OpenSans-VariableFont_wdth,wght.ttf") format("woff2");
-}
-
 body {
   font-family: "Inter", "Open Sans", sans-serif;
   font-optical-sizing: auto;
