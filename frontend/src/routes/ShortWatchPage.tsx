@@ -114,13 +114,16 @@ const ShortWatchPage: React.FC = () => {
           </p>
         )}
         {filteredData.length > 0 &&
-          sort(filteredData, selectedSorting).map((short: PricePoint) => (
-            <li key={`${short.code}-${short.timestamp}`}>
-              <Link to={`/short-watch-details?code=${short.code}`}>
-                <ShortPositionRow {...short} />
-              </Link>
-            </li>
-          ))}
+          sort(filteredData, selectedSorting).map((short: PricePoint) => {
+            const showCheckmark = myList.includes(short.code) && !showMyList;
+            return (
+              <li key={`${short.code}-${short.timestamp}`}>
+                <Link to={`/short-watch-details?code=${short.code}`}>
+                  <ShortPositionRow {...short} showCheckmark={showCheckmark} />
+                </Link>
+              </li>
+            );
+          })}
       </ul>
     );
   }
