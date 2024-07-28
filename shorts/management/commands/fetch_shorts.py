@@ -17,7 +17,7 @@ from selenium.webdriver.support.select import Select
 
 from errors.models import Error
 from request_logging.service import delete_old_logs, process_visits
-from short_watch_backend.settings import ANNOUNCEMENT_API_KEY
+from short_watch_backend.settings import ANNOUNCEMENT_API_KEY, FCM_SERVICE_ACCOUNT_FILE
 from shorts.models import ShortPosition, RunStatus, ShortSeller, ShortPositionChart, Stock, Announcement, \
     CompanyMap
 
@@ -26,7 +26,7 @@ from firebase_admin import credentials, messaging
 
 copenhagen_timezone = pytz.timezone('Europe/Copenhagen')
 
-cred = credentials.Certificate("./service-account.json")
+cred = credentials.Certificate(FCM_SERVICE_ACCOUNT_FILE)
 firebase_admin.initialize_app(cred)
 
 

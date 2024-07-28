@@ -26,6 +26,8 @@ FRONTEND_DIR = os.path.join(BASE_DIR, 'frontend')
 
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
+FCM_SERVICE_ACCOUNT_FILE = os.path.join(BASE_DIR, 'service-account.json')
+print(FCM_SERVICE_ACCOUNT_FILE)
 
 
 # Quick-start development settings - unsuitable for production
