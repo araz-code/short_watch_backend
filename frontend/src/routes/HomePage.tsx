@@ -42,7 +42,7 @@ const HomePage: React.FC = () => {
           <Header />
 
           <main className="flex flex-col sm:flex-row sm:max-w-[1000px] sm:justify-end gap-10 sm:h-[70%] mt-10 px-5 self-center sm:px-[20px]">
-            <div className="flex flex-col justify-center justify-items-center sm:pb-0 text-white gap-5 sm:w-[450px]">
+            <div className="flex flex-col justify-center justify-items-center sm:pb-0 text-white gap-5 sm:w-[410px] sm:mr-5">
               <p className="text-2xl text-center sm:text-left sm:text-4xl font-bold">
                 Danish Short Watch
               </p>
