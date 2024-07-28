@@ -3,6 +3,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework_api_key.permissions import HasAPIKey
 
+from errors.models import Error
 from shorts.models import Stock
 from .models import AppUser
 from .serializers import AppUserSerializer, AddRemoveStockSerializer, UpdateNotificationStatusSerializer
@@ -30,7 +31,8 @@ def create_app_user(request):
 
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    Error.objects.create(message=f'Users-create_app_user: {str(serializer.errors)}'[:500])
+    return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view(['POST'])
@@ -48,9 +50,14 @@ def add_stock(request):
             app_user.stocks.add(stock)
             return Response(status=status.HTTP_204_NO_CONTENT)
         except AppUser.DoesNotExist:
-            return Response({'error': 'Unknown user id or stock code.'}, status=status.HTTP_404_NOT_FOUND)
+            Error.objects.create(message=f'Users-add_stock: Unknown user id: {user_id}.'[:500])
+            return Response(status=status.HTTP_204_NO_CONTENT)
         except Stock.DoesNotExist:
-            return Response({'error': 'Unknown user id or stock code.'}, status=status.HTTP_404_NOT_FOUND)
+            Error.objects.create(message=f'Users-add_stock: Unknown stock code: {stock_code}.'[:500])
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+    Error.objects.create(message=f'Users-add_stock: {str(serializer.errors)}'[:500])
+    return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view(['POST'])
@@ -68,9 +75,14 @@ def remove_stock(request):
             app_user.stocks.remove(stock)
             return Response(status=status.HTTP_204_NO_CONTENT)
         except AppUser.DoesNotExist:
-            return Response({'error': 'Unknown user id or stock code.'}, status=status.HTTP_404_NOT_FOUND)
+            Error.objects.create(message=f'Users-remove_stock: Unknown user id: {user_id}.'[:500])
+            return Response(status=status.HTTP_204_NO_CONTENT)
         except Stock.DoesNotExist:
-            return Response({'error': 'Unknown user id or stock code.'}, status=status.HTTP_404_NOT_FOUND)
+            Error.objects.create(message=f'Users-remove_stock: Unknown stock code: {stock_code}.'[:500])
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+    Error.objects.create(message=f'Users-remove_stock: {str(serializer.errors)}'[:500])
+    return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view(['POST'])
@@ -88,6 +100,8 @@ def update_notification_status(request):
 
             return Response(status=status.HTTP_204_NO_CONTENT)
         except AppUser.DoesNotExist:
-            return Response({'error': 'Unknown user id'}, status=status.HTTP_404_NOT_FOUND)
-        except AppUser.DoesNotExist:
-            return Response({'error': 'Unknown user id.'}, status=status.HTTP_404_NOT_FOUND)
+            Error.objects.create(message=f'Users-update_notification_status: Unknown user id: {user_id}.'[:500])
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+    Error.objects.create(message=f'Users-update_notification_status: {str(serializer.errors)}'[:500])
+    return Response(status=status.HTTP_204_NO_CONTENT)
