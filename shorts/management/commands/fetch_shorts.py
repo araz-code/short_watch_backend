@@ -452,6 +452,17 @@ class Command(BaseCommand):
     def send_push_notification(app_user):
         try:
             if not app_user.invalid:
+                current_time = datetime.now(copenhagen_timezone).time()
+
+                # Define quiet hours
+                quiet_start = datetime.now(copenhagen_timezone).replace(hour=21, minute=30).time()
+                quiet_end = datetime.now(copenhagen_timezone).replace(hour=7, minute=30).time()
+
+                if current_time >= quiet_start or current_time < quiet_end:
+                    sound = None
+                else:
+                    sound = 'default'
+
                 message = messaging.Message(
                     apns=messaging.APNSConfig(
                         payload=messaging.APNSPayload(
@@ -459,7 +470,7 @@ class Command(BaseCommand):
                                 alert=messaging.ApsAlert(
                                     loc_key='YOUR_WATCHLIST_WAS_UPDATED',
                                 ),
-                                sound='default'
+                                sound=sound
                             )
                         )
                     ),
