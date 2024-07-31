@@ -451,7 +451,7 @@ class Command(BaseCommand):
     @staticmethod
     def send_push_notification(app_user):
         try:
-            if not app_user.invalid:
+            if not app_user.invalid and app_user.fcm_token:
                 current_time = datetime.now(copenhagen_timezone).time()
 
                 # Define quiet hours
