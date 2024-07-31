@@ -103,16 +103,8 @@ def update_notification_status(request):
 
             return Response(status=status.HTTP_204_NO_CONTENT)
         except AppUser.DoesNotExist:
-            try:
-                AppUser.objects.update_or_create(
-                    user_id=user_id,
-                    defaults={'notification_active': notification_active}
-                )
-                return Response(status=status.HTTP_204_NO_CONTENT)
-            except Exception as e:
-                Error.objects.create(message=f'Users-update_notification_status: error: {user_id} '
-                                             f'- {e}.'[:500])
-                return Response(status=status.HTTP_204_NO_CONTENT)
+            Error.objects.create(message=f'Users-update_notification_status: Unknown user id: {user_id}.'[:500])
+            return Response(status=status.HTTP_204_NO_CONTENT)
 
     Error.objects.create(message=f'Users-update_notification_status: {str(serializer.errors)}'[:500])
     return Response(status=status.HTTP_204_NO_CONTENT)
