@@ -95,14 +95,24 @@ def update_notification_status(request):
         notification_active = serializer.validated_data.get('notification_active')
         try:
             app_user = AppUser.objects.get(user_id=user_id)
+            if app_user.notification_active != notification_active:
+                app_user.old_notification_active = app_user.notification_active
             app_user.notification_active = notification_active
+
             app_user.save()
 
             return Response(status=status.HTTP_204_NO_CONTENT)
         except AppUser.DoesNotExist:
-            Error.objects.create(message=f'Users-update_notification_status: Unknown user id: {user_id} '
-                                         f'- {notification_active}.'[:500])
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            try:
+                AppUser.objects.update_or_create(
+                    user_id=user_id,
+                    defaults={'notification_active': notification_active}
+                )
+                return Response(status=status.HTTP_204_NO_CONTENT)
+            except Exception as e:
+                Error.objects.create(message=f'Users-update_notification_status: error: {user_id} '
+                                             f'- {e}.'[:500])
+                return Response(status=status.HTTP_204_NO_CONTENT)
 
     Error.objects.create(message=f'Users-update_notification_status: {str(serializer.errors)}'[:500])
     return Response(status=status.HTTP_204_NO_CONTENT)
