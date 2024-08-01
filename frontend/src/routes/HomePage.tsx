@@ -57,6 +57,13 @@ const HomePage: React.FC = () => {
                 )}
               </p>
 
+              <p className="sm:text-lg text-wrap text-black border border-gray-300 p-4 rounded-lg bg-white">
+                <span className="font-bold text-blue-700">{t("NEWS: ")}</span>
+                {t(
+                  "The iPhone and iPad app now have push notifications, so you can get notified when your watchlist is updated."
+                )}
+              </p>
+
               <div className="flex flex-wrap justify-center gap-4 align-stretch">
                 <a
                   href="https://apps.apple.com/dk/app/danish-short-watch/id6471075439"
