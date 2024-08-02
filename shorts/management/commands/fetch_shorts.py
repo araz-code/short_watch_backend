@@ -265,8 +265,13 @@ class Command(BaseCommand):
                     short_data = []
 
                     for short_position in short_positions:
-                        corrected_datetime = datetime.strptime(short_position['LastReported'],
-                                                               '%Y-%m-%dT%H:%M:%S.%fZ')
+                        try:
+                            corrected_datetime = datetime.strptime(short_position['LastReported'],
+                                                                   '%Y-%m-%dT%H:%M:%S.%fZ')
+                        except ValueError:
+                            corrected_datetime = datetime.strptime(short_position['LastReported'],
+                                                                   '%Y-%m-%dT%H:%M:%S%Z')
+
                         code = short_position['IssuerCode']
                         name = short_position['IssuerName2']
                         value = round(short_position['TotalPercentageShareCapital'], 2)
