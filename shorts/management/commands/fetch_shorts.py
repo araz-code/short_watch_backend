@@ -270,7 +270,7 @@ class Command(BaseCommand):
                                                                    '%Y-%m-%dT%H:%M:%S.%fZ')
                         except ValueError:
                             corrected_datetime = datetime.strptime(short_position['LastReported'],
-                                                                   '%Y-%m-%dT%H:%M:%S%Z')
+                                                                   '%Y-%m-%dT%H:%M:%SZ')
 
                         code = short_position['IssuerCode']
                         name = short_position['IssuerName2']
