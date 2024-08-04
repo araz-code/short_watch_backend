@@ -232,4 +232,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOW_HEADERS = '*'
 
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = False
+
 CSRF_TRUSTED_ORIGINS = ["https://www.zirium.dk/", "https://www.zirium.dk"]
