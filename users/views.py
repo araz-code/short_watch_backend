@@ -123,7 +123,7 @@ def create_web_user(request):
         user_id = serializer.validated_data.get('user_id')
         consent_accepted = serializer.validated_data.get('consent_accepted')
 
-        app_user, _ = WebUser.objects.get_or_create(user_id=user_id, defaults={"client_ip": get_client_ip})
+        app_user, _ = WebUser.objects.get_or_create(user_id=user_id, defaults={"client_ip": get_client_ip(request)})
 
         if app_user.consent_accepted != consent_accepted:
             app_user.old_consent_accepted = app_user.consent_accepted
