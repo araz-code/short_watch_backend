@@ -9,8 +9,17 @@ const Modal: React.FC<
     okButtonTitle?: string;
     onOk?: () => void;
     onClose: () => void;
+    enableXClose: boolean;
   }>
-> = ({ children, title, closeButtonTitle, okButtonTitle, onOk, onClose }) => {
+> = ({
+  children,
+  title,
+  closeButtonTitle,
+  okButtonTitle,
+  onOk,
+  onClose,
+  enableXClose,
+}) => {
   const { t } = useTranslation();
 
   return createPortal(
@@ -22,14 +31,16 @@ const Modal: React.FC<
             {/*header*/}
             <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
               <h3 className="text-xl font-semibold">{title}</h3>
-              <button
-                className="p-1 ml-auto bg-red border-0 float-right text-3xl leading-none font-semibold outline-none focus:outline-none text-black"
-                onClick={onClose}
-              >
-                <span className="bg-transparent text-black h-6 w-6 text-2xl block outline-none focus:outline-none dark:text-white">
-                  ×
-                </span>
-              </button>
+              {enableXClose && (
+                <button
+                  className="p-1 ml-auto bg-red border-0 float-right text-3xl leading-none font-semibold outline-none focus:outline-none text-black"
+                  onClick={onClose}
+                >
+                  <span className="bg-transparent text-black h-6 w-6 text-2xl block outline-none focus:outline-none dark:text-white">
+                    ×
+                  </span>
+                </button>
+              )}
             </div>
             {/*body*/}
             <div className="relative p-6 flex-auto">
@@ -39,7 +50,7 @@ const Modal: React.FC<
             </div>
             {/*footer*/}
             <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
-              {okButtonTitle ? (
+              {okButtonTitle && (
                 <button
                   className="text-blue-500 background-transparent font-medium px-6 py-2 outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                   type="button"
@@ -47,7 +58,7 @@ const Modal: React.FC<
                 >
                   {t(okButtonTitle!)}
                 </button>
-              ) : undefined}
+              )}
               <button
                 className="text-blue-500 background-transparent font-medium px-6 py-2 outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                 type="button"

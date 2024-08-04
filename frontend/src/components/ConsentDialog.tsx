@@ -48,6 +48,7 @@ const ConsentDialog: React.FC<{
       closeButtonTitle="Decline"
       onOk={consentAccepted}
       onClose={consentDeclined}
+      enableXClose={false}
     >
       <div>
         <h2 className="pb-5 text-lg font-medium">

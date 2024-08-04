@@ -5,7 +5,12 @@ const InfoDialog: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const { t } = useTranslation();
 
   return (
-    <Modal title="Information" closeButtonTitle="Close" onClose={onClose}>
+    <Modal
+      title="Information"
+      closeButtonTitle="Close"
+      onClose={onClose}
+      enableXClose={true}
+    >
       <div>
         <h2 className="pb-5 text-lg font-medium">{t("Data Source")}</h2>
         <p className="text-base pb-5">
