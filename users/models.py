@@ -25,3 +25,5 @@ class WebUser(models.Model):
     old_consent_accepted = models.BooleanField(null=True, blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
     last_activity = models.DateTimeField(auto_now=True)
+    client_ip = models.GenericIPAddressField()
+

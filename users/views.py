@@ -123,7 +123,7 @@ def create_web_user(request):
         user_id = serializer.validated_data.get('user_id')
         consent_accepted = serializer.validated_data.get('consent_accepted')
 
-        app_user, _ = WebUser.objects.get_or_create(user_id=user_id)
+        app_user, _ = WebUser.objects.get_or_create(user_id=user_id, defaults={"client_ip": get_client_ip})
 
         if app_user.consent_accepted != consent_accepted:
             app_user.old_consent_accepted = app_user.consent_accepted
@@ -134,3 +134,15 @@ def create_web_user(request):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    elif request.META.get('HTTP_X_REAL_IP'):
+        ip = request.META.get('HTTP_X_REAL_IP')
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip

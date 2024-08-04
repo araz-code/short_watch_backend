@@ -12,6 +12,7 @@ def get_client_ip(request):
         ip = request.META.get('REMOTE_ADDR')
     return ip
 
+
 class RequestLoggingMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
