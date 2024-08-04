@@ -5,8 +5,9 @@ from rest_framework_api_key.permissions import HasAPIKey
 
 from errors.models import Error
 from shorts.models import Stock
-from .models import AppUser
-from .serializers import AppUserSerializer, AddRemoveStockSerializer, UpdateNotificationStatusSerializer
+from .models import AppUser, WebUser
+from .serializers import AppUserSerializer, AddRemoveStockSerializer, UpdateNotificationStatusSerializer, \
+    WebUserSerializer
 
 
 @api_view(['POST'])
@@ -108,4 +109,26 @@ def update_notification_status(request):
             return Response(status=status.HTTP_204_NO_CONTENT)
 
     Error.objects.create(message=f'Users-update_notification_status: {str(serializer.errors)}'[:500])
+    return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(['POST'])
+@permission_classes([HasAPIKey])
+def create_web_user(request):
+    serializer = WebUserSerializer(data=request.data)
+
+    if serializer.is_valid():
+        user_id = serializer.validated_data.get('user_id')
+        consent_accepted = serializer.validated_data.get('consent_accepted')
+
+        app_user, _ = WebUser.objects.get_or_create(user_id=user_id)
+
+        if app_user.consent_accepted != consent_accepted:
+            app_user.old_consent_accepted = app_user.consent_accepted
+        app_user.consent_accepted = consent_accepted
+
+        app_user.save()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
     return Response(status=status.HTTP_204_NO_CONTENT)

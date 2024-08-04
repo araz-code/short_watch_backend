@@ -1,12 +1,11 @@
 from django.contrib import admin
-from django.contrib.admin import display
 from django.db.models import Count
 
-from users.models import AppUser
+from users.models import AppUser, WebUser
 
 
 @admin.register(AppUser)
-class AnnouncementAdmin(admin.ModelAdmin):
+class AppUserAdmin(admin.ModelAdmin):
     list_display = ('last_activity', 'user_id', 'num_stocks', 'notifications_sent', 'notification_active',
                     'old_notification_active', 'device', 'version', 'invalid', 'date_added', 'fcm_token')
     ordering = ('-last_activity',)
@@ -24,3 +23,10 @@ class AnnouncementAdmin(admin.ModelAdmin):
         if obj.stocks:
             return len(obj.stocks.all())
         return 0
+
+
+@admin.register(WebUser)
+class WebUserAdmin(admin.ModelAdmin):
+    list_display = ('last_activity', 'user_id', 'consent_accepted', 'old_consent_accepted', 'date_added')
+    ordering = ('-last_activity',)
+    list_filter = ('last_activity', 'consent_accepted', 'old_consent_accepted', 'date_added')

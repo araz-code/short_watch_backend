@@ -24,3 +24,12 @@ class AddRemoveStockSerializer(serializers.Serializer):
 class UpdateNotificationStatusSerializer(serializers.Serializer):
     userId = serializers.UUIDField(source='user_id')
     notificationActive = serializers.BooleanField(source="notification_active")
+
+
+class WebUserSerializer(serializers.ModelSerializer):
+    consentId = serializers.UUIDField(source='user_id')
+    consentAccepted = serializers.BooleanField(source="consent_accepted")
+
+    class Meta:
+        model = AppUser
+        fields = ['consentId', 'consentAccepted']
