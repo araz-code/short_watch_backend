@@ -89,7 +89,7 @@ export async function updateConsent(
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        Authorization: `API-Key CK1OkkoF.2t0M6oZMc186nNJFlZdNOMxWC0u3YCQ5`,
+        Authorization: `API-Key ${"CK1OkkoF.2t0M6oZMc186nNJFlZdNOMxWC0u3YCQ5"}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
