@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { clicked, fetchShortPositions } from "../apis/ShortPositionAPI";
+import { fetchShortPositions } from "../apis/ShortPositionAPI";
 import PageTemplate from "../components/PageTemplate";
 import ShortPositionRow from "../components/ShortPositionRow";
 import PricePoint from "../models/PricePoint";
@@ -8,9 +8,9 @@ import { useEffect, useRef, useState } from "react";
 import DropDownMenu from "../components/UI/DropDownMenu";
 import ErrorBlock from "../components/UI/ErrorBlock";
 import LoadingIndicator from "../components/UI/LoadingIndicator";
-import Modal from "../components/UI/Modal";
-import Info from "../components/Info";
+import InfoDialog from "../components/InfoDialog";
 import { useTranslation } from "react-i18next";
+import { logEvent, logPageView } from "../analytics";
 //import advertisement from "../static/stresstilbud.jpg";
 
 const options = ["Symbol", "Name", "Date", "Value"];
@@ -63,7 +63,7 @@ const ShortWatchPage: React.FC = () => {
   });
 
   const handleInfo = () => {
-    clicked("info");
+    logEvent("user_action", "info dialog clicked");
     setShowInfo(true);
   };
 
@@ -71,6 +71,10 @@ const ShortWatchPage: React.FC = () => {
     localStorage.setItem("selectedSorting", selectedSorting);
     localStorage.setItem("showMyList", JSON.stringify(showMyList));
   }, [selectedSorting, showMyList]);
+
+  useEffect(() => {
+    logPageView(`/short-watch`, "Short watch");
+  }, []);
 
   let content;
 
@@ -202,9 +206,7 @@ const ShortWatchPage: React.FC = () => {
 
       {showInfo && (
         <div className="w-screen lg:w-[900px] m-auto">
-          <Modal title="Information" onClose={() => setShowInfo(false)}>
-            <Info />
-          </Modal>
+          <InfoDialog onClose={() => setShowInfo(false)} />
         </div>
       )}
     </div>

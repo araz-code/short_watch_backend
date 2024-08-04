@@ -3,8 +3,14 @@ import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 
 const Modal: React.FC<
-  PropsWithChildren<{ title: string; onClose: () => void }>
-> = ({ children, title, onClose }) => {
+  PropsWithChildren<{
+    title: string;
+    closeButtonTitle: string;
+    okButtonTitle?: string;
+    onOk?: () => void;
+    onClose: () => void;
+  }>
+> = ({ children, title, closeButtonTitle, okButtonTitle, onOk, onClose }) => {
   const { t } = useTranslation();
 
   return createPortal(
@@ -27,18 +33,27 @@ const Modal: React.FC<
             </div>
             {/*body*/}
             <div className="relative p-6 flex-auto">
-              <p className="my-4 text-blueGray-500 text-lg leading-relaxed max-h-[300px] overflow-y-auto ">
+              <div className="my-4 text-blueGray-500 text-lg leading-relaxed max-h-[300px] overflow-y-auto ">
                 {children}
-              </p>
+              </div>
             </div>
             {/*footer*/}
             <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
+              {okButtonTitle ? (
+                <button
+                  className="text-blue-500 background-transparent font-medium px-6 py-2 outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                  type="button"
+                  onClick={onOk}
+                >
+                  {t(okButtonTitle!)}
+                </button>
+              ) : undefined}
               <button
                 className="text-blue-500 background-transparent font-medium px-6 py-2 outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                 type="button"
                 onClick={onClose}
               >
-                {t("Close")}
+                {t(closeButtonTitle)}
               </button>
             </div>
           </div>

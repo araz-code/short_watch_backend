@@ -1,31 +1,28 @@
+import { useEffect } from "react";
 import PageTemplate from "../components/PageTemplate";
+import { logPageView } from "../analytics";
 
 const englishVersion = () => {
   return (
     <>
       <div className="m-auto mb-12 mt-4">
-        <h1 className="text-4xl font-bold text-center">
-          Privacy Policy for Danish Short Watch App
-        </h1>
+        <h1 className="text-4xl font-bold text-center">Privacy Policy</h1>
       </div>
 
       <section className="lg:w-[900px] pb-10">
-        <p className="pb-5 font-bold">Last Updated: 30-10-2023</p>
-
+        <p className="pb-5 font-bold">Last Updated: 07-08-2024</p>
         <h2 className="pb-5 text-2xl font-semibold">1. Introduction</h2>
         <p className="pb-2">
           This privacy policy is about how we protect your privacy and ensuring
           the security of your personal information. This privacy policy
           explains how we collect, use, and share your information when you use
-          our app.
+          our website or app.
         </p>
-
         <p className="pb-5">
           We have made every effort to store as few personal data as possible
-          and do not receive any form of personal data from Apple, nor does this
-          website collect cookies.
+          and only collect statistics for our own use if you consent to our
+          cookie policy.
         </p>
-
         <h2 className="pb-5 text-2xl font-semibold">
           2. What are personal data?
         </h2>
@@ -36,24 +33,20 @@ const englishVersion = () => {
           individual. This can, for example, be a first and last name, a home
           address, an email address, or an IP-address.
         </p>
-
         <h2 className="pb-5 text-2xl font-semibold">
           3. We are the data controller - how do you contact us?
         </h2>
-
         <p className="pb-3">
           Zirium is the data controller for the processing of the personal data
           that we have received about you. You will find our contact information
           below.
         </p>
-
         <div className=" pb-5">
           <p className="pb-1">Zirium</p>
           <p className="pb-1">Nordre Fasanvej 64, 4. 44</p>
           <p className="pb-1">2000 Frederiksberg</p>
           <p className="pb-1">zirium.consultancy@gmail.com</p>
         </div>
-
         <h2 className="pb-5 text-2xl font-semibold">
           4. Information We Collect
         </h2>
@@ -64,7 +57,7 @@ const englishVersion = () => {
         <ul className="list-disc pl-4 pb-5">
           <li className="pb-2">
             <strong>Usage Information:</strong> We collect information about how
-            you use our app, including app usage data, log files, and analytics.
+            you use our website and app, if you consent to our cookie policy.
           </li>
           <li className="pb-2">
             <strong>Device Information:</strong> We may collect information
@@ -78,7 +71,6 @@ const englishVersion = () => {
             you.
           </li>
         </ul>
-
         <h2 className="pb-5 text-2xl font-semibold">
           5. How We Use Your Information
         </h2>
@@ -100,32 +92,42 @@ const englishVersion = () => {
             To comply with legal and regulatory requirements.
           </li>
         </ul>
-
         <h2 className="pb-5 text-2xl font-semibold">6. Information Sharing</h2>
         <p className="pb-2">
-          We do not sell or share your personal information with third parties.
+          We do not sell your personal information to third parties.
+        </p>
+        <p className="pb-5">
+          We use Google's Gmail as our email service provider.
         </p>
 
         <p className="pb-5">
-          We use Google's Gmail as our email service provider.
+          We use Google Analytics to collect statistics on usage data for our
+          own purposes, if you have consented to our cookie policy. These
+          cookies have a validity of up to 2 years.
         </p>
 
         <h2 className="pb-5 text-2xl font-semibold">
           7. Where your personal information originates from
         </h2>
-        <p className="pb-5">
-          We log your IP address when the app requests data from our service.
-          Your email is only obtained if you communicate with us via email.
+        <p className="pb-2">
+          We log your IP address when the website or app requests data from our
+          service. Your email is only obtained if you communicate with us via
+          email.
         </p>
-
+        <p className="pb-5">
+          We use Google Analytics to collect statistics on how you use our
+          website. Google Analytics gathers information about your device,
+          browser, and how you interact with our service. This information is
+          used to improve user experience and for analytical purposes. Google
+          Analytics uses cookies to collect this data.
+        </p>
         <h2 className="pb-5 text-2xl font-semibold">
           8. Storage of your personal information
         </h2>
         <p className="pb-5">
           We retain personal information at most 2 year after your most recent
-          email contact or your last use of the app.
+          email contact or your last use of the website or app.
         </p>
-
         <h2 className="pb-5 text-2xl font-semibold">
           9. Right to Withdraw Consent
         </h2>
@@ -141,7 +143,6 @@ const englishVersion = () => {
           you withdraw your consent, it will only take effect from that point
           onward.
         </p>
-
         <h4 className="pb-3 text-xl font-medium">Your Rights</h4>
         <p className="pb-2">
           Under data protection regulations, you have several rights concerning
@@ -150,7 +151,6 @@ const englishVersion = () => {
         <p className="pb-3">
           If you wish to exercise your rights, please contact us.
         </p>
-
         <h4 className="pb-3 text-xl font-medium">
           Right to Access Information (Right to Access)
         </h4>
@@ -158,7 +158,6 @@ const englishVersion = () => {
           You have the right to access the information that we process about
           you, as well as additional information.
         </p>
-
         <h4 className="pb-3 text-xl font-medium">
           Right to Rectification (Correction)
         </h4>
@@ -166,13 +165,11 @@ const englishVersion = () => {
           You have the right to have incorrect information about yourself
           corrected.
         </p>
-
         <h4 className="pb-3 text-xl font-medium">Right to Erasure</h4>
         <p className="pb-3">
           In certain cases, you have the right to have information about you
           deleted before our regular general deletion occurs.
         </p>
-
         <h4 className="pb-3 text-xl font-medium">
           Right to Restrict Processing
         </h4>
@@ -184,14 +181,12 @@ const englishVersion = () => {
           legal claims, or to protect a person or significant societal
           interests.
         </p>
-
         <h4 className="pb-3 text-xl font-medium">Right to Object</h4>
         <p className="pb-3">
           In certain cases, you have the right to object to our lawful
           processing of your personal information. You can also object to the
           processing of your information for direct marketing purposes.
         </p>
-
         <h4 className="pb-3 text-lg font-medium">Right to Data Portability</h4>
         <p className="pb-2">
           In certain cases, you have the right to receive your personal
@@ -199,13 +194,11 @@ const englishVersion = () => {
           format and have this personal information transferred from one data
           controller to another without hindrance.
         </p>
-
         <p className="pb-5">
           You can read more about your rights in the Data Protection Agency's
           guidance on the rights of data subjects, which can be found at{" "}
           <a href="https://www.datatilsynet.dk">www.datatilsynet.dk</a>.
         </p>
-
         <h2 className="pb-5 text-2xl font-semibold">
           10. Complaint to the Data Protection Agency
         </h2>
@@ -225,26 +218,24 @@ const danishVersion = () => {
   return (
     <>
       <div className="m-auto mb-12 mt-4">
-        <h1 className="text-4xl font-bold text-center">
-          Privatlivspolitik for Danish Short Watch app
-        </h1>
+        <h1 className="text-4xl font-bold text-center">Privatlivspolitik</h1>
       </div>
 
       <section className="lg:w-[900px] pb-10">
-        <p className="pb-5 font-bold">Sidst opdateret: 10-11-2023</p>
+        <p className="pb-5 font-bold">Sidst opdateret: 07-08-2024</p>
 
         <h2 className="pb-5 text-2xl font-semibold">1. Introduktion</h2>
         <p className="pb-2">
           Denne privatlivspolitik handler om, hvordan vi beskytter dit privatliv
           og sikrer sikkerheden af dine personoplysninger. Denne
           privatlivspolitik forklarer, hvordan vi indsamler, bruger og deler
-          dine oplysninger, når du bruger vores app.
+          dine oplysninger, når du bruger vores hjemmeside eller app.
         </p>
 
         <p className="pb-5">
           Vi har gjort alt for at gemme så få personlige data som muligt og
-          modtager ikke nogen form for persondata fra Apple, og denne hjemmeside
-          indsamler heller ikke cookies.
+          indsamler kun statistik til eget brug, hvis du samtykker til vores
+          cookiepolitik.
         </p>
 
         <h2 className="pb-5 text-2xl font-semibold">
@@ -282,13 +273,13 @@ const danishVersion = () => {
         <ul className="list-disc pl-4 pb-5">
           <li className="pb-2">
             <strong>Brugsoplysninger:</strong> Vi indsamler oplysninger om,
-            hvordan du bruger vores app, herunder appbrugsdata, logfiler og
-            analyser.
+            hvordan du bruger vores hjemmeside og app, hvis du samtykker til
+            vores cookiepolitik.
           </li>
           <li className="pb-2">
-            <strong>Enhedsoplysninger:</strong> Vi kan indsamle oplysninger om
-            den enhed, du bruger til at få adgang til vores app, herunder
-            enhedstype og operativsystem.
+            <strong>Enhedsoplysninger:</strong> Vi indsamler oplysninger om den
+            enhed, du bruger til at få adgang til vores app, herunder enhedstype
+            og operativsystem.
           </li>
           <li className="pb-2">
             <strong>Personoplysninger:</strong> Vi indsamler og logger din
@@ -324,19 +315,35 @@ const danishVersion = () => {
           6. Deling af oplysninger
         </h2>
         <p className="pb-2">
-          Vi sælger ikke eller deler dine personoplysninger med tredjeparter.
+          Vi sælger ikke dine personoplysninger til tredjeparter.
         </p>
 
         <p className="pb-5">
           Vi bruger Googles Gmail som vores e-mailtjenesteudbyder.
         </p>
 
+        <p className="pb-2">
+          Vi bruger Google Analytics til at samle statistik om brugsdata til
+          eget brug, hvis du har samtykket til vores cookiepolitik. Disse
+          cookies har en gyldighed på højst 2 år.
+        </p>
+
         <h2 className="pb-5 text-2xl font-semibold">
           7. Hvor dine personoplysninger stammer fra
         </h2>
+        <p className="pb-2">
+          Vi logger din IP-adresse, når hjemmeside eller appen anmoder om data
+          fra vores service. Din e-mail fås kun, hvis du kommunikerer med os via
+          e-mail.
+        </p>
+
         <p className="pb-5">
-          Vi logger din IP-adresse, når appen anmoder om data fra vores service.
-          Din e-mail fås kun, hvis du kommunikerer med os via e-mail.
+          Vi bruger Google Analytics til at indsamle statistik om, hvordan du
+          bruger vores hjemmeside. Google Analytics indsamler oplysninger om din
+          enhed, browser, og hvordan du interagerer med vores service. Disse
+          oplysninger anvendes til at forbedre brugeroplevelsen og til
+          analytiske formål. Google Analytics bruger cookies til at indsamle
+          disse data.
         </p>
 
         <h2 className="pb-5 text-2xl font-semibold">
@@ -344,7 +351,7 @@ const danishVersion = () => {
         </h2>
         <p className="pb-5">
           Vi opbevarer personoplysninger højst 2 år efter din seneste
-          e-mailkontakt eller din sidste brug af appen.
+          e-mailkontakt eller din sidste brug af hjemmeisden og appen.
         </p>
 
         <h2 className="pb-5 text-2xl font-semibold">
@@ -440,6 +447,14 @@ const danishVersion = () => {
 };
 
 const PrivacyPolicy: React.FC<{ language: string }> = ({ language }) => {
+  useEffect(() => {
+    if (language === "danish") {
+      logPageView("/privatlivspolitik", "Privatlivspolitik");
+    } else {
+      logPageView("/privatlivspolitik", "Privacy policy");
+    }
+  }, [language]);
+
   return (
     <PageTemplate>
       <div className="px-10 dark:text-white">

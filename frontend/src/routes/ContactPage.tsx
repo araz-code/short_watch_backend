@@ -1,10 +1,15 @@
 import { useTranslation } from "react-i18next";
 import PageTemplate from "../components/PageTemplate";
 import image from "../static/mail-bird.png";
-import { clicked } from "../apis/ShortPositionAPI";
+import { useEffect } from "react";
+import { logEvent, logPageView } from "../analytics";
 
 const Contact: React.FC = () => {
   const { t } = useTranslation();
+
+  useEffect(() => {
+    logPageView("/contact", "Contact");
+  }, []);
 
   return (
     <PageTemplate>
@@ -25,7 +30,9 @@ const Contact: React.FC = () => {
               <a
                 href="mailto:zirium.consultancy@gmail.com"
                 className="underline text-blue-500 hover:text-blue-700"
-                onClick={() => clicked("contact")}
+                onClick={() => {
+                  logEvent("user_action", "email contact clicked");
+                }}
               >
                 zirium.consultancy@gmail.com
               </a>

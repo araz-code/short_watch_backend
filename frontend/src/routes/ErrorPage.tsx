@@ -1,5 +1,7 @@
 import { useRouteError, isRouteErrorResponse } from "react-router-dom";
 import Navigation from "../components/Navigation";
+import { useEffect } from "react";
+import { logPageView } from "../analytics";
 
 const errorMessage = (error: unknown): string => {
   if (isRouteErrorResponse(error)) {
@@ -15,6 +17,10 @@ const errorMessage = (error: unknown): string => {
 
 const ErrorPage: React.FC = () => {
   const error: unknown = useRouteError();
+
+  useEffect(() => {
+    logPageView("/error", "Error");
+  }, []);
 
   return (
     <div className="flex flex-col h-screen text-gray-800 dark:text-white">

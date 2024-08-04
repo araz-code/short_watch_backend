@@ -1,4 +1,5 @@
 import { QueryClient } from "react-query";
+import { logException } from "../analytics";
 
 export const queryClient = new QueryClient();
 
@@ -78,12 +79,29 @@ export async function fetchShortPositionDetails({
   return shortDetails;
 }
 
-export async function clicked(code: string) {
-  const url = `https://www.zirium.dk/stats/clicked/${code}/`;
+export async function updateConsent(
+  consentId: string,
+  consentAccepted: boolean
+) {
+  const url = `https://www.zirium.dk/stats/consent`;
 
-  fetch(url, {
-    headers: {
-      Authorization: `API-Key ${"CK1OkkoF.2t0M6oZMc186nNJFlZdNOMxWC0u3YCQ5"}`,
-    },
-  });
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        Authorization: `API-Key CK1OkkoF.2t0M6oZMc186nNJFlZdNOMxWC0u3YCQ5`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        consentId,
+        consentAccepted,
+      }),
+    });
+
+    if (response.status != 201) {
+      logException(`updateConsent failed with status code ${response.status}`);
+    }
+  } catch (error) {
+    logException(`updateConsent failed: ${error}`);
+  }
 }

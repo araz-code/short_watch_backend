@@ -2,7 +2,7 @@ import { useQuery } from "react-query";
 import PricePoint from "../models/PricePoint";
 import PricePointRow from "../components/PricePointRow";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { clicked, fetchShortPositionDetails } from "../apis/ShortPositionAPI";
+import { fetchShortPositionDetails } from "../apis/ShortPositionAPI";
 import PricePointChart from "../components/PricePointChart";
 import ToggleSwitch from "../components/UI/RadioButtonToggle";
 import { useEffect, useState } from "react";
@@ -16,6 +16,7 @@ import { useTranslation } from "react-i18next";
 import ShortSeller from "../models/ShortSeller";
 import Announcement from "../models/Announcement";
 import AnnouncementRow from "../components/AnnouncementRow";
+import { logEvent, logPageView } from "../analytics";
 
 //import advertisement from "../static/stresstilbud.jpg";
 
@@ -76,7 +77,7 @@ const processChartValues = (
     );
   };
 
-  clicked(`period-changed-to-${period.toLowerCase()}`);
+  logEvent("user_action", `period changed to: ${period.toLowerCase()}`);
 
   switch (period) {
     case "1W":
@@ -158,24 +159,38 @@ const ShortPositionDetailsPage: React.FC = () => {
     }
 
     if (selectedDetailOption === "Announcements") {
-      clicked(`announcements-clicked-${code && code.toLowerCase()}`);
+      logEvent(
+        "user_action",
+        `announcements clicked for: ${code && code.toLowerCase()}`
+      );
     }
     if (selectedDetailOption === "Largest sellers") {
-      clicked(`largest-sellers-clicked-${code && code.toLowerCase()}`);
+      logEvent(
+        "user_action",
+        `largest sellers clicked for: ${code && code.toLowerCase()}`
+      );
     }
   }, [selectedDetailOption, isMobile, code]);
+
+  useEffect(() => {
+    logPageView(`/short-watch-details?code=${code}`, String(code));
+  }, [code]);
 
   const addToMyList = () => {
     if (code) {
       setMyList((prev) => [...prev, code]);
-      clicked(`added-to-list-${code.toLowerCase()}`);
+
+      logEvent("user_action", `added to list: ${code && code.toLowerCase()}`);
     }
   };
 
   const removeFromMyList = () => {
     if (code) {
       setMyList((prev) => prev.filter((item) => item !== code));
-      clicked(`removed-from-list-${code.toLowerCase()}`);
+      logEvent(
+        "user_action",
+        `removed from list: ${code && code.toLowerCase()}`
+      );
     }
   };
 

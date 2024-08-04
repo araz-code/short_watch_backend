@@ -1,12 +1,12 @@
+import { useEffect } from "react";
 import PageTemplate from "../components/PageTemplate";
+import { logPageView } from "../analytics";
 
 const englishVersion = () => {
   return (
     <>
       <div className="m-auto mb-12 mt-4">
-        <h1 className="text-4xl font-bold text-center">
-          Terms of Agreement for use of the Danish Short Watch App
-        </h1>
+        <h1 className="text-4xl font-bold text-center">Terms of Agreement</h1>
       </div>
 
       <section className="lg:w-[900px] pb-3">
@@ -46,9 +46,7 @@ const danishVersion = () => {
   return (
     <>
       <div className="m-auto mb-12 mt-4">
-        <h1 className="text-4xl font-bold text-center">
-          Aftalevilkår for brug af Danish Short Watch app{" "}
-        </h1>
+        <h1 className="text-4xl font-bold text-center">Aftalevilkår</h1>
       </div>
 
       <section className="lg:w-[900px] pb-3">
@@ -85,6 +83,14 @@ const danishVersion = () => {
 };
 
 const TermsOfAgreement: React.FC<{ language: string }> = ({ language }) => {
+  useEffect(() => {
+    if (language === "danish") {
+      logPageView("/aftalevilkaar", "Aftalevilkår");
+    } else {
+      logPageView("/terms-of-agreement", "Terms of agreement");
+    }
+  }, [language]);
+
   return (
     <PageTemplate>
       <div className="px-10 dark:text-white">
