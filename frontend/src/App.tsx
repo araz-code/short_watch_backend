@@ -95,7 +95,7 @@ function App() {
     } else {
       console.log("Delete cookies");
       Object.keys(cookies).forEach((cookieName) => {
-        removeCookie(cookieName, { path: "/" });
+        removeCookie(cookieName, { domain: ".zirium.dk", path: "/" });
       });
     }
   }, [consentAccepted, cookies, removeCookie]);
