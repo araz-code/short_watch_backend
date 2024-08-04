@@ -1,5 +1,5 @@
 import { useRouteError, isRouteErrorResponse } from "react-router-dom";
-import Header from "../components/Header";
+import Navigation from "../components/Navigation";
 
 const errorMessage = (error: unknown): string => {
   if (isRouteErrorResponse(error)) {
@@ -18,7 +18,7 @@ const ErrorPage: React.FC = () => {
 
   return (
     <div className="flex flex-col h-screen text-gray-800 dark:text-white">
-      <Header />
+      <Navigation />
       <div className="flex flex-col flex-grow items-center justify-center">
         <h1 className="text-3xl sm:text-4xl font-bold pb-5">Oops!</h1>
         <p className="pb-2">Sorry, an unexpected error has occurred.</p>

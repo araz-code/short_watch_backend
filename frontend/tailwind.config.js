@@ -5,6 +5,7 @@ export default {
     extend: {
       backgroundImage: {
         "wave-pattern": "url('/src/static/wave.svg')",
+        "wave-pattern-dark": "url('/src/static/wave-dark.svg')",
       },
       backgroundSize: {
         "50%": "100%",

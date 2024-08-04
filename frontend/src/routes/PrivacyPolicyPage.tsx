@@ -9,7 +9,7 @@ const englishVersion = () => {
         </h1>
       </div>
 
-      <section className="pb-10">
+      <section className="lg:w-[900px] pb-10">
         <p className="pb-5 font-bold">Last Updated: 30-10-2023</p>
 
         <h2 className="pb-5 text-2xl font-semibold">1. Introduction</h2>
@@ -230,7 +230,7 @@ const danishVersion = () => {
         </h1>
       </div>
 
-      <section className="pb-10">
+      <section className="lg:w-[900px] pb-10">
         <p className="pb-5 font-bold">Sidst opdateret: 10-11-2023</p>
 
         <h2 className="pb-5 text-2xl font-semibold">1. Introduktion</h2>

@@ -35,7 +35,7 @@ const sort = (list: PricePoint[], selectedSorting: string) => {
 };
 
 const ShortWatchPage: React.FC = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const searchElement = useRef<HTMLInputElement>(null);
   const [selectedSorting, setSelectedSorting] = useState<string>(() => {
     const savedSorting = localStorage.getItem("selectedSorting");
@@ -149,9 +149,9 @@ const ShortWatchPage: React.FC = () => {
                   >
                     <path
                       stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
                       d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
                     />
                   </svg>
@@ -188,46 +188,11 @@ const ShortWatchPage: React.FC = () => {
                   </button>
                 </div>
               </div>
-              <div className="overflow-y-auto min-h-[300px] h-[calc(100svh-19.1rem)] sm:h-[calc(100svh-20.3rem)]">
+              <div className="overflow-y-auto min-h-[300px] h-[calc(100svh-16.9rem)] sm:h-[calc(100svh-17.5rem)]">
                 <p className="text-sm pl-2 dark:text-white">
                   {t("You can get more details by clicking on a row")}
                 </p>
                 {content}
-              </div>
-              <div className="mx-3 mt-5">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center">
-                    <Link
-                      to={
-                        i18n.language === "da" || i18n.language === "da-DK"
-                          ? "/privatlivspolitik"
-                          : "/privacy-policy"
-                      }
-                      className="text-blue-500 underline text-sm"
-                    >
-                      {t("Privacy policy")}
-                    </Link>
-
-                    <Link
-                      to={
-                        i18n.language === "da" || i18n.language === "da-DK"
-                          ? "/aftalevilkaar"
-                          : "/terms-of-agreement"
-                      }
-                      className="text-blue-500 underline text-sm ml-5"
-                    >
-                      {t("Terms of agreement")}
-                    </Link>
-                  </div>
-                  <a
-                    href="mailto:zirium.consultancy@gmail.com"
-                    className="text-blue-500 underline text-sm"
-                    onClick={() => clicked("feedback")}
-                    target="_blank"
-                  >
-                    Feedback
-                  </a>
-                </div>
               </div>
             </section>
           </div>

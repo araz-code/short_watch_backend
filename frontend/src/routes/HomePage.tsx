@@ -1,4 +1,4 @@
-import Header from "../components/Header";
+import Navigation from "../components/Navigation";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -36,10 +36,10 @@ const cards = [
 const HomePage: React.FC = () => {
   const { t } = useTranslation();
   return (
-    <div className="dark:bg-white">
+    <div className="bg-white dark:bg-[#121212]">
       <div className="flex flex-col sm:h-screen sm:min-h-[850px]">
-        <div className="bg-wave-pattern bg-cover bg-no-repeat bg-bottom h-full flex flex-col pb-2 sm:pb-0">
-          <Header />
+        <div className="bg-wave-pattern dark:bg-wave-pattern-dark bg-cover bg-no-repeat bg-bottom h-full flex flex-col pb-2 sm:pb-0">
+          <Navigation />
 
           <main className="flex flex-col sm:flex-row sm:max-w-[1000px] sm:justify-end gap-10 sm:h-[70%] mt-10 px-5 self-center sm:px-[20px]">
             <div className="flex flex-col justify-center justify-items-center sm:pb-0 text-white gap-5 sm:w-[410px] sm:mr-5">
@@ -95,7 +95,7 @@ const HomePage: React.FC = () => {
 
                 <Link to="/short-watch">
                   <button
-                    className="text-white bg-[#3498DB] border border-white hover:bg-[#85C1E9] focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2.5 flex items-center h-[45px]"
+                    className="text-white bg-blue-400 border border-white hover:bg-[#85C1E9] focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2.5 flex items-center h-[45px]"
                     onClick={() => clicked("web-application")}
                   >
                     <p className="text-[16px]"> {t("Web application")}</p>
@@ -111,13 +111,13 @@ const HomePage: React.FC = () => {
           </main>
         </div>
         <section className="text-gray-800">
-          <p className="text-3xl sm:text-4xl font-bold text-center my-10 sm:my-0 text-gray-800">
+          <p className="text-3xl sm:text-4xl font-bold text-center my-10 sm:my-0 text-gray-800 dark:text-white">
             Features
           </p>
         </section>
       </div>
 
-      <section className="flex flex-wrap gap-2 justify-center sm:mt-10 mb-[80px]">
+      <section className="flex flex-wrap gap-2 justify-center sm:mt-10 pb-[80px]">
         {cards.map((item) => (
           <Card
             icon={item.icon}
@@ -127,24 +127,6 @@ const HomePage: React.FC = () => {
           />
         ))}
       </section>
-
-      <footer className="py-4 bg-white text-gray-800 text-center">
-        <div>
-          <h2>{t("Contact Us")}</h2>
-          <p>
-            {t(
-              "If you have any questions, feedback, or need assistance, please email us at:"
-            )}
-          </p>
-          <a
-            href="mailto:zirium.consultancy@gmail.com"
-            className="underline"
-            onClick={() => clicked("contact")}
-          >
-            zirium.consultancy@gmail.com
-          </a>
-        </div>
-      </footer>
     </div>
   );
 };
