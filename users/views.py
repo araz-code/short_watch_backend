@@ -1,3 +1,4 @@
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
@@ -113,6 +114,7 @@ def update_notification_status(request):
 
 
 @api_view(['POST'])
+@csrf_exempt
 @permission_classes([HasAPIKey])
 def create_web_user(request):
     serializer = WebUserSerializer(data=request.data)
