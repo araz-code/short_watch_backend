@@ -83,7 +83,7 @@ export async function updateConsent(
   consentId: string,
   consentAccepted: boolean
 ) {
-  const url = `https://www.zirium.dk/stats/consent`;
+  const url = `https://www.zirium.dk/v10/users/web-consent`;
 
   try {
     const response = await fetch(url, {
