@@ -36,7 +36,7 @@ const ConsentDialog: React.FC<{
     localStorage.setItem(localStorageConsentAccepted, JSON.stringify(false));
 
     const consentId = getOrGenerateConsentId();
-    updateConsent(consentId, true);
+    updateConsent(consentId, false);
     onConsentAccepted(false);
     onClose();
   };

@@ -93,6 +93,7 @@ function App() {
     if (consentAccepted) {
       initializeAnalytics();
     } else {
+      console.log("Delete cookies");
       Object.keys(cookies).forEach((cookieName) => {
         removeCookie(cookieName, { path: "/" });
       });
