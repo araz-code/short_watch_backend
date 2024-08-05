@@ -8,9 +8,9 @@ export const initializeAnalytics = () => {
   });
 };
 
-export const logPageView = (page: string, title: string) => {
+/*export const logPageView = (page: string, title: string) => {
   ReactGA.send({ hitType: "pageview", page, title });
-};
+};*/
 
 export const logException = (description: string) => {
   ReactGA.event({
@@ -23,5 +23,14 @@ export const logEvent = (category: string, action: string) => {
   ReactGA.event({
     category,
     action,
+  });
+};
+
+export const handleClick = (action: string) => {
+  TagManager.dataLayer({
+    dataLayer: {
+      event: "user_action",
+      action: action,
+    },
   });
 };

@@ -10,7 +10,7 @@ import ErrorBlock from "../components/UI/ErrorBlock";
 import LoadingIndicator from "../components/UI/LoadingIndicator";
 import InfoDialog from "../components/InfoDialog";
 import { useTranslation } from "react-i18next";
-import { logEvent, logPageView } from "../analytics";
+import { logEvent } from "../analytics";
 //import advertisement from "../static/stresstilbud.jpg";
 
 const options = ["Symbol", "Name", "Date", "Value"];
@@ -72,9 +72,9 @@ const ShortWatchPage: React.FC = () => {
     localStorage.setItem("showMyList", JSON.stringify(showMyList));
   }, [selectedSorting, showMyList]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     logPageView(`/short-watch`, "Short watch");
-  }, []);
+  }, []);*/
 
   let content;
 

@@ -1,6 +1,6 @@
-import { useEffect } from "react";
+//import { useEffect } from "react";
 import PageTemplate from "../components/PageTemplate";
-import { logPageView } from "../analytics";
+//import { logPageView } from "../analytics";
 
 const englishVersion = () => {
   return (
@@ -83,13 +83,13 @@ const danishVersion = () => {
 };
 
 const TermsOfAgreement: React.FC<{ language: string }> = ({ language }) => {
-  useEffect(() => {
+  /*useEffect(() => {
     if (language === "danish") {
       logPageView("/aftalevilkaar", "Aftalevilkår");
     } else {
       logPageView("/terms-of-agreement", "Terms of agreement");
     }
-  }, [language]);
+  }, [language]);*/
 
   return (
     <PageTemplate>

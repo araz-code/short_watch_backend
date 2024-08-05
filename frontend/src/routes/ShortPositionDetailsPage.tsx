@@ -16,7 +16,7 @@ import { useTranslation } from "react-i18next";
 import ShortSeller from "../models/ShortSeller";
 import Announcement from "../models/Announcement";
 import AnnouncementRow from "../components/AnnouncementRow";
-import { logEvent, logPageView } from "../analytics";
+import { logEvent } from "../analytics";
 
 //import advertisement from "../static/stresstilbud.jpg";
 
@@ -172,9 +172,9 @@ const ShortPositionDetailsPage: React.FC = () => {
     }
   }, [selectedDetailOption, isMobile, code]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     logPageView(`/short-watch-details?code=${code}`, String(code));
-  }, [code]);
+  }, [code]);*/
 
   const addToMyList = () => {
     if (code) {

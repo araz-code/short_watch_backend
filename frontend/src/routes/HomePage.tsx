@@ -10,8 +10,8 @@ import {
 import Card from "../components/UI/Card";
 import { useTranslation } from "react-i18next";
 import AppImage from "../components/Homepage/AppImage";
-import { useEffect } from "react";
-import { logEvent, logPageView } from "../analytics";
+//import { useEffect } from "react";
+import { handleClick } from "../analytics";
 
 const cards = [
   {
@@ -37,9 +37,9 @@ const cards = [
 const HomePage: React.FC = () => {
   const { t } = useTranslation();
 
-  useEffect(() => {
+  /*useEffect(() => {
     logPageView("/", "Home");
-  }, []);
+  }, []);*/
 
   return (
     <div className="bg-white dark:bg-[#121212]">
@@ -76,9 +76,7 @@ const HomePage: React.FC = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-white bg-black border border-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2.5 flex items-center h-[45px]"
-                  onClick={() => {
-                    logEvent("user_action", "app store clicked");
-                  }}
+                  onClick={() => handleClick("app store clicked")}
                 >
                   <svg
                     className="w-7 h-7 me-2 -ms-3"
@@ -104,9 +102,7 @@ const HomePage: React.FC = () => {
                 <Link to="/short-watch">
                   <button
                     className="text-white bg-blue-400 border border-white hover:bg-[#85C1E9] focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2.5 flex items-center h-[45px]"
-                    onClick={() => {
-                      logEvent("user_action", "web application clicked");
-                    }}
+                    onClick={() => handleClick("web application clicked")}
                   >
                     <p className="text-[16px]"> {t("Web application")}</p>
                     <FontAwesomeIcon
