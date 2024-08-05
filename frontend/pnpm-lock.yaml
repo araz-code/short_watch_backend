@@ -17,6 +17,9 @@ dependencies:
   '@headlessui/react':
     specifier: ^1.7.18
     version: 1.7.18(react-dom@18.2.0)(react@18.2.0)
+  '@types/react-gtm-module':
+    specifier: ^2.0.3
+    version: 2.0.3
   '@types/uuid':
     specifier: ^10.0.0
     version: 10.0.0
@@ -47,6 +50,9 @@ dependencies:
   react-ga4:
     specifier: ^2.1.0
     version: 2.1.0
+  react-gtm-module:
+    specifier: ^2.0.11
+    version: 2.0.11
   react-i18next:
     specifier: ^14.0.5
     version: 14.0.5(i18next@23.8.2)(react-dom@18.2.0)(react@18.2.0)
@@ -822,6 +828,10 @@ packages:
     dependencies:
       '@types/react': 18.2.51
     dev: true
+
+  /@types/react-gtm-module@2.0.3:
+    resolution: {integrity: sha512-fL2zKdDFN5LckSsVBXEhhm9M4tFTM9oHJfGcfZJzktQkzpOTGtDM8oXIP9d9UBDxO4xLNZhS22dlgRVv6wgK9w==}
+    dev: false
 
   /@types/react@18.2.51:
     resolution: {integrity: sha512-XeoMaU4CzyjdRr3c4IQQtiH7Rpo18V07rYZUucEZQwOUEtGgTXv7e6igQiQ+xnV6MbMe1qjEmKdgMNnfppnXfg==}
@@ -2213,6 +2223,10 @@ packages:
 
   /react-ga4@2.1.0:
     resolution: {integrity: sha512-ZKS7PGNFqqMd3PJ6+C2Jtz/o1iU9ggiy8Y8nUeksgVuvNISbmrQtJiZNvC/TjDsqD0QlU5Wkgs7i+w9+OjHhhQ==}
+    dev: false
+
+  /react-gtm-module@2.0.11:
+    resolution: {integrity: sha512-8gyj4TTxeP7eEyc2QKawEuQoAZdjKvMY4pgWfycGmqGByhs17fR+zEBs0JUDq4US/l+vbTl+6zvUIx27iDo/Vw==}
     dev: false
 
   /react-i18next@14.0.5(i18next@23.8.2)(react-dom@18.2.0)(react@18.2.0):

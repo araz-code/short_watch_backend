@@ -1,7 +1,11 @@
 import ReactGA from "react-ga4";
+import TagManager from "react-gtm-module";
 
 export const initializeAnalytics = () => {
   ReactGA.initialize("G-PCM4ZBXLGJ");
+  TagManager.initialize({
+    gtmId: "GTM-M5J9Z58R",
+  });
 };
 
 export const logPageView = (page: string, title: string) => {
