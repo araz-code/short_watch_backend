@@ -10,8 +10,8 @@ import {
 import Card from "../components/UI/Card";
 import { useTranslation } from "react-i18next";
 import AppImage from "../components/Homepage/AppImage";
-//import { useEffect } from "react";
-import { handleClick } from "../analytics";
+import { useEffect } from "react";
+import { handleClick, sendCustomPageView } from "../analytics";
 
 const cards = [
   {
@@ -37,9 +37,9 @@ const cards = [
 const HomePage: React.FC = () => {
   const { t } = useTranslation();
 
-  /*useEffect(() => {
-    logPageView("/", "Home");
-  }, []);*/
+  useEffect(() => {
+    sendCustomPageView("/", "home");
+  }, []);
 
   return (
     <div className="bg-white dark:bg-[#121212]">

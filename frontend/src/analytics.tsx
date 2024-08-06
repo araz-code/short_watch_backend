@@ -34,3 +34,13 @@ export const handleClick = (action: string) => {
     },
   });
 };
+
+export const sendCustomPageView = (pagePath: string, pageTitle: string) => {
+  TagManager.dataLayer({
+    dataLayer: {
+      event: "pageview",
+      pagePath,
+      pageTitle,
+    },
+  });
+};

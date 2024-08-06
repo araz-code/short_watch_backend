@@ -1,15 +1,15 @@
 import { useTranslation } from "react-i18next";
 import PageTemplate from "../components/PageTemplate";
 import image from "../static/mail-bird.png";
-//import { useEffect } from "react";
-//import { logEvent, logPageView } from "../analytics";
+import { useEffect } from "react";
+import { sendCustomPageView } from "../analytics";
 
 const Contact: React.FC = () => {
   const { t } = useTranslation();
 
-  /*useEffect(() => {
-    logPageView("/contact", "Contact");
-  }, []);*/
+  useEffect(() => {
+    sendCustomPageView("/contact", "contact");
+  }, []);
 
   return (
     <PageTemplate>

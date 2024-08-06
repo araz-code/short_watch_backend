@@ -16,7 +16,7 @@ import { useTranslation } from "react-i18next";
 import ShortSeller from "../models/ShortSeller";
 import Announcement from "../models/Announcement";
 import AnnouncementRow from "../components/AnnouncementRow";
-import { handleClick } from "../analytics";
+import { handleClick, sendCustomPageView } from "../analytics";
 
 //import advertisement from "../static/stresstilbud.jpg";
 
@@ -166,6 +166,7 @@ const ShortPositionDetailsPage: React.FC = () => {
 
   useEffect(() => {
     handleClick(`details shown for: ${code}`);
+    sendCustomPageView(`/short-watch-details`, "short watch details");
   }, [code]);
 
   useEffect(() => {

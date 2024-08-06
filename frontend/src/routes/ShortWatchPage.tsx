@@ -10,7 +10,7 @@ import ErrorBlock from "../components/UI/ErrorBlock";
 import LoadingIndicator from "../components/UI/LoadingIndicator";
 import InfoDialog from "../components/InfoDialog";
 import { useTranslation } from "react-i18next";
-import { handleClick } from "../analytics";
+import { handleClick, sendCustomPageView } from "../analytics";
 //import advertisement from "../static/stresstilbud.jpg";
 
 const options = ["Symbol", "Name", "Date", "Value"];
@@ -76,9 +76,9 @@ const ShortWatchPage: React.FC = () => {
     handleClick(`sorting changed to: ${selectedSorting.toLowerCase()}`);
   }, [selectedSorting]);
 
-  /*useEffect(() => {
-    logPageView(`/short-watch`, "Short watch");
-  }, []);*/
+  useEffect(() => {
+    sendCustomPageView(`/short-watch`, "short watch");
+  }, []);
 
   let content;
 
