@@ -19,12 +19,12 @@ export const logException = (description: string) => {
   });
 };
 
-export const logEvent = (category: string, action: string) => {
+/*export const logEvent = (category: string, action: string) => {
   ReactGA.event({
     category,
     action,
   });
-};
+};*/
 
 export const handleClick = (action: string) => {
   TagManager.dataLayer({

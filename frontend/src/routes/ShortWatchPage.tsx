@@ -10,7 +10,7 @@ import ErrorBlock from "../components/UI/ErrorBlock";
 import LoadingIndicator from "../components/UI/LoadingIndicator";
 import InfoDialog from "../components/InfoDialog";
 import { useTranslation } from "react-i18next";
-import { logEvent } from "../analytics";
+import { handleClick } from "../analytics";
 //import advertisement from "../static/stresstilbud.jpg";
 
 const options = ["Symbol", "Name", "Date", "Value"];
@@ -63,7 +63,7 @@ const ShortWatchPage: React.FC = () => {
   });
 
   const handleInfo = () => {
-    logEvent("user_action", "info dialog clicked");
+    handleClick(`info dialog clicked`);
     setShowInfo(true);
   };
 
@@ -71,6 +71,10 @@ const ShortWatchPage: React.FC = () => {
     localStorage.setItem("selectedSorting", selectedSorting);
     localStorage.setItem("showMyList", JSON.stringify(showMyList));
   }, [selectedSorting, showMyList]);
+
+  useEffect(() => {
+    handleClick(`sorting changed to: ${selectedSorting.toLowerCase()}`);
+  }, [selectedSorting]);
 
   /*useEffect(() => {
     logPageView(`/short-watch`, "Short watch");
@@ -179,7 +183,15 @@ const ShortWatchPage: React.FC = () => {
                     />
                     <button
                       className="text-blue-500 text-center font-medium align-middle bg-transparent border-none text ml-5"
-                      onClick={() => setShowMyList(!showMyList)}
+                      onClick={() => {
+                        handleClick(
+                          `list changed: ${
+                            showMyList ? t("all shorts") : t("my list")
+                          }`
+                        );
+
+                        setShowMyList(!showMyList);
+                      }}
                     >
                       {showMyList ? t("All shorts") : t("My list")}
                     </button>

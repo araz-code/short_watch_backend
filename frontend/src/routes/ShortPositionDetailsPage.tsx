@@ -16,7 +16,7 @@ import { useTranslation } from "react-i18next";
 import ShortSeller from "../models/ShortSeller";
 import Announcement from "../models/Announcement";
 import AnnouncementRow from "../components/AnnouncementRow";
-import { logEvent } from "../analytics";
+import { handleClick } from "../analytics";
 
 //import advertisement from "../static/stresstilbud.jpg";
 
@@ -76,8 +76,6 @@ const processChartValues = (
         new Date(pricePoint.timestamp).getFullYear() === currentYear
     );
   };
-
-  logEvent("user_action", `period changed to: ${period.toLowerCase()}`);
 
   switch (period) {
     case "1W":
@@ -159,38 +157,33 @@ const ShortPositionDetailsPage: React.FC = () => {
     }
 
     if (selectedDetailOption === "Announcements") {
-      logEvent(
-        "user_action",
-        `announcements clicked for: ${code && code.toLowerCase()}`
-      );
+      handleClick(`announcements clicked for: ${code && code.toLowerCase()}`);
     }
     if (selectedDetailOption === "Largest sellers") {
-      logEvent(
-        "user_action",
-        `largest sellers clicked for: ${code && code.toLowerCase()}`
-      );
+      handleClick(`largest sellers clicked for: ${code && code.toLowerCase()}`);
     }
   }, [selectedDetailOption, isMobile, code]);
 
-  /*useEffect(() => {
-    logPageView(`/short-watch-details?code=${code}`, String(code));
-  }, [code]);*/
+  useEffect(() => {
+    handleClick(`details shown for: ${code}`);
+  }, [code]);
+
+  useEffect(() => {
+    handleClick(`period changed to: ${selectedPeriod.toLowerCase()}`);
+  }, [selectedPeriod]);
 
   const addToMyList = () => {
     if (code) {
       setMyList((prev) => [...prev, code]);
 
-      logEvent("user_action", `added to list: ${code && code.toLowerCase()}`);
+      handleClick(`added to list: ${code && code.toLowerCase()}`);
     }
   };
 
   const removeFromMyList = () => {
     if (code) {
       setMyList((prev) => prev.filter((item) => item !== code));
-      logEvent(
-        "user_action",
-        `removed from list: ${code && code.toLowerCase()}`
-      );
+      handleClick(`removed from list: ${code && code.toLowerCase()}`);
     }
   };
 
