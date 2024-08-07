@@ -29,7 +29,7 @@ const Modal: React.FC<
           {/*content*/}
           <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none dark:bg-[#212121] dark:text-white">
             {/*header*/}
-            <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
+            <div className="flex items-start justify-between px-6 py-3 border-b border-solid border-blueGray-200 rounded-t bg-[#0d1b4c] text-white">
               <h3 className="text-xl font-semibold">{title}</h3>
               {enableXClose && (
                 <button
@@ -43,13 +43,13 @@ const Modal: React.FC<
               )}
             </div>
             {/*body*/}
-            <div className="relative p-6 flex-auto">
+            <div className="relative px-6 flex-auto">
               <div className="my-4 text-blueGray-500 text-lg leading-relaxed max-h-[300px] overflow-y-auto ">
                 {children}
               </div>
             </div>
             {/*footer*/}
-            <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
+            <div className="flex items-center justify-end px-6 py-2 border-t border-solid border-blueGray-200 rounded-b">
               {okButtonTitle && (
                 <button
                   className="text-blue-500 background-transparent font-medium px-6 py-2 outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
