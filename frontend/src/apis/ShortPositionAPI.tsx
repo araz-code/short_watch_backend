@@ -86,7 +86,7 @@ export async function updateConsent(
   const url = `https://www.zirium.dk/v10/users/web-consent`;
 
   try {
-    const response = await fetch(url, {
+    await fetch(url, {
       method: "POST",
       headers: {
         Authorization: `API-Key ${"CK1OkkoF.2t0M6oZMc186nNJFlZdNOMxWC0u3YCQ5"}`,
@@ -97,10 +97,10 @@ export async function updateConsent(
         consentAccepted,
       }),
     });
-
+    /*
     if (response.status != 201) {
       logException(`updateConsent failed with status code ${response.status}`);
-    }
+    }*/
   } catch (error) {
     logException(`updateConsent failed: ${error}`);
   }
