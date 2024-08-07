@@ -36,7 +36,7 @@ const Modal: React.FC<
                   className="p-1 ml-auto bg-red border-0 float-right text-3xl leading-none font-semibold outline-none focus:outline-none text-black"
                   onClick={onClose}
                 >
-                  <span className="bg-transparent text-black h-6 w-6 text-2xl block outline-none focus:outline-none dark:text-white">
+                  <span className="bg-transparent h-6 w-6 text-2xl block outline-none focus:outline-none  text-white">
                     ×
                   </span>
                 </button>
