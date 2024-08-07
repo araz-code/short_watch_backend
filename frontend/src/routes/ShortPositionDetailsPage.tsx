@@ -157,10 +157,10 @@ const ShortPositionDetailsPage: React.FC = () => {
     }
 
     if (selectedDetailOption === "Announcements") {
-      handleClick(`announcements clicked for: ${code && code.toLowerCase()}`);
+      handleClick(`announcements clicked for: ${code}`);
     }
     if (selectedDetailOption === "Largest sellers") {
-      handleClick(`largest sellers clicked for: ${code && code.toLowerCase()}`);
+      handleClick(`largest sellers clicked for: ${code}`);
     }
   }, [selectedDetailOption, isMobile, code]);
 
@@ -177,14 +177,14 @@ const ShortPositionDetailsPage: React.FC = () => {
     if (code) {
       setMyList((prev) => [...prev, code]);
 
-      handleClick(`added to list: ${code && code.toLowerCase()}`);
+      handleClick(`added to list: ${code}`);
     }
   };
 
   const removeFromMyList = () => {
     if (code) {
       setMyList((prev) => prev.filter((item) => item !== code));
-      handleClick(`removed from list: ${code && code.toLowerCase()}`);
+      handleClick(`removed from list: ${code}`);
     }
   };
 
