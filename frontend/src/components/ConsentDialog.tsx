@@ -68,13 +68,13 @@ const ConsentDialog: React.FC<{
         </p>
         <p className="text-base pb-5">
           {t(
-            "You can change or withdraw your consent at any time by clicking the green 'cookie' button in the bottom left corner."
+            'You can change or withdraw your consent at any time by clicking the green "cookie" button in the bottom left corner.'
           )}
         </p>
         <p className="text-base pb-5">
-          {t(
-            "You can read more about our cookie policy in the privacy policy."
-          )}
+          <a className="text-blue-500 underline" href="/cookie-policy">
+            {t("Read cookie policy")}
+          </a>
         </p>
       </div>
     </Modal>

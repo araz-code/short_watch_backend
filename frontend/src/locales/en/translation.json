@@ -62,10 +62,16 @@
     "We use cookies to collect statistics on the usage of the website": "We use cookies to collect statistics on the usage of the website",
     "If you click the 'Accept' button, you consent to our use of cookies for statistical purposes. We use this data to improve the user experience for you and other visitors.": "If you click the 'Accept' button, you consent to our use of cookies for statistical purposes. We use this data to improve the user experience for you and other visitors.",
     "If you click the 'Decline' button, we will not set cookies for statistical purposes. However, we will use a cookie to remember your choice and to support the functionality of the website.": "If you click the 'Decline' button, we will not set cookies for statistical purposes. However, we will use a cookie to remember your choice and to support the functionality of the website.",
-    "You can change or withdraw your consent at any time by clicking the green 'cookie' button in the bottom left corner.": "You can change or withdraw your consent at any time by clicking the green 'cookie' button in the bottom left corner.",
+    "You can change or withdraw your consent at any time by clicking the green \"cookie\" button in the bottom left corner.": "You can change or withdraw your consent at any time by clicking the green \"cookie\" button in the bottom left corner.",
     "You can read more about our cookie policy in the privacy policy.": "You can read more about our cookie policy in the privacy policy.",
     "Accept": "Accept",
     "Decline": "Decline",
-    "Sort list by": "Sort list by"
+    "Sort list by": "Sort list by",
+    "Functional Cookies": "Functional Cookies",
+    "Statistical Cookies": "Statistical Cookies",
+    "We use functional cookies that are necessary to ensure our website functions properly. These cookies enable us to provide essential features, such as saving your settings and ensuring you can navigate our site without issues. Without these cookies, certain features and services on our website would not be available.": "We use functional cookies that are necessary to ensure our website functions properly. These cookies enable us to provide essential features, such as saving your settings and ensuring you can navigate our site without issues. Without these cookies, certain features and services on our website would not be available.",
+    "We use statistical cookies to understand how our visitors use the website and to improve the user experience. We use Google Analytics to collect and analyze data on how you interact with our site. These cookies have a validity of up to 2 years. The data we collect is used solely for our own purposes and helps us improve the website for you and other visitors. Please note that we only collect statistics if you have given your consent. You can withdraw your consent at any time by clicking on the green \"cookie\" button in the lower left corner of the screen.": "We use statistical cookies to understand how our visitors use the website and to improve the user experience. We use Google Analytics to collect and analyze data on how you interact with our site. These cookies have a validity of up to 2 years. The data we collect is used solely for our own purposes and helps us improve the website for you and other visitors. Please note that we only collect statistics if you have given your consent. You can withdraw your consent at any time by clicking on the green \"cookie\" button in the lower left corner of the screen.",
+    "Last Updated:": "Last Updated:",
+    "Read cookie policy": "Read cookie policy"
   }
 }

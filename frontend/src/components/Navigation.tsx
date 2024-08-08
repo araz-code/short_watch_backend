@@ -146,6 +146,19 @@ const Navigation: React.FC = () => {
                     </li>
                     <li>
                       <NavLink
+                        to="/cookie-policy"
+                        className={({ isActive }) =>
+                          `block px-4 py-2 md:pt-5  ${
+                            isActive ? "underline" : ""
+                          }`
+                        }
+                        onClick={() => setCollapseMenu(defaultCollapseMenu)}
+                      >
+                        {t("Cookie policy")}
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
                         to={
                           i18n.language === "da" || i18n.language === "da-DK"
                             ? "/aftalevilkaar"

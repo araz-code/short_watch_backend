@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 import ConsentDialog from "./components/ConsentDialog.tsx";
 import { initializeAnalytics } from "./analytics.tsx";
 import { useCookies } from "react-cookie";
+import CookiePolicyPage from "./routes/CookiePolicyPage.tsx";
 
 type ConsentButtonProps = {
   onClick: () => void;
@@ -25,12 +26,14 @@ type ConsentButtonProps = {
 // ConsentButton component
 function ConsentButton({ onClick }: ConsentButtonProps) {
   return (
-    <button
-      className="fixed bottom-2 left-2 bg-transparent text-green-500 p-0 rounded-full shadow-lg hover:bg-blue-600 focus:outline-none"
-      onClick={onClick}
-    >
-      <FontAwesomeIcon icon={faCookieBite} size="xl" />
-    </button>
+    <>
+      <button
+        className="fixed bottom-3 left-2 sm:left-3 bg-transparent text-green-500 p-0 rounded-full shadow-lg focus:outline-none"
+        onClick={onClick}
+      >
+        <FontAwesomeIcon icon={faCookieBite} size="xl" />
+      </button>
+    </>
   );
 }
 
@@ -63,6 +66,10 @@ const router = createBrowserRouter([
   {
     path: "privatlivspolitik",
     element: <PrivacyPolicy language="danish" />,
+  },
+  {
+    path: "cookie-policy",
+    element: <CookiePolicyPage />,
   },
   {
     path: "terms-of-agreement",

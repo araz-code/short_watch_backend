@@ -10,7 +10,7 @@ const englishVersion = () => {
       </div>
 
       <section className="lg:w-[900px] pb-10">
-        <p className="pb-5 font-bold">Last Updated: 07-08-2024</p>
+        <p className="pb-5 font-bold">Last Updated: 05-08-2024</p>
         <h2 className="pb-5 text-2xl font-semibold">1. Introduction</h2>
         <p className="pb-2">
           This privacy policy is about how we protect your privacy and ensuring

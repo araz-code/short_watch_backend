@@ -10,6 +10,7 @@ const englishVersion = () => {
       </div>
 
       <section className="lg:w-[900px] pb-3">
+        <p className="pb-5 font-bold">Last Updated: 05-08-2024</p>
         <p className="pb-3">
           We cannot guarantee the accuracy of data within the Danish Short Watch
           app (the app). This data is collected from Danish FSA’s web portal
@@ -50,6 +51,7 @@ const danishVersion = () => {
       </div>
 
       <section className="lg:w-[900px] pb-3">
+        <p className="pb-5 font-bold">Sidst opdateret: 07-08-2024</p>
         <p className="pb-3">
           Vi kan ikke garantere nøjagtigheden af data i Danish Short Watch-appen
           (appen). Disse data indsamles fra Finanstilsynets webportal, som er en
