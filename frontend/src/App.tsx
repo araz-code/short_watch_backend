@@ -3,8 +3,8 @@ import { QueryClientProvider } from "react-query";
 
 import HomePage from "./routes/HomePage.tsx";
 import ErrorPage from "./routes/ErrorPage.tsx";
-import PrivacyPolicy from "./routes/PrivacyPolicyPage.tsx";
-import TermsOfAgreement from "./routes/TermsOfAgreementPage.tsx";
+import PrivacyPolicyPage from "./routes/PrivacyPolicyPage.tsx";
+import TermsOfAgreementPage from "./routes/TermsOfAgreementPage.tsx";
 import ShortWatchPage from "./routes/ShortWatchPage.tsx";
 import { queryClient } from "./apis/ShortPositionAPI.tsx";
 import ShortPositionDetailsPage from "./routes/ShortPositionDetailsPage.tsx";
@@ -15,7 +15,7 @@ import { faCookieBite } from "@fortawesome/free-solid-svg-icons";
 import ContactPage from "./routes/ContactPage.tsx";
 import { useEffect, useState } from "react";
 import ConsentDialog from "./components/ConsentDialog.tsx";
-import { initializeAnalytics } from "./analytics.tsx";
+import { handleClick, initializeAnalytics } from "./analytics.tsx";
 import { useCookies } from "react-cookie";
 import CookiePolicyPage from "./routes/CookiePolicyPage.tsx";
 
@@ -29,7 +29,10 @@ function ConsentButton({ onClick }: ConsentButtonProps) {
     <>
       <button
         className="fixed bottom-3 left-2 sm:left-3 bg-transparent text-green-500 p-0 rounded-full shadow-lg focus:outline-none"
-        onClick={onClick}
+        onClick={() => {
+          handleClick("cookie consent clicked");
+          onClick();
+        }}
       >
         <FontAwesomeIcon icon={faCookieBite} size="xl" />
       </button>
@@ -61,11 +64,11 @@ const router = createBrowserRouter([
   },
   {
     path: "privacy-policy",
-    element: <PrivacyPolicy language="english" />,
+    element: <PrivacyPolicyPage />,
   },
   {
     path: "privatlivspolitik",
-    element: <PrivacyPolicy language="danish" />,
+    element: <PrivacyPolicyPage />,
   },
   {
     path: "cookie-policy",
@@ -73,11 +76,11 @@ const router = createBrowserRouter([
   },
   {
     path: "terms-of-agreement",
-    element: <TermsOfAgreement language="english" />,
+    element: <TermsOfAgreementPage />,
   },
   {
     path: "aftalevilkaar",
-    element: <TermsOfAgreement language="danish" />,
+    element: <TermsOfAgreementPage />,
   },
   {
     path: "contact",

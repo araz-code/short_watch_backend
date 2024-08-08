@@ -4,7 +4,7 @@ import image from "../static/mail-bird.png";
 import { useEffect } from "react";
 import { sendCustomPageView } from "../analytics";
 
-const Contact: React.FC = () => {
+const ContactPage: React.FC = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -52,4 +52,4 @@ const Contact: React.FC = () => {
   );
 };
 
-export default Contact;
+export default ContactPage;
