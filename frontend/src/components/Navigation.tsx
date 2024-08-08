@@ -148,9 +148,7 @@ const Navigation: React.FC = () => {
                       <NavLink
                         to="/cookie-policy"
                         className={({ isActive }) =>
-                          `block px-4 py-2 md:pt-5  ${
-                            isActive ? "underline" : ""
-                          }`
+                          `block px-4 py-2  ${isActive ? "underline" : ""}`
                         }
                         onClick={() => setCollapseMenu(defaultCollapseMenu)}
                       >
