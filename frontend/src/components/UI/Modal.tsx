@@ -27,9 +27,9 @@ const Modal: React.FC<
       <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
         <div className="relative w-auto my-6 mx-auto max-w-3xl ">
           {/*content*/}
-          <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none dark:bg-[#212121] dark:text-white">
+          <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none dark:bg-[#212121] dark:text-white dark:border">
             {/*header*/}
-            <div className="flex items-start justify-between px-6 py-3 border-b border-solid border-blueGray-200 rounded-t bg-[#0d1b4c] text-white">
+            <div className="flex items-start justify-between px-6 py-3 border-b border-solid border-blueGray-200 rounded-t-lg bg-[#0d1b4c] text-white">
               <h3 className="text-xl font-semibold">{title}</h3>
               {enableXClose && (
                 <button
