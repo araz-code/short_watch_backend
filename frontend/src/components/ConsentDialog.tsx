@@ -52,13 +52,17 @@ const ConsentDialog: React.FC<{
     >
       <div>
         <h2 className="pb-5 text-lg font-medium">
-          {t(
-            "We use cookies to collect statistics on the usage of the website"
-          )}
+          <span>{t("We use cookies to collect")}</span>{" "}
+          <span className="text-orange-600 underline">
+            {t("non-personally")}
+          </span>{" "}
+          <span>
+            {t("identifiable statistics on the usage of the website")}
+          </span>
         </h2>
         <p className="text-base pb-5">
           {t(
-            "If you click the 'Accept' button, you consent to our use of cookies for statistical purposes. We use this data to improve the user experience for you and other visitors."
+            "If you click the 'Accept' button, you consent to our use of cookies for statistical purposes. We use this data to improve the user experience for you and other visitors. This data CANNOT be linked to you."
           )}
         </p>
         <p className="text-base pb-5">

@@ -35,7 +35,7 @@ const CookiePolicyPage: React.FC = () => {
             </h2>
             <p className="pb-5">
               {t(
-                'We use statistical cookies to understand how our visitors use the website and to improve the user experience. We use Google Analytics to collect and analyze data on how you interact with our site. These cookies have a validity of up to 2 years. The data we collect is used solely for our own purposes and helps us improve the website for you and other visitors. Please note that we only collect statistics if you have given your consent. You can withdraw your consent at any time by clicking on the green "cookie" button in the lower left corner of the screen.'
+                'We use statistical cookies to understand how our visitors use the website and to improve the user experience. We use Google Analytics to collect and analyze data on how you interact with our site. These cookies have a validity of up to 2 years. The data we collect is used solely for our own purposes and helps us improve the website for you and other visitors. This data cannot be linked to you. Please note that we only collect statistics if you have given your consent. You can withdraw your consent at any time by clicking on the green "cookie" button in the lower left corner of the screen.'
               )}
             </p>
           </section>
