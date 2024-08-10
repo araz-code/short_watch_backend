@@ -11,10 +11,11 @@ class ShortPositionSerializer(serializers.ModelSerializer):
     symbol = type('SerializerMethodField', (serializers.SerializerMethodField,
                                             serializers.CharField), dict())()
     timestamp = serializers.DateTimeField(format='%Y-%m-%dT%H:%M:%S%z')
+    prevValue = serializers.FloatField(source='prev_value')
 
     class Meta:
         model = ShortPosition
-        fields = ('code', 'name', 'symbol', 'value', 'prev_value', 'timestamp')
+        fields = ('code', 'name', 'symbol', 'value', 'prevValue', 'timestamp')
 
     @staticmethod
     def get_code(instance) -> str:
