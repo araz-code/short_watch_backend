@@ -6,7 +6,7 @@ from shorts.models import ShortPosition, RunStatus, Stock, ShortSeller, ShortPos
 
 @admin.register(ShortPosition)
 class ShortPositionAdmin(admin.ModelAdmin):
-    list_display = ('timestamp', 'code', 'symbol', 'name', 'value')
+    list_display = ('timestamp', 'code', 'symbol', 'name', 'value', 'prev_value')
     list_filter = ('stock__name', 'timestamp')
     ordering = ('-timestamp', 'stock__code')
 

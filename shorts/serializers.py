@@ -14,7 +14,7 @@ class ShortPositionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ShortPosition
-        fields = ('code', 'name', 'symbol', 'value', 'timestamp')
+        fields = ('code', 'name', 'symbol', 'value', 'prev_value', 'timestamp')
 
     @staticmethod
     def get_code(instance) -> str:

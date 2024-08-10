@@ -15,6 +15,7 @@ class ShortPosition(models.Model):
     # code = models.CharField(max_length=20)
     # name = models.CharField(max_length=50)
     value = models.FloatField()
+    prev_value = models.FloatField(default=0)
     timestamp = models.DateTimeField()
 
     def __str__(self):

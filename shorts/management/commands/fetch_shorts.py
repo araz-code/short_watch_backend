@@ -17,7 +17,7 @@ from selenium.webdriver.support.select import Select
 
 from errors.models import Error
 from request_logging.service import delete_old_logs, process_visits
-from short_watch_backend.settings import ANNOUNCEMENT_API_KEY, FCM_SERVICE_ACCOUNT_FILE
+from short_watch_backend.settings import ANNOUNCEMENT_API_KEY, FCM_SERVICE_ACCOUNT_FILE, DEBUG
 from shorts.models import ShortPosition, RunStatus, ShortSeller, ShortPositionChart, Stock, Announcement, \
     CompanyMap
 
@@ -320,6 +320,9 @@ class Command(BaseCommand):
                 ).first()
 
                 if existing_short is None:
+                    prev_short_position = ShortPosition.objects.filter(stock=short.stock).order_by('-timestamp').first()
+                    if prev_short_position:
+                        short.prev_value = prev_short_position.value
                     short.save()
                     for app_user in short.stock.app_users.all():
                         users_to_notify.add(app_user)
@@ -481,7 +484,8 @@ class Command(BaseCommand):
                     ),
                     token=app_user.fcm_token,
                 )
-                messaging.send(message)
+                if not DEBUG:
+                    messaging.send(message)
                 app_user.notifications_sent = app_user.notifications_sent + 1
                 app_user.save()
         except UnregisteredError:
