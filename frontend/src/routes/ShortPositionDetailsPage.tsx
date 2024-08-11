@@ -10,8 +10,6 @@ import ShortSellerRow from "../components/ShortSellerRow";
 import PageTemplate from "../components/PageTemplate";
 import ErrorBlock from "../components/UI/ErrorBlock";
 import LoadingIndicator from "../components/UI/LoadingIndicator";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
 import ShortSeller from "../models/ShortSeller";
 import Announcement from "../models/Announcement";
@@ -327,15 +325,15 @@ const ShortPositionDetailsPage: React.FC = () => {
           <div className="w-1/3 justify-end items-center hidden"></div>
 
           <div className="lg:w-[900px]">
-            <div className="flex items-center justify-between">
+            <div className="flex place-content-between">
               <button
-                className="text-blue-500 underline bg-transparent border-none text-lg pl-4 pt-4 w-full text-left"
+                className="text-blue-500 underline bg-transparent border-none text-lg pl-4 pt-4 hover:text-blue-700"
                 onClick={() => navigate("/short-watch")}
               >
                 {t("Back")}
               </button>
               <button
-                className="text-blue-500 underline bg-transparent border-none text-lg pr-4 pt-4 w-full text-end"
+                className="underline bg-transparent border-none text-lg pr-4 pt-4 text-[#daa520] hover:text-[#b8860b]"
                 onClick={() =>
                   isFavorite ? removeFromMyList() : addToMyList()
                 }
@@ -344,9 +342,37 @@ const ShortPositionDetailsPage: React.FC = () => {
                 }
               >
                 {isFavorite ? (
-                  <FontAwesomeIcon icon={faTrash} />
+                  <svg
+                    width="25"
+                    height="25"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.27L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
                 ) : (
-                  <FontAwesomeIcon icon={faPlus} />
+                  <svg
+                    width="25"
+                    height="25"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.27L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+                      stroke="currentColor"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
                 )}
               </button>
             </div>

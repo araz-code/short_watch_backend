@@ -3,5 +3,6 @@ export default interface PricePoint {
   name: string;
   symbol: string;
   value: number;
+  prevValue: number;
   timestamp: string;
 }

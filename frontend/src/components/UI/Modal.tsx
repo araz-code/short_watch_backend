@@ -52,7 +52,7 @@ const Modal: React.FC<
             <div className="flex items-center justify-end px-6 py-2 border-t border-solid border-blueGray-200 rounded-b">
               {okButtonTitle && (
                 <button
-                  className="text-blue-500 background-transparent font-medium px-6 py-2 outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                  className="text-blue-500 background-transparent font-medium px-6 py-2 outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 hover:text-blue-700"
                   type="button"
                   onClick={onOk}
                 >
@@ -60,7 +60,7 @@ const Modal: React.FC<
                 </button>
               )}
               <button
-                className="text-blue-500 background-transparent font-medium px-6 py-2 outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                className="text-blue-500 background-transparent font-medium px-6 py-2 outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 hover:text-blue-700"
                 type="button"
                 onClick={onClose}
               >

@@ -217,7 +217,7 @@ const PrivacyPolicyPage: React.FC = () => {
                 "You can read more about your rights in the Data Protection Agency's guidance on the rights of data subjects, which can be found at"
               )}{" "}
               <a
-                className="text-blue-500 underline"
+                className="text-blue-500 underline hover:text-blue-700"
                 href="https://www.datatilsynet.dk"
               >
                 www.datatilsynet.dk
@@ -232,7 +232,7 @@ const PrivacyPolicyPage: React.FC = () => {
                 "You have the right to file a complaint with the Data Protection Agency if you are dissatisfied with the way we process your personal information. You can find the contact information for the Data Protection Agency at"
               )}{" "}
               <a
-                className="text-blue-500 underline"
+                className="text-blue-500 underline hover:text-blue-700"
                 href="https://www.datatilsynet.dk"
               >
                 www.datatilsynet.dk

@@ -116,7 +116,7 @@ const ShortWatchPage: React.FC = () => {
           <p className="text-center font-medium m-10 dark:text-white">
             {showMyList && searchTerm.length == 0
               ? t(
-                  'Select stocks to "My list" by clicking + on details page (top right corner)'
+                  'Select stocks to "My list" by clicking the yellow star on the details page (top right corner).'
                 )
               : t("No results found")}
           </p>
@@ -182,7 +182,7 @@ const ShortWatchPage: React.FC = () => {
                       onSelectMenuItemChange={setSelectedSorting}
                     />
                     <button
-                      className="text-blue-500 text-center font-medium align-middle bg-transparent border-none text ml-5"
+                      className="text-blue-500 text-center font-medium align-middle bg-transparent border-none text ml-5 hover:text-blue-700"
                       onClick={() => {
                         handleClick(
                           `list changed: ${
@@ -197,7 +197,7 @@ const ShortWatchPage: React.FC = () => {
                     </button>
                   </div>
                   <button
-                    className="text-blue-500 text-center font-medium align-middle bg-transparent border-none ml-4"
+                    className="text-blue-500 text-center font-medium align-middle bg-transparent border-none ml-4 hover:text-blue-700"
                     onClick={handleInfo}
                   >
                     Info
