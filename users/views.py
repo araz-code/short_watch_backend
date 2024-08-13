@@ -1,4 +1,5 @@
 from django.db.transaction import atomic
+from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
@@ -153,7 +154,7 @@ def update_app_consent(request):
         user_id = serializer.validated_data.get('user_id')
         consent_accepted = serializer.validated_data.get('consent_accepted')
 
-        app_user, created = AppUser.objects.update_or_create(user_id=user_id)
+        app_user, created = AppUser.objects.update_or_create(user_id=user_id, defaults={'consent_date': timezone.now()})
 
         if app_user.consent_accepted != consent_accepted:
             app_user.old_consent_accepted = app_user.consent_accepted
