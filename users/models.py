@@ -16,6 +16,9 @@ class AppUser(models.Model):
     invalid = models.DateTimeField(null=True, blank=True)
     version = models.CharField(max_length=6, null=True, blank=True)
     notifications_sent = models.IntegerField(default=0)
+    consent_accepted = models.BooleanField(null=True, blank=True)
+    old_consent_accepted = models.BooleanField(null=True, blank=True)
+    consent_date = models.DateTimeField(null=True, blank=True)
     stocks = models.ManyToManyField(Stock, related_name='app_users', blank=True)
 
 

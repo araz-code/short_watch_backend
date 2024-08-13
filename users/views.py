@@ -1,3 +1,4 @@
+from django.db.transaction import atomic
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
@@ -8,11 +9,12 @@ from errors.models import Error
 from shorts.models import Stock
 from .models import AppUser, WebUser
 from .serializers import AppUserSerializer, AddRemoveStockSerializer, UpdateNotificationStatusSerializer, \
-    WebUserSerializer
+    WebUserSerializer, AppUserConsentSerializer
 
 
 @api_view(['POST'])
 @permission_classes([HasAPIKey])
+@atomic
 def create_app_user(request):
     serializer = AppUserSerializer(data=request.data)
 
@@ -39,6 +41,7 @@ def create_app_user(request):
 
 @api_view(['POST'])
 @permission_classes([HasAPIKey])
+@atomic
 def add_stock(request):
     serializer = AddRemoveStockSerializer(data=request.data)
 
@@ -64,6 +67,7 @@ def add_stock(request):
 
 @api_view(['POST'])
 @permission_classes([HasAPIKey])
+@atomic
 def remove_stock(request):
     serializer = AddRemoveStockSerializer(data=request.data)
 
@@ -89,6 +93,7 @@ def remove_stock(request):
 
 @api_view(['POST'])
 @permission_classes([HasAPIKey])
+@atomic
 def update_notification_status(request):
     serializer = UpdateNotificationStatusSerializer(data=request.data)
 
@@ -116,6 +121,7 @@ def update_notification_status(request):
 @api_view(['POST'])
 @csrf_exempt
 @permission_classes([HasAPIKey])
+@atomic
 def create_web_user(request):
     serializer = WebUserSerializer(data=request.data)
 
@@ -123,13 +129,41 @@ def create_web_user(request):
         user_id = serializer.validated_data.get('user_id')
         consent_accepted = serializer.validated_data.get('consent_accepted')
 
-        app_user, _ = WebUser.objects.update_or_create(user_id=user_id, defaults={"client_ip": get_client_ip(request)})
+        web_user, _ = WebUser.objects.update_or_create(user_id=user_id, defaults={"client_ip": get_client_ip(request)})
+
+        if web_user.consent_accepted != consent_accepted:
+            web_user.old_consent_accepted = web_user.consent_accepted
+        web_user.consent_accepted = consent_accepted
+
+        web_user.save()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(['POST'])
+@csrf_exempt
+@permission_classes([HasAPIKey])
+@atomic
+def update_app_consent(request):
+    serializer = AppUserConsentSerializer(data=request.data)
+
+    if serializer.is_valid():
+        user_id = serializer.validated_data.get('user_id')
+        consent_accepted = serializer.validated_data.get('consent_accepted')
+
+        app_user, created = AppUser.objects.update_or_create(user_id=user_id)
 
         if app_user.consent_accepted != consent_accepted:
             app_user.old_consent_accepted = app_user.consent_accepted
         app_user.consent_accepted = consent_accepted
 
         app_user.save()
+
+        if created:
+            Error.objects.create(message=f'Users-update_app_consent: Unknown user id updated consent: {user_id} - '
+                                         f'{consent_accepted}.'[:500])
 
         return Response(status=status.HTTP_204_NO_CONTENT)
 

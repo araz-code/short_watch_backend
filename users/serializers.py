@@ -33,3 +33,12 @@ class WebUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = AppUser
         fields = ['consentId', 'consentAccepted']
+
+
+class AppUserConsentSerializer(serializers.ModelSerializer):
+    userId = serializers.UUIDField(source='user_id')
+    consentAccepted = serializers.BooleanField(source="consent_accepted")
+
+    class Meta:
+        model = AppUser
+        fields = ['userId', 'consentAccepted']

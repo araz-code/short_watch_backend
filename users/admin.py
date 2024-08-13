@@ -7,9 +7,13 @@ from users.models import AppUser, WebUser
 @admin.register(AppUser)
 class AppUserAdmin(admin.ModelAdmin):
     list_display = ('last_activity', 'user_id', 'num_stocks', 'notifications_sent', 'notification_active',
-                    'old_notification_active', 'device', 'version', 'invalid', 'date_added', 'fcm_token')
+                    'old_notification_active', 'device', 'version',
+                    'consent_accepted', 'old_consent_accepted', 'consent_date',
+                    'invalid', 'date_added', 'fcm_token')
+
     ordering = ('-last_activity',)
     list_filter = ('device', 'last_activity', 'notification_active', 'old_notification_active', 'date_added',
+                   'consent_accepted', 'old_consent_accepted', 'consent_date',
                    'invalid', "version")
 
     def get_queryset(self, request):
