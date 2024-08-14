@@ -20,6 +20,7 @@ class AppUser(models.Model):
     old_consent_accepted = models.BooleanField(null=True, blank=True)
     consent_date = models.DateTimeField(null=True, blank=True)
     stocks = models.ManyToManyField(Stock, related_name='app_users', blank=True)
+    client_ip = models.GenericIPAddressField(null=True, blank=True)
 
 
 class WebUser(models.Model):

@@ -28,7 +28,8 @@ def create_app_user(request):
 
         app_user, _ = AppUser.objects.update_or_create(
             user_id=user_id,
-            defaults={'fcm_token': fcm_token, 'device': device, 'version': version, 'invalid': None}
+            defaults={'fcm_token': fcm_token, 'device': device, 'version': version, 'invalid': None,
+                      'client_ip': get_client_ip(request)}
         )
 
         existing_stocks = Stock.objects.filter(code__in=stock_codes)
@@ -130,7 +131,7 @@ def create_web_user(request):
         user_id = serializer.validated_data.get('user_id')
         consent_accepted = serializer.validated_data.get('consent_accepted')
 
-        web_user, _ = WebUser.objects.update_or_create(user_id=user_id, defaults={"client_ip": get_client_ip(request)})
+        web_user, _ = WebUser.objects.update_or_create(user_id=user_id, defaults={'client_ip': get_client_ip(request)})
 
         if web_user.consent_accepted != consent_accepted:
             web_user.old_consent_accepted = web_user.consent_accepted
@@ -154,7 +155,9 @@ def update_app_consent(request):
         user_id = serializer.validated_data.get('user_id')
         consent_accepted = serializer.validated_data.get('consent_accepted')
 
-        app_user, created = AppUser.objects.update_or_create(user_id=user_id, defaults={'consent_date': timezone.now()})
+        app_user, created = AppUser.objects.update_or_create(user_id=user_id,
+                                                             defaults={'consent_date': timezone.now(),
+                                                                       'client_ip': get_client_ip(request)})
 
         if app_user.consent_accepted != consent_accepted:
             app_user.old_consent_accepted = app_user.consent_accepted
