@@ -31,6 +31,7 @@ class AppUserAdmin(admin.ModelAdmin):
 
 @admin.register(WebUser)
 class WebUserAdmin(admin.ModelAdmin):
-    list_display = ('last_activity', 'user_id', 'consent_accepted', 'old_consent_accepted', 'date_added', 'client_ip')
+    list_display = ('last_activity', 'user_id', 'visits', 'consent_accepted', 'old_consent_accepted',
+                    'date_added', 'client_ip')
     ordering = ('-last_activity',)
-    list_filter = ('last_activity', 'consent_accepted', 'old_consent_accepted', 'date_added', 'client_ip')
+    list_filter = ('last_activity', 'visits', 'consent_accepted', 'old_consent_accepted', 'date_added', 'client_ip')
