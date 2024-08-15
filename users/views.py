@@ -189,9 +189,10 @@ def status_check(request):
         user_id = serializer.validated_data.get('user_id')
 
         try:
-            web_user = WebUser.objects.get(user_id=user_id, defaults={'client_ip': get_client_ip(request)})
+            web_user = WebUser.objects.get(user_id=user_id)
 
             web_user.visits = web_user.visits + 1
+            web_user.client_ip = get_client_ip(request)
 
             web_user.save()
 
