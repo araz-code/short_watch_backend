@@ -6,7 +6,7 @@ import ErrorPage from "./routes/ErrorPage.tsx";
 import PrivacyPolicyPage from "./routes/PrivacyPolicyPage.tsx";
 import TermsOfAgreementPage from "./routes/TermsOfAgreementPage.tsx";
 import ShortWatchPage from "./routes/ShortWatchPage.tsx";
-import { queryClient } from "./apis/ShortPositionAPI.tsx";
+import { queryClient, statusCheck } from "./apis/ShortPositionAPI.tsx";
 import ShortPositionDetailsPage from "./routes/ShortPositionDetailsPage.tsx";
 import "./utils/i18n.ts";
 
@@ -107,7 +107,18 @@ function App() {
         removeCookie(cookieName, { domain: ".zirium.dk", path: "/" });
       });
     }
+    const consentID = localStorage.getItem("consentId");
+    if (consentID) {
+      statusCheck(consentID);
+    }
   }, [consentAccepted, cookies, removeCookie]);
+
+  useEffect(() => {
+    const consentID = localStorage.getItem("consentId");
+    if (consentID) {
+      statusCheck(consentID);
+    }
+  }, []);
 
   return (
     <>

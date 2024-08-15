@@ -22,7 +22,7 @@ export async function fetchShortPositions({
   signal?: AbortSignal;
   category: string;
 }) {
-  const url = `https://www.zirium.dk/v10/shorts/web/${category}`;
+  const url = `https://www.zirium.dk/v11/shorts/web/${category}`;
 
   const response = await fetch(url, {
     signal,
@@ -55,7 +55,7 @@ export async function fetchShortPositionDetails({
   category: string;
   code: string;
 }) {
-  const url = `https://www.zirium.dk/v10/shorts/web/${category}/details/${code}`;
+  const url = `https://www.zirium.dk/v11/shorts/web/${category}/details/${code}`;
 
   const response = await fetch(url, {
     signal,
@@ -83,7 +83,7 @@ export async function updateConsent(
   consentId: string,
   consentAccepted: boolean
 ) {
-  const url = `https://www.zirium.dk/v10/users/web-consent`;
+  const url = `https://www.zirium.dk/v11/users/web-consent`;
 
   try {
     await fetch(url, {
@@ -97,10 +97,25 @@ export async function updateConsent(
         consentAccepted,
       }),
     });
-    /*
-    if (response.status != 201) {
-      logException(`updateConsent failed with status code ${response.status}`);
-    }*/
+  } catch (error) {
+    logException(`updateConsent failed: ${error}`);
+  }
+}
+
+export async function statusCheck(consentId: string) {
+  const url = `https://www.zirium.dk/v11/users/status-check`;
+
+  try {
+    await fetch(url, {
+      method: "POST",
+      headers: {
+        Authorization: `API-Key ${"CK1OkkoF.2t0M6oZMc186nNJFlZdNOMxWC0u3YCQ5"}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        consentId,
+      }),
+    });
   } catch (error) {
     logException(`updateConsent failed: ${error}`);
   }
