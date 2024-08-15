@@ -57,7 +57,7 @@ def add_stock(request):
             app_user.stocks.add(stock)
             return Response(status=status.HTTP_204_NO_CONTENT)
         except AppUser.DoesNotExist:
-            Error.objects.create(message=f'Users-add_stock: Unknown user id: {user_id}.'[:500])
+            Error.objects.create(message=f'Users-add_stock ({stock_code}): Unknown user id: {user_id}.'[:500])
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Stock.DoesNotExist:
             Error.objects.create(message=f'Users-add_stock: Unknown stock code: {stock_code}.'[:500])
@@ -83,7 +83,7 @@ def remove_stock(request):
             app_user.stocks.remove(stock)
             return Response(status=status.HTTP_204_NO_CONTENT)
         except AppUser.DoesNotExist:
-            Error.objects.create(message=f'Users-remove_stock: Unknown user id: {user_id}.'[:500])
+            Error.objects.create(message=f'Users-remove_stock ({stock_code}): Unknown user id: {user_id}.'[:500])
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Stock.DoesNotExist:
             Error.objects.create(message=f'Users-remove_stock: Unknown stock code: {stock_code}.'[:500])
@@ -103,7 +103,11 @@ def update_notification_status(request):
         user_id = serializer.validated_data.get('user_id')
         notification_active = serializer.validated_data.get('notification_active')
         try:
-            app_user = AppUser.objects.get(user_id=user_id)
+            app_user, _ = AppUser.objects.update_or_create(
+                user_id=user_id,
+                defaults={'client_ip': get_client_ip(request)}
+            )
+
             if app_user.notification_active != notification_active:
                 app_user.old_notification_active = app_user.notification_active
             app_user.notification_active = notification_active
