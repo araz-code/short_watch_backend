@@ -356,6 +356,7 @@ class Command(BaseCommand):
                         if short.value != 0:
                             ShortPosition(stock=short.stock,
                                           value=0.0,
+                                          prev_value=short.value,
                                           timestamp=timezone.now()).save()
 
                             Error.objects.create(message=f'Short position for {short.stock.symbol} got closed!'
