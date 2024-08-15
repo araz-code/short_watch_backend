@@ -102,23 +102,23 @@ def update_notification_status(request):
     if serializer.is_valid():
         user_id = serializer.validated_data.get('user_id')
         notification_active = serializer.validated_data.get('notification_active')
-        try:
-            app_user, _ = AppUser.objects.update_or_create(
-                user_id=user_id,
-                defaults={'client_ip': get_client_ip(request)}
-            )
 
-            if app_user.notification_active != notification_active:
-                app_user.old_notification_active = app_user.notification_active
-            app_user.notification_active = notification_active
+        app_user, created = AppUser.objects.update_or_create(
+            user_id=user_id,
+            defaults={'client_ip': get_client_ip(request)}
+        )
 
-            app_user.save()
+        if app_user.notification_active != notification_active:
+            app_user.old_notification_active = app_user.notification_active
+        app_user.notification_active = notification_active
 
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        except AppUser.DoesNotExist:
+        app_user.save()
+
+        if created:
             Error.objects.create(message=f'Users-update_notification_status: Unknown user id: {user_id} - '
                                          f'{notification_active}.'[:500])
-            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     Error.objects.create(message=f'Users-update_notification_status: {str(serializer.errors)}'[:500])
     return Response(status=status.HTTP_204_NO_CONTENT)
