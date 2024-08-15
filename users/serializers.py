@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from users.models import AppUser
+from users.models import AppUser, WebUser
 
 
 class AppUserSerializer(serializers.ModelSerializer):
@@ -31,8 +31,16 @@ class WebUserSerializer(serializers.ModelSerializer):
     consentAccepted = serializers.BooleanField(source="consent_accepted")
 
     class Meta:
-        model = AppUser
+        model = WebUser
         fields = ['consentId', 'consentAccepted']
+
+
+class StatusCheckSerializer(serializers.ModelSerializer):
+    consentId = serializers.UUIDField(source='user_id')
+
+    class Meta:
+        model = WebUser
+        fields = ['consentId']
 
 
 class AppUserConsentSerializer(serializers.ModelSerializer):

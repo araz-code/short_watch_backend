@@ -9,4 +9,5 @@ urlpatterns = [
     path('update-notification-status', views.update_notification_status),
     path('web-consent', views.create_web_user),
     path('app-consent', views.update_app_consent),
+    path('status-check', views.status_check),
 ]

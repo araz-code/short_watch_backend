@@ -30,4 +30,5 @@ class WebUser(models.Model):
     date_added = models.DateTimeField(auto_now_add=True)
     last_activity = models.DateTimeField(auto_now=True)
     client_ip = models.GenericIPAddressField()
+    visits = models.PositiveBigIntegerField(default=1)
 

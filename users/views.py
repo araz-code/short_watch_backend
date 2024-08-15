@@ -10,7 +10,7 @@ from errors.models import Error
 from shorts.models import Stock
 from .models import AppUser, WebUser
 from .serializers import AppUserSerializer, AddRemoveStockSerializer, UpdateNotificationStatusSerializer, \
-    WebUserSerializer, AppUserConsentSerializer
+    WebUserSerializer, AppUserConsentSerializer, StatusCheckSerializer
 
 
 @api_view(['POST'])
@@ -174,6 +174,31 @@ def update_app_consent(request):
                                          f'{consent_accepted}.'[:500])
 
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+    return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(['POST'])
+@csrf_exempt
+@permission_classes([HasAPIKey])
+@atomic
+def status_check(request):
+    serializer = StatusCheckSerializer(data=request.data)
+
+    if serializer.is_valid():
+        user_id = serializer.validated_data.get('user_id')
+
+        try:
+            web_user = WebUser.objects.get(user_id=user_id, defaults={'client_ip': get_client_ip(request)})
+
+            web_user.visits = web_user.visits + 1
+
+            web_user.save()
+
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except WebUser.DoesNotExist:
+            Error.objects.create(message=f'Users-status_check: Unknown user id: {user_id}.'[:500])
+            return Response(status=status.HTTP_204_NO_CONTENT)
 
     return Response(status=status.HTTP_204_NO_CONTENT)
 
