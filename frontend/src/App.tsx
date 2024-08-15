@@ -107,10 +107,6 @@ function App() {
         removeCookie(cookieName, { domain: ".zirium.dk", path: "/" });
       });
     }
-    const consentID = localStorage.getItem("consentId");
-    if (consentID) {
-      statusCheck(consentID);
-    }
   }, [consentAccepted, cookies, removeCookie]);
 
   useEffect(() => {
