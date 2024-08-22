@@ -15,6 +15,18 @@ class FetchError extends Error {
   }
 }
 
+function getCSRFToken() {
+  const name = "csrftoken";
+  const cookies = document.cookie.split(";");
+  for (let cookie of cookies) {
+    cookie = cookie.trim();
+    if (cookie.startsWith(name + "=")) {
+      return cookie.substring(name.length + 1);
+    }
+  }
+  return null;
+}
+
 export async function fetchShortPositions({
   signal,
   category,
@@ -85,17 +97,21 @@ export async function updateConsent(
 ) {
   const url = `https://www.zirium.dk/v11/users/web-consent`;
 
+  const csrfToken = getCSRFToken();
+
   try {
     await fetch(url, {
       method: "POST",
       headers: {
         Authorization: `API-Key ${"CK1OkkoF.2t0M6oZMc186nNJFlZdNOMxWC0u3YCQ5"}`,
         "Content-Type": "application/json",
+        ...(csrfToken && { "X-CSRFToken": csrfToken }),
       },
       body: JSON.stringify({
         consentId,
         consentAccepted,
       }),
+      ...(csrfToken && { credentials: "include" }),
     });
   } catch (error) {
     logException(`updateConsent failed: ${error}`);
