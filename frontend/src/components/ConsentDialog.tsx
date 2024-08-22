@@ -73,6 +73,7 @@ const ConsentDialog: React.FC<{
             'You can change or withdraw your consent at any time by clicking the green "cookie" button in the bottom left corner.'
           )}
         </p>
+        {/*
         <p className="text-base pb-5 ">
           <a
             className="text-blue-500 underline hover:text-blue-700"
@@ -80,7 +81,7 @@ const ConsentDialog: React.FC<{
           >
             {t("Read cookie policy")}
           </a>
-        </p>
+        </p>*/}
       </div>
     </Modal>
   );
