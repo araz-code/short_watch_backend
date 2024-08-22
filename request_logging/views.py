@@ -71,6 +71,7 @@ def get_requested_urls_chart(_: Request, year: str) -> JsonResponse:
         queryset = queryset.filter(created_at__year=year)
 
     queryset = queryset.filter(
+        Q(requested_url__iendswith="cookie-policy") |
         Q(requested_url__iendswith="privacy-policy") |
         Q(requested_url__iendswith="terms-of-agreement") |
         Q(requested_url__iendswith="privatlivspolitik") |
