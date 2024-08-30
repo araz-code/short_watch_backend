@@ -44,8 +44,18 @@ class ShortSeller(models.Model):
         return f'{self.name}'
 
 
+def get_default_short_seller():
+    default_seller = ShortSeller.objects.first().id
+    if default_seller:
+        return default_seller
+    else:
+        raise ValueError("No ShortSeller available to set as default.")
+
+
 class LargeShortSelling(models.Model):
     stock = models.ForeignKey(Stock, on_delete=models.PROTECT)
+    short_seller = models.ForeignKey(ShortSeller, on_delete=models.PROTECT, default=get_default_short_seller,
+                                     null=True, blank=True)
     name = models.CharField(max_length=50)
     business_id = models.CharField(max_length=20)
     value = models.FloatField()
