@@ -12,7 +12,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 
 from errors.models import Error
-from shorts.models import ShortPosition, RunStatus, ShortSeller, ShortPositionChart, Stock
+from shorts.models import ShortPosition, RunStatus, LargeShortSelling, ShortPositionChart, Stock
 
 copenhagen_timezone = pytz.timezone('Europe/Copenhagen')
 

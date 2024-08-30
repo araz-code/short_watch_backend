@@ -1,7 +1,8 @@
 from django.contrib import admin
 from django.contrib.admin import display
 
-from shorts.models import ShortPosition, RunStatus, Stock, ShortSeller, ShortPositionChart, CompanyMap, Announcement
+from shorts.models import ShortPosition, RunStatus, Stock, LargeShortSelling, ShortPositionChart, CompanyMap, Announcement, \
+    ShortSeller
 
 
 @admin.register(ShortPosition)
@@ -63,7 +64,7 @@ class StockAdmin(admin.ModelAdmin):
     ordering = ('name',)
 
 
-@admin.register(ShortSeller)
+@admin.register(LargeShortSelling)
 class ShortSellerAdmin(admin.ModelAdmin):
     list_display = ('date', 'name', 'business_id', 'stock_code', 'stock_symbol', 'stock_name', 'value')
     list_filter = ('stock__name', 'date')
@@ -167,27 +168,40 @@ class CompanyMapAdmin(admin.ModelAdmin):
 
 @admin.register(Announcement)
 class AnnouncementAdmin(admin.ModelAdmin):
-    list_display = ('published_date', 'name', 'headline')
+    list_display = ('published_date', 'stock_name', 'headline', 'short_seller_name', 'value')
     ordering = ('-published_date',)
-    list_filter = ('stock__name',)
+    list_filter = ('stock__name', 'short_seller__name')
 
     @staticmethod
     @display(description='code', ordering='stock__code')
-    def code(obj: ShortPosition) -> str:
+    def code(obj: Announcement) -> str:
         if obj.stock:
             return obj.stock.code
         return '-'
 
     @staticmethod
     @display(description='symbol', ordering='stock__symbol')
-    def symbol(obj: ShortPosition) -> str:
+    def symbol(obj: Announcement) -> str:
         if obj.stock:
             return obj.stock.symbol
         return '-'
 
     @staticmethod
-    @display(description='name', ordering='stock__name')
-    def name(obj: ShortPosition) -> str:
+    @display(description='stock_name', ordering='stock__name')
+    def stock_name(obj: Announcement) -> str:
         if obj.stock:
             return obj.stock.name
         return '-'
+
+    @staticmethod
+    @display(description='short_seller_name', ordering='short_seller__name')
+    def short_seller_name(obj: Announcement) -> str:
+        if obj.short_seller:
+            return obj.short_seller.name
+        return '-'
+
+
+@admin.register(ShortSeller)
+class SellerAdmin(admin.ModelAdmin):
+    list_display = ('name', )
+    ordering = ('-name',)

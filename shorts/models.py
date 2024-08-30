@@ -34,19 +34,23 @@ class RunStatus(models.Model):
 
 
 class ShortSeller(models.Model):
+    name = models.CharField(max_length=50)
+    business_id = models.CharField(max_length=20, null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.name}'
+
+
+class LargeShortSelling(models.Model):
     stock = models.ForeignKey(Stock, on_delete=models.PROTECT)
     name = models.CharField(max_length=50)
     business_id = models.CharField(max_length=20)
-    # stock_code = models.CharField(max_length=20)
-    # stock_name = models.CharField(max_length=50)
     value = models.FloatField()
     date = models.DateField()
 
 
 class ShortPositionChart(models.Model):
     stock = models.ForeignKey(Stock, on_delete=models.PROTECT)
-    # code = models.CharField(max_length=20)
-    # name = models.CharField(max_length=50)
     value = models.FloatField()
     date = models.DateField()
     timestamp = models.DateTimeField()
@@ -54,6 +58,7 @@ class ShortPositionChart(models.Model):
 
 class Announcement(models.Model):
     stock = models.ForeignKey(Stock, on_delete=models.PROTECT)
+    short_seller = models.ForeignKey(ShortSeller, on_delete=models.PROTECT, null=True, blank=True)
     announced_company_name = models.CharField(max_length=150)
     announcement_number = models.CharField(max_length=20)
     cvr_company_name = models.CharField(max_length=150, null=True, blank=True)
@@ -72,6 +77,7 @@ class Announcement(models.Model):
     shortselling_country = models.CharField(max_length=70, null=True, blank=True)
     shortselling_country_danish = models.CharField(max_length=70, null=True, blank=True)
     dfsa_id = models.CharField(max_length=100)
+    value = models.FloatField(null=True, blank=True)
 
     def __str__(self):
         return self.announcement_number

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from shorts.models import ShortPosition, ShortSeller, ShortPositionChart, Announcement
+from shorts.models import ShortPosition, LargeShortSelling, ShortPositionChart, Announcement
 
 
 class ShortPositionSerializer(serializers.ModelSerializer):
@@ -32,7 +32,7 @@ class ShortPositionSerializer(serializers.ModelSerializer):
 
 class ShortSellerSerializerOld(serializers.ModelSerializer):
     class Meta:
-        model = ShortSeller
+        model = LargeShortSelling
         fields = ('name', 'date', 'value')
 
 
@@ -45,7 +45,7 @@ class ShortSellerSerializer(serializers.ModelSerializer):
     date = DateWithAddedTimeField()
 
     class Meta:
-        model = ShortSeller
+        model = LargeShortSelling
         fields = ('name', 'date', 'value')
 
 

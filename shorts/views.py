@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet, GenericViewSet
 from rest_framework_api_key.permissions import HasAPIKey
 
-from shorts.models import ShortPosition, Stock, ShortSeller, ShortPositionChart
+from shorts.models import ShortPosition, Stock, LargeShortSelling, ShortPositionChart
 from shorts.serializers import ShortPositionSerializer, ShortSellerSerializerOld, ShortPositionDetailSerializer
 
 
@@ -37,7 +37,7 @@ class ShortPositionView(ReadOnlyModelViewSet):
 
 
 class ShortSellerView(GenericViewSet, RetrieveAPIView):
-    queryset = ShortSeller.objects.all()
+    queryset = LargeShortSelling.objects.all()
     serializer_class = ShortSellerSerializerOld
     permission_classes = [HasAPIKey]
     lookup_field = 'code'

@@ -1,3 +1,4 @@
+import re
 from datetime import datetime, timedelta
 
 import pytz
@@ -18,8 +19,8 @@ from selenium.webdriver.support.select import Select
 from errors.models import Error
 from request_logging.service import delete_old_logs, process_visits
 from short_watch_backend.settings import ANNOUNCEMENT_API_KEY, FCM_SERVICE_ACCOUNT_FILE, DEBUG
-from shorts.models import ShortPosition, RunStatus, ShortSeller, ShortPositionChart, Stock, Announcement, \
-    CompanyMap
+from shorts.models import ShortPosition, RunStatus, LargeShortSelling, ShortPositionChart, Stock, Announcement, \
+    CompanyMap, ShortSeller
 
 import firebase_admin
 from firebase_admin import credentials, messaging
@@ -148,16 +149,16 @@ class Command(BaseCommand):
                     stock_name = seller['IssuerName']
 
                     holders_data.append(
-                        ShortSeller(stock=self.get_or_create_stock(stock_code, stock_name),
-                                    name=seller['Positionsholder'],
-                                    business_id=seller['PositionsholderCVR'],
-                                    value=float(seller['TotalPercentageShareCapital']),
-                                    date=corrected_date.strftime('%Y-%m-%d'))
+                        LargeShortSelling(stock=self.get_or_create_stock(stock_code, stock_name),
+                                          name=seller['Positionsholder'],
+                                          business_id=seller['PositionsholderCVR'],
+                                          value=float(seller['TotalPercentageShareCapital']),
+                                          date=corrected_date.strftime('%Y-%m-%d'))
                     )
 
-                ShortSeller.objects.all().delete()
+                LargeShortSelling.objects.all().delete()
 
-                ShortSeller.objects.bulk_create(holders_data)
+                LargeShortSelling.objects.bulk_create(holders_data)
             else:
                 Error.objects.create(message="fetch_short_sellers_selenium was run instead")
                 self.fetch_short_sellers_selenium(driver)
@@ -185,16 +186,16 @@ class Command(BaseCommand):
                 stock_name = elements[i + 3].text
 
                 holders_data.append(
-                    ShortSeller(stock=self.get_or_create_stock(stock_code, stock_name),
-                                name=elements[i].text,
-                                business_id=elements[i + 1].text,
-                                value=float(elements[i + 4].text.replace(',', '.')),
-                                date=corrected_date)
+                    LargeShortSelling(stock=self.get_or_create_stock(stock_code, stock_name),
+                                      name=elements[i].text,
+                                      business_id=elements[i + 1].text,
+                                      value=float(elements[i + 4].text.replace(',', '.')),
+                                      date=corrected_date)
                 )
 
-            ShortSeller.objects.all().delete()
+            LargeShortSelling.objects.all().delete()
 
-            ShortSeller.objects.bulk_create(holders_data)
+            LargeShortSelling.objects.bulk_create(holders_data)
 
         except Exception as e:
             Error.objects.create(message=str(e)[:500])
@@ -213,6 +214,17 @@ class Command(BaseCommand):
 
                     if not stock:
                         continue
+
+                    value = None
+                    seller = None
+                    if item.get('Type') == 'Shortselling':
+                        match = re.search(r"(\d+\.\d+)%", item.get("Headline"))
+
+                        if match:
+                            value = match.group(1)
+
+                        if item.get("AnnouncedCompanyName"):
+                            seller = self.get_seller_for_announcement(item.get("AnnouncedCompanyName"))
 
                     try:
                         _ = Announcement.objects.update_or_create(
@@ -239,6 +251,8 @@ class Command(BaseCommand):
                                 "shortselling_country": item.get("ShortsellingCountry"),
                                 "shortselling_country_danish": item.get("ShortsellingCountryDanish"),
                                 "dfsa_id": item.get("Id", ""),
+                                "value": value,
+                                "short_seller": seller,
                             }
                         )
                     except Exception as e:
@@ -456,6 +470,17 @@ class Command(BaseCommand):
                 Error.objects.create(message=f'A new company was created and needs to be handled: {stock_name}')
 
                 return None
+
+    @staticmethod
+    def get_seller_for_announcement(announced_company_name):
+        try:
+            return ShortSeller.objects.get(name=announced_company_name)
+        except ShortSeller.DoesNotExist:
+            ShortSeller.objects.create(name=announced_company_name)
+
+            Error.objects.create(message=f'A new short seller was created: {announced_company_name}')
+
+            return None
 
     @staticmethod
     def send_push_notification(app_user):
