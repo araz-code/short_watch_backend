@@ -140,25 +140,19 @@ class Command(BaseCommand):
             if response.status_code == 200:
                 sellers = response.json()['data']
 
-                holders_data = []
-
                 for seller in sellers:
-                    # The site itself has +1 day for some reason.
+                    # Correct the date by adding one day
                     corrected_date = datetime.strptime(seller['PositionDate'], '%Y-%m-%dT%H:%M:%SZ') + timedelta(days=1)
                     stock_code = seller['IssuerCode']
                     stock_name = seller['IssuerName']
 
-                    holders_data.append(
-                        LargeShortSelling(stock=self.get_or_create_stock(stock_code, stock_name),
-                                          name=seller['Positionsholder'],
-                                          business_id=seller['PositionsholderCVR'],
-                                          value=float(seller['TotalPercentageShareCapital']),
-                                          date=corrected_date.strftime('%Y-%m-%d'))
+                    LargeShortSelling.objects.update_or_create(
+                        stock=self.get_or_create_stock(stock_code, stock_name),
+                        name=seller['Positionsholder'],
+                        date=corrected_date.strftime('%Y-%m-%d'),
+                        defaults={'business_id': seller['PositionsholderCVR'],
+                                  'value': float(seller['TotalPercentageShareCapital'])}
                     )
-
-                LargeShortSelling.objects.all().delete()
-
-                LargeShortSelling.objects.bulk_create(holders_data)
             else:
                 Error.objects.create(message="fetch_short_sellers_selenium was run instead")
                 self.fetch_short_sellers_selenium(driver)
@@ -178,24 +172,18 @@ class Command(BaseCommand):
 
             elements = driver.find_elements(By.CSS_SELECTOR, '.ui-grid-cell-contents.ng-binding.ng-scope')
 
-            holders_data = []
-
             for i in range(0, len(elements), 6):
                 corrected_date = datetime.strptime(elements[i + 5].text, '%d-%m-%Y')
                 stock_code = elements[i + 2].text
                 stock_name = elements[i + 3].text
 
-                holders_data.append(
-                    LargeShortSelling(stock=self.get_or_create_stock(stock_code, stock_name),
-                                      name=elements[i].text,
-                                      business_id=elements[i + 1].text,
-                                      value=float(elements[i + 4].text.replace(',', '.')),
-                                      date=corrected_date)
+                LargeShortSelling.objects.update_or_create(
+                    stock=self.get_or_create_stock(stock_code, stock_name),
+                    name=elements[i].text,
+                    date=corrected_date.strftime('%Y-%m-%d'),
+                    defaults={'business_id': elements[i + 1].text,
+                              'value': float(elements[i + 4].text.replace(',', '.'))}
                 )
-
-            LargeShortSelling.objects.all().delete()
-
-            LargeShortSelling.objects.bulk_create(holders_data)
 
         except Exception as e:
             Error.objects.create(message=str(e)[:500])
