@@ -152,7 +152,7 @@ class Command(BaseCommand):
                         date=corrected_date.strftime('%Y-%m-%d'),
                         defaults={'business_id': seller['PositionsholderCVR'],
                                   'value': float(seller['TotalPercentageShareCapital']),
-                                  'short_sellers': self.get_seller_for_announcement(seller['Positionsholder'])}
+                                  'short_seller': self.get_seller_for_announcement(seller['Positionsholder'])}
                     )
             else:
                 Error.objects.create(message="fetch_short_sellers_selenium was run instead")
@@ -184,7 +184,7 @@ class Command(BaseCommand):
                     date=corrected_date.strftime('%Y-%m-%d'),
                     defaults={'business_id': elements[i + 1].text,
                               'value': float(elements[i + 4].text.replace(',', '.')),
-                              'short_sellers': self.get_seller_for_announcement(elements[i].text)}
+                              'short_seller': self.get_seller_for_announcement(elements[i].text)}
                 )
 
         except Exception as e:
