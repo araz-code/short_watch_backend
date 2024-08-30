@@ -127,20 +127,20 @@ class Command(BaseCommand):
                 else:
                     return None
             except CompanyMap.DoesNotExist:
-                CompanyMap.objects.create(announced_company_name=announced_company_name,
+                company = CompanyMap.objects.create(announced_company_name=announced_company_name,
                                           issuer_name=issuer_name)
 
                 Error.objects.create(message=f'A new company was created and needs to be handled: {stock_name}')
 
-                return None
+                return company
 
     @staticmethod
     def get_seller_for_announcement(announced_company_name):
         try:
             return ShortSeller.objects.get(name=announced_company_name)
         except ShortSeller.DoesNotExist:
-            ShortSeller.objects.create(name=announced_company_name)
+            short_seller = ShortSeller.objects.create(name=announced_company_name)
 
             Error.objects.create(message=f'A new short seller was created: {announced_company_name}')
 
-            return None
+            return short_seller
