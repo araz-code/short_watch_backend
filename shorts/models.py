@@ -54,8 +54,7 @@ def get_default_short_seller():
 
 class LargeShortSelling(models.Model):
     stock = models.ForeignKey(Stock, on_delete=models.PROTECT)
-    short_seller = models.ForeignKey(ShortSeller, on_delete=models.PROTECT, default=get_default_short_seller,
-                                     null=True, blank=True)
+    short_seller = models.ForeignKey(ShortSeller, on_delete=models.PROTECT, default=get_default_short_seller)
     name = models.CharField(max_length=50)
     business_id = models.CharField(max_length=20)
     value = models.FloatField()
