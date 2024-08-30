@@ -66,8 +66,9 @@ class StockAdmin(admin.ModelAdmin):
 
 @admin.register(LargeShortSelling)
 class ShortSellerAdmin(admin.ModelAdmin):
-    list_display = ('date', 'name', 'business_id', 'stock_code', 'stock_symbol', 'stock_name', 'value')
-    list_filter = ('stock__name', 'date')
+    list_display = ('date', 'name', 'business_id', 'stock_code', 'stock_symbol', 'stock_name', 'value',
+                    'short_seller_name')
+    list_filter = ('stock__name', 'date', 'short_seller__name')
     ordering = ('-date', 'stock__name')
 
     @staticmethod
@@ -89,6 +90,13 @@ class ShortSellerAdmin(admin.ModelAdmin):
     def stock_name(obj: ShortPosition) -> str:
         if obj.stock:
             return obj.stock.name
+        return '-'
+
+    @staticmethod
+    @display(description='short_seller_name', ordering='short_seller__name')
+    def short_seller_name(obj: Announcement) -> str:
+        if obj.short_seller:
+            return obj.short_seller.name
         return '-'
 
     def has_add_permission(self, request):
