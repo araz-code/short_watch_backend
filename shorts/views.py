@@ -89,7 +89,7 @@ class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
 
                 chart_values = sorted(chart_values, key=lambda x: x.date, reverse=True)
 
-            sellers = stock.shortseller_set.all().order_by('-date')
+            sellers = stock.largeshortselling_set.all().order_by('-date')
 
             response = ShortedStockDetailsResponse(chart_values, historic, sellers, announcements)
 
