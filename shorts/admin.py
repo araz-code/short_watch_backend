@@ -203,5 +203,5 @@ class AnnouncementAdmin(admin.ModelAdmin):
 
 @admin.register(ShortSeller)
 class SellerAdmin(admin.ModelAdmin):
-    list_display = ('name', )
+    list_display = ('id', 'name', )
     ordering = ('-name',)
