@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from shorts.models import ShortPosition, LargeShortSelling, ShortPositionChart, Announcement
+from shorts.models import ShortPosition, LargeShortSelling, ShortPositionChart, Announcement, ShortSeller
 
 
 class ShortPositionSerializer(serializers.ModelSerializer):
@@ -41,12 +41,16 @@ class DateWithAddedTimeField(serializers.Field):
         return value.strftime('%Y-%m-%dT00:00:00+0000') if value else None
 
 
-class ShortSellerSerializer(serializers.ModelSerializer):
+class LargeShortSellingSerializer(serializers.ModelSerializer):
+    stockSymbol = serializers.CharField(source='stock.symbol')
+    stockCode = serializers.CharField(source='stock.code')
+    shortSeller = serializers.UUIDField(source='short_seller.id')
+
     date = DateWithAddedTimeField()
 
     class Meta:
         model = LargeShortSelling
-        fields = ('name', 'date', 'value')
+        fields = ('id', 'name', 'date', 'value', 'stockSymbol', 'stockCode', 'shortSeller')
 
 
 class ShortPositionChartSerializer(serializers.ModelSerializer):
@@ -60,17 +64,68 @@ class ShortPositionChartSerializer(serializers.ModelSerializer):
 class AnnouncementSerializer(serializers.ModelSerializer):
     publishedDate = serializers.DateTimeField(source='published_date', format='%Y-%m-%dT%H:%M:%S%z')
     headlineDanish = serializers.DateTimeField(source='headline_danish')
+    isHistoric = serializers.BooleanField(source='is_historic')
     dfsaId = serializers.DateTimeField(source='dfsa_id')
+    stockSymbol = serializers.CharField(source='stock.symbol')
+    stockCode = serializers.CharField(source='stock.code')
 
     class Meta:
         model = Announcement
-        fields = ('publishedDate', 'headline', 'headlineDanish', 'type', 'dfsaId')
+        fields = ('publishedDate', 'headline', 'headlineDanish', 'type', 'dfsaId', 'value',
+                  'isHistoric', 'stockSymbol', 'stockCode')
 
 
 class ShortPositionDetailSerializer(serializers.Serializer):
     chartValues = ShortPositionChartSerializer(many=True)
     historic = ShortPositionSerializer(many=True)
-    sellers = ShortSellerSerializer(many=True)
+    sellers = LargeShortSellingSerializer(many=True)
     announcements = AnnouncementSerializer(many=True)
+
+
+class LargeShortSellingForShortSellerSerializer(serializers.ModelSerializer):
+    stock_symbol = serializers.CharField(source='stock.symbol')
+
+    class Meta:
+        model = LargeShortSelling
+        fields = ('stock_symbol',)
+
+
+class AnnouncementForShortSellerSerializer(serializers.ModelSerializer):
+    stock_symbol = serializers.CharField(source='stock.symbol')
+
+    class Meta:
+        model = Announcement
+        fields = ('stock_symbol',)
+
+
+class ShortSellerListSerializer(serializers.ModelSerializer):
+    current = serializers.SerializerMethodField()
+    previous = serializers.SerializerMethodField()
+
+    class Meta:
+        model = ShortSeller
+        fields = ('id', 'name', 'current', 'previous')
+
+    @staticmethod
+    def get_current(obj):
+        return [x.stock.symbol for x in obj.large_short_sellings.all()]
+
+    def get_previous(self, obj):
+        current = set(self.get_current(obj))
+        previous = set([x.stock.symbol for x in obj.announcements.all() if x.stock.symbol not in current])
+        return list(previous)
+
+
+class ShortSellerDetailSerializer(serializers.ModelSerializer):
+    announcements = serializers.SerializerMethodField()
+
+    class Meta:
+        model = ShortSeller
+        fields = ('id', 'name', 'announcements')
+
+    @staticmethod
+    def get_announcements(obj):
+        sorted_announcements = obj.announcements.all().order_by('-published_date')
+        return AnnouncementSerializer(sorted_announcements, many=True).data
 
 

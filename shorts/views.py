@@ -8,8 +8,9 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet, GenericViewSet
 from rest_framework_api_key.permissions import HasAPIKey
 
-from shorts.models import ShortPosition, Stock, LargeShortSelling, ShortPositionChart
-from shorts.serializers import ShortPositionSerializer, ShortSellerSerializerOld, ShortPositionDetailSerializer
+from shorts.models import ShortPosition, Stock, LargeShortSelling, ShortPositionChart, ShortSeller
+from shorts.serializers import ShortPositionSerializer, ShortSellerSerializerOld, ShortPositionDetailSerializer, \
+    ShortSellerListSerializer, ShortSellerDetailSerializer
 
 
 class ShortPositionView(ReadOnlyModelViewSet):
@@ -36,7 +37,7 @@ class ShortPositionView(ReadOnlyModelViewSet):
         return Response(serializer.data)
 
 
-class ShortSellerView(GenericViewSet, RetrieveAPIView):
+class OldShortSellerView(GenericViewSet, RetrieveAPIView):
     queryset = LargeShortSelling.objects.all()
     serializer_class = ShortSellerSerializerOld
     permission_classes = [HasAPIKey]
@@ -96,3 +97,18 @@ class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
             return Response(self.get_serializer(response).data)
         except Stock.DoesNotExist:
             return Response(self.get_serializer(ShortedStockDetailsResponse([], [], [])).data)
+
+
+class ShortSellerView(ReadOnlyModelViewSet):
+    queryset = ShortSeller.objects.prefetch_related('large_short_sellings', 'announcements').all()
+    serializer_class = ShortSellerListSerializer
+    detail_serializer_class = ShortSellerDetailSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            if hasattr(self, 'detail_serializer_class'):
+                return self.detail_serializer_class
+
+        return self.serializer_class
+
+

@@ -21,7 +21,7 @@ def delete_old_logs():
     pks = list(RequestLog.objects.filter(timestamp__lt=two_months_ago).values_list('pk', flat=True))[:5000]
     RequestLog.objects.filter(pk__in=pks).delete()
 
-    pks = list(RequestLog.objects.filter(requested_url__endswith='/status-check').values_list('pk', flat=True))[:5000]
+    pks = list(RequestLog.objects.filter(requested_url__iendswith='/status-check').values_list('pk', flat=True))[:5000]
     RequestLog.objects.filter(pk__in=pks).delete()
 
 

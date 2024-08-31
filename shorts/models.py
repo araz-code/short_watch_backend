@@ -54,7 +54,8 @@ def get_default_short_seller():
 
 class LargeShortSelling(models.Model):
     stock = models.ForeignKey(Stock, on_delete=models.PROTECT)
-    short_seller = models.ForeignKey(ShortSeller, on_delete=models.PROTECT, default=get_default_short_seller)
+    short_seller = models.ForeignKey(ShortSeller, on_delete=models.PROTECT, default=get_default_short_seller,
+                                     related_name='large_short_sellings')
     name = models.CharField(max_length=50)
     business_id = models.CharField(max_length=20)
     value = models.FloatField()
@@ -70,7 +71,8 @@ class ShortPositionChart(models.Model):
 
 class Announcement(models.Model):
     stock = models.ForeignKey(Stock, on_delete=models.PROTECT)
-    short_seller = models.ForeignKey(ShortSeller, on_delete=models.PROTECT, null=True, blank=True)
+    short_seller = models.ForeignKey(ShortSeller, on_delete=models.PROTECT, null=True, blank=True,
+                                     related_name='announcements')
     announced_company_name = models.CharField(max_length=150)
     announcement_number = models.CharField(max_length=20)
     cvr_company_name = models.CharField(max_length=150, null=True, blank=True)
