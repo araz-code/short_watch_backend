@@ -1,3 +1,4 @@
+import { handleClick } from "../analytics";
 import Announcement from "../models/Announcement";
 import { formatTimestamp } from "../utils/dates";
 import { useTranslation } from "react-i18next";
@@ -18,6 +19,9 @@ const AnnouncementRow: React.FC<Announcement> = (props) => {
         <a
           href={`https://oam.finanstilsynet.dk/#!/announcement-details?Id=${dfsaId}`}
           target="_blank"
+          onClick={() => {
+            handleClick(`clicked on announcement detail: ${headline}`);
+          }}
         >
           {i18n.language === "da" || i18n.language === "da-DK"
             ? headlineDanish

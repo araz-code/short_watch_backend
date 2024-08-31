@@ -56,6 +56,7 @@
     "The iPhone and iPad app now have push notifications, so you can get notified when your watchlist is updated.": "iPhone- og iPad-appen har nu push-notifikationer, så du kan få besked, når din overvågningsliste bliver opdateret.",
     "Home": "Hjem",
     "Legal": "Juridisk",
+    "Products": "Produkter",
     "Do you have any questions, feedback, or need assistance? We are always ready to help you. Please feel free to contact us via email, and we will do our best to respond to your inquiry as quickly as possible.": "Har du spørgsmål, feedback eller brug for assistance? Vi står altid klar til at hjælpe dig. Du er meget velkommen til at kontakte os via e-mail, og vi vil gøre vores bedste for at besvare din henvendelse så hurtigt som muligt.",
     "Please send your inquiries to the following email address:": "Send venligst dine forespørgsler til følgende e-mailadresse:",
     "Cookie policy": "Cookiepolitik",
@@ -128,6 +129,14 @@
     "We are not responsible for how users utilize the app or the information and materials published therein.": "Vi er ikke ansvarlige for, hvordan brugere anvender appen eller de oplysninger, der er offentliggjort deri.",
     "Users are solely responsible for downloading or using information and other resources publicly available in the app, including those accessed through external links.": "Brugere er udelukkende ansvarlige for at downloade eller bruge information og andre ressourcer, der er offentligt tilgængelige i appen, herunder dem der tilgås gennem eksterne links.",
     "We cannot be held liable for delays or errors in data.": "Vi kan ikke holdes ansvarlige for forsinkelser eller fejl i data.",
-    "We are not responsible for loss on the user or any indirect losses incurred.": "Vi er ikke ansvarlige for tab hos brugeren eller eventuelle indirekte tab, der måtte opstå."
+    "We are not responsible for loss on the user or any indirect losses incurred.": "Vi er ikke ansvarlige for tab hos brugeren eller eventuelle indirekte tab, der måtte opstå.",
+    "Current": "Aktual",
+    "Previous": "Tidligere",
+    "The Danish FSA only publishes the names of short": "Finanstilsynet offentliggøre kun navnene på shortsælgere,",
+    "sellers with a position of 0.5% or greater.": "som har haft en position på 0.5% eller større.",
+    "Last published position": "Sidst offentliggjorte position",
+    "Data on this page comes from announcements.": "Data på denne side stammer fra indberetninger.",
+    "Danish FSA updates only positions above 0.5%.": "Finanstilsynet opdaterer kun positioner over 0,5%.",
+    "Below 0.5%, updates occur only once it exceeds 0.5% again.": "Under 0,5% opdateres kun, når det igen overstiger 0,5%."
   }
 }

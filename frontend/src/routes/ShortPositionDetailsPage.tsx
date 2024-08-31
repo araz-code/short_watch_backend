@@ -6,12 +6,12 @@ import { fetchShortPositionDetails } from "../apis/ShortPositionAPI";
 import PricePointChart from "../components/PricePointChart";
 import ToggleSwitch from "../components/UI/RadioButtonToggle";
 import { useEffect, useState } from "react";
-import ShortSellerRow from "../components/ShortSellerRow";
+import LargeShortSellingRow from "../components/LargeShortSellingRow";
 import PageTemplate from "../components/PageTemplate";
 import ErrorBlock from "../components/UI/ErrorBlock";
 import LoadingIndicator from "../components/UI/LoadingIndicator";
 import { useTranslation } from "react-i18next";
-import ShortSeller from "../models/ShortSeller";
+import LargestShortSelling from "../models/LargestShortSelling";
 import Announcement from "../models/Announcement";
 import AnnouncementRow from "../components/AnnouncementRow";
 import { handleClick, sendCustomPageView } from "../analytics";
@@ -280,9 +280,9 @@ const ShortPositionDetailsPage: React.FC = () => {
                     </div>
                   )}
                   {data.sellers.length > 0 &&
-                    data.sellers.map((seller: ShortSeller) => (
+                    data.sellers.map((seller: LargestShortSelling) => (
                       <li key={`${seller.name}-${seller.date}`}>
-                        <ShortSellerRow {...seller} />
+                        <LargeShortSellingRow {...seller} />
                       </li>
                     ))}
                 </ul>

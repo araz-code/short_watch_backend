@@ -4,4 +4,9 @@ export default interface Announcement {
   headlineDanish: string;
   type: string;
   dfsaId: string;
+  value: number;
+  stockCode: string;
+  stockSymbol: string;
+  isHistoric: boolean | null;
+  shortSeller: string;
 }

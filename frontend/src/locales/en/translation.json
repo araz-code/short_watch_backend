@@ -56,6 +56,7 @@
     "The iPhone and iPad app now have push notifications, so you can get notified when your watchlist is updated.": "The iPhone and iPad app now have push notifications, so you can get notified when your watchlist is updated.",
     "Home": "Home",
     "Legal": "Legal",
+    "Products": "Products",
     "Do you have any questions, feedback, or need assistance? We are always ready to help you. Please feel free to contact us via email, and we will do our best to respond to your inquiry as quickly as possible.": "Do you have any questions, feedback, or need assistance? We are always ready to help you. Please feel free to contact us via email, and we will do our best to respond to your inquiry as quickly as possible.",
     "Please send your inquiries to the following email address:": "Please send your inquiries to the following email address:",
     "Cookie policy": "Cookie policy",
@@ -128,6 +129,14 @@
     "We are not responsible for how users utilize the app or the information and materials published therein.": "We are not responsible for how users utilize the app or the information and materials published therein.",
     "Users are solely responsible for downloading or using information and other resources publicly available in the app, including those accessed through external links.": "Users are solely responsible for downloading or using information and other resources publicly available in the app, including those accessed through external links.",
     "We cannot be held liable for delays or errors in data.": "We cannot be held liable for delays or errors in data.",
-    "We are not responsible for loss on the user or any indirect losses incurred.": "We are not responsible for loss on the user or any indirect losses incurred."
+    "We are not responsible for loss on the user or any indirect losses incurred.": "We are not responsible for loss on the user or any indirect losses incurred.",
+    "Current": "Current",
+    "Previous": "Previous",
+    "The Danish FSA only publishes the names of short": "The Danish FSA only publishes the names of short",
+    "sellers with a position of 0.5% or greater.": "sellers with a position of 0.5% or greater.",
+    "Last published position": "Last published position",
+    "Data on this page comes from announcements.": "Data on this page comes from announcements.",
+    "Danish FSA updates only positions above 0.5%.": "Danish FSA updates only positions above 0.5%.",
+    "Below 0.5%, updates occur only once it exceeds 0.5% again.": "Below 0.5%, updates occur only once it exceeds 0.5% again."
   }
 }

@@ -3,6 +3,10 @@ import { logException } from "../analytics";
 
 export const queryClient = new QueryClient();
 
+const isLocal = true;
+const HOST = isLocal ? "http://localhost:8000" : "https://www.zirium.dk";
+const VERSION = "v12";
+
 class FetchError extends Error {
   code: number;
   info: unknown;
@@ -34,7 +38,7 @@ export async function fetchShortPositions({
   signal?: AbortSignal;
   category: string;
 }) {
-  const url = `https://www.zirium.dk/v11/shorts/web/${category}`;
+  const url = `${HOST}/${VERSION}/shorts/web/${category}`;
 
   const response = await fetch(url, {
     signal,
@@ -67,7 +71,7 @@ export async function fetchShortPositionDetails({
   category: string;
   code: string;
 }) {
-  const url = `https://www.zirium.dk/v11/shorts/web/${category}/details/${code}`;
+  const url = `${HOST}/${VERSION}/shorts/web/${category}/details/${code}`;
 
   const response = await fetch(url, {
     signal,
@@ -95,7 +99,7 @@ export async function updateConsent(
   consentId: string,
   consentAccepted: boolean
 ) {
-  const url = `https://www.zirium.dk/v11/users/web-consent`;
+  const url = `${HOST}/${VERSION}/users/web-consent`;
 
   const csrfToken = getCSRFToken();
 
@@ -119,7 +123,7 @@ export async function updateConsent(
 }
 
 export async function statusCheck(consentId: string) {
-  const url = `https://www.zirium.dk/v11/users/status-check`;
+  const url = `${HOST}/${VERSION}/users/status-check`;
 
   try {
     await fetch(url, {
@@ -135,4 +139,64 @@ export async function statusCheck(consentId: string) {
   } catch (error) {
     logException(`updateConsent failed: ${error}`);
   }
+}
+
+export async function fetchLargestShortSellers({
+  signal,
+}: {
+  signal?: AbortSignal;
+}) {
+  const url = `${HOST}/${VERSION}/shorts/short-sellers`;
+
+  const response = await fetch(url, {
+    signal,
+    headers: {
+      Authorization: `API-Key ${"CK1OkkoF.2t0M6oZMc186nNJFlZdNOMxWC0u3YCQ5"}`,
+    },
+  });
+
+  if (!response.ok) {
+    const info = await response.json();
+    const error = new FetchError(
+      "An error occurred while fetching largest short sellers",
+      response.status,
+      info
+    );
+    throw error;
+  }
+
+  const sellers = await response.json();
+
+  return sellers;
+}
+
+export async function fetchLargeShortSellerDetails({
+  signal,
+  seller,
+}: {
+  signal?: AbortSignal;
+  seller: string;
+}) {
+  const url = `${HOST}/${VERSION}/shorts/short-sellers/${seller}`;
+
+  const response = await fetch(url, {
+    signal,
+    headers: {
+      Authorization: `API-Key ${"CK1OkkoF.2t0M6oZMc186nNJFlZdNOMxWC0u3YCQ5"}`,
+    },
+  });
+
+  if (!response.ok) {
+    const info = await response.json();
+    const error = new FetchError(
+      "An error occurred while fetching the short seller details",
+      response.status,
+      info
+    );
+    throw error;
+  }
+
+  const shortDetails = await response.json();
+
+  return shortDetails;
 }

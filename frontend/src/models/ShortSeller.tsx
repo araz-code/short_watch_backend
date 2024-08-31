@@ -1,5 +1,6 @@
 export default interface ShortSeller {
+  id: string;
   name: string;
-  value: number;
-  date: string;
+  current: [string];
+  previous: [string];
 }

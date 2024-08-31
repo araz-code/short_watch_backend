@@ -5,23 +5,34 @@ import { useTranslation } from "react-i18next";
 const defaultCollapseMenu = {
   mainMenu: true,
   legalMenu: true,
+  productMenu: true,
 };
 
 const Navigation: React.FC = () => {
   const [collapseMenu, setCollapseMenu] = useState(defaultCollapseMenu);
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const toggleMainMenu = () => {
     setCollapseMenu((prev) => ({
       mainMenu: !prev.mainMenu,
       legalMenu: true,
+      productMenu: true,
     }));
   };
 
   const toggleLegalMenu = () => {
     setCollapseMenu((prev) => ({
       ...prev,
+      productMenu: true,
       legalMenu: !prev.legalMenu,
+    }));
+  };
+
+  const toggleProductMenu = () => {
+    setCollapseMenu((prev) => ({
+      ...prev,
+      legalMenu: true,
+      productMenu: !prev.productMenu,
     }));
   };
 
@@ -85,15 +96,63 @@ const Navigation: React.FC = () => {
                 </NavLink>
               </li>
               <li>
-                <NavLink
-                  to="/short-watch"
-                  className={({ isActive }) =>
-                    `${commonLinkClasses} ${isActive ? "underline" : ""}`
-                  }
-                  onClick={() => setCollapseMenu(defaultCollapseMenu)}
+                <button
+                  className={`flex items-center justify-between w-full py-2 md:p-0 md:w-auto ${
+                    isLegalActive ? "underline" : ""
+                  }`}
+                  onClick={toggleProductMenu}
                 >
-                  Short watch
-                </NavLink>
+                  {t("Products")}
+                  <svg
+                    className={`w-2.5 h-2.5 ms-2.5 transition-transform ${
+                      collapseMenu.productMenu ? "" : "rotate-180"
+                    }`}
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 10 6"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="m1 1 4 4 4-4"
+                    />
+                  </svg>
+                </button>
+                <div
+                  className={`md:absolute md:z-10 md:shadow md:w-70 md:rounded-lg bg-white dark:bg-[#121212] font-normal divide-y divide-gray-100 md:border md:border-gray-100 text-gray-800 dark:text-white ${
+                    collapseMenu.productMenu ? "hidden" : "top-[4.7rem]"
+                  }`}
+                >
+                  <ul className="text-sm md:text-base">
+                    <li>
+                      <NavLink
+                        to="/short-watch"
+                        className={({ isActive }) =>
+                          `block px-4 py-2 md:pt-5  ${
+                            isActive ? "underline" : ""
+                          }`
+                        }
+                        onClick={() => setCollapseMenu(defaultCollapseMenu)}
+                      >
+                        {t("Short watch")}
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
+                        to="/short-sellers"
+                        className={({ isActive }) =>
+                          `block px-4 py-2  ${isActive ? "underline" : ""}`
+                        }
+                        onClick={() => setCollapseMenu(defaultCollapseMenu)}
+                      >
+                        Short sellers
+                      </NavLink>
+                    </li>
+                  </ul>
+                </div>
               </li>
               <li>
                 <button
@@ -129,11 +188,7 @@ const Navigation: React.FC = () => {
                   <ul className="text-sm md:text-base">
                     <li>
                       <NavLink
-                        to={
-                          i18n.language === "da" || i18n.language === "da-DK"
-                            ? "/privatlivspolitik"
-                            : "/privacy-policy"
-                        }
+                        to="/privacy-policy"
                         className={({ isActive }) =>
                           `block px-4 py-2 md:pt-5  ${
                             isActive ? "underline" : ""
@@ -157,11 +212,7 @@ const Navigation: React.FC = () => {
                     </li>
                     <li>
                       <NavLink
-                        to={
-                          i18n.language === "da" || i18n.language === "da-DK"
-                            ? "/aftalevilkaar"
-                            : "/terms-of-agreement"
-                        }
+                        to="/terms-of-agreement"
                         className={({ isActive }) =>
                           `block px-4 py-2 ${isActive ? "underline" : ""}`
                         }
@@ -188,7 +239,9 @@ const Navigation: React.FC = () => {
           </div>
         </div>
       </nav>
-      {(!collapseMenu.mainMenu || !collapseMenu.legalMenu) && (
+      {(!collapseMenu.mainMenu ||
+        !collapseMenu.legalMenu ||
+        !collapseMenu.productMenu) && (
         <div
           className="opacity-25 dark:opacity-50 fixed inset-0 z-20 bg-black"
           onClick={() => setCollapseMenu(defaultCollapseMenu)}
