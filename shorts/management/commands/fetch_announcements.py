@@ -37,7 +37,7 @@ class Command(BaseCommand):
 
     def fetch_announcements(self):
 
-        for skip in range(0, 75):
+        for skip in range(76, 84):
             body = {
                 'SortField': 'RegistrationDate',
                 'Ascending': False,
