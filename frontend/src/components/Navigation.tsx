@@ -137,7 +137,7 @@ const Navigation: React.FC = () => {
                         }
                         onClick={() => setCollapseMenu(defaultCollapseMenu)}
                       >
-                        {t("Short watch")}
+                        Short Watch
                       </NavLink>
                     </li>
                     <li>
@@ -148,7 +148,7 @@ const Navigation: React.FC = () => {
                         }
                         onClick={() => setCollapseMenu(defaultCollapseMenu)}
                       >
-                        Short sellers
+                        Short Sellers
                       </NavLink>
                     </li>
                   </ul>
