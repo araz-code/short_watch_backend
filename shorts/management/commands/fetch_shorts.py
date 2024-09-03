@@ -149,10 +149,11 @@ class Command(BaseCommand):
                     LargeShortSelling.objects.update_or_create(
                         stock=self.get_or_create_stock(stock_code, stock_name),
                         name=seller['Positionsholder'],
-                        date=corrected_date.strftime('%Y-%m-%d'),
                         defaults={'business_id': seller['PositionsholderCVR'],
                                   'value': float(seller['TotalPercentageShareCapital']),
-                                  'short_seller': self.get_seller_for_announcement(seller['Positionsholder'])}
+                                  'short_seller': self.get_seller_for_announcement(seller['Positionsholder']),
+                                  'date': corrected_date.strftime('%Y-%m-%d')
+                                  }
                     )
             else:
                 Error.objects.create(message="fetch_short_sellers_selenium was run instead")
@@ -181,10 +182,12 @@ class Command(BaseCommand):
                 LargeShortSelling.objects.update_or_create(
                     stock=self.get_or_create_stock(stock_code, stock_name),
                     name=elements[i].text,
-                    date=corrected_date.strftime('%Y-%m-%d'),
+
                     defaults={'business_id': elements[i + 1].text,
                               'value': float(elements[i + 4].text.replace(',', '.')),
-                              'short_seller': self.get_seller_for_announcement(elements[i].text)}
+                              'short_seller': self.get_seller_for_announcement(elements[i].text),
+                              'date': corrected_date.strftime('%Y-%m-%d')
+                              }
                 )
 
         except Exception as e:
