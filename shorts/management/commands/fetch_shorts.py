@@ -225,7 +225,8 @@ class Command(BaseCommand):
                             seller = self.get_seller_for_announcement(item.get("AnnouncedCompanyName"))
 
                     try:
-                        if 'CANCELLATION' in item.get("Headline") and item.get('Type') == 'Shortselling':
+                        if ('CANCELLATION' in item.get("Headline") or 'CANCELLED' in item.get("Headline")) \
+                                and item.get('Type') == 'Shortselling':
                             Error.objects.create(message=f'CANCELLATION: item.get("Headline")'[:500])
                             continue
 
