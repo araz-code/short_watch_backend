@@ -153,6 +153,7 @@ class Command(BaseCommand):
                                           name=seller['Positionsholder'],
                                           business_id=seller['PositionsholderCVR'],
                                           value=float(seller['TotalPercentageShareCapital']),
+                                          short_seller=self.get_seller_for_announcement(seller['Positionsholder']),
                                           date=corrected_date.strftime('%Y-%m-%d'))
                     )
 
