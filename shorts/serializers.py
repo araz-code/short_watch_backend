@@ -1,3 +1,4 @@
+from django.db.models import Q
 from rest_framework import serializers
 
 from shorts.models import ShortPosition, LargeShortSelling, ShortPositionChart, Announcement, ShortSeller
@@ -97,6 +98,14 @@ class AnnouncementForShortSellerSerializer(serializers.ModelSerializer):
         model = Announcement
         fields = ('stock_symbol',)
 
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+
+        if "CANCELLATION" in representation['headline'] or "CANCELLED" in representation['headline']:
+            return None
+
+        return representation
+
 
 class ShortSellerListSerializer(serializers.ModelSerializer):
     current = serializers.SerializerMethodField()
@@ -125,7 +134,9 @@ class ShortSellerDetailSerializer(serializers.ModelSerializer):
 
     @staticmethod
     def get_announcements(obj):
-        sorted_announcements = obj.announcements.all().order_by('-published_date')
+        sorted_announcements = obj.announcements.exclude(
+            Q(headline__icontains="CANCELLATION") | Q(headline__icontains="CANCELLED")
+        ).order_by('-published_date')
         return AnnouncementSerializer(sorted_announcements, many=True).data
 
 

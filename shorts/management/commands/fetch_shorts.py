@@ -225,11 +225,6 @@ class Command(BaseCommand):
                             seller = self.get_seller_for_announcement(item.get("AnnouncedCompanyName"))
 
                     try:
-                        if ('CANCELLATION' in item.get("Headline") or 'CANCELLED' in item.get("Headline")) \
-                                and item.get('Type') == 'Shortselling':
-                            Error.objects.create(message=f'CANCELLATION: {item.get("Headline")}'[:500])
-                            continue
-
                         _ = Announcement.objects.update_or_create(
                             stock=stock,
                             announcement_number=item["AnnouncementNumber"],
