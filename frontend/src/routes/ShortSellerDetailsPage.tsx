@@ -94,7 +94,7 @@ const ShortSellerDetailsPage: React.FC = () => {
             <ul className="mx-4">
               {Object.keys(groupedAnnouncements).map((symbol) => (
                 <div key={symbol}>
-                  <div className="font-medium text-left hover:underline">
+                  <div className="font-medium text-left hover:underline dark:text-white">
                     <Link
                       to={`/short-watch-details?code=${groupedAnnouncements[symbol][0].stockCode}`}
                       onClick={() => {
