@@ -140,21 +140,25 @@ class Command(BaseCommand):
             if response.status_code == 200:
                 sellers = response.json()['data']
 
+                holders_data = []
+
                 for seller in sellers:
-                    # Correct the date by adding one day
+                    # The site itself has +1 day for some reason.
                     corrected_date = datetime.strptime(seller['PositionDate'], '%Y-%m-%dT%H:%M:%SZ') + timedelta(days=1)
                     stock_code = seller['IssuerCode']
                     stock_name = seller['IssuerName']
 
-                    LargeShortSelling.objects.update_or_create(
-                        stock=self.get_or_create_stock(stock_code, stock_name),
-                        name=seller['Positionsholder'],
-                        defaults={'business_id': seller['PositionsholderCVR'],
-                                  'value': float(seller['TotalPercentageShareCapital']),
-                                  'short_seller': self.get_seller_for_announcement(seller['Positionsholder']),
-                                  'date': corrected_date.strftime('%Y-%m-%d')
-                                  }
+                    holders_data.append(
+                        LargeShortSelling(stock=self.get_or_create_stock(stock_code, stock_name),
+                                          name=seller['Positionsholder'],
+                                          business_id=seller['PositionsholderCVR'],
+                                          value=float(seller['TotalPercentageShareCapital']),
+                                          date=corrected_date.strftime('%Y-%m-%d'))
                     )
+
+                LargeShortSelling.objects.all().delete()
+
+                LargeShortSelling.objects.bulk_create(holders_data)
             else:
                 Error.objects.create(message="fetch_short_sellers_selenium was run instead")
                 self.fetch_short_sellers_selenium(driver)
