@@ -60,6 +60,7 @@ class LargeShortSelling(models.Model):
     business_id = models.CharField(max_length=20)
     value = models.FloatField()
     date = models.DateField()
+    delete = models.BooleanField(default=False)
 
 
 class ShortPositionChart(models.Model):
@@ -67,6 +68,8 @@ class ShortPositionChart(models.Model):
     value = models.FloatField()
     date = models.DateField()
     timestamp = models.DateTimeField()
+    close = models.FloatField(null=True, blank=True)
+    volume = models.PositiveIntegerField(null=True, blank=True)
 
 
 class Announcement(models.Model):
