@@ -227,7 +227,7 @@ class Command(BaseCommand):
                     try:
                         if ('CANCELLATION' in item.get("Headline") or 'CANCELLED' in item.get("Headline")) \
                                 and item.get('Type') == 'Shortselling':
-                            Error.objects.create(message=f'CANCELLATION: item.get("Headline")'[:500])
+                            Error.objects.create(message=f'CANCELLATION: {item.get("Headline")}'[:500])
                             continue
 
                         _ = Announcement.objects.update_or_create(
