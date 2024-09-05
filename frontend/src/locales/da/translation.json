@@ -137,6 +137,10 @@
     "Last published position": "Sidst offentliggjorte position",
     "Data on this page comes from announcements.": "Data på denne side stammer fra indberetninger.",
     "Danish FSA updates only positions above 0.5%.": "Finanstilsynet opdaterer kun positioner over 0,5%.",
-    "Below 0.5%, updates occur only once it exceeds 0.5% again.": "Under 0,5% opdateres kun, når det igen overstiger 0,5%."
+    "Below 0.5%, updates occur only once it exceeds 0.5% again.": "Under 0,5% opdateres kun, når det igen overstiger 0,5%.",
+    "Short position": "Shortposition",
+    "Closing price": "Slutkurs",
+    "Hide closing prices": "Skjul slutkurser",
+    "Show closing prices": "Vis slutkurser"
   }
 }

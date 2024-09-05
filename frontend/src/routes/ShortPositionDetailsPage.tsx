@@ -15,6 +15,7 @@ import LargestShortSelling from "../models/LargestShortSelling";
 import Announcement from "../models/Announcement";
 import AnnouncementRow from "../components/AnnouncementRow";
 import { handleClick, sendCustomPageView } from "../analytics";
+import ChartPricePoint from "../models/ChartPricePoint";
 
 //import advertisement from "../static/stresstilbud.jpg";
 
@@ -22,10 +23,10 @@ const detailOptions = ["Historic data", "Largest sellers", "Announcements"];
 const periodOptions = ["1W", "1M", "3M", "6M", "YTD", "Max."];
 
 const processChartValues = (
-  pricePoints: PricePoint[],
+  pricePoints: ChartPricePoint[],
   period: string
-): PricePoint[] => {
-  const newestEntries: { [key: string]: PricePoint } = {};
+): ChartPricePoint[] => {
+  const newestEntries: { [key: string]: ChartPricePoint } = {};
 
   for (const pricePoint of pricePoints) {
     const timestamp = new Date(pricePoint.timestamp);
@@ -51,7 +52,7 @@ const processChartValues = (
     a.timestamp.localeCompare(b.timestamp)
   );
 
-  const getFilteredData = (days: number): PricePoint[] => {
+  const getFilteredData = (days: number): ChartPricePoint[] => {
     const cutoffDate = new Date();
     cutoffDate.setDate(cutoffDate.getDate() - days);
     return sortedChartData.filter(
@@ -59,7 +60,7 @@ const processChartValues = (
     );
   };
 
-  const getFilteredDataByMonths = (months: number): PricePoint[] => {
+  const getFilteredDataByMonths = (months: number): ChartPricePoint[] => {
     const cutoffDate = new Date();
     cutoffDate.setMonth(cutoffDate.getMonth() - months);
     return sortedChartData.filter(
@@ -67,7 +68,7 @@ const processChartValues = (
     );
   };
 
-  const getFilteredDataYTD = (): PricePoint[] => {
+  const getFilteredDataYTD = (): ChartPricePoint[] => {
     const currentYear = new Date().getFullYear();
     return sortedChartData.filter(
       (pricePoint) =>

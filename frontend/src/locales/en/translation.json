@@ -137,6 +137,10 @@
     "Last published position": "Last published position",
     "Data on this page comes from announcements.": "Data on this page comes from announcements.",
     "Danish FSA updates only positions above 0.5%.": "Danish FSA updates only positions above 0.5%.",
-    "Below 0.5%, updates occur only once it exceeds 0.5% again.": "Below 0.5%, updates occur only once it exceeds 0.5% again."
+    "Below 0.5%, updates occur only once it exceeds 0.5% again.": "Below 0.5%, updates occur only once it exceeds 0.5% again.",
+    "Short position": "Short position",
+    "Closing price": "Closing price",
+    "Hide closing prices": "Hide closing prices",
+    "Show closing prices": "Show closing prices"
   }
 }

@@ -10,8 +10,6 @@ import yfinance as yf
 copenhagen_timezone = pytz.timezone('Europe/Copenhagen')
 
 
-
-
 class Command(BaseCommand):
     help = "Add price data to the chart model"
 
@@ -21,12 +19,10 @@ class Command(BaseCommand):
         for stock in stocks:
             if stock.symbol in ['CHR', 'NZYM-B']:
                 continue
-            #if stock.symbol not in ['BAVA']:
-             #   continue
 
             self.create_missing_chart_values(stock)
 
-            data = yf.download(f'{stock.symbol}.CO', start='2023-11-06', end='2024-09-05')
+            data = yf.download(f'{stock.symbol}.CO', start='2023-11-06')
 
             self.did_a_split_occur(stock, data)
 
