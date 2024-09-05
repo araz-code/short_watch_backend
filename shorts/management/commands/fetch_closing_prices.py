@@ -1,33 +1,127 @@
+from datetime import datetime, timedelta, time
+import pytz
+from django.core.management.base import BaseCommand
+from django.utils import timezone
+
+from errors.models import Error
+from shorts.models import Stock, ShortPositionChart
 import yfinance as yf
-from django.core.management import BaseCommand
+
+copenhagen_timezone = pytz.timezone('Europe/Copenhagen')
+
+
 
 
 class Command(BaseCommand):
-    help = "add data to the chart model"
+    help = "Add price data to the chart model"
 
     def handle(self, *args, **options):
-        msft = yf.Ticker("AMBU-B.CO")
+        stocks = Stock.objects.all()
 
-        # get all stock info
-        x = msft.info
+        for stock in stocks:
+            if stock.symbol in ['CHR', 'NZYM-B']:
+                continue
+            #if stock.symbol not in ['BAVA']:
+             #   continue
 
-        # get historical market data
-        hist = msft.history(period="1mo")
+            self.create_missing_chart_values(stock)
 
-        # show meta information about the history (requires history() to be called first)
-        y = msft.history_metadata
+            data = yf.download(f'{stock.symbol}.CO', start='2023-11-06', end='2024-09-05')
 
-        # show holders
-        a = msft.major_holders
-        b = msft.institutional_holders
-        c = msft.mutualfund_holders
+            self.did_a_split_occur(stock, data)
 
-        # Show future and historic earnings dates, returns at most next 4 quarters and last 8 quarters by default.
-        # Note: If more are needed use msft.get_earnings_dates(limit=XX) with increased limit argument.
-        d = msft.earnings_dates
+            self.fill_initial_missing_data(stock, data)
 
+            self.update_today_price_volume(data, stock)
 
-        pass
+            self.fill_holes_in_chart_values(stock)
 
+    @staticmethod
+    def update_today_price_volume(data, stock):
+        ShortPositionChart.objects.filter(stock=stock, date=data.tail(1).index.date[0]) \
+            .update(close=round(data.tail(1).iloc[0].Close, 2), volume=data.tail(1).iloc[0].Volume)
 
+    @staticmethod
+    def create_missing_chart_values(stock: Stock):
+        first = ShortPositionChart.objects.filter(stock=stock).order_by('date').first()
 
+        start_date = datetime(2023, 11, 6).date()
+
+        if not first or first.date > start_date:
+            Error.objects.create(message=f'create_missing_chart_values {stock.symbol}: '
+                                         f'First record {first.date} was after 6. November 2023')
+            end_date = first.date if first else datetime.now().date()
+
+            while start_date < end_date:
+                timestamp = datetime.combine(start_date, time(23, 45))
+                timestamp = timezone.make_aware(timestamp, timezone.get_current_timezone())
+
+                exists = ShortPositionChart.objects.filter(
+                    stock=stock,
+                    date=start_date,
+                ).exists()
+
+                if not exists:
+                    ShortPositionChart.objects.create(
+                        stock=stock,
+                        date=start_date,
+                        value=0,
+                        timestamp=timestamp,
+                    )
+                else:
+                    Error.objects.create(message=f'create_missing_chart_values {stock.symbol}: '
+                                                 f'THIS SHOULD NOT HAPPEN: Chart entry already exist: {start_date}')
+
+                start_date += timedelta(days=1)
+
+    @staticmethod
+    def fill_initial_missing_data(stock, data):
+        count = ShortPositionChart.objects.filter(stock=stock, close=None).count()
+
+        if count > 10:
+            Error.objects.create(message=f'fill_initial_missing_data {stock.symbol}: '
+                                         f'Filling out empty values.')
+
+            for row in data.itertuples(index=True):
+                try:
+                    ShortPositionChart.objects.update_or_create(
+                        stock=stock,
+                        date=row.Index.date(),
+                        defaults={
+                            'close': round(row.Close, 2),
+                            'volume': row.Volume
+                        }
+                    )
+                except Exception as e:
+                    Error.objects.create(message=f'fill_initial_missing_data {stock.symbol}: '
+                                                 f"THIS SHOULD NOT HAPPEN: Value doesn't exist: {row.Index.date()}.")
+
+    @staticmethod
+    def did_a_split_occur(stock, data):
+        prev_chart_point = ShortPositionChart.objects.filter(stock=stock, date=data.tail(2).index.date[0]).first()
+
+        if not prev_chart_point or prev_chart_point.close is None:
+            return
+
+        current_close = data.tail(1).iloc[0].Close
+        prev_close = prev_chart_point.close
+
+        percent_diff = abs((current_close - prev_close) / prev_close) * 100 if prev_close else 0
+
+        if percent_diff > 10:
+            Error.objects.create(message=f'did_a_split_occur {stock.symbol}: '
+                                         f'The percentage difference is {percent_diff} so rerun.')
+            ShortPositionChart.objects.filter(stock=stock).update(close=None, volume=None)
+
+    @staticmethod
+    def fill_holes_in_chart_values(stock):
+        chart_values = ShortPositionChart.objects.filter(stock=stock).order_by('date')
+
+        prev = None
+        for chart_value in list(chart_values)[:-1]:
+            if prev and chart_value.close is None:
+                chart_value.close = prev.close
+                chart_value.volume = prev.volume
+                chart_value.save()
+            else:
+                prev = chart_value

@@ -59,7 +59,7 @@ class ShortPositionChartSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ShortPositionChart
-        fields = ('timestamp', 'value')
+        fields = ('timestamp', 'value', 'close')
 
 
 class AnnouncementSerializer(serializers.ModelSerializer):
