@@ -74,7 +74,7 @@ class Command(BaseCommand):
     def fill_initial_missing_data(stock, data):
         count = ShortPositionChart.objects.filter(stock=stock, close=None).count()
 
-        if count > 10:
+        if count > 10 and stock.symbol != 'SVITZR' or count > 186 and stock.symbol == 'SVITZR':
             Error.objects.create(message=f'fill_initial_missing_data {stock.symbol}: '
                                          f'Filling out empty values.')
 
