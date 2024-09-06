@@ -46,12 +46,13 @@ class LargeShortSellingSerializer(serializers.ModelSerializer):
     stockSymbol = serializers.CharField(source='stock.symbol')
     stockCode = serializers.CharField(source='stock.code')
     shortSeller = serializers.UUIDField(source='short_seller.id')
+    prevValue = serializers.UUIDField(source='prev_value')
 
     date = DateWithAddedTimeField()
 
     class Meta:
         model = LargeShortSelling
-        fields = ('id', 'name', 'date', 'value', 'stockSymbol', 'stockCode', 'shortSeller')
+        fields = ('id', 'name', 'date', 'value', 'prevValue', 'stockSymbol', 'stockCode', 'shortSeller')
 
 
 class ShortPositionChartSerializer(serializers.ModelSerializer):

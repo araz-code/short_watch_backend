@@ -61,6 +61,7 @@ class LargeShortSelling(models.Model):
     value = models.FloatField()
     date = models.DateField()
     delete = models.BooleanField(default=False)
+    prev_value = models.FloatField(null=True, blank=True)
 
 
 class ShortPositionChart(models.Model):

@@ -270,6 +270,9 @@ const ShortPositionDetailsPage: React.FC = () => {
           {selectedDetailOption === "Largest sellers" && (
             <div className="min-h-[150px] h-[calc(100svh-32.3rem)]">
               <div className="overflow-y-auto h-full">
+                <p className="text-xs pl-6 dark:text-white">
+                  {t("You can get more details by clicking on a row")}
+                </p>
                 <ul className="mx-4">
                   {data.sellers.length == 0 && (
                     <div className="flex justify-center mt-10 dark:text-white">
@@ -294,6 +297,9 @@ const ShortPositionDetailsPage: React.FC = () => {
           {selectedDetailOption === "Announcements" && (
             <div className="min-h-[150px] h-[calc(100svh-14.3rem)] sm:h-[calc(100svh-32.3rem)]">
               <div className="overflow-y-auto h-full">
+                <p className="text-xs pl-6 dark:text-white">
+                  {t("You can get more details by clicking on a row")}
+                </p>
                 <ul className="mx-4">
                   {data.announcements.length == 0 && (
                     <div className="flex justify-center mt-10 dark:text-white">

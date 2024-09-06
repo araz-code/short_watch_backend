@@ -65,9 +65,9 @@ class StockAdmin(admin.ModelAdmin):
 
 
 @admin.register(LargeShortSelling)
-class ShortSellerAdmin(admin.ModelAdmin):
+class LargeShortSellingAdmin(admin.ModelAdmin):
     list_display = ('date', 'name', 'business_id', 'stock_code', 'stock_symbol', 'stock_name', 'value',
-                    'short_seller_name')
+                    'prev_value', 'short_seller_name')
     list_filter = ('stock__name', 'date', 'short_seller__name')
     ordering = ('-date', 'stock__name')
 
@@ -103,7 +103,7 @@ class ShortSellerAdmin(admin.ModelAdmin):
         return False
 
     def has_change_permission(self, request, obj=None):
-        return False
+        return True
 
     def has_delete_permission(self, request, obj=None):
         return True

@@ -147,15 +147,19 @@ class Command(BaseCommand):
                     corrected_date = datetime.strptime(seller['PositionDate'], '%Y-%m-%dT%H:%M:%SZ') + timedelta(days=1)
                     stock_code = seller['IssuerCode']
                     stock_name = seller['IssuerName']
+                    stock = self.get_or_create_stock(stock_code, stock_name)
+
+                    prev_value = self.get_prev_value_for_large_selling(stock, seller['Positionsholder'], corrected_date)
 
                     LargeShortSelling.objects.update_or_create(
-                        stock=self.get_or_create_stock(stock_code, stock_name),
+                        stock=stock,
                         name=seller['Positionsholder'],
                         defaults={'business_id': seller['PositionsholderCVR'],
                                   'value': float(seller['TotalPercentageShareCapital']),
                                   'short_seller': self.get_seller_for_announcement(seller['Positionsholder']),
                                   'date': corrected_date.strftime('%Y-%m-%d'),
-                                  'delete': False
+                                  'prev_value': prev_value,
+                                  'delete': False,
                                   }
                     )
 
@@ -187,14 +191,19 @@ class Command(BaseCommand):
                 stock_code = elements[i + 2].text
                 stock_name = elements[i + 3].text
 
+                stock = self.get_or_create_stock(stock_code, stock_name)
+
+                prev_value = self.get_prev_value_for_large_selling(stock, elements[i].text, corrected_date)
+
                 LargeShortSelling.objects.update_or_create(
-                    stock=self.get_or_create_stock(stock_code, stock_name),
+                    stock=stock,
                     name=elements[i].text,
 
                     defaults={'business_id': elements[i + 1].text,
                               'value': float(elements[i + 4].text.replace(',', '.')),
                               'short_seller': self.get_seller_for_announcement(elements[i].text),
                               'date': corrected_date.strftime('%Y-%m-%d'),
+                              'prev_value': prev_value,
                               'delete': False
                               }
                 )
@@ -525,3 +534,16 @@ class Command(BaseCommand):
             Error.objects.create(message=f"FCM token is invalid: {app_user.user_id}")
             app_user.invalid = timezone.now()
             app_user.save()
+
+    @staticmethod
+    def get_prev_value_for_large_selling(stock, positions_holder, date):
+        try:
+            selling = LargeShortSelling.objects.get(stock=stock, name=positions_holder)
+
+            if selling.date.strftime('%Y-%m-%d') == date.strftime('%Y-%m-%d'):
+                return selling.prev_value
+            else:
+                return selling.value
+
+        except LargeShortSelling.DoesNotExist:
+            return None

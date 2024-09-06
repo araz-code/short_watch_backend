@@ -205,7 +205,7 @@ const ShortWatchPage: React.FC = () => {
                 </div>
               </div>
               <div className="overflow-y-auto min-h-[300px] h-[calc(100svh-16.9rem)] sm:h-[calc(100svh-17.5rem)]">
-                <p className="text-sm pl-2 dark:text-white">
+                <p className="text-xs pl-2 dark:text-white">
                   {t("You can get more details by clicking on a row")}
                 </p>
                 {content}
