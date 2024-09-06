@@ -270,11 +270,13 @@ const ShortPositionDetailsPage: React.FC = () => {
           {selectedDetailOption === "Largest sellers" && (
             <div className="min-h-[150px] h-[calc(100svh-32.3rem)]">
               <div className="overflow-y-auto h-full">
-                <p className="text-xs pl-6 dark:text-white">
-                  {t("You can get more details by clicking on a row")}
-                </p>
+                {data.sellers.length !== 0 && (
+                  <p className="text-xs pl-6 dark:text-white">
+                    {t("You can get more details by clicking on a row")}
+                  </p>
+                )}
                 <ul className="mx-4">
-                  {data.sellers.length == 0 && (
+                  {data.sellers.length === 0 && (
                     <div className="flex justify-center mt-10 dark:text-white">
                       <p className="text-wrap">
                         {t(
@@ -297,11 +299,13 @@ const ShortPositionDetailsPage: React.FC = () => {
           {selectedDetailOption === "Announcements" && (
             <div className="min-h-[150px] h-[calc(100svh-14.3rem)] sm:h-[calc(100svh-32.3rem)]">
               <div className="overflow-y-auto h-full">
-                <p className="text-xs pl-6 dark:text-white">
-                  {t("You can get more details by clicking on a row")}
-                </p>
+                {data.announcements.length !== 0 && (
+                  <p className="text-xs pl-6 dark:text-white">
+                    {t("You can get more details by clicking on a row")}
+                  </p>
+                )}
                 <ul className="mx-4">
-                  {data.announcements.length == 0 && (
+                  {data.announcements.length === 0 && (
                     <div className="flex justify-center mt-10 dark:text-white">
                       <p className="text-wrap">
                         {t("No announcements in the last month")}
@@ -335,7 +339,16 @@ const ShortPositionDetailsPage: React.FC = () => {
             <div className="flex place-content-between">
               <button
                 className="text-blue-500 underline bg-transparent border-none text-lg pl-4 pt-4 hover:text-blue-700"
-                onClick={() => navigate("/short-watch")}
+                onClick={() => {
+                  if (
+                    window.history.length > 1 &&
+                    window.history.state.idx > 0
+                  ) {
+                    navigate(-1);
+                  } else {
+                    navigate("/short-watch");
+                  }
+                }}
               >
                 {t("Back")}
               </button>

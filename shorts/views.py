@@ -100,7 +100,7 @@ class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
 
 
 class ShortSellerView(ReadOnlyModelViewSet):
-    queryset = ShortSeller.objects.prefetch_related('large_short_sellings', 'announcements').all()
+    queryset = ShortSeller.objects.prefetch_related('large_short_sellings', 'announcements').all().order_by('name')
     serializer_class = ShortSellerListSerializer
     detail_serializer_class = ShortSellerDetailSerializer
 

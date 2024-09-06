@@ -1,5 +1,10 @@
 import { useQuery } from "react-query";
-import { useSearchParams, useNavigate, Link } from "react-router-dom";
+import {
+  useSearchParams,
+  useNavigate,
+  Link,
+  useLocation,
+} from "react-router-dom";
 import { fetchLargeShortSellerDetails } from "../apis/ShortPositionAPI";
 import { useEffect } from "react";
 import PageTemplate from "../components/PageTemplate";
@@ -20,8 +25,16 @@ const ShortSellerDetailsPage: React.FC = () => {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const seller = searchParams.get("seller");
+
+  if (location.hash) {
+    const elem = document.getElementById(location.hash.slice(1));
+    if (elem) {
+      elem.scrollIntoView({ behavior: "smooth" });
+    }
+  }
 
   const { data, isLoading, isError, error } = useQuery<ShortSellerDetails>({
     queryKey: [searchParams.get("seller")],
@@ -94,7 +107,10 @@ const ShortSellerDetailsPage: React.FC = () => {
             <ul className="mx-4">
               {Object.keys(groupedAnnouncements).map((symbol) => (
                 <div key={symbol}>
-                  <div className="font-medium text-left hover:underline dark:text-white">
+                  <div
+                    className="font-medium text-left hover:underline dark:text-white"
+                    id={symbol}
+                  >
                     <Link
                       to={`/short-watch-details?code=${groupedAnnouncements[symbol][0].stockCode}`}
                       onClick={() => {
@@ -134,7 +150,13 @@ const ShortSellerDetailsPage: React.FC = () => {
           <div className="lg:w-[900px]">
             <button
               className="text-blue-500 underline bg-transparent border-none text-lg pl-4 pt-4 hover:text-blue-700"
-              onClick={() => navigate("/short-sellers")}
+              onClick={() => {
+                if (window.history.length > 1 && window.history.state.idx > 0) {
+                  navigate(-1);
+                } else {
+                  navigate("/short-sellers");
+                }
+              }}
             >
               {t("Back")}
             </button>

@@ -9,13 +9,17 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const LargeShortSellingRow: React.FC<LargestShortSelling> = (props) => {
-  const { name, value, prevValue, date, shortSeller } = props;
+  const { name, value, prevValue, date, shortSeller, stockSymbol } = props;
 
   const change = prevValue - value;
 
   return (
     <Link
-      to={`/short-seller-details?seller=${shortSeller}`}
+      to={{
+        pathname: `/short-seller-details`,
+        search: `?seller=${shortSeller}`,
+        hash: `#${stockSymbol}`,
+      }}
       onClick={() => {
         handleClick(`clicked on link back to seller: ${name}`);
       }}
