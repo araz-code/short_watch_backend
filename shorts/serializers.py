@@ -46,7 +46,7 @@ class LargeShortSellingSerializer(serializers.ModelSerializer):
     stockSymbol = serializers.CharField(source='stock.symbol')
     stockCode = serializers.CharField(source='stock.code')
     shortSeller = serializers.UUIDField(source='short_seller.id')
-    prevValue = serializers.UUIDField(source='prev_value')
+    prevValue = serializers.FloatField(source='prev_value')
 
     date = DateWithAddedTimeField()
 
