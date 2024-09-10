@@ -102,10 +102,16 @@ def update_notification_status(request):
     if serializer.is_valid():
         user_id = serializer.validated_data.get('user_id')
         notification_active = serializer.validated_data.get('notification_active')
+        version = serializer.validated_data.get('version')
+
+        defaults = {'client_ip': get_client_ip(request)}
+
+        if version:
+            defaults['version'] = version
 
         app_user, created = AppUser.objects.update_or_create(
             user_id=user_id,
-            defaults={'client_ip': get_client_ip(request)}
+            defaults=defaults
         )
 
         if app_user.notification_active != notification_active:

@@ -516,7 +516,7 @@ class Command(BaseCommand):
                                 alert=messaging.ApsAlert(
                                     loc_key='YOUR_WATCHLIST_WAS_UPDATED',
                                 ),
-                                # badge=1,
+                                badge=1 if app_user.version == 'v13' else 0,
                                 sound=None
                             )
                         )

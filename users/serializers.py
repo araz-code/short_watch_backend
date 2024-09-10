@@ -24,6 +24,7 @@ class AddRemoveStockSerializer(serializers.Serializer):
 class UpdateNotificationStatusSerializer(serializers.Serializer):
     userId = serializers.UUIDField(source='user_id')
     notificationActive = serializers.BooleanField(source="notification_active")
+    version = serializers.CharField(required=False)
 
 
 class WebUserSerializer(serializers.ModelSerializer):
