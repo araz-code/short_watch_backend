@@ -29,7 +29,7 @@ const CustomTooltip: React.FC<TooltipProps<ValueType, NameType>> = ({
   if (active && payload && payload.length) {
     return (
       <div className="border rounded-md shadow-md p-3 bg-gray-100 dark:bg-[#212121] dark:text-white">
-        <p className="text-center mb-2">{`${formatTimestamp(
+        <p className="text-center mb-1">{`${formatTimestamp(
           label,
           "dateOnly"
         )}`}</p>
@@ -37,7 +37,7 @@ const CustomTooltip: React.FC<TooltipProps<ValueType, NameType>> = ({
           2
         )}%`}</p>
         {payload[1] && (
-          <p className="text-center">
+          <p className="text-center text-xs">
             {`${(+(payload[1].value ?? 0)).toFixed(2)}DKK`}
           </p>
         )}
