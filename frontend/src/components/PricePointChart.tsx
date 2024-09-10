@@ -70,9 +70,9 @@ const PricePointChart: React.FC<{ data: ChartPricePoint[] }> = ({
   data: pricePoints,
 }) => {
   const { t } = useTranslation();
-  const [showClosePrice, setShowClosePrice] = useState<boolean>(() => {
-    const savedShowClosePrice = localStorage.getItem("showClosePrice");
-    return savedShowClosePrice ? JSON.parse(savedShowClosePrice) : true;
+  const [showClosingPrices, setShowClosingPrices] = useState<boolean>(() => {
+    const savedShowClosingPrices = localStorage.getItem("showClosingPrices");
+    return savedShowClosingPrices ? JSON.parse(savedShowClosingPrices) : true;
   });
 
   const maxY: number =
@@ -95,7 +95,7 @@ const PricePointChart: React.FC<{ data: ChartPricePoint[] }> = ({
   if (minY < 0.3) minY = 0;
 
   const toggleClosingPrices = () => {
-    setShowClosePrice((prevValue) => {
+    setShowClosingPrices((prevValue) => {
       const newValue = !prevValue;
       handleClick(`clicked on toggle closing prices: ${newValue}`);
       return newValue;
@@ -103,20 +103,25 @@ const PricePointChart: React.FC<{ data: ChartPricePoint[] }> = ({
   };
 
   useEffect(() => {
-    localStorage.setItem("showClosePrice", JSON.stringify(showClosePrice));
-  }, [showClosePrice]);
+    localStorage.setItem(
+      "showClosingPrices",
+      JSON.stringify(showClosingPrices)
+    );
+  }, [showClosingPrices]);
 
   return (
     <div style={{ position: "relative" }}>
       <button
         onClick={toggleClosingPrices}
         className={`absolute top-[-23px] left-[20px] w-[23px] h-[23px] rounded-full border-none flex justify-center items-center cursor-pointer z-10 ${
-          showClosePrice
+          showClosingPrices
             ? "bg-purple-600 hover:bg-purple-500"
             : "bg-gray-300 hover:bg-gray-400"
         }`}
         title={
-          showClosePrice ? t("Hide closing prices") : t("Show closing prices")
+          showClosingPrices
+            ? t("Hide closing prices")
+            : t("Show closing prices")
         }
       >
         <svg
@@ -124,7 +129,7 @@ const PricePointChart: React.FC<{ data: ChartPricePoint[] }> = ({
           width="15"
           height="15"
           fill="none"
-          stroke={showClosePrice ? "#fff" : "#333"}
+          stroke={showClosingPrices ? "#fff" : "#333"}
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -170,7 +175,7 @@ const PricePointChart: React.FC<{ data: ChartPricePoint[] }> = ({
             tickLine={false}
             axisLine={false}
           />
-          {showClosePrice && (
+          {showClosingPrices && (
             <YAxis
               dataKey="close"
               unit="DKK"
@@ -202,7 +207,7 @@ const PricePointChart: React.FC<{ data: ChartPricePoint[] }> = ({
             yAxisId="1"
             name={t("Short position")}
           />
-          {showClosePrice && (
+          {showClosingPrices && (
             <Line
               dataKey="close"
               stroke="#9333ea"
