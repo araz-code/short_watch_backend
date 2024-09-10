@@ -37,7 +37,7 @@ const CustomTooltip: React.FC<TooltipProps<ValueType, NameType>> = ({
           2
         )}%`}</p>
         {payload[1] && (
-          <p className="text-center text-xs">
+          <p className="text-center text-sm">
             {`${(+(payload[1].value ?? 0)).toFixed(2)}DKK`}
           </p>
         )}
