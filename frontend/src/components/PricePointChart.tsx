@@ -82,15 +82,16 @@ const PricePointChart: React.FC<{ data: ChartPricePoint[] }> = ({
     pricePoints.reduce((min, point) => Math.min(min, point.value), Infinity) -
     0.2;
   let maxPriceY: number =
-    pricePoints.reduce((max, point) => Math.max(max, point.close), -Infinity) +
-    0;
+    pricePoints
+      .filter((x) => x.close)
+      .reduce((max, point) => Math.max(max, point.close), -Infinity) + 0;
   let minPriceY: number =
     pricePoints
       .filter((x) => x.close)
       .reduce((min, point) => Math.min(min, point.close), Infinity) - 0;
 
-  maxPriceY = maxPriceY + maxPriceY * 0.1;
-  minPriceY = minPriceY - minPriceY * 0.2;
+  maxPriceY = maxPriceY + maxPriceY * 0.003;
+  minPriceY = minPriceY - minPriceY * 0.003;
 
   if (minY < 0.3) minY = 0;
 
