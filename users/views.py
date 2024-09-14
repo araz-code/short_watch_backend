@@ -181,6 +181,7 @@ def update_app_consent(request):
 
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+    Error.objects.create(message=f'Users-update_app_consent: {str(serializer.errors)}'[:500])
     return Response(status=status.HTTP_204_NO_CONTENT)
 
 
