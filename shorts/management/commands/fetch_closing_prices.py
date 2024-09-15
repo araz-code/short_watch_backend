@@ -114,7 +114,7 @@ class Command(BaseCommand):
         chart_values = ShortPositionChart.objects.filter(stock=stock).order_by('date')
 
         prev = None
-        for chart_value in list(chart_values)[:-1]:
+        for chart_value in list(chart_values):
             if prev and chart_value.close is None:
                 chart_value.close = prev.close
                 chart_value.volume = prev.volume
