@@ -142,7 +142,7 @@ const ShortSellerDetailsPage: React.FC = () => {
   }
 
   return (
-    <div className="h-screen dark:bg-[#121212]">
+    <div className="h-screen dark:bg-[#121212] overflow-hidden">
       <PageTemplate>
         <div className="w-screen lg:flex lg:justify-center lg:gap-4  m-auto">
           <div className="w-1/3 justify-end items-center hidden"></div>
