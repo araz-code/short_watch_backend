@@ -75,8 +75,9 @@ class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
 
             chart_values = list(stock.shortpositionchart_set.all().order_by('-date'))
 
-            one_month_ago = datetime.now() - timedelta(days=30)
-            announcements = stock.announcement_set.filter(published_date__gte=one_month_ago).order_by(
+            # one_month_ago = datetime.now() - timedelta(days=30)
+            november_6_2023 = datetime(2023, 11, 6)
+            announcements = stock.announcement_set.filter(published_date__gte=november_6_2023).order_by(
                 '-published_date')
 
             days_difference = (date.today() - FIRST_ENTRY_DATE).days

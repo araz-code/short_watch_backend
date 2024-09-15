@@ -8,5 +8,5 @@ export default interface Announcement {
   stockCode: string;
   stockSymbol: string;
   isHistoric: boolean | null;
-  shortSeller: string;
+  shortSellerName: string | undefined;
 }

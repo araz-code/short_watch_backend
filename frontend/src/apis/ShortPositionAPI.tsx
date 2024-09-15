@@ -3,7 +3,7 @@ import { logException } from "../analytics";
 
 export const queryClient = new QueryClient();
 
-const isLocal = false;
+const isLocal = true;
 const HOST = isLocal ? "http://localhost:8000" : "https://www.zirium.dk";
 const VERSION = "v13";
 

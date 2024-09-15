@@ -1,32 +1,59 @@
 import { useQuery } from "react-query";
-import PricePoint from "../models/PricePoint";
-import PricePointRow from "../components/PricePointRow";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { fetchShortPositionDetails } from "../apis/ShortPositionAPI";
 import PricePointChart from "../components/PricePointChart";
 import ToggleSwitch from "../components/UI/RadioButtonToggle";
 import { useEffect, useState } from "react";
-import LargeShortSellingRow from "../components/LargeShortSellingRow";
 import PageTemplate from "../components/PageTemplate";
 import ErrorBlock from "../components/UI/ErrorBlock";
 import LoadingIndicator from "../components/UI/LoadingIndicator";
 import { useTranslation } from "react-i18next";
-import LargestShortSelling from "../models/LargestShortSelling";
-import Announcement from "../models/Announcement";
-import AnnouncementRow from "../components/AnnouncementRow";
 import { handleClick, sendCustomPageView } from "../analytics";
 import ChartPricePoint from "../models/ChartPricePoint";
+import FavoriteToggleButton from "../components/UI/FavoriteToggleButton";
+import PricePointList from "../components/PricePointList";
+import LargeShortSellingList from "../components/LargeShortSellingList";
+import AnnouncementList from "../components/AnnouncementList";
+import Announcement from "../models/Announcement";
+import { ChartPricePointWithAnnouncements } from "../models/ChartPricePointWithAnnouncements";
 
 //import advertisement from "../static/stresstilbud.jpg";
 
 const detailOptions = ["Historic data", "Largest sellers", "Announcements"];
 const periodOptions = ["1W", "1M", "3M", "6M", "YTD", "Max."];
 
-const processChartValues = (
+const extractDate = (dateString: string): string => {
+  return new Date(dateString).toISOString().split("T")[0];
+};
+
+const extendChartPricePointsWithAnnouncements = (
   pricePoints: ChartPricePoint[],
+  announcements: Announcement[]
+): ChartPricePointWithAnnouncements[] => {
+  return pricePoints.map((pricePoint) => {
+    // Extract date part from pricePoint's timestamp
+    const pricePointDate = extractDate(pricePoint.timestamp);
+
+    // Filter announcements matching the date part of the pricePoint's timestamp
+    const matchingAnnouncements = announcements.filter(
+      (announcement) =>
+        extractDate(announcement.publishedDate) === pricePointDate &&
+        announcement.type === "Shortselling"
+    );
+
+    // Return a new object extending ChartPricePoint with matching announcements
+    return {
+      ...pricePoint,
+      announcements: matchingAnnouncements,
+    };
+  });
+};
+
+const processChartValues = (
+  pricePoints: ChartPricePointWithAnnouncements[],
   period: string
-): ChartPricePoint[] => {
-  const newestEntries: { [key: string]: ChartPricePoint } = {};
+): ChartPricePointWithAnnouncements[] => {
+  const newestEntries: { [key: string]: ChartPricePointWithAnnouncements } = {};
 
   for (const pricePoint of pricePoints) {
     const timestamp = new Date(pricePoint.timestamp);
@@ -52,7 +79,9 @@ const processChartValues = (
     a.timestamp.localeCompare(b.timestamp)
   );
 
-  const getFilteredData = (days: number): ChartPricePoint[] => {
+  const getFilteredData = (
+    days: number
+  ): ChartPricePointWithAnnouncements[] => {
     const cutoffDate = new Date();
     cutoffDate.setDate(cutoffDate.getDate() - days);
     return sortedChartData.filter(
@@ -60,7 +89,9 @@ const processChartValues = (
     );
   };
 
-  const getFilteredDataByMonths = (months: number): ChartPricePoint[] => {
+  const getFilteredDataByMonths = (
+    months: number
+  ): ChartPricePointWithAnnouncements[] => {
     const cutoffDate = new Date();
     cutoffDate.setMonth(cutoffDate.getMonth() - months);
     return sortedChartData.filter(
@@ -68,7 +99,7 @@ const processChartValues = (
     );
   };
 
-  const getFilteredDataYTD = (): ChartPricePoint[] => {
+  const getFilteredDataYTD = (): ChartPricePointWithAnnouncements[] => {
     const currentYear = new Date().getFullYear();
     return sortedChartData.filter(
       (pricePoint) =>
@@ -105,7 +136,7 @@ const ShortPositionDetailsPage: React.FC = () => {
     const savedSelectedPeriod = localStorage.getItem("selectedPeriod");
     return savedSelectedPeriod && periodOptions.includes(savedSelectedPeriod)
       ? savedSelectedPeriod
-      : periodOptions[0];
+      : periodOptions[periodOptions.length - 1];
   });
   const [myList, setMyList] = useState<string[]>(() => {
     const savedMyList = localStorage.getItem("myList");
@@ -212,6 +243,11 @@ const ShortPositionDetailsPage: React.FC = () => {
       />
     );
   } else if (data) {
+    const chartValues = extendChartPricePointsWithAnnouncements(
+      data.chartValues,
+      data.announcements
+    );
+
     content = (
       <>
         <p className="text-lg text-center font-bold pb-5 dark:text-white">
@@ -241,7 +277,7 @@ const ShortPositionDetailsPage: React.FC = () => {
               }`}
             >
               <PricePointChart
-                data={processChartValues(data.chartValues, selectedPeriod)}
+                data={processChartValues(chartValues, selectedPeriod)}
               />
             </div>
           )}
@@ -254,75 +290,15 @@ const ShortPositionDetailsPage: React.FC = () => {
           </div>
 
           {selectedDetailOption === "Historic data" && (
-            <div className="min-h-[150px] h-[calc(100svh-32.3rem)]">
-              <div className="overflow-y-auto h-full">
-                <ul className="mx-4">
-                  {data.historic.map((short: PricePoint) => (
-                    <li key={short.timestamp}>
-                      <PricePointRow {...short} />
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
+            <PricePointList pricePoints={data.historic} />
           )}
 
           {selectedDetailOption === "Largest sellers" && (
-            <div className="min-h-[150px] h-[calc(100svh-32.3rem)]">
-              <div className="overflow-y-auto h-full">
-                {data.sellers.length !== 0 && (
-                  <p className="text-xs pl-6 dark:text-white">
-                    {t("You can get more details by clicking on a row")}
-                  </p>
-                )}
-                <ul className="mx-4">
-                  {data.sellers.length === 0 && (
-                    <div className="flex justify-center mt-10 dark:text-white">
-                      <p className="text-wrap">
-                        {t(
-                          "No short sellers with positions equal to or greater than 0.50%"
-                        )}
-                      </p>
-                    </div>
-                  )}
-                  {data.sellers.length > 0 &&
-                    data.sellers.map((seller: LargestShortSelling) => (
-                      <li key={`${seller.name}-${seller.date}`}>
-                        <LargeShortSellingRow {...seller} />
-                      </li>
-                    ))}
-                </ul>
-              </div>
-            </div>
+            <LargeShortSellingList sellings={data.sellers} />
           )}
 
           {selectedDetailOption === "Announcements" && (
-            <div className="min-h-[150px] h-[calc(100svh-14.3rem)] sm:h-[calc(100svh-32.3rem)]">
-              <div className="overflow-y-auto h-full">
-                {data.announcements.length !== 0 && (
-                  <p className="text-xs pl-6 dark:text-white">
-                    {t("You can get more details by clicking on a row")}
-                  </p>
-                )}
-                <ul className="mx-4">
-                  {data.announcements.length === 0 && (
-                    <div className="flex justify-center mt-10 dark:text-white">
-                      <p className="text-wrap">
-                        {t("No announcements in the last month")}
-                      </p>
-                    </div>
-                  )}
-                  {data.announcements.length > 0 &&
-                    data.announcements.map((announcement: Announcement) => (
-                      <li
-                        key={`${announcement.headline}-${announcement.publishedDate}`}
-                      >
-                        <AnnouncementRow {...announcement} />
-                      </li>
-                    ))}
-                </ul>
-              </div>
-            </div>
+            <AnnouncementList announcements={data.announcements} />
           )}
         </div>
       </>
@@ -330,7 +306,7 @@ const ShortPositionDetailsPage: React.FC = () => {
   }
 
   return (
-    <div className="h-screen dark:bg-[#121212]">
+    <div className="h-screen dark:bg-[#121212] overflow-hidden">
       <PageTemplate>
         <div className="w-screen lg:flex lg:justify-center lg:gap-4  m-auto">
           <div className="w-1/3 justify-end items-center hidden"></div>
@@ -352,49 +328,11 @@ const ShortPositionDetailsPage: React.FC = () => {
               >
                 {t("Back")}
               </button>
-              <button
-                className="underline bg-transparent border-none text-lg pr-4 pt-4 text-[#daa520] hover:text-[#b8860b]"
-                onClick={() =>
-                  isFavorite ? removeFromMyList() : addToMyList()
-                }
-                title={
-                  isFavorite ? t("Remove from my list") : t("Add to my list")
-                }
-              >
-                {isFavorite ? (
-                  <svg
-                    width="25"
-                    height="25"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.27L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                ) : (
-                  <svg
-                    width="25"
-                    height="25"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.27L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
-                      stroke="currentColor"
-                      strokeWidth="3"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                )}
-              </button>
+              <FavoriteToggleButton
+                isFavorite={isFavorite}
+                addToMyList={addToMyList}
+                removeFromMyList={removeFromMyList}
+              />
             </div>
             {content}
           </div>
