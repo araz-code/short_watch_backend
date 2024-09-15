@@ -70,12 +70,11 @@ class AnnouncementSerializer(serializers.ModelSerializer):
     dfsaId = serializers.DateTimeField(source='dfsa_id')
     stockSymbol = serializers.CharField(source='stock.symbol')
     stockCode = serializers.CharField(source='stock.code')
-    shortSeller = serializers.UUIDField(source='short_seller.name')
 
     class Meta:
         model = Announcement
         fields = ('publishedDate', 'headline', 'headlineDanish', 'type', 'dfsaId', 'value',
-                  'isHistoric', 'stockSymbol', 'stockCode', 'shortSeller')
+                  'isHistoric', 'stockSymbol', 'stockCode')
 
 
 class ShortPositionDetailSerializer(serializers.Serializer):
