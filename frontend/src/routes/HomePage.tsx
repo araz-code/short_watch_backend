@@ -63,14 +63,16 @@ const HomePage: React.FC = () => {
                 )}
               </p>
 
-              <p className="sm:text-md text-wrap text-black border border-gray-300 p-4 rounded-lg bg-white">
-                <span className="font-bold text-blue-700">
-                  {t("NEWS 31-08-2024: ")}
-                </span>
-                {t(
-                  "A new service (Short Sellers) where you can get insight into hedge funds with significant short positions in Danish stocks (over 0.5%). You can see which positions they currently hold and which they have held historically."
-                )}
-              </p>
+              {false && (
+                <p className="sm:text-md text-wrap text-black border border-gray-300 p-4 rounded-lg bg-white">
+                  <span className="font-bold text-blue-700">
+                    {t("NEWS 31-08-2024: ")}
+                  </span>
+                  {t(
+                    "A new service (Short Sellers) where you can get insight into hedge funds with significant short positions in Danish stocks (over 0.5%). You can see which positions they currently hold and which they have held historically."
+                  )}
+                </p>
+              )}
 
               <div className="flex flex-wrap justify-center gap-4 align-stretch">
                 <a
@@ -106,7 +108,11 @@ const HomePage: React.FC = () => {
                     className="text-white bg-blue-400 border border-white hover:bg-[#85C1E9] focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-2 py-2.5 flex items-center h-[45px]"
                     onClick={() => handleClick("short watch web app clicked")}
                   >
-                    Short Watch
+                    <FontAwesomeIcon
+                      className="mr-2 text-2xl align-middle"
+                      icon={faChartSimple}
+                    />
+                    Shorts
                     <FontAwesomeIcon
                       className="ml-1 align-middle"
                       icon={faArrowRight}
@@ -119,7 +125,11 @@ const HomePage: React.FC = () => {
                     className="text-white bg-indigo-400 border border-white hover:bg-[#85C1E9] focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-2 py-2.5 flex items-center h-[45px]"
                     onClick={() => handleClick("short sellers web app clicked")}
                   >
-                    Short Sellers
+                    <FontAwesomeIcon
+                      className="mr-2 text-2xl align-middle"
+                      icon={faPerson}
+                    />
+                    Sellers
                     <FontAwesomeIcon
                       className="ml-1 align-middle"
                       icon={faArrowRight}
