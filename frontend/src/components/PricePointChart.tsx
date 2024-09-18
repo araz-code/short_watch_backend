@@ -117,7 +117,7 @@ const PricePointChart: React.FC<{
     <div style={{ position: "relative" }}>
       <button
         onClick={toggleClosingPrices}
-        className={`absolute top-[-23px] left-[20px] w-[23px] h-[23px] rounded-full border-none flex justify-center items-center cursor-pointer z-10 ${
+        className={`absolute top-[-17px] left-[20px] w-[23px] h-[23px] rounded-full border-none flex justify-center items-center cursor-pointer z-10 ${
           showClosingPrices
             ? "bg-purple-600 hover:bg-purple-500"
             : "bg-gray-300 hover:bg-gray-400"
