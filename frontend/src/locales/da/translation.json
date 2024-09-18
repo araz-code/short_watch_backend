@@ -141,6 +141,17 @@
     "Short position": "Shortposition",
     "Closing price": "Slutkurs",
     "Hide closing prices": "Skjul slutkurser",
-    "Show closing prices": "Vis slutkurser"
+    "Show closing prices": "Vis slutkurser",
+    "Selected period:": "Valgt periode:",
+    "Summary for the period:": "Opsummering for perioden:",
+    "Change": "Ændring",
+    "Lowest": "Laveste",
+    "Highest": "Højeste",
+    "Average": "Gennemsnit",
+    "Increased by": "Steget med",
+    "Decreased by": "Faldet med",
+    "No change": "Ingen ændring",
+    "Show summery": "Vis opsummering",
+    "today": "i dag"
   }
 }

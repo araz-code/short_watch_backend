@@ -240,6 +240,7 @@ const ShortPositionDetailsPage: React.FC = () => {
             >
               <PricePointChart
                 data={processChartValues(data.chartValues, selectedPeriod)}
+                symbol={data.historic.length > 0 && data.historic[0].symbol}
               />
             </div>
           )}

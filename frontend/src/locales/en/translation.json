@@ -141,6 +141,17 @@
     "Short position": "Short position",
     "Closing price": "Closing price",
     "Hide closing prices": "Hide closing prices",
-    "Show closing prices": "Show closing prices"
+    "Show closing prices": "Show closing prices",
+    "Selected period:": "Selected period:",
+    "Summary for the period:": "Summary for the period:",
+    "Change": "Change",
+    "Lowest": "Lowest",
+    "Highest": "Highest",
+    "Average": "Average",
+    "Increased by": "Increased by",
+    "Decreased by": "Decreased by",
+    "No change": "No change",
+    "Show summery": "Show summery",
+    "today": "today"
   }
 }

@@ -20,6 +20,7 @@ import {
   ValueType,
 } from "recharts/types/component/DefaultTooltipContent";
 import { handleClick } from "../analytics";
+import PricePointChartInfo from "./PricePointChartInfo";
 
 const CustomTooltip: React.FC<TooltipProps<ValueType, NameType>> = ({
   active,
@@ -66,9 +67,11 @@ const RenderLegend: React.FC<LegendProps> = (props) => {
   );
 };
 
-const PricePointChart: React.FC<{ data: ChartPricePoint[] }> = ({
-  data: pricePoints,
-}) => {
+const PricePointChart: React.FC<{
+  data: ChartPricePoint[];
+  symbol: string;
+}> = (props) => {
+  const { data: pricePoints, symbol } = props;
   const { t } = useTranslation();
   const [showClosingPrices, setShowClosingPrices] = useState<boolean>(() => {
     const savedShowClosingPrices = localStorage.getItem("showClosingPrices");
@@ -143,6 +146,7 @@ const PricePointChart: React.FC<{ data: ChartPricePoint[] }> = ({
           <line x1="20" y1="18" x2="20" y2="8" /> {/* Second tallest */}
         </svg>
       </button>
+      <PricePointChartInfo pricePoints={pricePoints} symbol={symbol} />
       <ResponsiveContainer width="100%" height={220}>
         <ComposedChart
           height={200}
