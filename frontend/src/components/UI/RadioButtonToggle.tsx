@@ -23,7 +23,7 @@ const RadioButtonToggle: React.FC<{
             />
             <label
               htmlFor={`${option}-${index}`}
-              className="block text-xs-plus sm:text-sm cursor-pointer select-none rounded-xl px-3 py-1 text-center peer-checked:bg-blue-500 peer-checked:font-medium peer-checked:text-white dark:text-white hover:bg-blue-100"
+              className="block text-xs-plus sm:text-sm cursor-pointer select-none rounded-xl px-2 sm:px-3 py-1 text-center peer-checked:bg-blue-500 peer-checked:font-medium peer-checked:text-white dark:text-white hover:bg-blue-100"
             >
               {t(option)}
             </label>

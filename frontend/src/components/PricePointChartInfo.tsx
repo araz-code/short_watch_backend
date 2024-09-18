@@ -82,7 +82,7 @@ const PricePointChartInfo: React.FC<{
       <button
         onClick={toggleOverlay}
         ref={buttonRef}
-        className={`absolute top-[-17px] left-[55px] w-[23px] h-[23px] rounded-full border-none flex justify-center items-center cursor-pointer z-10 text-white italic ${
+        className={`absolute top-[-23px] left-[55px] w-[23px] h-[23px] rounded-full border-none flex justify-center items-center cursor-pointer z-10 text-white italic ${
           showOverlay
             ? "bg-blue-600 hover:bg-blue-500"
             : "bg-blue-600 hover:bg-blue-500"
