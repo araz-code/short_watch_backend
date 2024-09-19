@@ -74,7 +74,7 @@ const HomePage: React.FC = () => {
                 </p>
               )}
 
-              <div className="flex flex-wrap justify-start mt-2 gap-4 align-stretch">
+              <div className="flex flex-wrap justify-center sm:justify-start mt-2 gap-4 align-stretch">
                 <a
                   href="https://apps.apple.com/dk/app/danish-short-watch/id6471075439"
                   target="_blank"
@@ -114,7 +114,7 @@ const HomePage: React.FC = () => {
                     />
                     Shorts
                     <FontAwesomeIcon
-                      className="ml-1 align-middle"
+                      className="ml-1 align-middle hidden sm:block"
                       icon={faArrowRight}
                     />
                   </button>
@@ -131,7 +131,7 @@ const HomePage: React.FC = () => {
                     />
                     Sellers
                     <FontAwesomeIcon
-                      className="ml-1 align-middle"
+                      className="ml-1 align-middle hidden sm:block"
                       icon={faArrowRight}
                     />
                   </button>
