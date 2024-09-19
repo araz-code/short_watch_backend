@@ -29,15 +29,15 @@ const Card: React.FC<{
 }> = ({ icon, title, content }) => {
   return (
     <figure className="p-4 max-w-sm text-gray-800 dark:text-white">
-      <div className="flex flex-col border p-5 rounded-md shadow-md h-full">
+      <div className="flex flex-col p-5 h-full">
         <div className="flex flex-col items-center mb-3">
           <div className="mb-2 text-[#305f9e] dark:text-white">
             <FontAwesomeIcon size="2x" icon={icon} />
           </div>
-          <h3 className="text-lg font-semibold mb-2">{title}</h3>
+          <h3 className="text-lg font-semibold mb-2 self-start">{title}</h3>
         </div>
         <div className="flex flex-col justify-between flex-grow">
-          <p className="leading-relaxed">{content}</p>
+          <p className="leading-relaxed text-md">{content}</p>
         </div>
       </div>
     </figure>

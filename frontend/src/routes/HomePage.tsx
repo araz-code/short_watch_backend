@@ -43,21 +43,21 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="bg-white dark:bg-[#121212]">
-      <div className="flex flex-col sm:h-screen sm:min-h-[850px]">
-        <div className="bg-wave-pattern dark:bg-wave-pattern-dark bg-cover bg-no-repeat bg-bottom h-full flex flex-col pb-2 sm:pb-0">
+      <div className="flex flex-col sm:min-h-[650px]">
+        <div className="bg-wave-pattern dark:bg-wave-pattern-dark bg-cover bg-no-repeat bg-bottom h-[57%] flex flex-col pb-2 sm:pb-0">
           <Navigation />
 
-          <main className="flex flex-col sm:flex-row sm:max-w-[1000px] sm:justify-end gap-10 sm:h-[70%] mt-10 px-5 self-center sm:px-[20px]">
-            <div className="flex flex-col justify-center justify-items-center sm:pb-0 text-white gap-5 sm:w-[410px] sm:mr-5">
+          <main className="flex flex-col sm:flex-row sm:max-w-[1000px] sm:justify-end gap-10 sm:h-[80%] mt-14 px-5 self-center sm:px-[20px]">
+            <div className="flex flex-col justify-start sm:pt-6 sm:pb-0 text-white gap-4 sm:w-[410px] sm:mr-5">
               <p className="text-2xl text-center sm:text-left sm:text-4xl font-bold">
                 Danish Short Watch
               </p>
-              <p className="sm:text-lg text-wrap">
+              <p className="sm:text-md text-wrap">
                 {t(
                   "An elegant and simplified solution for accessing information on short positions in Danish stocks."
                 )}
               </p>
-              <p className="sm:text-lg text-wrap">
+              <p className="sm:text-md text-wrap">
                 {t(
                   "Download the app from the App Store for iPhone, iPad, and Apple Watch, or access the web application."
                 )}
@@ -74,7 +74,7 @@ const HomePage: React.FC = () => {
                 </p>
               )}
 
-              <div className="flex flex-wrap justify-center gap-4 align-stretch">
+              <div className="flex flex-wrap justify-start mt-2 gap-4 align-stretch">
                 <a
                   href="https://apps.apple.com/dk/app/danish-short-watch/id6471075439"
                   target="_blank"
@@ -99,7 +99,7 @@ const HomePage: React.FC = () => {
                   </svg>
                   <div className="text-left leading-4">
                     <p className="text-[9px]">Available on the</p>
-                    <p className="text-[16px]">App Store</p>
+                    <p className="text-[15px]">App Store</p>
                   </div>
                 </a>
 
@@ -141,14 +141,14 @@ const HomePage: React.FC = () => {
             <AppImage />
           </main>
         </div>
-        <section className="text-gray-800">
+        <section className="text-gray-800 mt-10 sm:mt-14">
           <p className="text-3xl sm:text-4xl font-bold text-center my-10 sm:my-0 text-gray-800 dark:text-white">
             Features
           </p>
         </section>
       </div>
 
-      <section className="flex flex-wrap gap-2 justify-center sm:mt-10 pb-[80px]">
+      <section className="flex flex-wrap gap-2 justify-center sm:mt-10 pb-[20px]">
         {cards.map((item) => (
           <Card
             icon={item.icon}
