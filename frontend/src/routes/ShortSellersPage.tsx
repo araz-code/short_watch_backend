@@ -81,8 +81,7 @@ const ShortSellersPage: React.FC = () => {
           <div className="w-1/3 justify-start items-center hidden"></div>
           <div className="lg:w-[900px]">
             <p className="text-xl lg:text-3xl font-bold py-6 dark:text-white flex justify-center">
-              <span>Short Sellers</span>
-              <span className="text-base lg:text-lg ml-2">(Beta)</span>
+              Short Sellers
             </p>
             <div className="text-xs pl-2 dark:text-white italic">
               <p>{t("The Danish FSA only publishes the names of short")}</p>

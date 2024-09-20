@@ -117,6 +117,12 @@ const PricePointChartInfo: React.FC<{
                 {changeElement}
               </li>
               <li className="mb-2">
+                <span className="font-medium">{t("Current")}:</span>{" "}
+                <span>{`${pricePoints[pricePoints.length - 1].value.toFixed(
+                  2
+                )}%`}</span>
+              </li>
+              <li className="mb-2">
                 <span className="font-medium">{t("Lowest")}:</span>{" "}
                 <span>{`${lowestPoint.value.toFixed(2)}%`}</span>
               </li>
