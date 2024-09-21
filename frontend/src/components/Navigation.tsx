@@ -46,19 +46,17 @@ const Navigation: React.FC = () => {
   const isLegalActive = [
     "/privacy-policy",
     "/cookie-policy",
-    "/privatlivspolitik",
     "/terms-of-agreement",
-    "/aftalevilkaar",
   ].includes(location.pathname);
 
   const isProductActive = ["/short-watch", "/short-sellers"].includes(
     location.pathname
   );
 
-  const commonLinkClasses = "block hover:bg-blue-600 hover:rounded-lg";
+  const commonLinkClasses = "block sm:hover:bg-blue-600 sm:hover:rounded-lg";
 
   const commonActiveClasses =
-    "bg-blue-700 rounded-lg text-white  hover:bg-blue-600 ";
+    "underline sm:no-underline sm:bg-blue-700 sm:rounded-lg sm:text-white  hover:bg-blue-600 ";
 
   return (
     <>
@@ -154,24 +152,26 @@ const Navigation: React.FC = () => {
                       <NavLink
                         to="/short-watch"
                         className={({ isActive }) =>
-                          `block px-4 py-2 md:pt-5  ${
+                          `$block px-4 py-2 md:pt-5 hover:text-gray-500  dark:hover:text-gray-300 ${
                             isActive ? "underline" : ""
                           }`
                         }
                         onClick={() => setCollapseMenu(defaultCollapseMenu)}
                       >
-                        Short Watch
+                        Short watch
                       </NavLink>
                     </li>
                     <li>
                       <NavLink
                         to="/short-sellers"
                         className={({ isActive }) =>
-                          `block px-4 py-2  ${isActive ? "underline" : ""}`
+                          `block px-4 py-2  hover:text-gray-500  dark:hover:text-gray-300 ${
+                            isActive ? "underline" : ""
+                          }`
                         }
                         onClick={() => setCollapseMenu(defaultCollapseMenu)}
                       >
-                        Short Sellers
+                        Short sellers
                       </NavLink>
                     </li>
                   </ul>
@@ -217,7 +217,7 @@ const Navigation: React.FC = () => {
                       <NavLink
                         to="/privacy-policy"
                         className={({ isActive }) =>
-                          `block px-4 py-2 md:pt-5  ${
+                          `block px-4 py-2 md:pt-5 hover:text-gray-500  dark:hover:text-gray-300 ${
                             isActive ? "underline" : ""
                           }`
                         }
@@ -230,7 +230,9 @@ const Navigation: React.FC = () => {
                       <NavLink
                         to="/cookie-policy"
                         className={({ isActive }) =>
-                          `block px-4 py-2  ${isActive ? "underline" : ""}`
+                          `block px-4 py-2 hover:text-gray-500  dark:hover:text-gray-300 ${
+                            isActive ? "underline" : ""
+                          }`
                         }
                         onClick={() => setCollapseMenu(defaultCollapseMenu)}
                       >
@@ -241,7 +243,9 @@ const Navigation: React.FC = () => {
                       <NavLink
                         to="/terms-of-agreement"
                         className={({ isActive }) =>
-                          `block px-4 py-2 ${isActive ? "underline" : ""}`
+                          `block px-4 py-2 hover:text-gray-500  dark:hover:text-gray-300 ${
+                            isActive ? "underline" : ""
+                          }`
                         }
                         onClick={() => setCollapseMenu(defaultCollapseMenu)}
                       >
