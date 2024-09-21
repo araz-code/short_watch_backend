@@ -92,7 +92,7 @@ const Navigation: React.FC = () => {
             className={`${
               collapseMenu.mainMenu
                 ? "md:w-auto hidden"
-                : "absolute top-[4.3rem] right-0 w-[90%] mr-2 md:static md:w-auto md:m-0 text-gray-800 dark:text-white"
+                : "absolute top-[3.1rem] right-0 w-[90%] mr-2 md:static md:w-auto md:m-0 text-gray-800 dark:text-white"
             } md:block bg-transparent `}
           >
             <ul className="flex flex-col text-base p-4 md:p-0 mt-4 border border-gray-100 rounded-xl md:space-x-6 md:flex-row md:mt-0 md:border-0 bg-white dark:bg-[#121212] md:bg-[#0d1b4c] md:dark:bg-[#0d1b4c] ">
@@ -144,7 +144,7 @@ const Navigation: React.FC = () => {
                 </button>
                 <div
                   className={`md:absolute md:z-10 md:shadow md:w-70 md:rounded-lg bg-white dark:bg-[#121212] font-normal divide-y divide-gray-100 md:border md:border-gray-100 text-gray-800 dark:text-white ${
-                    collapseMenu.productMenu ? "hidden" : "top-[4.7rem]"
+                    collapseMenu.productMenu ? "hidden" : "top-[3.8rem]"
                   }`}
                 >
                   <ul className="text-sm md:text-base">
@@ -152,7 +152,7 @@ const Navigation: React.FC = () => {
                       <NavLink
                         to="/short-watch"
                         className={({ isActive }) =>
-                          `$block px-4 py-2 md:pt-5 hover:text-gray-500  dark:hover:text-gray-300 ${
+                          `block px-4 py-2 md:pt-4 hover:text-gray-500  dark:hover:text-gray-300 ${
                             isActive ? "underline" : ""
                           }`
                         }
@@ -165,7 +165,7 @@ const Navigation: React.FC = () => {
                       <NavLink
                         to="/short-sellers"
                         className={({ isActive }) =>
-                          `block px-4 py-2  hover:text-gray-500  dark:hover:text-gray-300 ${
+                          `block px-4 py-2 hover:text-gray-500 md:pb-4 dark:hover:text-gray-300 ${
                             isActive ? "underline" : ""
                           }`
                         }
@@ -209,7 +209,7 @@ const Navigation: React.FC = () => {
                 </button>
                 <div
                   className={`md:absolute md:z-10 md:shadow md:w-70 md:rounded-lg bg-white dark:bg-[#121212] font-normal divide-y divide-gray-100 md:border md:border-gray-100 text-gray-800 dark:text-white ${
-                    collapseMenu.legalMenu ? "hidden" : "top-[4.7rem]"
+                    collapseMenu.legalMenu ? "hidden" : "top-[3.8rem]"
                   }`}
                 >
                   <ul className="text-sm md:text-base">
@@ -217,7 +217,7 @@ const Navigation: React.FC = () => {
                       <NavLink
                         to="/privacy-policy"
                         className={({ isActive }) =>
-                          `block px-4 py-2 md:pt-5 hover:text-gray-500  dark:hover:text-gray-300 ${
+                          `block px-4 py-2 md:pt-4 hover:text-gray-500  dark:hover:text-gray-300 ${
                             isActive ? "underline" : ""
                           }`
                         }
@@ -243,7 +243,7 @@ const Navigation: React.FC = () => {
                       <NavLink
                         to="/terms-of-agreement"
                         className={({ isActive }) =>
-                          `block px-4 py-2 hover:text-gray-500  dark:hover:text-gray-300 ${
+                          `block px-4 py-2 hover:text-gray-500 md:pb-4 dark:hover:text-gray-300 ${
                             isActive ? "underline" : ""
                           }`
                         }

@@ -102,7 +102,7 @@ const ShortSellerDetailsPage: React.FC = () => {
             {t("Below 0.5%, updates occur only once it exceeds 0.5% again.")}
           </p>
         </div>
-        <div className="min-h-[150px] h-[calc(100svh-15.7rem)]">
+        <div className="min-h-[150px] h-[calc(100svh-14.3rem)]">
           <div className="overflow-y-auto h-full">
             <ul className="mx-4">
               {Object.keys(groupedAnnouncements).map((symbol) => (

@@ -116,7 +116,7 @@ const ShortSellersPage: React.FC = () => {
                   className="flex-1 border p-2 pl-9 rounded-l focus:outline-none w-full dark:bg-[#212121] dark:text-white"
                 />
               </div>
-              <div className="overflow-y-auto min-h-[300px] h-[calc(100svh-17.8rem)] sm:h-[calc(100svh-17.5rem)] mt-5">
+              <div className="overflow-y-auto min-h-[300px] h-[calc(100svh-16.3rem)] sm:h-[calc(100svh-16.6rem)] mt-5">
                 <p className="text-xs pl-2 dark:text-white">
                   {t("You can get more details by clicking on a row")}
                 </p>
