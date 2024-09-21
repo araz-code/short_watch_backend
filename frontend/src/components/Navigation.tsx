@@ -1,6 +1,13 @@
 import { Link, NavLink } from "react-router-dom";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faHome,
+  faBoxOpen,
+  faBalanceScale,
+  faEnvelope,
+} from "@fortawesome/free-solid-svg-icons";
 
 const defaultCollapseMenu = {
   mainMenu: true,
@@ -38,16 +45,24 @@ const Navigation: React.FC = () => {
 
   const isLegalActive = [
     "/privacy-policy",
+    "/cookie-policy",
     "/privatlivspolitik",
     "/terms-of-agreement",
     "/aftalevilkaar",
   ].includes(location.pathname);
 
-  const commonLinkClasses = "block md:inline py-2";
+  const isProductActive = ["/short-watch", "/short-sellers"].includes(
+    location.pathname
+  );
+
+  const commonLinkClasses = "block hover:bg-blue-600 hover:rounded-lg";
+
+  const commonActiveClasses =
+    "bg-blue-700 rounded-lg text-white  hover:bg-blue-600 ";
 
   return (
     <>
-      <nav className="relative px-4 sm:px-10 py-5 text-2xl font-bold text-white font-display bg-[#0d1b4c] z-30">
+      <nav className="relative px-4 sm:px-10 py-3 text-2xl font-bold text-white font-display bg-[#0d1b4c] z-30">
         <div className="flex flex-wrap items-center justify-between">
           <Link to="/">ZIRIUM</Link>
           <button
@@ -82,27 +97,35 @@ const Navigation: React.FC = () => {
                 : "absolute top-[4.3rem] right-0 w-[90%] mr-2 md:static md:w-auto md:m-0 text-gray-800 dark:text-white"
             } md:block bg-transparent `}
           >
-            <ul className="flex flex-col text-base p-4 md:p-0 mt-4 border border-gray-100 rounded-xl md:space-x-8 md:flex-row md:mt-0 md:border-0 bg-white dark:bg-[#121212] md:bg-[#0d1b4c] md:dark:bg-[#0d1b4c] ">
+            <ul className="flex flex-col text-base p-4 md:p-0 mt-4 border border-gray-100 rounded-xl md:space-x-6 md:flex-row md:mt-0 md:border-0 bg-white dark:bg-[#121212] md:bg-[#0d1b4c] md:dark:bg-[#0d1b4c] ">
               <li>
                 <NavLink
                   to="/"
                   end
                   className={({ isActive }) =>
-                    `${commonLinkClasses} ${isActive ? "underline" : ""}`
+                    `p-2 ${commonLinkClasses} ${
+                      isActive ? `${commonActiveClasses}` : ""
+                    }`
                   }
                   onClick={() => setCollapseMenu(defaultCollapseMenu)}
                 >
-                  {t("Home")}
+                  <div>
+                    <FontAwesomeIcon icon={faHome} />
+                    <span className="ml-1">{t("Home")}</span>
+                  </div>
                 </NavLink>
               </li>
               <li>
                 <button
-                  className={`flex items-center justify-between w-full py-2 md:p-0 md:w-auto ${
-                    isLegalActive ? "underline" : ""
+                  className={`${commonLinkClasses} flex items-center justify-between w-full p-2 md:w-auto ${
+                    isProductActive ? `${commonActiveClasses}` : ""
                   }`}
                   onClick={toggleProductMenu}
                 >
-                  {t("Products")}
+                  <div>
+                    <FontAwesomeIcon icon={faBoxOpen} />
+                    <span className="ml-1">{t("Products")}</span>
+                  </div>
                   <svg
                     className={`w-2.5 h-2.5 ms-2.5 transition-transform ${
                       collapseMenu.productMenu ? "" : "rotate-180"
@@ -156,12 +179,16 @@ const Navigation: React.FC = () => {
               </li>
               <li>
                 <button
-                  className={`flex items-center justify-between w-full py-2 md:p-0 md:w-auto ${
-                    isLegalActive ? "underline" : ""
+                  className={`${commonLinkClasses} flex items-center justify-between w-full p-2 md:w-auto ${
+                    isLegalActive ? `${commonActiveClasses}` : ""
                   }`}
                   onClick={toggleLegalMenu}
                 >
-                  {t("Legal")}
+                  <div>
+                    <FontAwesomeIcon icon={faBalanceScale} />
+                    <span className="ml-1">{t("Legal")}</span>
+                  </div>
+
                   <svg
                     className={`w-2.5 h-2.5 ms-2.5 transition-transform ${
                       collapseMenu.legalMenu ? "" : "rotate-180"
@@ -228,11 +255,16 @@ const Navigation: React.FC = () => {
                 <NavLink
                   to="/contact"
                   className={({ isActive }) =>
-                    `${commonLinkClasses} ${isActive ? "underline" : ""}`
+                    `p-2 ${commonLinkClasses} ${
+                      isActive ? `${commonActiveClasses}` : ""
+                    }`
                   }
                   onClick={() => setCollapseMenu(defaultCollapseMenu)}
                 >
-                  {t("Contact")}
+                  <div>
+                    <FontAwesomeIcon icon={faEnvelope} />
+                    <span className="ml-1">{t("Contact")}</span>
+                  </div>
                 </NavLink>
               </li>
             </ul>
