@@ -53,14 +53,14 @@ const Navigation: React.FC = () => {
     location.pathname
   );
 
-  const commonLinkClasses = "block sm:hover:bg-blue-600 sm:hover:rounded-lg";
+  const commonLinkClasses = "block md:hover:bg-blue-600 md:hover:rounded-lg";
 
   const commonActiveClasses =
-    "underline sm:no-underline sm:bg-blue-700 sm:rounded-lg sm:text-white  hover:bg-blue-600 ";
+    "underline md:no-underline md:bg-blue-700 md:rounded-lg md:text-white  hover:bg-blue-600 ";
 
   return (
     <>
-      <nav className="relative px-4 sm:px-10 py-3 text-2xl font-bold text-white font-display bg-[#0d1b4c] z-30">
+      <nav className="relative px-4 md:px-10 py-2 text-2xl font-bold text-white font-display bg-[#0d1b4c] z-30">
         <div className="flex flex-wrap items-center justify-between">
           <Link to="/">ZIRIUM</Link>
           <button
