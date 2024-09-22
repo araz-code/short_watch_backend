@@ -95,7 +95,7 @@ const Navigation: React.FC = () => {
                 : "absolute top-[3.1rem] right-0 w-[90%] mr-2 md:static md:w-auto md:m-0 text-gray-800 dark:text-white"
             } md:block bg-transparent `}
           >
-            <ul className="flex flex-col text-base p-4 md:p-0 mt-4 border border-gray-100 rounded-xl md:space-x-6 md:flex-row md:mt-0 md:border-0 bg-white dark:bg-[#121212] md:bg-[#0d1b4c] md:dark:bg-[#0d1b4c] ">
+            <ul className="flex flex-col text-sm p-4 md:p-0 mt-4 border border-gray-100 rounded-xl md:space-x-6 md:flex-row md:mt-0 md:border-0 bg-white dark:bg-[#121212] md:bg-[#0d1b4c] md:dark:bg-[#0d1b4c] ">
               <li>
                 <NavLink
                   to="/"
