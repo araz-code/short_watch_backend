@@ -201,17 +201,6 @@ def get_total_requests_today(_: Request) -> JsonResponse:
 
 
 @staff_member_required
-def get_total_requests_today(_: Request) -> JsonResponse:
-    today = timezone.now()
-    queryset = RequestLog.objects.filter(timestamp__date=today.date())
-
-    return JsonResponse({
-        'title': f'Total requests today',
-        'count': queryset.count(),
-    })
-
-
-@staff_member_required
 def get_avg_request_today_count(_: Request) -> JsonResponse:
     queryset = RequestLog.objects.annotate(
         year=ExtractYear('timestamp'),
@@ -459,7 +448,7 @@ def get_watch_request_per_hour_chart(request: Request) -> JsonResponse:
 
 
 def get_unique_ips_per_day_table(_: Request) -> JsonResponse:
-    start_date = datetime(2024, 2, 6).date()
+    start_date = (datetime.now() - timedelta(days=10)).date()
     queryset = RequestLog.objects.filter(timestamp__date__gt=start_date) \
         .annotate(date=TruncDate('timestamp')) \
         .exclude(Q(client_ip__istartswith='192.168.') |
@@ -521,8 +510,11 @@ def get_referer(_: Request) -> JsonResponse:
     client_ips_iphone = []
     client_ips_ipad = []
     client_ips_web = []
-    # unknown = []
+    unknown = []
     for entry in list(queryset):
+        if ipaddress.ip_address(entry['client_ip']).is_private:
+            continue
+
         if "/iwatch/" in entry['requested_url'] and entry['client_ip'] not in client_ips_iwatch:
             client_ips_iwatch.append(entry['client_ip'])
         elif "/iphone/" in entry['requested_url'] and entry['client_ip'] not in client_ips_iphone:
@@ -531,18 +523,12 @@ def get_referer(_: Request) -> JsonResponse:
             client_ips_ipad.append(entry['client_ip'])
         elif "/web/" in entry['requested_url'] and entry['client_ip'] not in client_ips_web:
             client_ips_web.append(entry['client_ip'])
+        elif entry['client_ip'] not in unknown:
+            unknown.append(entry['client_ip'])
 
         if entry['referer'] == '' or 'zirium.dk' in entry['referer']:
             continue
         referer[entry['referer']] = referer.get(entry['referer'], 0) + 1
-
-    # for entry in list(queryset):
-    #     if entry['client_ip'] not in client_ips_iwatch and entry['client_ip'] not in client_ips_iphone and \
-    #             entry['client_ip'] not in client_ips_ipad and entry['client_ip'] not in client_ips_ipad and \
-    #             entry['client_ip'] not in client_ips_web and entry['client_ip'] not in unknown:
-    #         unknown.append(entry['client_ip'])
-    #
-    # print(unknown)
 
     referer_list = [{'referer': a, 'count': referer[a]} for a in referer.keys()]
 
@@ -551,6 +537,7 @@ def get_referer(_: Request) -> JsonResponse:
     sorted_referer_list.append({'referer': 'iPad', 'count': len(client_ips_ipad)})
     sorted_referer_list.append({'referer': 'Watch', 'count': len(client_ips_iwatch)})
     sorted_referer_list.append({'referer': 'Web', 'count': len(client_ips_web)})
+    sorted_referer_list.append({'referer': 'Unknown', 'count': len(unknown)})
 
     return JsonResponse({
         'caption': 'Advertisement clicked',
