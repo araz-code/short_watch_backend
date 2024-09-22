@@ -100,18 +100,18 @@ const PricePointChartInfo: React.FC<{
           style={{ zIndex: 20 }} // Ensure it's above other elements
         >
           <div className="p-1 mx-auto">
-            <h2 className="text-xl font-semibold mb-2">
+            <h2 className="text-lg font-semibold mb-2">
               {t("Selected period:")}
             </h2>
-            <p className="mb-4">
+            <p className="mb-4 text-sm">
               {`${formatTimestamp(pricePoints[0].timestamp, "dateOnly")} - ${t(
                 "today"
               )}`}
             </p>
-            <h2 className="text-lg font-semibold mb-2">
+            <h2 className="text-base font-semibold mb-2">
               {t("Summary for the period:")}
             </h2>
-            <ul className="list-disc pl-5">
+            <ul className="list-disc pl-5 text-sm">
               <li className="mb-2">
                 <span className="font-medium">{t("Change")}:</span>{" "}
                 {changeElement}
