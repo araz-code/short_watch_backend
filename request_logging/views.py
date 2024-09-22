@@ -501,45 +501,46 @@ def get_requested_advertisement(_: Request) -> JsonResponse:
 
 @staff_member_required
 def get_referer(_: Request) -> JsonResponse:
-    time_threshold = timezone.now()
-    queryset = RequestLog.objects.filter(timestamp__date=time_threshold).values('referer',
-                                                                                    'requested_url', 'client_ip')
+    time_threshold = timezone.now().date()  # Ensure you're filtering by date correctly
+    queryset = RequestLog.objects.filter(timestamp__date=time_threshold).values(
+        'referer', 'requested_url', 'client_ip'
+    )
 
     referer = {}
-    client_ips_iwatch = []
-    client_ips_iphone = []
-    client_ips_ipad = []
-    client_ips_web = []
-    unknown = []
-    for entry in list(queryset):
+    client_ips_iwatch = set()
+    client_ips_iphone = set()
+    client_ips_ipad = set()
+    client_ips_web = set()
+    check_ips = set()
+
+    for entry in queryset:
         client_ip = entry['client_ip']
+
         if ipaddress.ip_address(client_ip).is_private:
             continue
 
-        if "/iwatch/" in entry['requested_url'] and client_ip not in client_ips_iwatch:
-            client_ips_iwatch.append(client_ip)
-        elif "/iphone/" in entry['requested_url'] and client_ip not in client_ips_iphone:
-            client_ips_iphone.append(client_ip)
-        elif "/ipad/" in entry['requested_url'] and client_ip not in client_ips_ipad:
-            client_ips_ipad.append(client_ip)
-        elif "/web/" in entry['requested_url'] and client_ip not in client_ips_web:
-            client_ips_web.append(client_ip)
-        elif client_ip not in unknown and client_ip not in client_ips_iwatch and client_ip not in client_ips_iphone \
-                and client_ip not in client_ips_ipad and client_ip not in client_ips_web:
-            unknown.append(client_ip)
+        if "/iwatch/" in entry['requested_url']:
+            client_ips_iwatch.add(client_ip)
+        elif "/iphone/" in entry['requested_url']:
+            client_ips_iphone.add(client_ip)
+        elif "/ipad/" in entry['requested_url']:
+            client_ips_ipad.add(client_ip)
+        elif "/web/" in entry['requested_url']:
+            client_ips_web.add(client_ip)
 
-        if entry['referer'] == '' or 'zirium.dk' in entry['referer']:
-            continue
-        referer[entry['referer']] = referer.get(entry['referer'], 0) + 1
+        check_ips.add(client_ip)
 
-    referer_list = [{'referer': a, 'count': referer[a]} for a in referer.keys()]
+        if entry['referer'] and 'zirium.dk' not in entry['referer']:
+            referer[entry['referer']] = referer.get(entry['referer'], 0) + 1
 
+    referer_list = [{'referer': r, 'count': referer[r]} for r in referer.keys()]
     sorted_referer_list = sorted(referer_list, key=lambda x: x['count'], reverse=True)
+
     sorted_referer_list.append({'referer': 'iPhone', 'count': len(client_ips_iphone)})
     sorted_referer_list.append({'referer': 'iPad', 'count': len(client_ips_ipad)})
     sorted_referer_list.append({'referer': 'Watch', 'count': len(client_ips_iwatch)})
     sorted_referer_list.append({'referer': 'Web', 'count': len(client_ips_web)})
-    sorted_referer_list.append({'referer': 'Unknown', 'count': len(unknown)})
+    sorted_referer_list.append({'referer': 'Check', 'count': len(check_ips)})
 
     return JsonResponse({
         'caption': 'Advertisement clicked',
