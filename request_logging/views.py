@@ -536,10 +536,14 @@ def get_referer(_: Request) -> JsonResponse:
     referer_list = [{'referer': r, 'count': referer[r]} for r in referer.keys()]
     sorted_referer_list = sorted(referer_list, key=lambda x: x['count'], reverse=True)
 
+    valid_count = len(client_ips_iphone) + len(client_ips_ipad) + len(client_ips_iwatch) + len(client_ips_web)
+
     sorted_referer_list.append({'referer': 'iPhone', 'count': len(client_ips_iphone)})
     sorted_referer_list.append({'referer': 'iPad', 'count': len(client_ips_ipad)})
     sorted_referer_list.append({'referer': 'Watch', 'count': len(client_ips_iwatch)})
     sorted_referer_list.append({'referer': 'Web', 'count': len(client_ips_web)})
+    sorted_referer_list.append({'referer': 'Valid', 'count': valid_count})
+
     sorted_referer_list.append({'referer': 'Check', 'count': len(check_ips)})
 
     return JsonResponse({
