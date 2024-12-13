@@ -55,6 +55,8 @@ const ShortWatchPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["shorts"],
+    staleTime: 30000,
+    refetchInterval: 60000,
     queryFn: ({ signal }) =>
       fetchShortPositions({
         signal,

@@ -38,6 +38,8 @@ const ShortSellerDetailsPage: React.FC = () => {
 
   const { data, isLoading, isError, error } = useQuery<ShortSellerDetails>({
     queryKey: [searchParams.get("seller")],
+    staleTime: 30000,
+    refetchInterval: 60000,
     queryFn: ({ signal }) =>
       fetchLargeShortSellerDetails({
         signal,

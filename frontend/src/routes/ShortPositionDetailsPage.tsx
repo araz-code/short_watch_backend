@@ -120,6 +120,8 @@ const ShortPositionDetailsPage: React.FC = () => {
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: [searchParams.get("code")],
+    staleTime: 30000,
+    refetchInterval: 60000,
     queryFn: ({ signal }) =>
       fetchShortPositionDetails({
         signal,
