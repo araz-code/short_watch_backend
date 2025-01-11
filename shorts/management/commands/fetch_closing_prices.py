@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta, time
 import pytz
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand, CommandError
 from django.utils import timezone
 
 from errors.models import Error
@@ -17,20 +17,23 @@ class Command(BaseCommand):
         stocks = Stock.objects.all()
 
         for stock in stocks:
-            if stock.symbol in ['CHR', 'NZYM-B']:
-                continue
+            try:
+                if stock.symbol in ['CHR', 'NZYM-B', 'TOP']:
+                    continue
 
-            self.create_missing_chart_values(stock)
+                self.create_missing_chart_values(stock)
 
-            data = yf.download(f'{stock.symbol}.CO', start='2023-11-06')
+                data = yf.download(f'{stock.symbol}.CO', start='2023-11-06')
 
-            self.did_a_split_occur(stock, data)
+                self.did_a_split_occur(stock, data)
 
-            self.fill_initial_missing_data(stock, data)
+                self.fill_initial_missing_data(stock, data)
 
-            self.update_today_price_volume(data, stock)
+                self.update_today_price_volume(data, stock)
 
-            self.fill_holes_in_chart_values(stock)
+                self.fill_holes_in_chart_values(stock)
+            except Exception as e:
+                Error.objects.create(message=str(e)[:500])
 
     @staticmethod
     def update_today_price_volume(data, stock):
