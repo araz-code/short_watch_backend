@@ -13,7 +13,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from request_logging.models import RequestLog
-from request_logging.service import process_visits, delete_old_logs
+from request_logging.service import process_visits
 from shorts.models import Stock
 
 copenhagen_timezone = pytz.timezone('Europe/Copenhagen')
