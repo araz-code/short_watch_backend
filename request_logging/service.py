@@ -17,7 +17,7 @@ referer_pattern = re.compile(r'(google|facebook|proinvestor)')
 
 
 def delete_old_logs():
-    two_months_ago = datetime.now() - timedelta(days=40)
+    two_months_ago = datetime.now() - timedelta(days=30)
     pks = list(RequestLog.objects.filter(timestamp__lt=two_months_ago).values_list('pk', flat=True))[:5000]
     RequestLog.objects.filter(pk__in=pks).delete()
 
