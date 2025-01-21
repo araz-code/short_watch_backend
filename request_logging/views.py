@@ -163,7 +163,7 @@ def get_unique_ips_today(_: Request) -> JsonResponse:
     queryset = RequestLog.objects.filter(timestamp__date=today.date()).values('client_ip')
 
     # Filter out private IPs
-    queryset = [entry['client_ip'] for entry in queryset if not ipaddress.ip_address(entry['client_ip']).is_private]
+    queryset = [entry['client_ip'] for entry in queryset]  # if not ipaddress.ip_address(entry['client_ip']).is_private]
 
     # Count distinct IPs
     distinct_ips = len(set(queryset))
