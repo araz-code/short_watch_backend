@@ -1,3 +1,4 @@
+from errors.models import Error
 from request_logging.models import RequestLog
 
 
@@ -33,7 +34,8 @@ class RequestLoggingMiddleware:
 
             response = self.get_response(request)
             return response
-        except Exception:
+        except Exception as e:
+            Error.objects.create(message=str(e)[:500])
             response = self.get_response(request)
             return response
 
