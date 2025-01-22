@@ -118,11 +118,15 @@ class ShortSellerListSerializer(serializers.ModelSerializer):
 
     @staticmethod
     def get_current(obj):
-        return [x.stock.symbol for x in obj.large_short_sellings.all()]
+        # Prefetch related data for efficiency
+        return list(obj.large_short_sellings.values_list('stock__symbol', flat=True))
 
-    def get_previous(self, obj):
-        current = set(self.get_current(obj))
-        previous = set([x.stock.symbol for x in obj.announcements.all() if x.stock.symbol not in current])
+    @staticmethod
+    def get_previous(obj):
+        # Use prefetch-related data to avoid redundant queries
+        current = set(obj.large_short_sellings.values_list('stock__symbol', flat=True))
+        all_symbols = set(obj.announcements.values_list('stock__symbol', flat=True))
+        previous = all_symbols - current
         return list(previous)
 
 
