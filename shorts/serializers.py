@@ -131,7 +131,9 @@ class ShortSellerListSerializer(serializers.ModelSerializer):
     @staticmethod
     def get_published_date(obj):
         latest_date = obj.announcements.order_by('-published_date').values_list('published_date', flat=True).first()
-        return latest_date
+        if latest_date:
+            return latest_date.strftime('%Y-%m-%dT%H:%M:%S%z')
+        return None
 
 
 class ShortSellerDetailSerializer(serializers.ModelSerializer):
