@@ -111,23 +111,27 @@ class AnnouncementForShortSellerSerializer(serializers.ModelSerializer):
 class ShortSellerListSerializer(serializers.ModelSerializer):
     current = serializers.SerializerMethodField()
     previous = serializers.SerializerMethodField()
+    publishedDate = serializers.SerializerMethodField(method_name='get_published_date')
 
     class Meta:
         model = ShortSeller
-        fields = ('id', 'name', 'current', 'previous')
+        fields = ('id', 'name', 'current', 'previous', 'publishedDate')
 
     @staticmethod
     def get_current(obj):
-        # Prefetch related data for efficiency
         return list(obj.large_short_sellings.values_list('stock__symbol', flat=True))
 
     @staticmethod
     def get_previous(obj):
-        # Use prefetch-related data to avoid redundant queries
         current = set(obj.large_short_sellings.values_list('stock__symbol', flat=True))
         all_symbols = set(obj.announcements.values_list('stock__symbol', flat=True))
         previous = all_symbols - current
         return list(previous)
+
+    @staticmethod
+    def get_published_date(obj):
+        latest_date = obj.announcements.order_by('-published_date').values_list('published_date', flat=True).first()
+        return latest_date
 
 
 class ShortSellerDetailSerializer(serializers.ModelSerializer):
