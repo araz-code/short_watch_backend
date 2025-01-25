@@ -116,7 +116,7 @@ class ShortSellerListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ShortSeller
-        fields = ('id', 'name', 'current', 'previous', 'currentNew')
+        fields = ('id', 'name', 'current', 'previous', 'lastUpdated', 'currentNew')
 
     @staticmethod
     def get_current(obj):
