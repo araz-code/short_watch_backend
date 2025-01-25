@@ -112,10 +112,11 @@ class ShortSellerListSerializer(serializers.ModelSerializer):
     current = serializers.SerializerMethodField()
     previous = serializers.SerializerMethodField()
     lastUpdated = serializers.SerializerMethodField(method_name='get_last_updated')
+    currentNew = serializers.SerializerMethodField()
 
     class Meta:
         model = ShortSeller
-        fields = ('id', 'name', 'current', 'previous', 'lastUpdated')
+        fields = ('id', 'name', 'current', 'previous', 'currentNew')
 
     @staticmethod
     def get_current(obj):
@@ -134,6 +135,11 @@ class ShortSellerListSerializer(serializers.ModelSerializer):
         if latest_date:
             return latest_date.strftime('%Y-%m-%dT%H:%M:%S%z')
         return None
+
+    @staticmethod
+    def get_currentNew(obj):
+        large_short_selling_qs = obj.large_short_sellings.all()
+        return LargeShortSellingSerializer(large_short_selling_qs, many=True).data
 
 
 class ShortSellerDetailSerializer(serializers.ModelSerializer):
