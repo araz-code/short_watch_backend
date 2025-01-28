@@ -146,7 +146,7 @@ export async function fetchLargestShortSellers({
 }: {
   signal?: AbortSignal;
 }) {
-  const url = `${HOST}/${VERSION}/shorts/short-sellers`;
+  const url = `${HOST}/${VERSION}/shorts/web/short-sellers`;
 
   const response = await fetch(url, {
     signal,
@@ -177,7 +177,7 @@ export async function fetchLargeShortSellerDetails({
   signal?: AbortSignal;
   seller: string;
 }) {
-  const url = `${HOST}/${VERSION}/shorts/short-sellers/${seller}`;
+  const url = `${HOST}/${VERSION}/shorts/web/short-sellers/${seller}`;
 
   const response = await fetch(url, {
     signal,

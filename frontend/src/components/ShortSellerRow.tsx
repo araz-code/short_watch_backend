@@ -17,7 +17,7 @@ const ShortSellerRow: React.FC<ShortSeller> = (props) => {
           {current.length > 0 && (
             <ul className="list-disc list-inside font-normal text-sm">
               {current.map((item, index) => (
-                <li key={index}>{item}</li>
+                <li key={index}>{item.stockSymbol}</li>
               ))}
             </ul>
           )}
