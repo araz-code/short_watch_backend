@@ -163,7 +163,7 @@ def get_unique_ips_today(_: Request) -> JsonResponse:
     queryset = RequestLog.objects.filter(timestamp__date=today.date()).values('client_ip')
 
     # Filter out private IPs
-    queryset = [entry['client_ip'] for entry in queryset]  # if not ipaddress.ip_address(entry['client_ip']).is_private]
+    queryset = [entry['client_ip'] for entry in queryset if not ipaddress.ip_address(entry['client_ip']).is_private]
 
     # Count distinct IPs
     distinct_ips = len(set(queryset))
@@ -511,6 +511,9 @@ def get_referer(_: Request) -> JsonResponse:
     client_ips_iphone = set()
     client_ips_ipad = set()
     client_ips_web = set()
+    client_ips_sellers_iphone = set()
+    client_ips_sellers_web = set()
+
     check_ips = set()
 
     for entry in queryset:
@@ -523,10 +526,14 @@ def get_referer(_: Request) -> JsonResponse:
             client_ips_iwatch.add(client_ip)
         elif "/iphone/" in entry['requested_url']:
             client_ips_iphone.add(client_ip)
+            if "/short-sellers/" in entry['requested_url']:
+                client_ips_sellers_iphone.add(client_ip)
         elif "/ipad/" in entry['requested_url']:
             client_ips_ipad.add(client_ip)
         elif "/web/" in entry['requested_url']:
             client_ips_web.add(client_ip)
+            if "/short-sellers/" in entry['requested_url']:
+                client_ips_sellers_web.add(client_ip)
 
         check_ips.add(client_ip)
 
@@ -542,6 +549,9 @@ def get_referer(_: Request) -> JsonResponse:
     sorted_referer_list.append({'referer': 'iPad', 'count': len(client_ips_ipad)})
     sorted_referer_list.append({'referer': 'Watch', 'count': len(client_ips_iwatch)})
     sorted_referer_list.append({'referer': 'Web', 'count': len(client_ips_web)})
+    sorted_referer_list.append({'referer': 'iPhone short-sellers', 'count': len(client_ips_sellers_iphone)})
+    sorted_referer_list.append({'referer': 'Web short-sellers', 'count': len(client_ips_sellers_web)})
+
     sorted_referer_list.append({'referer': 'Valid', 'count': valid_count})
 
     sorted_referer_list.append({'referer': 'Check', 'count': len(check_ips)})
