@@ -2,34 +2,54 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowTrendUp,
   faArrowTrendDown,
+  faArrowsLeftRight,
 } from "@fortawesome/free-solid-svg-icons";
 
-const ChangeIndicator: React.FC<{
-  value: number;
-  prevValue: number;
-}> = (props) => {
-  const { value, prevValue } = props;
+const ChangeIndicator: React.FC<{ value: number; prevValue: number }> = ({
+  value,
+  prevValue,
+}) => {
+  if (!prevValue) {
+    return (
+      <IndicatorWrapper bgColor="bg-yellow-200" textColor="text-yellow-900">
+        <FontAwesomeIcon
+          icon={faArrowsLeftRight}
+          className="text-yellow-900 text-[14px]"
+        />
+        <div>Initial</div>
+      </IndicatorWrapper>
+    );
+  }
 
   const change = prevValue - value;
+  const isNegative = change < 0;
 
   return (
-    <div
-      className={`text-xs ${
-        change < 0 ? "bg-red-200" : "bg-green-200"
-      } rounded-md px-[4px] pt-[1.6px] ${
-        change < 0 ? "text-red-900" : "text-green-900"
-      } font-normal flex items-center space-x-1`}
+    <IndicatorWrapper
+      bgColor={isNegative ? "bg-red-200" : "bg-green-200"}
+      textColor={isNegative ? "text-red-900" : "text-green-900"}
     >
       <FontAwesomeIcon
-        icon={change < 0 ? faArrowTrendUp : faArrowTrendDown}
-        style={{
-          color: change < 0 ? "#991b1b" : "#166534",
-          fontSize: "14px",
-        }}
+        icon={isNegative ? faArrowTrendUp : faArrowTrendDown}
+        className={`text-[14px] ${
+          isNegative ? "text-red-900" : "text-green-900"
+        }`}
       />
       <div>{`${Math.abs(change).toFixed(2)}%`}</div>
-    </div>
+    </IndicatorWrapper>
   );
 };
+
+const IndicatorWrapper: React.FC<{
+  bgColor: string;
+  textColor: string;
+  children: React.ReactNode;
+}> = ({ bgColor, textColor, children }) => (
+  <div
+    className={`text-xs ${bgColor} ${textColor} rounded-md px-[4px] pt-[1.6px] font-normal flex items-center space-x-1`}
+  >
+    {children}
+  </div>
+);
 
 export default ChangeIndicator;

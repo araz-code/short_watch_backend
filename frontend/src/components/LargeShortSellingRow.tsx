@@ -26,9 +26,7 @@ const LargeShortSellingRow: React.FC<LargestShortSelling> = (props) => {
           </div>
 
           <div className="flex items-center space-x-2 justify-end">
-            {prevValue && (
-              <ChangeIndicator value={value} prevValue={prevValue} />
-            )}
+            <ChangeIndicator value={value} prevValue={prevValue} />
             <div className="font-medium text-right">{value.toFixed(2)}%</div>
           </div>
         </div>

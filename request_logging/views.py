@@ -513,6 +513,8 @@ def get_referer(_: Request) -> JsonResponse:
     client_ips_web = set()
     client_ips_sellers_iphone = set()
     client_ips_sellers_web = set()
+    client_ips_sellers_iphone_detail = set()
+    client_ips_sellers_web_detail = set()
 
     check_ips = set()
 
@@ -526,14 +528,18 @@ def get_referer(_: Request) -> JsonResponse:
             client_ips_iwatch.add(client_ip)
         elif "/iphone/" in entry['requested_url']:
             client_ips_iphone.add(client_ip)
-            if "/short-sellers/" in entry['requested_url']:
+            if "/short-sellers" in entry['requested_url']:
                 client_ips_sellers_iphone.add(client_ip)
+            if "/short-sellers/" in entry['requested_url']:
+                client_ips_sellers_iphone_detail.add(client_ip)
         elif "/ipad/" in entry['requested_url']:
             client_ips_ipad.add(client_ip)
         elif "/web/" in entry['requested_url']:
             client_ips_web.add(client_ip)
-            if "/short-sellers/" in entry['requested_url']:
+            if "/short-sellers" in entry['requested_url']:
                 client_ips_sellers_web.add(client_ip)
+            if "/short-sellers/" in entry['requested_url']:
+                client_ips_sellers_web_detail.add(client_ip)
 
         check_ips.add(client_ip)
 
@@ -550,7 +556,10 @@ def get_referer(_: Request) -> JsonResponse:
     sorted_referer_list.append({'referer': 'Watch', 'count': len(client_ips_iwatch)})
     sorted_referer_list.append({'referer': 'Web', 'count': len(client_ips_web)})
     sorted_referer_list.append({'referer': 'iPhone short-sellers', 'count': len(client_ips_sellers_iphone)})
+    sorted_referer_list.append({'referer': 'iPhone short-sellers detail',
+                                'count': len(client_ips_sellers_iphone_detail)})
     sorted_referer_list.append({'referer': 'Web short-sellers', 'count': len(client_ips_sellers_web)})
+    sorted_referer_list.append({'referer': 'Web short-sellers detail', 'count': len(client_ips_sellers_web_detail)})
 
     sorted_referer_list.append({'referer': 'Valid', 'count': valid_count})
 
