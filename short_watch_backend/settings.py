@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'errors',
     'request_logging',
     'home_page',
+    'measurements'
 ]
 
 MIDDLEWARE = [

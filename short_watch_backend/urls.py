@@ -24,6 +24,7 @@ from short_watch_backend import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('measurements/', include('measurements.urls')),
     path('shorts/', include('shorts.urls')),
     path('v2/shorts/', include('shorts.urls')),
     path('v3/shorts/', include('shorts.urls')),
