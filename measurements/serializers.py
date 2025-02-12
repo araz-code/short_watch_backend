@@ -3,6 +3,8 @@ from .models import Measurement
 
 
 class MeasurementSerializer(serializers.ModelSerializer):
+    userID = serializers.DateTimeField(source='user_id')
+
     class Meta:
         model = Measurement
-        fields = ['temperature', 'humidity', 'created_at']
+        fields = ['userID', 'temperature', 'humidity', 'created_at']
