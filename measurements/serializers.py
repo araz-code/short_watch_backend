@@ -3,7 +3,7 @@ from .models import Measurement
 
 
 class MeasurementSerializer(serializers.ModelSerializer):
-    userID = serializers.DateTimeField(source='user_id')
+    userID = serializers.UUIDField(source='user_id')
 
     class Meta:
         model = Measurement
