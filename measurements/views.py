@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from rest_framework_api_key.permissions import HasAPIKey
 
 from .models import Measurement
-from .serializers import MeasurementSerializer
+from .serializers import MeasurementSerializer, CreateMeasurementSerializer
 
 
 @api_view(['POST'])
@@ -14,7 +14,7 @@ from .serializers import MeasurementSerializer
 @atomic
 def create_measurement(request):
     if request.method == 'POST':
-        serializer = MeasurementSerializer(data=request.data)
+        serializer = CreateMeasurementSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
