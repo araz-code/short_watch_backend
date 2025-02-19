@@ -104,8 +104,8 @@ class Command(BaseCommand):
     @staticmethod
     def did_a_split_occur(stock, data):
         try:
-            # prev_chart_point = ShortPositionChart.objects.filter(stock=stock, date=data.tail(2).index.date[0]).first()
-            prev_chart_point = ShortPositionChart.objects.filter(stock=stock, date=data.tail(2).index[0].date()).first()
+            prev_chart_point1 = ShortPositionChart.objects.filter(stock=stock, date=data.tail(2).index.date[0]).first()
+            prev_chart_point = ShortPositionChart.objects.filter(stock=stock, date=data.tail(2).index[0].to_pydatetime().date()).first()
 
             if not prev_chart_point or prev_chart_point.close is None:
                 return
