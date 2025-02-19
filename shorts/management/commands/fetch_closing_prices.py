@@ -39,7 +39,7 @@ class Command(BaseCommand):
     def update_today_price_volume(data, stock):
         try:
             ShortPositionChart.objects.filter(stock=stock, date=data.tail(1).index.date[0]) \
-                .update(close=round(data.tail(1).iloc[0].Close, 2), volume=data.tail(1).iloc[0].Volume)
+                .update(close=round(data.tail(1).iloc[0].Close[0], 2), volume=data.tail(1).iloc[0].Volume[0])
 
             #ShortPositionChart.objects.filter(stock=stock, date=data.tail(1).index[0].to_pydatetime().date()) \
              #   .update(close=round(data.tail(1).iloc[0].Close, 2), volume=data.tail(1).iloc[0].Volume)
@@ -93,8 +93,8 @@ class Command(BaseCommand):
                         stock=stock,
                         date=row.Index.date(),
                         defaults={
-                            'close': round(row.Close, 2),
-                            'volume': row.Volume
+                            'close': round(row[1], 2),
+                            'volume': row[5]
                         }
                     )
                 except Exception as e:
