@@ -37,7 +37,10 @@ class Command(BaseCommand):
 
     @staticmethod
     def update_today_price_volume(data, stock):
-        ShortPositionChart.objects.filter(stock=stock, date=data.tail(1).index.date[0]) \
+        # ShortPositionChart.objects.filter(stock=stock, date=data.tail(1).index.date[0]) \
+         #   .update(close=round(data.tail(1).iloc[0].Close, 2), volume=data.tail(1).iloc[0].Volume)
+
+        ShortPositionChart.objects.filter(stock=stock, date=data.tail(1).index[0].to_pydatetime().date()) \
             .update(close=round(data.tail(1).iloc[0].Close, 2), volume=data.tail(1).iloc[0].Volume)
 
     @staticmethod
