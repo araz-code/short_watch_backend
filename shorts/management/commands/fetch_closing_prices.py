@@ -38,11 +38,11 @@ class Command(BaseCommand):
     @staticmethod
     def update_today_price_volume(data, stock):
         try:
-            # ShortPositionChart.objects.filter(stock=stock, date=data.tail(1).index.date[0]) \
-             #   .update(close=round(data.tail(1).iloc[0].Close, 2), volume=data.tail(1).iloc[0].Volume)
-
-            ShortPositionChart.objects.filter(stock=stock, date=data.tail(1).index[0].to_pydatetime().date()) \
+            ShortPositionChart.objects.filter(stock=stock, date=data.tail(1).index.date[0]) \
                 .update(close=round(data.tail(1).iloc[0].Close, 2), volume=data.tail(1).iloc[0].Volume)
+
+            #ShortPositionChart.objects.filter(stock=stock, date=data.tail(1).index[0].to_pydatetime().date()) \
+             #   .update(close=round(data.tail(1).iloc[0].Close, 2), volume=data.tail(1).iloc[0].Volume)
         except Exception as e:
             print('update_today_price_volume error')
 
@@ -104,13 +104,13 @@ class Command(BaseCommand):
     @staticmethod
     def did_a_split_occur(stock, data):
         try:
-            prev_chart_point1 = ShortPositionChart.objects.filter(stock=stock, date=data.tail(2).index.date[0]).first()
-            prev_chart_point = ShortPositionChart.objects.filter(stock=stock, date=data.tail(2).index[0].to_pydatetime().date()).first()
+            prev_chart_point = ShortPositionChart.objects.filter(stock=stock, date=data.tail(2).index.date[0]).first()
+            # prev_chart_point = ShortPositionChart.objects.filter(stock=stock, date=data.tail(2).index[0].to_pydatetime().date()).first()
 
             if not prev_chart_point or prev_chart_point.close is None:
                 return
 
-            current_close = data.tail(1).iloc[0].Close
+            current_close = data.tail(1).iloc[0][0]
             prev_close = prev_chart_point.close
 
             percent_diff = abs((current_close - prev_close) / prev_close) * 100 if prev_close else 0
