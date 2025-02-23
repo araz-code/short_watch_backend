@@ -6,7 +6,7 @@ class Measurement(models.Model):
     temperature = models.FloatField()
     humidity = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
-    light_level = models.PositiveIntegerField()
+    light_level = models.IntegerField()
     noise_level = models.FloatField()
 
     def __str__(self):
