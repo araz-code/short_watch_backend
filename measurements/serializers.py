@@ -4,10 +4,12 @@ from .models import Measurement
 
 class CreateMeasurementSerializer(serializers.ModelSerializer):
     userID = serializers.UUIDField(source='user_id')
+    noiseLevel = serializers.FloatField(source='noise_level')
+    lightLevel = serializers.IntegerField(source='light_level')
 
     class Meta:
         model = Measurement
-        fields = ['userID', 'temperature', 'humidity', 'created_at']
+        fields = ['userID', 'temperature', 'humidity', 'created_at', 'noiseLevel', 'lightLevel']
 
 
 class MeasurementSerializer(serializers.ModelSerializer):
