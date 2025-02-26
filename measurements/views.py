@@ -4,6 +4,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework_api_key.permissions import HasAPIKey
+from django.utils import timezone
+from datetime import timedelta
 
 from .models import Measurement
 from .serializers import MeasurementSerializer, CreateMeasurementSerializer
@@ -24,7 +26,8 @@ def create_measurement(request):
 class AllMeasurementsAPI(APIView):
     @staticmethod
     def get(_):
-        measurements = Measurement.objects.order_by("-created_at")
+        last_24_hours = timezone.now() - timedelta(hours=24)
+        measurements = Measurement.objects.filter(created_at__gte=last_24_hours).order_by("-created_at")
         serializer = MeasurementSerializer(measurements, many=True)
         return Response(serializer.data)
 
