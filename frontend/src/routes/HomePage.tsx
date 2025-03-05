@@ -44,7 +44,7 @@ const HomePage: React.FC = () => {
   return (
     <div className="bg-white dark:bg-[#121212]">
       <div className="flex flex-col sm:min-h-[650px]">
-        <div className="bg-wave-pattern dark:bg-wave-pattern-dark bg-cover bg-no-repeat bg-bottom h-[57%] flex flex-col pb-2 sm:pb-0">
+        <div className="bg-wave-pattern dark:bg-wave-pattern-dark bg-cover bg-no-repeat bg-bottom h-[57%] flex flex-col pb-2 sm:pb-0 [@media(min-width:2000px)]:min-h-[770px]">
           <Navigation />
 
           <main className="flex flex-col sm:flex-row sm:max-w-[1000px] sm:justify-end gap-10 sm:h-[80%] mt-14 px-5 self-center sm:px-[20px]">
