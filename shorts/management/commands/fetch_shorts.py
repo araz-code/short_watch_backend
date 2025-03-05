@@ -331,6 +331,8 @@ class Command(BaseCommand):
     def fetch_short_positions(short_data):
         short_codes = []
         users_to_notify = set()
+        users_to_notify_dict = {}
+
         with transaction.atomic():
             for short in short_data:
                 short_codes.append(short.stock.code)
@@ -352,6 +354,13 @@ class Command(BaseCommand):
                     short.save()
                     for app_user in short.stock.app_users.all():
                         users_to_notify.add(app_user)
+
+                        try:
+                            if app_user not in users_to_notify_dict:
+                                users_to_notify_dict[app_user] = []
+                            users_to_notify_dict[app_user].append(short.stock.symbol)
+                        except Exception as e:
+                            Error.objects.create(message=f'Exception occurred with add users_to_notify_dict 1')
 
                 now = timezone.now()
                 ShortPositionChart.objects.update_or_create(
@@ -391,6 +400,13 @@ class Command(BaseCommand):
                             for app_user in short.stock.app_users.all():
                                 users_to_notify.add(app_user)
 
+                                try:
+                                    if app_user not in users_to_notify_dict:
+                                        users_to_notify_dict[app_user] = []
+                                    users_to_notify_dict[app_user].append(short.stock.symbol)
+                                except Exception as e:
+                                    Error.objects.create(message=f'Exception occurred with add users_to_notify_dict 2')
+
                         now = timezone.now()
                         ShortPositionChart.objects.update_or_create(
                             stock=short.stock,
@@ -402,7 +418,7 @@ class Command(BaseCommand):
                         )
         RunStatus.objects.create()
         for app_user in users_to_notify:
-            Command.send_push_notification(app_user)
+            Command.send_push_notification(app_user, users_to_notify_dict[app_user])
 
     def fetch_short_positions_selenium(self, driver):
         retry_count = 0
@@ -495,7 +511,7 @@ class Command(BaseCommand):
             return None
 
     @staticmethod
-    def send_push_notification(app_user):
+    def send_push_notification(app_user, stocks_changed):
         try:
             if not app_user.invalid and app_user.fcm_token:
                 current_time = datetime.now(copenhagen_timezone).time()
@@ -515,15 +531,17 @@ class Command(BaseCommand):
                             aps=messaging.Aps(
                                 alert=messaging.ApsAlert(
                                     loc_key='YOUR_WATCHLIST_WAS_UPDATED',
+                                    loc_args=[', '.join([stock for stock in stocks_changed])]
+                                    if app_user.version in {'v16'} else None,
                                 ),
-                                badge=1 if app_user.version in {'v13', 'v14', 'v15'} else 0,
+                                badge=1 if app_user.version in {'v13', 'v14', 'v15', '16'} else 0,
                                 sound=None
                             )
                         )
                     ),
                     token=app_user.fcm_token,
                 )
-                if not DEBUG:
+                if not DEBUG or True:
                     messaging.send(message)
                 app_user.notifications_sent = app_user.notifications_sent + 1
                 app_user.save()
