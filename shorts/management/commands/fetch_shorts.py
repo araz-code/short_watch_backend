@@ -135,7 +135,7 @@ class Command(BaseCommand):
     def fetch_large_short_selling_requests(self, driver):
         try:
             response = requests.post(self.SHORT_SELLER_URL, headers=self.SHORT_SELLER_HEADERS,
-                                     json=self.SHORT_SELLER_BODY)
+                                     json=self.SHORT_SELLER_BODY, verify=False)
 
             if response.status_code == 200:
                 sellers = response.json()['data']
@@ -216,7 +216,7 @@ class Command(BaseCommand):
     def fetch_announcements(self):
         try:
             response = requests.post(self.ANNOUNCEMENTS_SITE_URL, json=self.ANNOUNCEMENTS_BODY,
-                                     headers=self.ANNOUNCEMENTS_HEADERS)
+                                     headers=self.ANNOUNCEMENTS_HEADERS, verify=False)
 
             if response.status_code == 200:
                 announcements = response.json()['data']
@@ -283,7 +283,7 @@ class Command(BaseCommand):
         while retry_count < self.MAX_RETRIES:
             try:
                 response = requests.post(self.SHORT_POSITIONS_URL, headers=self.SHORT_POSITIONS_HEADERS,
-                                         json=self.SHORT_POSITIONS_BODY)
+                                         json=self.SHORT_POSITIONS_BODY, verify=False)
 
                 if response.status_code == 200:
                     short_positions = response.json()['data']
