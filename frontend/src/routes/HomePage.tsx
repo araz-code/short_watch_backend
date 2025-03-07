@@ -136,11 +136,6 @@ const HomePage: React.FC = () => {
                     />
                   </button>
                 </Link>
-                <p className=" lg:text-xl text-legy font-bold pb-3 text-red-600 bg-white p-3">
-                  {t(
-                    "The FSA's homepage for publishing short positions is down at the moment, making it impossible to retrieve the latest data."
-                  )}
-                </p>
               </div>
             </div>
             <AppImage />

@@ -85,11 +85,6 @@ const ShortSellersPage: React.FC = () => {
             <p className="text-xl lg:text-3xl font-bold py-6 dark:text-white flex justify-center">
               Short Sellers
             </p>
-            <p className=" lg:text-xl text-legy font-bold pb-3 text-red-600">
-              {t(
-                "The FSA's homepage for publishing short positions is down at the moment, making it impossible to retrieve the latest data."
-              )}
-            </p>
             <div className="text-xs pl-2 dark:text-white italic">
               <p>{t("The Danish FSA only publishes the names of short")}</p>
               <p>{t("sellers with a position of 0.5% or greater.")}</p>
