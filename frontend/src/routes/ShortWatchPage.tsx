@@ -147,6 +147,11 @@ const ShortWatchPage: React.FC = () => {
             <p className="text-xl lg:text-3xl text-center font-bold py-6 dark:text-white">
               Danish Short Watch
             </p>
+            <p className=" lg:text-xl text-legy font-bold pb-3 text-red-600">
+              {t(
+                "The FSA's homepage for publishing short positions is down at the moment, making it impossible to retrieve the latest data."
+              )}
+            </p>
             <section className="w-full">
               <div className="relative mx-2 flex items-center">
                 <div className="absolute inset-y-0 left-0 flex items-center ps-3 pointer-events-none">
