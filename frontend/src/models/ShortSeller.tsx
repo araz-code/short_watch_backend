@@ -5,4 +5,5 @@ export default interface ShortSeller {
   name: string;
   current: [LargestShortSelling];
   previous: [string];
+  lastUpdated: string;
 }

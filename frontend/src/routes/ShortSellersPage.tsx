@@ -7,9 +7,27 @@ import ErrorBlock from "../components/UI/ErrorBlock";
 import LoadingIndicator from "../components/UI/LoadingIndicator";
 import InfoDialog from "../components/InfoDialog";
 import { useTranslation } from "react-i18next";
-import { sendCustomPageView } from "../analytics";
+import { handleClick, sendCustomPageView } from "../analytics";
 import ShortSeller from "../models/ShortSeller";
 import ShortSellerRow from "../components/ShortSellerRow";
+import DropDownMenu from "../components/UI/DropDownMenu";
+
+const options = ["Name", "Date"];
+
+const sort = (list: ShortSeller[], selectedSorting: string) => {
+  return list.sort((a, b) => {
+    switch (selectedSorting) {
+      case "Name":
+        return a.name.localeCompare(b.name);
+      case "Date":
+        return (
+          new Date(b.lastUpdated).getTime() - new Date(a.lastUpdated).getTime()
+        );
+      default:
+        return a.name.localeCompare(b.name);
+    }
+  });
+};
 
 const ShortSellersPage: React.FC = () => {
   const { t } = useTranslation();
@@ -17,6 +35,16 @@ const ShortSellersPage: React.FC = () => {
 
   const [showInfo, setShowInfo] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedSorting, setSelectedSorting] = useState<string>(() => {
+    const savedSorting = localStorage.getItem("selectedSellersSorting");
+    return savedSorting && options.includes(savedSorting)
+      ? savedSorting
+      : options[0];
+  });
+  const [showCurrent, setShowCurrent] = useState<boolean>(() => {
+    const savedShowCurrent = localStorage.getItem("showCurrent");
+    return savedShowCurrent ? JSON.parse(savedShowCurrent) : false;
+  });
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["shortSellers"],
     staleTime: 30000,
@@ -26,6 +54,15 @@ const ShortSellersPage: React.FC = () => {
         signal,
       }),
   });
+
+  useEffect(() => {
+    localStorage.setItem("selectedSellersSorting", selectedSorting);
+    localStorage.setItem("showCurrent", JSON.stringify(showCurrent));
+  }, [selectedSorting, showCurrent]);
+
+  useEffect(() => {
+    handleClick(`sorting changed to: ${selectedSorting.toLowerCase()}`);
+  }, [selectedSorting]);
 
   useEffect(() => {
     sendCustomPageView(`/short-sellers`, "short sellers");
@@ -51,9 +88,13 @@ const ShortSellersPage: React.FC = () => {
       />
     );
   } else if (data) {
-    const filteredData = data.filter((item: ShortSeller) =>
+    let filteredData = data.filter((item: ShortSeller) =>
       item.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    filteredData = showCurrent
+      ? filteredData.filter((item: ShortSeller) => item.current.length > 0)
+      : filteredData;
 
     content = (
       <ul>
@@ -63,7 +104,7 @@ const ShortSellersPage: React.FC = () => {
           </p>
         )}
         {filteredData.length > 0 &&
-          filteredData.map((seller: ShortSeller) => {
+          sort(filteredData, selectedSorting).map((seller: ShortSeller) => {
             return (
               <li key={`${seller.id}`}>
                 <Link to={`/short-seller-details?seller=${seller.id}`}>
@@ -118,7 +159,32 @@ const ShortSellersPage: React.FC = () => {
                   className="flex-1 border p-2 pl-9 rounded-l focus:outline-none w-full dark:bg-[#212121] dark:text-white"
                 />
               </div>
-              <div className="overflow-y-auto min-h-[300px] h-[calc(100svh-16.3rem)] sm:h-[calc(100svh-16.6rem)] mt-5">
+              <div className="p-2 pb-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <DropDownMenu
+                      options={options}
+                      selectedMenuItem={selectedSorting}
+                      onSelectMenuItemChange={setSelectedSorting}
+                    />
+                    <button
+                      className="text-blue-500 text-center font-medium align-middle bg-transparent border-none text ml-5 hover:text-blue-700"
+                      onClick={() => {
+                        handleClick(
+                          `current changed: ${
+                            showCurrent ? t("All") : t("Current")
+                          }`
+                        );
+
+                        setShowCurrent(!showCurrent);
+                      }}
+                    >
+                      {showCurrent ? t("All") : t("Current")}
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div className="overflow-y-auto min-h-[300px] h-[calc(100svh-18.5rem)] sm:h-[calc(100svh-18.5rem)]">
                 <p className="text-xs pl-2 dark:text-white">
                   {t("You can get more details by clicking on a row")}
                 </p>
@@ -140,3 +206,5 @@ const ShortSellersPage: React.FC = () => {
 };
 
 export default ShortSellersPage;
+
+// <div className="overflow-y-auto min-h-[300px] h-[calc(100svh-16.3rem)] sm:h-[calc(100svh-16.6rem)] mt-5">

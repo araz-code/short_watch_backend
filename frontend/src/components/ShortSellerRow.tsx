@@ -1,9 +1,10 @@
 import { useTranslation } from "react-i18next";
 import ShortSeller from "../models/ShortSeller";
 import ChangeIndicator from "./UI/ChangeIndicator";
+import { formatTimestamp } from "../utils/dates";
 
 const ShortSellerRow: React.FC<ShortSeller> = (props) => {
-  const { name, current, previous } = props;
+  const { name, current, previous, lastUpdated } = props;
   const { t } = useTranslation();
 
   return (
@@ -46,6 +47,10 @@ const ShortSellerRow: React.FC<ShortSeller> = (props) => {
             </ul>
           )}
         </div>
+      </div>
+
+      <div className="font-normal text-gray-600">
+        {formatTimestamp(lastUpdated)}
       </div>
     </div>
   );
