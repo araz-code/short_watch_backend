@@ -9,7 +9,7 @@ const ChangeIndicator: React.FC<{ value: number; prevValue: number }> = ({
   value,
   prevValue,
 }) => {
-  if (!prevValue) {
+  if (prevValue == undefined) {
     return (
       <IndicatorWrapper bgColor="bg-yellow-200" textColor="text-yellow-900">
         <FontAwesomeIcon
