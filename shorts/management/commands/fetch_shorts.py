@@ -358,7 +358,7 @@ class Command(BaseCommand):
                         try:
                             if app_user not in users_to_notify_dict:
                                 users_to_notify_dict[app_user] = []
-                            users_to_notify_dict[app_user].append(f'{short.stock.symbol} {short.value}%')
+                            users_to_notify_dict[app_user].append(f'{short.stock.symbol} {short.value:.2f}%')
                         except Exception as e:
                             Error.objects.create(message=f'Exception occurred with add users_to_notify_dict 1')
 
