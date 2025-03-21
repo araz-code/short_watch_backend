@@ -135,7 +135,7 @@ class Command(BaseCommand):
     def fetch_large_short_selling_requests(self, driver):
         try:
             response = requests.post(self.SHORT_SELLER_URL, headers=self.SHORT_SELLER_HEADERS,
-                                     json=self.SHORT_SELLER_BODY, verify=False)
+                                     json=self.SHORT_SELLER_BODY)
 
             if response.status_code == 200:
                 sellers = response.json()['data']
@@ -216,7 +216,7 @@ class Command(BaseCommand):
     def fetch_announcements(self):
         try:
             response = requests.post(self.ANNOUNCEMENTS_SITE_URL, json=self.ANNOUNCEMENTS_BODY,
-                                     headers=self.ANNOUNCEMENTS_HEADERS, verify=False)
+                                     headers=self.ANNOUNCEMENTS_HEADERS)
 
             if response.status_code == 200:
                 announcements = response.json()['data']
@@ -283,7 +283,7 @@ class Command(BaseCommand):
         while retry_count < self.MAX_RETRIES:
             try:
                 response = requests.post(self.SHORT_POSITIONS_URL, headers=self.SHORT_POSITIONS_HEADERS,
-                                         json=self.SHORT_POSITIONS_BODY, verify=False)
+                                         json=self.SHORT_POSITIONS_BODY)
 
                 if response.status_code == 200:
                     short_positions = response.json()['data']
@@ -358,7 +358,7 @@ class Command(BaseCommand):
                         try:
                             if app_user not in users_to_notify_dict:
                                 users_to_notify_dict[app_user] = []
-                            users_to_notify_dict[app_user].append(short.stock.symbol)
+                            users_to_notify_dict[app_user].append(f'{short.stock.symbol} {short.value}%')
                         except Exception as e:
                             Error.objects.create(message=f'Exception occurred with add users_to_notify_dict 1')
 
@@ -403,7 +403,7 @@ class Command(BaseCommand):
                                 try:
                                     if app_user not in users_to_notify_dict:
                                         users_to_notify_dict[app_user] = []
-                                    users_to_notify_dict[app_user].append(short.stock.symbol)
+                                    users_to_notify_dict[app_user].append(f'{short.stock.symbol} 0.00%')
                                 except Exception as e:
                                     Error.objects.create(message=f'Exception occurred with add users_to_notify_dict 2')
 
