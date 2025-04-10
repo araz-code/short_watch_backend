@@ -122,11 +122,14 @@ class ShortSellerListSerializer(serializers.ModelSerializer):
         large_short_selling_qs = obj.large_short_sellings.all()
         return LargeShortSellingSerializer(large_short_selling_qs, many=True).data
 
-
     @staticmethod
     def get_previous(obj):
         current = set(obj.large_short_sellings.values_list('stock__symbol', flat=True))
-        all_symbols = set(obj.announcements.values_list('stock__symbol', flat=True))
+        all_symbols = set(
+            obj.announcements.exclude(
+                Q(headline__icontains="CANCELLATION") | Q(headline__icontains="CANCELLED")
+            ).values_list('stock__symbol', flat=True)
+        )
         previous = all_symbols - current
         return list(previous)
 
