@@ -244,7 +244,8 @@ class Command(BaseCommand):
                             announcement_number=item["AnnouncementNumber"],
                             issuer_name=item["IssuerName"],
                             defaults={
-                                "announced_company_name": item.get("AnnouncedCompanyName"),
+                                "announced_company_name": item.get("AnnouncedCompanyName")
+                                if item.get("AnnouncedCompanyName") else "No company name",
                                 "cvr_company_name": item.get("CVRCompanyName"),
                                 "headline": item.get("Headline"),
                                 "headline_danish": item.get("HeadlineDanish"),
