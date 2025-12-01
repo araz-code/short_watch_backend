@@ -147,6 +147,9 @@ const ShortWatchPage: React.FC = () => {
             <p className="text-xl lg:text-3xl text-center font-bold py-6 dark:text-white">
               Danish Short Watch
             </p>
+            <p className="text-red-600 font-semibold text-center text-sm lg:text-base px-2">
+              {t("FSA website updated warning")}
+            </p>
             <section className="w-full">
               <div className="relative mx-2 flex items-center">
                 <div className="absolute inset-y-0 left-0 flex items-center ps-3 pointer-events-none">

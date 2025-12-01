@@ -52,6 +52,9 @@ const HomePage: React.FC = () => {
               <p className="text-2xl text-center sm:text-left sm:text-4xl font-bold">
                 Danish Short Watch
               </p>
+              <p className="text-red-600 font-semibold text-center sm:text-left text-sm sm:text-base">
+                {t("FSA website updated warning")}
+              </p>
               <p className="sm:text-md text-wrap">
                 {t(
                   "An elegant and simplified solution for accessing information on short positions in Danish stocks."
