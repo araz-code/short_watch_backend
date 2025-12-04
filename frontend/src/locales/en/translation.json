@@ -155,6 +155,6 @@
     "today": "today",
     "Period start": "Period start",
     "The FSA's homepage for publishing short positions is down at the moment, making it impossible to retrieve the latest data.": "The FSA's homepage for publishing short positions is down at the moment, making it impossible to retrieve the latest data.",
-    "FSA website updated warning": "The Danish FSA has updated its website, and the page where they listed the accumulated short positions has been removed and does not appear to have been replaced. Without that data, the information here cannot be updated"
+    "FSA website updated warning": "(4/12-2025) The Danish FSA reports that their aggregated short-position statistics are expected to return, but they cannot yet say when. As soon as the statistics become available again, this website and app will be updated so the data can be retrieved automatically as before. Feel free to check back from time to time."
   }
 }
