@@ -26,12 +26,12 @@ const cards = [
     content:
       "Delve into the historical data of short positions for Danish stocks, presented in both tabular formats and visualized through comprehensive charts.",
   },
-  {
+  /* {
     icon: faPerson,
     title: "Short sellers",
     content:
       "See a list of short sellers who hold positions equal to or exceeding 0.50% for a given Danish stock.",
-  },
+  }, */
 ];
 
 const HomePage: React.FC = () => {
@@ -123,7 +123,7 @@ const HomePage: React.FC = () => {
                   </button>
                 </Link>
 
-                <Link to="/short-sellers">
+                {/* <Link to="/short-sellers">
                   <button
                     className="text-white bg-indigo-400 border border-white hover:bg-[#85C1E9] focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-2 py-2.5 flex items-center h-[45px]"
                     onClick={() => handleClick("short sellers web app clicked")}
@@ -138,7 +138,7 @@ const HomePage: React.FC = () => {
                       icon={faArrowRight}
                     />
                   </button>
-                </Link>
+                </Link> */}
               </div>
             </div>
             <AppImage />

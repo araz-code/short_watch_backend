@@ -64,15 +64,15 @@ const router = createBrowserRouter([
     path: "short-watch-details",
     element: <ShortPositionDetailsPage />,
   },
-  {
-    path: "short-sellers",
-    element: <LargestSellersPage />,
-  },
+  // {
+  //   path: "short-sellers",
+  //   element: <LargestSellersPage />,
+  // },
 
-  {
-    path: "short-seller-details",
-    element: <ShortSellerDetailsPage />,
-  },
+  // {
+  //   path: "short-seller-details",
+  //   element: <ShortSellerDetailsPage />,
+  // },
 
   {
     path: "privacy-policy",

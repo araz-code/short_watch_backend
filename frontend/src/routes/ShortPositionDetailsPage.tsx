@@ -11,13 +11,10 @@ import { useTranslation } from "react-i18next";
 import { handleClick, sendCustomPageView } from "../analytics";
 import ChartPricePoint from "../models/ChartPricePoint";
 import PricePointList from "../components/PricePointList";
-import LargeShortSellingList from "../components/LargeShortSellingList";
-import AnnouncementList from "../components/AnnouncementList";
 import FavoriteToggleButton from "../components/UI/FavoriteToggleButton";
 
 //import advertisement from "../static/stresstilbud.jpg";
 
-const detailOptions = ["Historic data", "Largest sellers", "Announcements"];
 const periodOptions = ["1W", "1M", "3M", "6M", "YTD", "Max."];
 
 const processChartValues = (
@@ -96,9 +93,6 @@ const ShortPositionDetailsPage: React.FC = () => {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const [selectedDetailOption, setSelectedDetailOption] = useState(
-    detailOptions[0]
-  );
   const [selectedPeriod, setSelectedPeriod] = useState<string>(() => {
     const savedSelectedPeriod = localStorage.getItem("selectedPeriod");
     return savedSelectedPeriod && periodOptions.includes(savedSelectedPeriod)
@@ -109,11 +103,6 @@ const ShortPositionDetailsPage: React.FC = () => {
     const savedMyList = localStorage.getItem("myList");
     return savedMyList ? JSON.parse(savedMyList) : [];
   });
-  const [isChartVisible, setIsChartVisible] = useState(
-    selectedDetailOption !== "Announcements"
-  );
-  const [chartDisplay, setChartDisplay] = useState(true);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   const code = searchParams.get("code");
   const isFavorite = code ? myList.includes(code) : false;
@@ -130,38 +119,10 @@ const ShortPositionDetailsPage: React.FC = () => {
       }),
   });
 
-  const handleResize = () => {
-    setIsMobile(window.innerWidth <= 768);
-  };
-
-  useEffect(() => {
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
   useEffect(() => {
     localStorage.setItem("selectedPeriod", selectedPeriod);
     localStorage.setItem("myList", JSON.stringify(myList));
   }, [selectedPeriod, myList]);
-
-  useEffect(() => {
-    if (selectedDetailOption !== "Announcements") {
-      setIsChartVisible(true);
-      setChartDisplay(true);
-    } else if (isMobile) {
-      setIsChartVisible(false);
-      setTimeout(() => setChartDisplay(false), 190);
-    }
-
-    if (selectedDetailOption === "Announcements") {
-      handleClick(`announcements clicked for: ${code}`);
-    }
-    if (selectedDetailOption === "Largest sellers") {
-      handleClick(`largest sellers clicked for: ${code}`);
-    }
-  }, [selectedDetailOption, isMobile, code]);
 
   useEffect(() => {
     handleClick(`details shown for: ${code}`);
@@ -217,54 +178,38 @@ const ShortPositionDetailsPage: React.FC = () => {
         <p className="text-lg text-center font-bold pb-5 dark:text-white">
           {data.historic.length > 0 && data.historic[0].name}
         </p>
-        {chartDisplay && (
-          <div
-            className={`mb-1 px-8 grid w-full place-content-end ${
-              isChartVisible ? "animate-fadeIn" : "animate-fadeOut"
-            }`}
-          >
-            <div className="overflow-x-auto w-full pb-3">
-              <ToggleSwitch
-                options={periodOptions}
-                selectedOption={selectedPeriod}
-                onSelectChange={setSelectedPeriod}
-              />
-            </div>
-          </div>
-        )}
-
-        <div className="">
-          {chartDisplay && (
-            <div
-              className={`mb-5 ${
-                isChartVisible ? "animate-fadeIn" : "animate-fadeOut"
-              }`}
-            >
-              <PricePointChart
-                data={processChartValues(data.chartValues, selectedPeriod)}
-                symbol={data.historic.length > 0 && data.historic[0].symbol}
-              />
-            </div>
-          )}
-          <div className="mb-5 grid w-full place-items-center">
+        <div className="mb-1 px-8 grid w-full place-content-end">
+          <div className="overflow-x-auto w-full pb-3">
             <ToggleSwitch
-              options={detailOptions}
-              selectedOption={selectedDetailOption}
-              onSelectChange={setSelectedDetailOption}
+              options={periodOptions}
+              selectedOption={selectedPeriod}
+              onSelectChange={setSelectedPeriod}
             />
           </div>
+        </div>
 
-          {selectedDetailOption === "Historic data" && (
-            <PricePointList pricePoints={data.historic} />
-          )}
+        <div className="">
+          <div className="mb-5">
+            <PricePointChart
+              data={processChartValues(data.chartValues, selectedPeriod)}
+              symbol={data.historic.length > 0 && data.historic[0].symbol}
+            />
+          </div>
+          <div className="mb-5 grid w-full place-items-center">
+            <p className="text-lg font-semibold dark:text-white">
+              {t("Historic data")}
+            </p>
+          </div>
 
-          {selectedDetailOption === "Largest sellers" && (
+          <PricePointList pricePoints={data.historic} />
+
+          {/* {selectedDetailOption === "Largest sellers" && (
             <LargeShortSellingList sellings={data.sellers} />
-          )}
+          )} */}
 
-          {selectedDetailOption === "Announcements" && (
+          {/* {selectedDetailOption === "Announcements" && (
             <AnnouncementList announcements={data.announcements} />
-          )}
+          )} */}
         </div>
       </>
     );
