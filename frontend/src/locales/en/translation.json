@@ -155,6 +155,6 @@
     "today": "today",
     "Period start": "Period start",
     "The FSA's homepage for publishing short positions is down at the moment, making it impossible to retrieve the latest data.": "The FSA's homepage for publishing short positions is down at the moment, making it impossible to retrieve the latest data.",
-    "FSA website updated warning": "(4/12-2025) The Danish FSA reports that their aggregated short-position statistics are expected to return, but they cannot yet say when. As soon as the statistics become available again, this website and app will be updated so the data can be retrieved automatically as before. Feel free to check back from time to time."
+    "FSA website updated warning": "(7/1-2026) The Danish FSA (Finanstilsynet) has reopened access to view aggregated short positions, and this page has been updated to retrieve this data again. However, there is no page showing the largest short sellers, so this must be handled differently. Therefore, this statistic is currently not being updated."
   }
 }

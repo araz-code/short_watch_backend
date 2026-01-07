@@ -112,12 +112,12 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         driver = self._get_webdriver()
 
-        # self.fetch_announcements()
+        self.fetch_announcements()
 
-        self.fetch_short_positions_selenium(driver)
+        self.fetch_short_positions_requests(driver)
 
         # if self.is_within_range_around_whole_hour():
-        # self.fetch_large_short_selling_requests(driver)
+        self.fetch_large_short_selling_requests(driver)
 
         driver.quit()
 
@@ -427,23 +427,23 @@ class Command(BaseCommand):
         while retry_count < self.MAX_RETRIES:
 
             try:
-                driver.get('https://www.finanstilsynet.dk/finansielle-temaer/kapitalmarked/selskabsmeddelelser/aggregerede-korte-nettopositioner')
+                driver.get(self.SHORTS_SITE_URL)
                 time.sleep(9)
 
-                # Extract data from the new table structure
-                isin_elements = driver.find_elements(By.CSS_SELECTOR, 'td[data-header="ISIN"] span')
-                name_elements = driver.find_elements(By.CSS_SELECTOR, 'td[data-header="Udsteder"] span')
-                percentage_elements = driver.find_elements(By.CSS_SELECTOR, 'td[data-header="Sum af korte nettopositioner (%)"] span')
-                date_elements = driver.find_elements(By.CSS_SELECTOR, 'td[data-header="Senest rapporterede korte nettoposition"] span')
+                dropdown = Select(driver.find_element(By.TAG_NAME, "select"))
+                dropdown.select_by_index(3)
+                time.sleep(13)
+
+                elements = driver.find_elements(By.CSS_SELECTOR, '.ui-grid-cell-contents.ng-binding.ng-scope')
 
                 short_data = []
 
-                for i in range(len(isin_elements)):
-                    corrected_datetime = datetime.strptime(date_elements[i].text, '%d-%m-%Y %H:%M:%S')
-                    code = isin_elements[i].text
-                    name = name_elements[i].text
+                for i in range(0, len(elements), 4):
+                    corrected_datetime = datetime.strptime(elements[i + 3].text, '%d-%m-%Y %H:%M:%S')
+                    code = elements[i].text
+                    name = elements[i + 1].text
                     try:
-                        value = float(percentage_elements[i].text.replace(',', '.'))
+                        value = float(elements[i + 2].text.replace(',', '.'))
                     except ValueError as e:
                         continue
 
@@ -543,8 +543,7 @@ class Command(BaseCommand):
                     token=app_user.fcm_token,
                 )
                 if not DEBUG or True:
-                    pass
-                    # messaging.send(message)
+                    messaging.send(message)
                 app_user.notifications_sent = app_user.notifications_sent + 1
                 app_user.save()
         except UnregisteredError:
