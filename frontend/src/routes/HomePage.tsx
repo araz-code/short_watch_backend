@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChartSimple,
   faClockRotateLeft,
-  faPerson,
+  //faPerson,
   faArrowRight,
 } from "@fortawesome/free-solid-svg-icons";
 import Card from "../components/UI/Card";
