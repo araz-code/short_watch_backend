@@ -155,6 +155,6 @@
     "today": "i dag",
     "Period start": "Periodestart",
     "The FSA's homepage for publishing short positions is down at the moment, making it impossible to retrieve the latest data.": "Finanstilsynets side for shortpositioner er nede, så de nyeste data kan ikke hentes i øjeblikket.",
-    "FSA website updated warning": "(7/1-2026) Finanstilsynet har igen åbnet for, at man kan se de aggregerede shortpositioner, og denne side er blevet opdateret til at hente disse data igen. Der findes dog ikke en side, der viser de største shortsælgere, så dette må håndteres på en anden måde. Derfor bliver denne statistik pt. ikke opdateret."
+    "FSA website updated warning": "(7/1-2026) Finanstilsynet har igen åbnet for, at man kan se de aggregerede shortpositioner."
   }
 }
