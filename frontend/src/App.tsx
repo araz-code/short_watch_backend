@@ -18,8 +18,8 @@ import ConsentDialog from "./components/ConsentDialog.tsx";
 import { handleClick, initializeAnalytics } from "./analytics.tsx";
 import { useCookies } from "react-cookie";
 import CookiePolicyPage from "./routes/CookiePolicyPage.tsx";
-import LargestSellersPage from "./routes/ShortSellersPage.tsx";
-import ShortSellerDetailsPage from "./routes/ShortSellerDetailsPage.tsx";
+// import LargestSellersPage from "./routes/ShortSellersPage.tsx";
+// import ShortSellerDetailsPage from "./routes/ShortSellerDetailsPage.tsx";
 
 type ConsentButtonProps = {
   onClick: () => void;
