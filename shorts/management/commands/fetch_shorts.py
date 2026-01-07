@@ -383,7 +383,7 @@ class Command(BaseCommand):
                     if short.value != 0:
                         count_new_closed_shorts += 1
 
-            if count_new_closed_shorts > 2:
+            if count_new_closed_shorts > 30:
                 Error.objects.create(message=f'An unexpected number of shorts got closed: '
                                              f'{count_new_closed_shorts}. Most be an error.')
             else:
