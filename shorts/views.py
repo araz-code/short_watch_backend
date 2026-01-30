@@ -29,6 +29,8 @@ class ShortPositionView(ReadOnlyModelViewSet):
         )
 
         sorted_data = sorted(most_recent_short_positions, key=lambda x: x.stock.symbol)
+        seen = set()
+        sorted_data = [p for p in sorted_data if p.stock_id not in seen and not seen.add(p.stock_id)]
 
         serializer = self.serializer_class(sorted_data, many=True)
         return Response(serializer.data)
