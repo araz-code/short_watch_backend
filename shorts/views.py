@@ -90,6 +90,8 @@ class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
 
                 for i in range(missing_count):
                     missing_date = earliest_date - timedelta(days=i + 1)
+                    if missing_date < FIRST_ENTRY_DATE:
+                        break
                     missing_datetime = datetime.combine(missing_date, datetime.min.time(), tzinfo=timezone.utc)
                     chart_values.append(
                         ShortPositionChart(stock=stock, value=0, date=missing_date, timestamp=missing_datetime))
