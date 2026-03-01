@@ -68,7 +68,7 @@ def get_requested_urls_chart(_: Request, year: str) -> JsonResponse:
     queryset = RequestLog.objects.all()
 
     if year.isnumeric():
-        queryset = queryset.filter(created_at__year=year)
+        queryset = queryset.filter(timestamp__year=year)
 
     queryset = queryset.filter(
         Q(requested_url__iendswith="cookie-policy") |
@@ -104,7 +104,7 @@ def get_historic_chart(_: Request, year: str, prefix: str) -> JsonResponse:
     queryset = RequestLog.objects.all()
 
     if year.isnumeric():
-        queryset = queryset.filter(created_at__year=year)
+        queryset = queryset.filter(timestamp__year=year)
 
     queryset = queryset.filter(
         Q(requested_url__icontains=f"{prefix}/") &
@@ -176,10 +176,12 @@ def get_unique_ips_today(_: Request) -> JsonResponse:
 
 @staff_member_required
 def get_avg_request_count(_: Request, year: str) -> JsonResponse:
-    queryset = RequestLog.objects.values('client_ip').annotate(entry_count=Count('id'))
+    queryset = RequestLog.objects.all()
 
     if year.isnumeric():
         queryset = queryset.filter(timestamp__year=year)
+
+    queryset = queryset.values('client_ip').annotate(entry_count=Count('id'))
 
     average_entry_count = queryset.aggregate(avg_entry_count=Avg('entry_count'))
 
@@ -296,20 +298,19 @@ def get_request_per_hour_chart(request: Request) -> JsonResponse:
         count = entry['count']
         data_today[hour] = count
 
-    yesterday = today - timedelta(days=7)
+    week_ago = today - timedelta(days=7)
 
-    queryset = RequestLog.objects.filter(timestamp__date=yesterday.date()) \
+    queryset = RequestLog.objects.filter(timestamp__date=week_ago.date()) \
         .values('timestamp__hour') \
         .annotate(count=Count('id')) \
         .order_by('timestamp__hour')
 
-    labels = [str(hour) + ":00" for hour in range(24)]
-    data_yesterday = [0] * 24
+    data_week_ago = [0] * 24
 
     for entry in queryset:
         hour = entry['timestamp__hour']
         count = entry['count']
-        data_yesterday[hour] = count
+        data_week_ago[hour] = count
 
     return JsonResponse({
         'title': 'Requests per Hour',
@@ -318,7 +319,7 @@ def get_request_per_hour_chart(request: Request) -> JsonResponse:
             'datasets': [
                 {
                     'label': 'Week ago',
-                    'data': data_yesterday,
+                    'data': data_week_ago,
                     'backgroundColor': COLOR_SECONDARY,
                     'borderColor': COLOR_SECONDARY,
                     'borderWidth': 1
@@ -352,20 +353,19 @@ def get_pick_request_per_hour_chart(request: Request) -> JsonResponse:
         count = entry['count']
         data_today[hour] = count
 
-    yesterday = today - timedelta(days=7)
+    week_ago = today - timedelta(days=7)
 
-    queryset = RequestLog.objects.filter(timestamp__date=yesterday.date(),  requested_url__iendswith='pick') \
+    queryset = RequestLog.objects.filter(timestamp__date=week_ago.date(),  requested_url__iendswith='pick') \
         .values('timestamp__hour') \
         .annotate(count=Count('id')) \
         .order_by('timestamp__hour')
 
-    labels = [str(hour) + ":00" for hour in range(24)]
-    data_yesterday = [0] * 24
+    data_week_ago = [0] * 24
 
     for entry in queryset:
         hour = entry['timestamp__hour']
         count = entry['count']
-        data_yesterday[hour] = count
+        data_week_ago[hour] = count
 
     return JsonResponse({
         'title': 'Pick requests per Hour',
@@ -374,7 +374,7 @@ def get_pick_request_per_hour_chart(request: Request) -> JsonResponse:
             'datasets': [
                 {
                     'label': 'Week ago',
-                    'data': data_yesterday,
+                    'data': data_week_ago,
                     'backgroundColor': COLOR_SECONDARY,
                     'borderColor': COLOR_SECONDARY,
                     'borderWidth': 1
@@ -408,20 +408,19 @@ def get_watch_request_per_hour_chart(request: Request) -> JsonResponse:
         count = entry['count']
         data_today[hour] = count
 
-    yesterday = today - timedelta(days=7)
+    week_ago = today - timedelta(days=7)
 
-    queryset = RequestLog.objects.filter(timestamp__date=yesterday.date(),  requested_url__iendswith='watch') \
+    queryset = RequestLog.objects.filter(timestamp__date=week_ago.date(),  requested_url__iendswith='watch') \
         .values('timestamp__hour') \
         .annotate(count=Count('id')) \
         .order_by('timestamp__hour')
 
-    labels = [str(hour) + ":00" for hour in range(24)]
-    data_yesterday = [0] * 24
+    data_week_ago = [0] * 24
 
     for entry in queryset:
         hour = entry['timestamp__hour']
         count = entry['count']
-        data_yesterday[hour] = count
+        data_week_ago[hour] = count
 
     return JsonResponse({
         'title': 'Watch requests per Hour',
@@ -430,7 +429,7 @@ def get_watch_request_per_hour_chart(request: Request) -> JsonResponse:
             'datasets': [
                 {
                     'label': 'Week ago',
-                    'data': data_yesterday,
+                    'data': data_week_ago,
                     'backgroundColor': COLOR_SECONDARY,
                     'borderColor': COLOR_SECONDARY,
                     'borderWidth': 1
@@ -528,18 +527,18 @@ def get_referer(_: Request) -> JsonResponse:
             client_ips_iwatch.add(client_ip)
         elif "/iphone/" in entry['requested_url']:
             client_ips_iphone.add(client_ip)
-            if "/short-sellers" in entry['requested_url']:
-                client_ips_sellers_iphone.add(client_ip)
             if "/short-sellers/" in entry['requested_url']:
                 client_ips_sellers_iphone_detail.add(client_ip)
+            elif "/short-sellers" in entry['requested_url']:
+                client_ips_sellers_iphone.add(client_ip)
         elif "/ipad/" in entry['requested_url']:
             client_ips_ipad.add(client_ip)
         elif "/web/" in entry['requested_url']:
             client_ips_web.add(client_ip)
-            if "/short-sellers" in entry['requested_url']:
-                client_ips_sellers_web.add(client_ip)
             if "/short-sellers/" in entry['requested_url']:
                 client_ips_sellers_web_detail.add(client_ip)
+            elif "/short-sellers" in entry['requested_url']:
+                client_ips_sellers_web.add(client_ip)
 
         check_ips.add(client_ip)
 
@@ -549,7 +548,7 @@ def get_referer(_: Request) -> JsonResponse:
     referer_list = [{'referer': r, 'count': referer[r]} for r in referer.keys()]
     sorted_referer_list = sorted(referer_list, key=lambda x: x['count'], reverse=True)
 
-    valid_count = len(client_ips_iphone) + len(client_ips_ipad) + len(client_ips_iwatch) + len(client_ips_web)
+    valid_count = len(client_ips_iphone | client_ips_ipad | client_ips_iwatch | client_ips_web)
 
     sorted_referer_list.append({'referer': 'iPhone', 'count': len(client_ips_iphone)})
     sorted_referer_list.append({'referer': 'iPad', 'count': len(client_ips_ipad)})

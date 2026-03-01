@@ -236,5 +236,8 @@ CORS_ALLOW_HEADERS = '*'
 # CSRF_COOKIE_SECURE = True
 # CSRF_COOKIE_HTTPONLY = False
 
+SESSION_COOKIE_AGE = 15_552_000  # 6 months in seconds
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
 # CSRF_TRUSTED_ORIGINS = ["https://www.zirium.dk/", "https://www.zirium.dk", "http://localhost"]
 
