@@ -120,6 +120,7 @@ class ShortSellerView(ReadOnlyModelViewSet):
     ).filter(
         announcements__isnull=False,
         announcements__is_cancellation=False,
+        announcements__published_date__gte=date(2023, 11, 6),
     ).distinct().order_by('name')
     serializer_class = ShortSellerListSerializer
     detail_serializer_class = ShortSellerDetailSerializer
