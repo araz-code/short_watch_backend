@@ -82,7 +82,7 @@ const PricePointChartInfo: React.FC<{
       <button
         onClick={toggleOverlay}
         ref={buttonRef}
-        className={`absolute top-[-23px] left-[55px] w-[23px] h-[23px] rounded-full border-none flex justify-center items-center cursor-pointer z-10 text-white italic ${
+        className={`w-[23px] h-[23px] rounded-full border-none flex justify-center items-center cursor-pointer z-10 text-white italic ${
           showOverlay
             ? "bg-blue-600 hover:bg-blue-500"
             : "bg-blue-600 hover:bg-blue-500"
@@ -96,8 +96,8 @@ const PricePointChartInfo: React.FC<{
       {showOverlay && (
         <div
           ref={overlayRef}
-          className="absolute top-2 left-[60px] w-[270px] p-2 bg-white/95 backdrop-blur-sm border border-gray-200 shadow-lg rounded-xl flex flex-col dark:bg-[#1e1e1e]/95 dark:text-white dark:border-gray-700"
-          style={{ zIndex: 20 }} // Ensure it's above other elements
+          className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] p-2 bg-white/95 backdrop-blur-sm border border-gray-200 shadow-xl rounded-xl flex flex-col dark:bg-[#1e1e1e]/95 dark:text-white dark:border-gray-700"
+          style={{ zIndex: 50 }}
         >
           <div className="p-1 mx-auto">
             <h2 className="text-lg font-semibold mb-2">

@@ -191,6 +191,7 @@ const ShortSellersPage: React.FC = () => {
                   {t("You can get more details by clicking on a row")}
                 </p>
                 {content}
+                <div className="h-6"></div>
               </div>
             </section>
           </div>

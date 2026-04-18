@@ -113,39 +113,7 @@ const PricePointChart: React.FC<{
   }, [showClosingPrices]);
 
   return (
-    <div style={{ position: "relative" }}>
-      <button
-        onClick={toggleClosingPrices}
-        className={`absolute top-[-23px] left-[20px] w-[23px] h-[23px] rounded-full border-none flex justify-center items-center cursor-pointer z-10 ${
-          showClosingPrices
-            ? "bg-purple-600 hover:bg-purple-500"
-            : "bg-gray-300 hover:bg-gray-400"
-        }`}
-        title={
-          showClosingPrices
-            ? t("Hide closing prices")
-            : t("Show closing prices")
-        }
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="15"
-          height="15"
-          fill="none"
-          stroke={showClosingPrices ? "#fff" : "#333"}
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          viewBox="0 0 24 24"
-        >
-          <line x1="4" y1="18" x2="4" y2="12" />
-          <line x1="8" y1="18" x2="8" y2="9" />
-          <line x1="12" y1="18" x2="12" y2="6" />
-          <line x1="16" y1="18" x2="16" y2="10" />
-          <line x1="20" y1="18" x2="20" y2="8" />
-        </svg>
-      </button>
-      <PricePointChartInfo pricePoints={pricePoints} symbol={symbol} />
+    <div>
       <ResponsiveContainer width="100%" height={290}>
         <ComposedChart
           height={270}
@@ -239,6 +207,40 @@ const PricePointChart: React.FC<{
           )}
         </ComposedChart>
       </ResponsiveContainer>
+      <div className="flex items-center gap-2 justify-end pr-5 mt-1">
+        <button
+          onClick={toggleClosingPrices}
+          className={`w-[23px] h-[23px] rounded-full border-none flex justify-center items-center cursor-pointer ${
+            showClosingPrices
+              ? "bg-purple-600 hover:bg-purple-500"
+              : "bg-gray-300 hover:bg-gray-400"
+          }`}
+          title={
+            showClosingPrices
+              ? t("Hide closing prices")
+              : t("Show closing prices")
+          }
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="15"
+            height="15"
+            fill="none"
+            stroke={showClosingPrices ? "#fff" : "#333"}
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            viewBox="0 0 24 24"
+          >
+            <line x1="4" y1="18" x2="4" y2="12" />
+            <line x1="8" y1="18" x2="8" y2="9" />
+            <line x1="12" y1="18" x2="12" y2="6" />
+            <line x1="16" y1="18" x2="16" y2="10" />
+            <line x1="20" y1="18" x2="20" y2="8" />
+          </svg>
+        </button>
+        <PricePointChartInfo pricePoints={pricePoints} symbol={symbol} />
+      </div>
     </div>
   );
 };

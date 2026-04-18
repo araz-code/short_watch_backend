@@ -137,6 +137,7 @@ const ShortSellerDetailsPage: React.FC = () => {
                 </div>
               ))}
             </ul>
+            <div className="h-6"></div>
           </div>
         </div>
       </>
