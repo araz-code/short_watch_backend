@@ -250,7 +250,7 @@ const ShortPositionDetailsPage: React.FC = () => {
   }
 
   return (
-    <div className="h-screen dark:bg-[#121212] overflow-hidden">
+    <div className="h-screen dark:bg-[#121212] overflow-hidden landscape:overflow-auto landscape:h-auto landscape:min-h-screen">
       <PageTemplate>
         <div className="w-screen lg:flex lg:justify-center lg:gap-4  m-auto">
           <div className="w-1/3 justify-end items-center hidden"></div>
