@@ -36,7 +36,7 @@ class RunStatus(models.Model):
 
 class ShortSeller(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=150)
     business_id = models.CharField(max_length=20, null=True, blank=True)
 
     def __str__(self):
@@ -76,28 +76,19 @@ class Announcement(models.Model):
     stock = models.ForeignKey(Stock, on_delete=models.PROTECT)
     short_seller = models.ForeignKey(ShortSeller, on_delete=models.PROTECT, null=True, blank=True,
                                      related_name='announcements')
-    announced_company_name = models.CharField(max_length=150)
-    announcement_number = models.CharField(max_length=20)
-    cvr_company_name = models.CharField(max_length=150, null=True, blank=True)
-    headline = models.CharField(max_length=600)
-    headline_danish = models.CharField(max_length=600)
     issuer_name = models.CharField(max_length=150, null=True, blank=True)
-    shortselling_type = models.CharField(max_length=30, null=True, blank=True)
-    status = models.CharField(max_length=30)
-    type = models.CharField(max_length=30)
-    notification_datetime_to_company = models.DateTimeField(null=True, blank=True)
-    publication_date = models.DateTimeField(null=True, blank=True)
+    headline = models.CharField(max_length=600)
+    headline_danish = models.CharField(max_length=600, null=True, blank=True, default='')
+    type = models.CharField(max_length=30, default='Shortselling')
     published_date = models.DateTimeField()
     registration_date = models.DateTimeField()
-    registration_datetime = models.DateTimeField()
-    is_historic = models.BooleanField(null=True, blank=True)
-    shortselling_country = models.CharField(max_length=70, null=True, blank=True)
-    shortselling_country_danish = models.CharField(max_length=70, null=True, blank=True)
-    dfsa_id = models.CharField(max_length=100)
+    is_historic = models.BooleanField(default=False)
+    is_cancellation = models.BooleanField(default=False)
+    dfsa_id = models.CharField(max_length=100, unique=True)
     value = models.FloatField(null=True, blank=True)
 
     def __str__(self):
-        return self.announcement_number
+        return self.dfsa_id
 
 
 class CompanyMap(models.Model):

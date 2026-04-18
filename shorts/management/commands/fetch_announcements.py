@@ -1,146 +1,150 @@
-import pytz
-from django.core.management.base import BaseCommand, CommandError
 import requests
-import re
-
-
-from django.utils.dateparse import parse_datetime
-
+from django.core.management.base import BaseCommand, CommandError
 
 from errors.models import Error
-from short_watch_backend.settings import ANNOUNCEMENT_API_KEY, FCM_SERVICE_ACCOUNT_FILE
-from shorts.models import Announcement, Stock, CompanyMap, ShortSeller
+from shorts.models import Announcement
+from shorts.utils import parse_headline, parse_publication_date, get_stock_for_issuer, get_or_create_seller
 
-import firebase_admin
-from firebase_admin import credentials
+SEARCH_URL = 'https://appft.gold.extension.gopublic.dk/api/9217fa13-5d9a-46c6-9921-69ee7e6cfaf6/search'
 
-copenhagen_timezone = pytz.timezone('Europe/Copenhagen')
-
-cred = credentials.Certificate(FCM_SERVICE_ACCOUNT_FILE)
-firebase_admin.initialize_app(cred)
+HEADERS = {
+    'accept': '*/*',
+    'content-type': 'application/json',
+    'origin': 'https://appft.gold.extension.gopublic.dk',
+    'referer': 'https://appft.gold.extension.gopublic.dk/',
+    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 '
+                  '(KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36',
+}
 
 
 class Command(BaseCommand):
-    help = "Fetches announcements data"
+    help = "Fetches short selling announcements from Finanstilsynet"
 
-    ANNOUNCEMENTS_SITE_URL = 'https://ft-api.prod.oam.finanstilsynet.dk/external/v0.1/trigger/dfsa-search-announcement'
-
-    ANNOUNCEMENTS_HEADERS = {
-        'Content-Type': 'application/json',
-        'Authorization': f'Bearer {ANNOUNCEMENT_API_KEY}'
-    }
-
-    PATTERN = r"(\d+\.\d+)%"
+    def add_arguments(self, parser):
+        parser.add_argument('--backfill', action='store_true',
+                            help='Wipe existing announcements and backfill all historical data')
 
     def handle(self, *args, **options):
-        self.fetch_announcements()
+        if options['backfill']:
+            self.backfill()
+        else:
+            self.fetch_incremental()
 
-    def fetch_announcements(self):
-
-        for skip in range(76, 84):
+    def fetch_incremental(self):
+        """Fetch recent announcements (page 1 of historical endpoint)."""
+        try:
             body = {
-                'SortField': 'RegistrationDate',
-                'Ascending': False,
-                'Skip': skip*100,
-                'Take': 100,
-                'Status': [
-                    'Not Published'
+                'query': '',
+                'filters': [
+                    {'type': 'dropdown', 'key': 'CategoryFilter', 'options': ['ShortSelling']},
+                    {'type': 'dropdown', 'key': 'HistoricalFilter', 'options': ['true']},
                 ],
-                'IncludeHistoric': True
+                'page': 1,
+                'pageSize': 100,
             }
-            try:
-                response = requests.post(self.ANNOUNCEMENTS_SITE_URL, json=body,
-                                         headers=self.ANNOUNCEMENTS_HEADERS)
+            response = requests.post(SEARCH_URL, json=body, headers=HEADERS)
 
-                if response.status_code == 200:
-                    announcements = response.json()['data']
-                    for item in announcements:
-                        stock = self.get_stock_for_announcement(item.get('IssuerName'),
-                                                                item.get('AnnouncedCompanyName'))
+            if response.status_code != 200:
+                Error.objects.create(message=f'Failed to fetch announcements. Status: {response.status_code}')
+                raise CommandError(f'API returned status {response.status_code}')
 
-                        if not stock:
-                            continue
+            rows = response.json()['data']['rows']
+            new_count = 0
+            for row in rows:
+                created = self.process_row(row)
+                if not created:
+                    break
+                new_count += 1
 
-                        value = None
-                        seller = None
-                        if item.get('Type') == 'Shortselling':
-                            match = re.search(self.PATTERN, item.get("Headline"))
+            self.stdout.write(f'Processed {new_count} new announcements')
 
-                            if match:
-                                value = match.group(1)
+        except CommandError:
+            raise
+        except Exception as e:
+            Error.objects.create(message=str(e)[:500])
+            raise CommandError(f'Error occurred: {str(e)}')
 
-                            if item.get("AnnouncedCompanyName"):
-                                seller = self.get_seller_for_announcement(item.get("AnnouncedCompanyName"))
-
-                        try:
-                            _ = Announcement.objects.update_or_create(
-                                stock=stock,
-                                announcement_number=item["AnnouncementNumber"],
-                                issuer_name=item["IssuerName"],
-                                defaults={
-                                    "announced_company_name": item.get("AnnouncedCompanyName"),
-                                    "cvr_company_name": item.get("CVRCompanyName"),
-                                    "headline": item.get("Headline"),
-                                    "headline_danish": item.get("HeadlineDanish"),
-                                    "shortselling_type": item.get("ShortsellingType"),
-                                    "status": item.get("Status"),
-                                    "type": item.get("Type"),
-                                    "notification_datetime_to_company": parse_datetime(
-                                        item.get("NotificationDateTimeToCompany"))
-                                    if item.get("NotificationDateTimeToCompany") else None,
-                                    "publication_date": parse_datetime(item.get("PublicationDate"))
-                                    if item.get("PublicationDate") else None,
-                                    "published_date": parse_datetime(item.get("PublishedDate")),
-                                    "registration_date": parse_datetime(item.get("RegistrationDate")),
-                                    "registration_datetime": parse_datetime(item.get("RegistrationDateTime")),
-                                    "is_historic": item.get("IsHistoric", False),
-                                    "shortselling_country": item.get("ShortsellingCountry"),
-                                    "shortselling_country_danish": item.get("ShortsellingCountryDanish"),
-                                    "dfsa_id": item.get("Id", ""),
-                                    "value": value,
-                                    "short_seller": seller
-                                }
-                            )
-                        except Exception as e:
-                            continue
-                            # Error.objects.create(message=f"Could not create announcement: {str(item)[:450]}]")
-                else:
-                    Error.objects.create(message=f"Failed to fetch announcements. Status code: {response.status_code}")
-                    raise CommandError(f'Error occurred')
-
-            except Exception as e:
-                Error.objects.create(message=str(e)[:500])
-                raise CommandError(f'Error occurred: {str(e)}')
-
-    @staticmethod
-    def get_stock_for_announcement(issuer_name, announced_company_name):
-        stock_name = issuer_name if issuer_name else announced_company_name
+    def backfill(self):
+        """Wipe all announcements and re-import from historical endpoint."""
+        Announcement.objects.all().delete()
+        self.stdout.write('Wiped existing announcements')
 
         try:
-            return Stock.objects.get(name=stock_name)
-        except Stock.DoesNotExist:
-            try:
-                if issuer_name:
-                    return CompanyMap.objects.get(issuer_name=issuer_name).stock
-                elif announced_company_name:
-                    return CompanyMap.objects.get(announced_company_name=announced_company_name).stock
-                else:
-                    return None
-            except CompanyMap.DoesNotExist:
-                company = CompanyMap.objects.create(announced_company_name=announced_company_name,
-                                          issuer_name=issuer_name)
+            page = 1
+            total_pages = 1
+            total_created = 0
 
-                Error.objects.create(message=f'A new company was created and needs to be handled: {stock_name}')
+            while page <= total_pages:
+                body = {
+                    'query': '',
+                    'filters': [
+                        {'type': 'dropdown', 'key': 'CategoryFilter', 'options': ['ShortSelling']},
+                        {'type': 'dropdown', 'key': 'HistoricalFilter', 'options': ['true']},
+                    ],
+                    'page': page,
+                    'pageSize': 100,
+                }
+                response = requests.post(SEARCH_URL, json=body, headers=HEADERS)
 
-                return company
+                if response.status_code != 200:
+                    Error.objects.create(message=f'Backfill failed at page {page}. Status: {response.status_code}')
+                    raise CommandError(f'API returned status {response.status_code} at page {page}')
+
+                data = response.json()
+                total_pages = data['paging']['totalPages']
+                rows = data['data']['rows']
+
+                for row in rows:
+                    self.process_row(row)
+                    total_created += 1
+
+                self.stdout.write(f'Page {page}/{total_pages} done ({total_created} records)')
+                page += 1
+
+            self.stdout.write(self.style.SUCCESS(f'Backfill complete: {total_created} announcements imported'))
+
+        except CommandError:
+            raise
+        except Exception as e:
+            Error.objects.create(message=str(e)[:500])
+            raise CommandError(f'Error occurred: {str(e)}')
 
     @staticmethod
-    def get_seller_for_announcement(announced_company_name):
-        try:
-            return ShortSeller.objects.get(name=announced_company_name)
-        except ShortSeller.DoesNotExist:
-            short_seller = ShortSeller.objects.create(name=announced_company_name)
+    def process_row(row):
+        """Process a single API row. Returns True if created/updated, False if already exists."""
+        dfsa_id = row['id']
 
-            Error.objects.create(message=f'A new short seller was created: {announced_company_name}')
+        if Announcement.objects.filter(dfsa_id=dfsa_id).exists():
+            return False
 
-            return short_seller
+        headline = row['HeadlineColumn']
+        issuer_name = row['IssuerColumn']
+
+        parsed = parse_headline(headline)
+        if not parsed:
+            Error.objects.create(message=f'Could not parse headline: {headline[:450]}')
+            return True
+
+        stock = get_stock_for_issuer(issuer_name)
+        if not stock:
+            return True
+
+        seller = get_or_create_seller(parsed['seller_name'])
+        published_date = parse_publication_date(row['PublicationDateColumn'])
+        registration_date = parse_publication_date(row['RegistrationDateColumn'])
+
+        Announcement.objects.create(
+            dfsa_id=dfsa_id,
+            stock=stock,
+            short_seller=seller,
+            issuer_name=issuer_name,
+            headline=headline,
+            headline_danish='',
+            type='Shortselling',
+            value=parsed['value'],
+            published_date=published_date,
+            registration_date=registration_date,
+            is_historic=parsed['is_historic'],
+            is_cancellation=parsed['is_cancellation'],
+        )
+        return True

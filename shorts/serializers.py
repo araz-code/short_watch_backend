@@ -65,9 +65,9 @@ class ShortPositionChartSerializer(serializers.ModelSerializer):
 
 class AnnouncementSerializer(serializers.ModelSerializer):
     publishedDate = serializers.DateTimeField(source='published_date', format='%Y-%m-%dT%H:%M:%S%z')
-    headlineDanish = serializers.DateTimeField(source='headline_danish')
+    headlineDanish = serializers.CharField(source='headline_danish')
     isHistoric = serializers.BooleanField(source='is_historic')
-    dfsaId = serializers.DateTimeField(source='dfsa_id')
+    dfsaId = serializers.CharField(source='dfsa_id')
     stockSymbol = serializers.CharField(source='stock.symbol')
     stockCode = serializers.CharField(source='stock.code')
 

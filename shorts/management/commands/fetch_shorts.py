@@ -1,26 +1,23 @@
 import re
+import time
 from datetime import datetime, timedelta
 
 import pytz
-from django.core.management.base import BaseCommand, CommandError
-import time
 import requests
-
+from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
 from django.db.models import Max
 from django.utils import timezone
-from django.utils.dateparse import parse_datetime
 from firebase_admin.exceptions import InvalidArgumentError
 from firebase_admin.messaging import UnregisteredError
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.select import Select
 
 from errors.models import Error
 from request_logging.service import delete_old_logs, process_visits
 from short_watch_backend.settings import ANNOUNCEMENT_API_KEY, FCM_SERVICE_ACCOUNT_FILE, DEBUG
-from shorts.models import ShortPosition, RunStatus, LargeShortSelling, ShortPositionChart, Stock, Announcement, \
-    CompanyMap, ShortSeller
+from shorts.models import ShortPosition, RunStatus, LargeShortSelling, ShortPositionChart, Stock
+from shorts.utils import parse_headline, parse_publication_date, get_stock_for_issuer, get_or_create_seller
 
 import firebase_admin
 from firebase_admin import credentials, messaging
@@ -30,54 +27,20 @@ copenhagen_timezone = pytz.timezone('Europe/Copenhagen')
 cred = credentials.Certificate(FCM_SERVICE_ACCOUNT_FILE)
 firebase_admin.initialize_app(cred)
 
+SEARCH_URL = 'https://appft.gold.extension.gopublic.dk/api/9217fa13-5d9a-46c6-9921-69ee7e6cfaf6/search'
+
+SEARCH_HEADERS = {
+    'accept': '*/*',
+    'content-type': 'application/json',
+    'origin': 'https://appft.gold.extension.gopublic.dk',
+    'referer': 'https://appft.gold.extension.gopublic.dk/',
+    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 '
+                  '(KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36',
+}
+
 
 class Command(BaseCommand):
     help = "Fetches newest short positions data"
-
-    SHORTS_SITE_URL = 'https://oam.finanstilsynet.dk/#!/stats-and-extracts-short-net-positions'
-    HOLDERS_SITE_URL = 'https://oam.finanstilsynet.dk/#!/stats-and-extracts-individual-short-net-positions'
-
-    ANNOUNCEMENTS_SITE_URL = 'https://ft-api.prod.oam.finanstilsynet.dk/external/v0.1/trigger/dfsa-search-announcement'
-
-    ANNOUNCEMENTS_HEADERS = {
-        'Content-Type': 'application/json',
-        'Authorization': f'Bearer {ANNOUNCEMENT_API_KEY}'
-    }
-
-    ANNOUNCEMENTS_BODY = {
-        'SortField': 'RegistrationDate',
-        'Ascending': False,
-        'Skip': 0,
-        'Take': 100,
-        'Status': [
-            'Not Published'
-        ],
-        'IncludeHistoric': True
-    }
-
-    SHORT_SELLER_URL = 'https://ft-api.prod.oam.finanstilsynet.dk/api/v0.1/widget/' \
-                       'd158b82c-e9b7-4384-b8d2-ad570127ba11/data'
-
-    SHORT_SELLER_HEADERS = {
-        f'authorization': ANNOUNCEMENT_API_KEY,
-        'content-type': 'application/json',
-        'workersiteid': 'cc2aa132-ec77-4a8c-95af-abb101459cbc',
-    }
-
-    SHORT_SELLER_BODY = {
-        'Pagination': {
-            'PageIndex': 1,
-            'PageSize': 75
-        },
-        'clauses': None,
-        'container': {
-            'ContainerId': 'a4939c8d-510e-44e2-8b75-ad5701285484',
-            'ContainerType': 'WidgetContainer'
-        },
-        'sortedFields': []
-    }
-
-    import requests
 
     SHORT_POSITIONS_URL = "https://ft-api.prod.oam.finanstilsynet.dk/api/v0.1/widget/" \
                           "ad758542-8116-4055-95b3-ad57011ba36a/data"
@@ -110,170 +73,73 @@ class Command(BaseCommand):
         return webdriver.Chrome(options=chrome_options)
 
     def handle(self, *args, **options):
-        driver = self._get_webdriver()
+        try:
+            driver = self._get_webdriver()
+            self.fetch_short_positions_selenium(driver)
+            driver.quit()
+        except Exception as e:
+            Error.objects.create(message=f'Selenium fetch failed: {str(e)}'[:500])
 
-        # self.fetch_announcements()
-
-        self.fetch_short_positions_selenium(driver)
-
-        # if self.is_within_range_around_whole_hour():
-        # self.fetch_large_short_selling_requests(driver)
-
-        driver.quit()
+        self.fetch_large_short_selling()
 
         delete_old_logs()
         process_visits()
 
-    @staticmethod
-    def is_within_range_around_whole_hour(minutes_around=4):
-        current_time = datetime.now().time()
-        current_minutes = current_time.minute
-
-        # Check if the current time is within the specified range around whole hours
-        return current_minutes <= minutes_around or current_minutes >= 60 - minutes_around
-
-    def fetch_large_short_selling_requests(self, driver):
+    def fetch_large_short_selling(self):
         try:
-            response = requests.post(self.SHORT_SELLER_URL, headers=self.SHORT_SELLER_HEADERS,
-                                     json=self.SHORT_SELLER_BODY)
+            body = {
+                'query': '',
+                'filters': [
+                    {'type': 'dropdown', 'key': 'CategoryFilter', 'options': ['ShortSelling']},
+                ],
+                'page': 1,
+                'pageSize': 100,
+            }
+            response = requests.post(SEARCH_URL, json=body, headers=SEARCH_HEADERS)
 
-            if response.status_code == 200:
-                sellers = response.json()['data']
+            if response.status_code != 200:
+                Error.objects.create(message=f'Failed to fetch large sellers. Status: {response.status_code}')
+                raise CommandError(f'API returned status {response.status_code}')
 
-                LargeShortSelling.objects.all().update(delete=True)
-
-                for seller in sellers:
-                    # Correct the date by adding one day
-                    corrected_date = datetime.strptime(seller['PositionDate'], '%Y-%m-%dT%H:%M:%SZ') + timedelta(days=1)
-                    stock_code = seller['IssuerCode']
-                    stock_name = seller['IssuerName']
-                    stock = self.get_or_create_stock(stock_code, stock_name)
-
-                    prev_value = self.get_prev_value_for_large_selling(stock, seller['Positionsholder'], corrected_date)
-
-                    LargeShortSelling.objects.update_or_create(
-                        stock=stock,
-                        name=seller['Positionsholder'],
-                        defaults={'business_id': seller['PositionsholderCVR'],
-                                  'value': float(seller['TotalPercentageShareCapital']),
-                                  'short_seller': self.get_seller_for_announcement(seller['Positionsholder']),
-                                  'date': corrected_date.strftime('%Y-%m-%d'),
-                                  'prev_value': prev_value,
-                                  'delete': False,
-                                  }
-                    )
-
-                LargeShortSelling.objects.filter(delete=True).delete()
-
-            else:
-                Error.objects.create(message="fetch_short_sellers_selenium was run instead")
-                self.fetch_large_short_selling_selenium(driver)
-
-        except Exception as e:
-            Error.objects.create(message=str(e)[:500])
-            raise CommandError(f'Error occurred: {str(e)}')
-
-    def fetch_large_short_selling_selenium(self, driver):
-        try:
-            driver.get(self.HOLDERS_SITE_URL)
-            time.sleep(15)
-
-            dropdown = Select(driver.find_element(By.TAG_NAME, "select"))
-            dropdown.select_by_index(3)
-            time.sleep(15)
-
-            elements = driver.find_elements(By.CSS_SELECTOR, '.ui-grid-cell-contents.ng-binding.ng-scope')
+            rows = response.json()['data']['rows']
 
             LargeShortSelling.objects.all().update(delete=True)
 
-            for i in range(0, len(elements), 6):
-                corrected_date = datetime.strptime(elements[i + 5].text, '%d-%m-%Y')
-                stock_code = elements[i + 2].text
-                stock_name = elements[i + 3].text
+            for row in rows:
+                headline = row['HeadlineColumn']
+                issuer_name = row['IssuerColumn']
 
-                stock = self.get_or_create_stock(stock_code, stock_name)
+                parsed = parse_headline(headline)
+                if not parsed:
+                    Error.objects.create(message=f'Could not parse seller headline: {headline[:450]}')
+                    continue
 
-                prev_value = self.get_prev_value_for_large_selling(stock, elements[i].text, corrected_date)
+                stock = get_stock_for_issuer(issuer_name)
+                if not stock:
+                    continue
+
+                seller = get_or_create_seller(parsed['seller_name'])
+                published_date = parse_publication_date(row['PublicationDateColumn'])
+
+                prev_value = self.get_prev_value_for_large_selling(stock, parsed['seller_name'], published_date)
 
                 LargeShortSelling.objects.update_or_create(
                     stock=stock,
-                    name=elements[i].text,
-
-                    defaults={'business_id': elements[i + 1].text,
-                              'value': float(elements[i + 4].text.replace(',', '.')),
-                              'short_seller': self.get_seller_for_announcement(elements[i].text),
-                              'date': corrected_date.strftime('%Y-%m-%d'),
-                              'prev_value': prev_value,
-                              'delete': False
-                              }
+                    name=parsed['seller_name'],
+                    defaults={
+                        'business_id': '',
+                        'value': parsed['value'],
+                        'short_seller': seller,
+                        'date': published_date.date(),
+                        'prev_value': prev_value,
+                        'delete': False,
+                    }
                 )
+
             LargeShortSelling.objects.filter(delete=True).delete()
 
-        except Exception as e:
-            Error.objects.create(message=str(e)[:500])
-            raise CommandError(f'Error occurred: {str(e)}')
-
-    def fetch_announcements(self):
-        try:
-            response = requests.post(self.ANNOUNCEMENTS_SITE_URL, json=self.ANNOUNCEMENTS_BODY,
-                                     headers=self.ANNOUNCEMENTS_HEADERS)
-
-            if response.status_code == 200:
-                announcements = response.json()['data']
-                for item in announcements:
-                    stock = self.get_stock_for_announcement(item.get('IssuerName'),
-                                                            item.get('AnnouncedCompanyName'))
-
-                    if not stock:
-                        continue
-
-                    value = None
-                    seller = None
-                    if item.get('Type') == 'Shortselling':
-                        match = re.search(r"(\d+\.\d+)%", item.get("Headline"))
-
-                        if match:
-                            value = match.group(1)
-
-                        if item.get("AnnouncedCompanyName"):
-                            seller = self.get_seller_for_announcement(item.get("AnnouncedCompanyName"))
-
-                    try:
-                        _ = Announcement.objects.update_or_create(
-                            stock=stock,
-                            announcement_number=item["AnnouncementNumber"],
-                            issuer_name=item["IssuerName"],
-                            defaults={
-                                "announced_company_name": item.get("AnnouncedCompanyName")
-                                if item.get("AnnouncedCompanyName") else "No company name",
-                                "cvr_company_name": item.get("CVRCompanyName"),
-                                "headline": item.get("Headline"),
-                                "headline_danish": item.get("HeadlineDanish"),
-                                "shortselling_type": item.get("ShortsellingType"),
-                                "status": item.get("Status"),
-                                "type": item.get("Type"),
-                                "notification_datetime_to_company": parse_datetime(
-                                    item.get("NotificationDateTimeToCompany"))
-                                if item.get("NotificationDateTimeToCompany") else None,
-                                "publication_date": parse_datetime(item.get("PublicationDate"))
-                                if item.get("PublicationDate") else None,
-                                "published_date": parse_datetime(item.get("PublishedDate")),
-                                "registration_date": parse_datetime(item.get("RegistrationDate")),
-                                "registration_datetime": parse_datetime(item.get("RegistrationDateTime")),
-                                "is_historic": item.get("IsHistoric", False),
-                                "shortselling_country": item.get("ShortsellingCountry"),
-                                "shortselling_country_danish": item.get("ShortsellingCountryDanish"),
-                                "dfsa_id": item.get("Id", ""),
-                                "value": value,
-                                "short_seller": seller,
-                            }
-                        )
-                    except Exception as e:
-                        Error.objects.create(message=f"Could not create announcement: {str(item)[:450]}]")
-            else:
-                Error.objects.create(message=f"Failed to fetch announcements. Status code: {response.status_code}")
-                raise CommandError(f'Error occurred')
-
+        except CommandError:
+            raise
         except Exception as e:
             Error.objects.create(message=str(e)[:500])
             raise CommandError(f'Error occurred: {str(e)}')
@@ -477,39 +343,6 @@ class Command(BaseCommand):
             stock.save()
 
         return stock
-
-    @staticmethod
-    def get_stock_for_announcement(issuer_name, announced_company_name):
-        stock_name = issuer_name if issuer_name else announced_company_name
-
-        try:
-            return Stock.objects.get(name=stock_name)
-        except Stock.DoesNotExist:
-            try:
-                if issuer_name:
-                    return CompanyMap.objects.get(issuer_name=issuer_name).stock
-                elif announced_company_name:
-                    return CompanyMap.objects.get(announced_company_name=announced_company_name).stock
-                else:
-                    return None
-            except CompanyMap.DoesNotExist:
-                CompanyMap.objects.create(announced_company_name=announced_company_name,
-                                          issuer_name=issuer_name)
-
-                Error.objects.create(message=f'A new company was created and needs to be handled: {stock_name}')
-
-                return None
-
-    @staticmethod
-    def get_seller_for_announcement(announced_company_name):
-        try:
-            return ShortSeller.objects.get(name=announced_company_name)
-        except ShortSeller.DoesNotExist:
-            ShortSeller.objects.create(name=announced_company_name)
-
-            Error.objects.create(message=f'A new short seller was created: {announced_company_name}')
-
-            return None
 
     @staticmethod
     def send_push_notification(app_user, stocks_changed):

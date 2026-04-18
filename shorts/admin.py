@@ -177,9 +177,10 @@ class CompanyMapAdmin(admin.ModelAdmin):
 
 @admin.register(Announcement)
 class AnnouncementAdmin(admin.ModelAdmin):
-    list_display = ('published_date', 'stock_name', 'headline', 'short_seller_name', 'value')
+    list_display = ('published_date', 'stock_name', 'headline', 'short_seller_name', 'value',
+                    'is_historic', 'is_cancellation')
     ordering = ('-published_date',)
-    list_filter = ('stock__name', 'short_seller__name')
+    list_filter = ('stock__name', 'short_seller__name', 'is_historic', 'is_cancellation')
 
     @staticmethod
     @display(description='code', ordering='stock__code')
