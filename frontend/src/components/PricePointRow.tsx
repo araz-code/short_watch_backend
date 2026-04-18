@@ -6,7 +6,7 @@ const PricePointRow: React.FC<Short & { isFirst: boolean }> = (props) => {
   const { value, prevValue, timestamp, isFirst } = props;
 
   return (
-    <div className="border px-3 py-2 m-2 grid grid-cols-2 place-content-between hover:bg-blue-100 text-sm dark:hover:bg-[#aaaaaa] dark:bg-[#212121] dark:text-white">
+    <div className="mx-2 my-1.5 px-4 py-2.5 rounded-lg grid grid-cols-2 place-content-between bg-white dark:bg-[#1e1e1e] shadow-sm hover:shadow-md hover:-translate-y-px transition-all duration-200 text-sm dark:text-white border border-gray-100 dark:border-gray-800">
       <div className="font-medium">{formatTimestamp(timestamp)}</div>
 
       <div className="flex items-center space-x-2 justify-end">

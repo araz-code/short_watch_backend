@@ -8,12 +8,12 @@ const ShortSellerRow: React.FC<ShortSeller> = (props) => {
   const { t } = useTranslation();
 
   return (
-    <div className="border px-3 py-2 m-2 grid grid-cols-1 md:grid-cols-2 gap-4 hover:bg-blue-100 dark:hover:bg-[#aaaaaa] dark:bg-[#212121] dark:text-white">
+    <div className="mx-2 my-1.5 px-4 py-3 rounded-lg grid grid-cols-1 md:grid-cols-2 gap-4 bg-white dark:bg-[#1e1e1e] shadow-sm hover:shadow-md hover:-translate-y-px transition-all duration-200 dark:text-white border border-gray-100 dark:border-gray-800">
       <div className="font-semibold">{name}</div>
 
       <div className="grid grid-cols-6 md:grid-cols-2 gap-5">
         <div className="col-span-4 md:col-span-1">
-          <div className="font-normal text-sm text-gray-600 underline pb-1">
+          <div className="font-normal text-sm text-gray-500 dark:text-gray-400 underline pb-1">
             {t("Current")}
           </div>
           {current.length > 0 && (
@@ -36,7 +36,7 @@ const ShortSellerRow: React.FC<ShortSeller> = (props) => {
           )}
         </div>
         <div className="col-span-2 md:col-span-1">
-          <div className="font-normal text-sm text-gray-600 underline pb-1">
+          <div className="font-normal text-sm text-gray-500 dark:text-gray-400 underline pb-1">
             {t("Previous")}
           </div>
           {previous.length > 0 && (
@@ -49,7 +49,7 @@ const ShortSellerRow: React.FC<ShortSeller> = (props) => {
         </div>
       </div>
 
-      <div className="font-normal text-gray-600">
+      <div className="font-normal text-sm text-gray-400 dark:text-gray-500">
         {formatTimestamp(lastUpdated)}
       </div>
     </div>

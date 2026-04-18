@@ -10,7 +10,7 @@ const ShortPositionRow: React.FC<ShortPositionRowProps> = (props) => {
   const { name, symbol, value, prevValue, timestamp, showCheckmark } = props;
 
   return (
-    <div className="border px-3 py-1 m-2 grid grid-cols-2 space-y-1 place-content-between hover:bg-blue-100 dark:hover:bg-[#aaaaaa] dark:bg-[#212121] dark:text-white">
+    <div className="mx-2 my-1.5 px-4 py-2.5 rounded-lg grid grid-cols-2 space-y-1 place-content-between bg-white dark:bg-[#1e1e1e] shadow-sm hover:shadow-md hover:-translate-y-px transition-all duration-200 dark:text-white border border-gray-100 dark:border-gray-800">
       <div className="flex items-center space-x-2">
         <span className="font-semibold">{symbol}</span>
         {showCheckmark && (
@@ -38,8 +38,10 @@ const ShortPositionRow: React.FC<ShortPositionRowProps> = (props) => {
         <div className="font-semibold">{`${value.toFixed(2)}%`}</div>
       </div>
 
-      <div className="text-sm">{name}</div>
-      <div className="text-sm text-right">{formatTimestamp(timestamp)}</div>
+      <div className="text-sm text-gray-500 dark:text-gray-400">{name}</div>
+      <div className="text-sm text-gray-500 dark:text-gray-400 text-right">
+        {formatTimestamp(timestamp)}
+      </div>
     </div>
   );
 };
