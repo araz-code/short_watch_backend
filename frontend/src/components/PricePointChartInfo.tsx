@@ -96,7 +96,7 @@ const PricePointChartInfo: React.FC<{
       {showOverlay && (
         <div
           ref={overlayRef}
-          className="absolute top-2 left-[60px] w-[270px] p-2 bg-white border border-gray-300 shadow-md rounded-md flex flex-col dark:bg-[#212121] dark:text-white dark:border"
+          className="absolute top-2 left-[60px] w-[270px] p-2 bg-white/95 backdrop-blur-sm border border-gray-200 shadow-lg rounded-xl flex flex-col dark:bg-[#1e1e1e]/95 dark:text-white dark:border-gray-700"
           style={{ zIndex: 20 }} // Ensure it's above other elements
         >
           <div className="p-1 mx-auto">

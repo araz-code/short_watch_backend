@@ -14,7 +14,7 @@ const ShortPositionRow: React.FC<ShortPositionRowProps> = (props) => {
       <div className="flex items-center space-x-2">
         <span className="font-semibold">{symbol}</span>
         {showCheckmark && (
-          <span className="text-[#daa520]">
+          <span className="text-amber-500">
             <svg
               width="16"
               height="16"

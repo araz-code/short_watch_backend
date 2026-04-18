@@ -10,7 +10,7 @@ const FavoriteToggleButton: React.FC<{
 
   return (
     <button
-      className="underline bg-transparent border-none text-lg pr-4 pt-4 text-[#daa520] hover:text-[#b8860b]"
+      className="underline bg-transparent border-none text-lg pr-4 pt-4 text-amber-500 hover:text-amber-600"
       onClick={() => (isFavorite ? removeFromMyList() : addToMyList())}
       title={isFavorite ? t("Remove from my list") : t("Add to my list")}
     >

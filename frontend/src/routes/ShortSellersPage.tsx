@@ -156,7 +156,7 @@ const ShortSellersPage: React.FC = () => {
                   placeholder={t("Search")}
                   ref={searchElement}
                   onChange={(event) => setSearchTerm(event.target.value)}
-                  className="flex-1 border p-2 pl-9 rounded-l focus:outline-none w-full dark:bg-[#212121] dark:text-white"
+                  className="flex-1 border border-gray-200 dark:border-gray-700 p-2 pl-9 rounded-lg focus:outline-none w-full dark:bg-[#1e1e1e] dark:text-white"
                 />
               </div>
               <div className="p-2 pb-4">

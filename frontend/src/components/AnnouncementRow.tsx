@@ -15,8 +15,8 @@ const AnnouncementRow: React.FC<Announcement> = (props) => {
         handleClick(`clicked on announcement detail: ${headline}`);
       }}
     >
-      <div className="border px-3 py-2 m-2 hover:bg-blue-100 text-sm dark:hover:bg-[#aaaaaa] dark:bg-[#212121] dark:text-white">
-        <div className="grid grid-cols-2 place-content-between mb-2 text-gray-500 dark:text-white">
+      <div className="mx-2 my-1.5 px-4 py-2.5 rounded-lg bg-white dark:bg-[#1e1e1e] shadow-sm hover:shadow-md hover:-translate-y-px transition-all duration-200 text-sm dark:text-white border border-gray-100 dark:border-gray-800">
+        <div className="grid grid-cols-2 place-content-between mb-2 text-gray-500 dark:text-gray-400">
           <div className="font-medium text-left">
             {formatTimestamp(publishedDate)}
           </div>
