@@ -144,9 +144,9 @@ const ShortWatchPage: React.FC = () => {
         <div className="w-screen lg:flex lg:justify-center lg:gap-4  m-auto">
           <div className="w-1/3 justify-start items-center hidden"></div>
           <div className="lg:w-[900px]">
-            <p className="text-xl lg:text-3xl text-center font-bold py-6 dark:text-white">
+            <h1 className="text-2xl lg:text-3xl text-center py-6 dark:text-white">
               Danish Short Watch
-            </p>
+            </h1>
             {/*<p className="text-red-600 font-semibold text-center text-sm lg:text-base px-2">
               {t("FSA website updated warning")}
             </p>*/}

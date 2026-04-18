@@ -92,9 +92,9 @@ const ShortSellerDetailsPage: React.FC = () => {
 
     content = (
       <>
-        <p className="text-lg text-center font-bold pb-5 dark:text-white">
+        <h1 className="text-xl text-center pb-5 dark:text-white">
           {data.name}
-        </p>
+        </h1>
         <div className="text-xs  dark:text-white italic pb-2 mx-4">
           <p className="pb-2">
             {t("Data on this page comes from announcements.")}

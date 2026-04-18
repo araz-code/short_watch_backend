@@ -11,7 +11,7 @@ const PricePointRow: React.FC<Short & { isFirst: boolean }> = (props) => {
 
       <div className="flex items-center space-x-2 justify-end">
         {isFirst && <ChangeIndicator value={value} prevValue={prevValue} />}
-        <div className="font-medium text-right">{`${value.toFixed(2)}%`}</div>
+        <div className="font-medium text-right tabular-nums">{`${value.toFixed(2)}%`}</div>
       </div>
     </div>
   );

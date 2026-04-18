@@ -35,7 +35,7 @@ const ShortPositionRow: React.FC<ShortPositionRowProps> = (props) => {
       </div>
       <div className="flex items-center space-x-2 justify-end">
         <ChangeIndicator value={value} prevValue={prevValue} />
-        <div className="font-semibold">{`${value.toFixed(2)}%`}</div>
+        <div className="font-semibold tabular-nums">{`${value.toFixed(2)}%`}</div>
       </div>
 
       <div className="text-sm text-gray-500 dark:text-gray-400">{name}</div>

@@ -208,9 +208,9 @@ const ShortPositionDetailsPage: React.FC = () => {
   } else if (data) {
     content = (
       <>
-        <p className="text-lg text-center font-bold pb-5 dark:text-white">
+        <h1 className="text-xl text-center pb-5 dark:text-white">
           {data.historic.length > 0 && data.historic[0].name}
-        </p>
+        </h1>
         {chartDisplay && (
           <div
             className={`mb-1 px-8 grid w-full place-content-end ${

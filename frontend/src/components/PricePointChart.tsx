@@ -29,17 +29,16 @@ const CustomTooltip: React.FC<TooltipProps<ValueType, NameType>> = ({
 }) => {
   if (active && payload && payload.length) {
     return (
-      <div className="border rounded-md shadow-md p-3 bg-gray-100 dark:bg-[#212121] dark:text-white">
-        <p className="text-center mb-1">{`${formatTimestamp(
-          label,
-          "dateOnly"
-        )}`}</p>
-        <p className="text-center pb-1">{`${(+(payload[0].value ?? 0)).toFixed(
-          2
-        )}%`}</p>
+      <div className="rounded-xl shadow-lg px-4 py-3 bg-white/95 dark:bg-[#1e1e1e]/95 dark:text-white backdrop-blur-sm border border-gray-200 dark:border-gray-700">
+        <p className="text-xs text-gray-500 dark:text-gray-400 text-center mb-1.5">
+          {`${formatTimestamp(label, "dateOnly")}`}
+        </p>
+        <p className="text-center font-semibold text-base">{`${(+(
+          payload[0].value ?? 0
+        )).toFixed(2)}%`}</p>
         {payload[1] && (
-          <p className="text-center text-sm">
-            {`${(+(payload[1].value ?? 0)).toFixed(2)}DKK`}
+          <p className="text-center text-sm text-purple-600 dark:text-purple-400 mt-0.5">
+            {`${(+(payload[1].value ?? 0)).toFixed(2)} DKK`}
           </p>
         )}
       </div>
@@ -53,13 +52,13 @@ const RenderLegend: React.FC<LegendProps> = (props) => {
   const { payload } = props;
 
   return (
-    <ul style={{ fontSize: "12px", paddingLeft: 0, marginBottom: 0 }}>
+    <ul className="flex gap-4 text-xs text-gray-500 dark:text-gray-400 pl-0 mb-0">
       {payload?.map((entry, index) => (
-        <li
-          key={`item-${index}`}
-          className="inline-block mr-2 mt-1"
-          style={{ color: entry?.color || "black" }}
-        >
+        <li key={`item-${index}`} className="flex items-center gap-1.5">
+          <span
+            className="inline-block w-2.5 h-2.5 rounded-full"
+            style={{ backgroundColor: entry?.color || "black" }}
+          />
           {entry?.value}
         </li>
       ))}
@@ -139,11 +138,11 @@ const PricePointChart: React.FC<{
           strokeLinejoin="round"
           viewBox="0 0 24 24"
         >
-          <line x1="4" y1="18" x2="4" y2="12" /> {/* Shortest bar */}
-          <line x1="8" y1="18" x2="8" y2="9" /> {/* Second shortest */}
-          <line x1="12" y1="18" x2="12" y2="6" /> {/* Tallest */}
-          <line x1="16" y1="18" x2="16" y2="10" /> {/* Middle height */}
-          <line x1="20" y1="18" x2="20" y2="8" /> {/* Second tallest */}
+          <line x1="4" y1="18" x2="4" y2="12" />
+          <line x1="8" y1="18" x2="8" y2="9" />
+          <line x1="12" y1="18" x2="12" y2="6" />
+          <line x1="16" y1="18" x2="16" y2="10" />
+          <line x1="20" y1="18" x2="20" y2="8" />
         </svg>
       </button>
       <PricePointChartInfo pricePoints={pricePoints} symbol={symbol} />
@@ -160,11 +159,17 @@ const PricePointChart: React.FC<{
         >
           <defs>
             <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#007AFF" stopOpacity={1} />
-              <stop offset="95%" stopColor="#007AFF" stopOpacity={0.19} />
+              <stop offset="0%" stopColor="#007AFF" stopOpacity={0.35} />
+              <stop offset="50%" stopColor="#007AFF" stopOpacity={0.12} />
+              <stop offset="100%" stopColor="#007AFF" stopOpacity={0.02} />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="3 3" vertical={false} />
+          <CartesianGrid
+            strokeDasharray="3 3"
+            vertical={false}
+            stroke="#e5e7eb"
+            strokeOpacity={0.6}
+          />
           <XAxis dataKey="timestamp" hide />
           <YAxis
             dataKey="value"
@@ -197,6 +202,12 @@ const PricePointChart: React.FC<{
             content={({ active, payload, label }) => (
               <CustomTooltip active={active} payload={payload} label={label} />
             )}
+            cursor={{
+              stroke: "#007AFF",
+              strokeWidth: 1,
+              strokeDasharray: "4 4",
+              strokeOpacity: 0.5,
+            }}
           />
           <Legend
             verticalAlign="bottom"
@@ -207,6 +218,7 @@ const PricePointChart: React.FC<{
             type="step"
             dataKey="value"
             stroke="#007AFF"
+            strokeWidth={2}
             fill="url(#colorUv)"
             isAnimationActive={false}
             yAxisId="1"

@@ -31,6 +31,9 @@ export default {
       fontSize: {
         "xs-plus": "0.85rem",
       },
+      fontFamily: {
+        nums: ['"Inter"', "sans-serif"],
+      },
     },
   },
   plugins: [],
