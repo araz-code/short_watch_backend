@@ -92,25 +92,21 @@ const ShortSellerDetailsPage: React.FC = () => {
 
     content = (
       <>
-        <h1 className="text-xl text-center pb-5 dark:text-white">
-          {data.name}
-        </h1>
-        <div className="text-xs  dark:text-white italic pb-2 mx-4">
-          <p className="pb-2">
-            {t("Data on this page comes from announcements.")}
+        <div className="text-center pb-4 dark:text-white">
+          <h1 className="text-xl">{data.name}</h1>
+          <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
+            {t("Data on this page comes from announcements.")}{" "}
+            {t("Danish FSA updates only positions above 0.5%.")}
           </p>
-          <p>{t("Danish FSA updates only positions above 0.5%.")}</p>
-          <p>
-            {t("Below 0.5%, updates occur only once it exceeds 0.5% again.")}
-          </p>
+          <div className="mt-3 mx-auto w-12 h-0.5 rounded-full bg-blue-500/40" />
         </div>
-        <div className="min-h-[150px] h-[calc(100svh-14.3rem)]">
+        <div className="min-h-[150px] h-[calc(100svh-13rem)]">
           <div className="overflow-y-auto h-full">
             <ul className="mx-4">
               {Object.keys(groupedAnnouncements).map((symbol) => (
                 <div key={symbol}>
                   <div
-                    className="font-medium text-left hover:underline dark:text-white"
+                    className="mt-3 mb-1 ml-2"
                     id={symbol}
                   >
                     <Link
@@ -120,8 +116,9 @@ const ShortSellerDetailsPage: React.FC = () => {
                           `clicked on link to shorts from seller ${data.name}: ${groupedAnnouncements[symbol][0].stockSymbol}`
                         );
                       }}
+                      className="text-base font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
                     >
-                      {symbol}
+                      {symbol} →
                     </Link>
                   </div>
                   <ul>
