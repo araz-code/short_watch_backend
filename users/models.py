@@ -12,7 +12,7 @@ class AppUser(models.Model):
     notification_active = models.BooleanField(null=True, blank=True)
     old_notification_active = models.BooleanField(null=True, blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
-    last_activity = models.DateTimeField(auto_now=True)
+    last_activity = models.DateTimeField(auto_now_add=True)
     invalid = models.DateTimeField(null=True, blank=True)
     version = models.CharField(max_length=6, null=True, blank=True)
     notifications_sent = models.IntegerField(default=0)
@@ -28,7 +28,7 @@ class WebUser(models.Model):
     consent_accepted = models.BooleanField(null=True, blank=True)
     old_consent_accepted = models.BooleanField(null=True, blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
-    last_activity = models.DateTimeField(auto_now=True)
+    last_activity = models.DateTimeField(auto_now_add=True)
     client_ip = models.GenericIPAddressField()
     visits = models.PositiveBigIntegerField(default=1)
 

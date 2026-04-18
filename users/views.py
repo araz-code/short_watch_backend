@@ -29,7 +29,7 @@ def create_app_user(request):
         app_user, _ = AppUser.objects.update_or_create(
             user_id=user_id,
             defaults={'fcm_token': fcm_token, 'device': device, 'version': version, 'invalid': None,
-                      'client_ip': get_client_ip(request)}
+                      'client_ip': get_client_ip(request), 'last_activity': timezone.now()}
         )
 
         existing_stocks = Stock.objects.filter(code__in=stock_codes)
@@ -55,6 +55,8 @@ def add_stock(request):
 
             stock = Stock.objects.get(code=stock_code)
             app_user.stocks.add(stock)
+            app_user.last_activity = timezone.now()
+            app_user.save(update_fields=['last_activity'])
             return Response(status=status.HTTP_204_NO_CONTENT)
         except AppUser.DoesNotExist:
             Error.objects.create(message=f'Users-add_stock ({stock_code}): Unknown user id: {user_id}.'[:500])
@@ -81,6 +83,8 @@ def remove_stock(request):
 
             stock = Stock.objects.get(code=stock_code)
             app_user.stocks.remove(stock)
+            app_user.last_activity = timezone.now()
+            app_user.save(update_fields=['last_activity'])
             return Response(status=status.HTTP_204_NO_CONTENT)
         except AppUser.DoesNotExist:
             Error.objects.create(message=f'Users-remove_stock ({stock_code}): Unknown user id: {user_id}.'[:500])
@@ -104,7 +108,7 @@ def update_notification_status(request):
         notification_active = serializer.validated_data.get('notification_active')
         version = serializer.validated_data.get('version')
 
-        defaults = {'client_ip': get_client_ip(request)}
+        defaults = {'client_ip': get_client_ip(request), 'last_activity': timezone.now()}
 
         if version:
             defaults['version'] = version
@@ -141,7 +145,8 @@ def create_web_user(request):
         user_id = serializer.validated_data.get('user_id')
         consent_accepted = serializer.validated_data.get('consent_accepted')
 
-        web_user, _ = WebUser.objects.update_or_create(user_id=user_id, defaults={'client_ip': get_client_ip(request)})
+        web_user, _ = WebUser.objects.update_or_create(user_id=user_id, defaults={'client_ip': get_client_ip(request),
+                                                                                          'last_activity': timezone.now()})
 
         if web_user.consent_accepted != consent_accepted:
             web_user.old_consent_accepted = web_user.consent_accepted
@@ -167,7 +172,8 @@ def update_app_consent(request):
 
         app_user, created = AppUser.objects.update_or_create(user_id=user_id,
                                                              defaults={'consent_date': timezone.now(),
-                                                                       'client_ip': get_client_ip(request)})
+                                                                       'client_ip': get_client_ip(request),
+                                                                       'last_activity': timezone.now()})
 
         if app_user.consent_accepted != consent_accepted:
             app_user.old_consent_accepted = app_user.consent_accepted
@@ -200,6 +206,7 @@ def status_check(request):
 
             web_user.visits = web_user.visits + 1
             web_user.client_ip = get_client_ip(request)
+            web_user.last_activity = timezone.now()
 
             web_user.save()
 
