@@ -1,13 +1,6 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faHome,
-  faBoxOpen,
-  faBalanceScale,
-  faEnvelope,
-} from "@fortawesome/free-solid-svg-icons";
 
 const defaultCollapseMenu = {
   mainMenu: true,
@@ -18,6 +11,8 @@ const defaultCollapseMenu = {
 const Navigation: React.FC = () => {
   const [collapseMenu, setCollapseMenu] = useState(defaultCollapseMenu);
   const { t } = useTranslation();
+  const location = useLocation();
+  const isHome = location.pathname === "/";
 
   const toggleMainMenu = () => {
     setCollapseMenu((prev) => ({
@@ -53,230 +48,235 @@ const Navigation: React.FC = () => {
     location.pathname
   );
 
-  const commonLinkClasses = "block md:hover:bg-white/10 md:hover:rounded-lg";
+  const navClasses = isHome
+    ? "bg-white/10 backdrop-blur-lg border border-white/15 shadow-lg shadow-black/5"
+    : "bg-[#0d1b4c] shadow-lg shadow-black/10";
 
-  const commonActiveClasses =
-    "underline md:no-underline md:bg-white/15 md:rounded-lg md:text-white hover:bg-white/20";
+  const linkClasses = `block px-3 py-1.5 rounded-full transition-all duration-200 ${
+    isHome
+      ? "text-white/70 hover:text-white hover:bg-white/10"
+      : "text-white/70 hover:text-white hover:bg-white/10"
+  }`;
+
+  const activeLinkClasses = `block px-3 py-1.5 rounded-full ${
+    isHome ? "text-white bg-white/15" : "text-white bg-white/15"
+  }`;
 
   return (
     <>
-      <nav className="relative px-4 md:px-10 py-1.5 text-2xl font-bold text-white font-display bg-[#0d1b4c]/90 backdrop-blur-md z-30 border-b border-white/10">
-        <div className="flex flex-wrap items-center justify-between">
-          <Link to="/" className="tracking-wider text-xl">
-            ZIRIUM
-          </Link>
-          <button
-            type="button"
-            className={`inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-white rounded-lg md:hidden ${
-              collapseMenu.mainMenu
-                ? ""
-                : "outline-none ring-2 ring-gray-200 bg-blue-400"
-            }`}
-            onClick={toggleMainMenu}
-          >
-            <svg
-              className="w-5 h-5"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 17 14"
+      <div className="relative z-30 flex justify-center pt-3 px-4">
+        <nav
+          className={`w-full max-w-[900px] px-4 py-2 rounded-2xl ${navClasses}`}
+        >
+          <div className="flex items-center justify-between">
+            <Link
+              to="/"
+              className="text-white font-bold text-lg tracking-wider"
             >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M1 1h15M1 7h15M1 13h15"
-              />
-            </svg>
-          </button>
-          <div
-            className={`${
-              collapseMenu.mainMenu
-                ? "md:w-auto hidden"
-                : "absolute top-[2.8rem] right-0 w-[90%] mr-2 md:static md:w-auto md:m-0 text-gray-800 dark:text-white"
-            } md:block bg-transparent `}
-          >
-            <ul className="flex flex-col text-sm p-4 md:p-0 mt-4 border border-gray-100 rounded-xl md:space-x-4 md:flex-row md:mt-0 md:border-0 bg-white dark:bg-[#121212] md:bg-transparent md:dark:bg-transparent">
-              <li>
-                <NavLink
-                  to="/"
-                  end
-                  className={({ isActive }) =>
-                    `p-2 ${commonLinkClasses} ${
-                      isActive ? `${commonActiveClasses}` : ""
-                    }`
-                  }
-                  onClick={() => setCollapseMenu(defaultCollapseMenu)}
-                >
-                  <div>
-                    <FontAwesomeIcon icon={faHome} />
-                    <span className="ml-1">{t("Home")}</span>
-                  </div>
-                </NavLink>
-              </li>
-              <li>
-                <button
-                  className={`${commonLinkClasses} flex items-center justify-between w-full p-2 md:w-auto ${
-                    isProductActive ? `${commonActiveClasses}` : ""
-                  }`}
-                  onClick={toggleProductMenu}
-                >
-                  <div>
-                    <FontAwesomeIcon icon={faBoxOpen} />
-                    <span className="ml-1">{t("Products")}</span>
-                  </div>
-                  <svg
-                    className={`w-2.5 h-2.5 ms-2.5 transition-transform ${
-                      collapseMenu.productMenu ? "" : "rotate-180"
-                    }`}
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 10 6"
+              ZIRIUM
+            </Link>
+            <button
+              type="button"
+              className={`inline-flex items-center p-2 w-9 h-9 justify-center text-sm text-white/80 rounded-lg md:hidden hover:bg-white/10 ${
+                collapseMenu.mainMenu
+                  ? ""
+                  : "bg-white/15 ring-1 ring-white/30"
+              }`}
+              onClick={toggleMainMenu}
+            >
+              <svg
+                className="w-5 h-5"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 17 14"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M1 1h15M1 7h15M1 13h15"
+                />
+              </svg>
+            </button>
+            <div
+              className={`${
+                collapseMenu.mainMenu
+                  ? "md:w-auto hidden"
+                  : "absolute top-[3.2rem] right-4 left-4 md:static md:w-auto md:m-0"
+              } md:block`}
+            >
+              <ul
+                className={`flex flex-col text-sm p-3 md:p-0 rounded-xl md:flex-row md:items-center md:gap-1 md:rounded-none ${
+                  collapseMenu.mainMenu
+                    ? ""
+                    : "bg-white dark:bg-[#1e1e1e] border border-gray-200 dark:border-gray-700 shadow-xl text-gray-800 dark:text-white md:bg-transparent md:dark:bg-transparent md:border-0 md:shadow-none md:text-white"
+                }`}
+              >
+                <li>
+                  <NavLink
+                    to="/"
+                    end
+                    className={({ isActive }) =>
+                      isActive ? activeLinkClasses : linkClasses
+                    }
+                    onClick={() => setCollapseMenu(defaultCollapseMenu)}
                   >
-                    <path
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="m1 1 4 4 4-4"
-                    />
-                  </svg>
-                </button>
-                <div
-                  className={`md:absolute md:z-10 md:shadow-lg md:w-70 md:rounded-xl bg-white dark:bg-[#1e1e1e] font-normal divide-y divide-gray-100 dark:divide-gray-700 md:border md:border-gray-200 dark:md:border-gray-700 text-gray-800 dark:text-white ${
-                    collapseMenu.productMenu ? "hidden" : "top-[3.3rem]"
-                  }`}
-                >
-                  <ul className="text-sm md:text-base">
-                    <li>
-                      <NavLink
-                        to="/short-watch"
-                        className={({ isActive }) =>
-                          `block px-4 py-2 md:pt-4 hover:text-gray-500  dark:hover:text-gray-300 ${
-                            isActive ? "underline" : ""
-                          }`
-                        }
-                        onClick={() => setCollapseMenu(defaultCollapseMenu)}
-                      >
-                        Short watch
-                      </NavLink>
-                    </li>
-                    <li>
-                      <NavLink
-                        to="/short-sellers"
-                        className={({ isActive }) =>
-                          `block px-4 py-2 hover:text-gray-500 md:pb-4 dark:hover:text-gray-300 ${
-                            isActive ? "underline" : ""
-                          }`
-                        }
-                        onClick={() => setCollapseMenu(defaultCollapseMenu)}
-                      >
-                        Short sellers
-                      </NavLink>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-              <li>
-                <button
-                  className={`${commonLinkClasses} flex items-center justify-between w-full p-2 md:w-auto ${
-                    isLegalActive ? `${commonActiveClasses}` : ""
-                  }`}
-                  onClick={toggleLegalMenu}
-                >
-                  <div>
-                    <FontAwesomeIcon icon={faBalanceScale} />
-                    <span className="ml-1">{t("Legal")}</span>
-                  </div>
-
-                  <svg
-                    className={`w-2.5 h-2.5 ms-2.5 transition-transform ${
-                      collapseMenu.legalMenu ? "" : "rotate-180"
+                    {t("Home")}
+                  </NavLink>
+                </li>
+                <li className="relative">
+                  <button
+                    className={`flex items-center gap-1.5 w-full md:w-auto ${
+                      isProductActive ? activeLinkClasses : linkClasses
                     }`}
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 10 6"
+                    onClick={toggleProductMenu}
                   >
-                    <path
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="m1 1 4 4 4-4"
-                    />
-                  </svg>
-                </button>
-                <div
-                  className={`md:absolute md:z-10 md:shadow-lg md:w-70 md:rounded-xl bg-white dark:bg-[#1e1e1e] font-normal divide-y divide-gray-100 dark:divide-gray-700 md:border md:border-gray-200 dark:md:border-gray-700 text-gray-800 dark:text-white ${
-                    collapseMenu.legalMenu ? "hidden" : "top-[3.3rem]"
-                  }`}
-                >
-                  <ul className="text-sm md:text-base">
-                    <li>
-                      <NavLink
-                        to="/privacy-policy"
-                        className={({ isActive }) =>
-                          `block px-4 py-2 md:pt-4 hover:text-gray-500  dark:hover:text-gray-300 ${
-                            isActive ? "underline" : ""
-                          }`
-                        }
-                        onClick={() => setCollapseMenu(defaultCollapseMenu)}
-                      >
-                        {t("Privacy policy")}
-                      </NavLink>
-                    </li>
-                    <li>
-                      <NavLink
-                        to="/cookie-policy"
-                        className={({ isActive }) =>
-                          `block px-4 py-2 hover:text-gray-500  dark:hover:text-gray-300 ${
-                            isActive ? "underline" : ""
-                          }`
-                        }
-                        onClick={() => setCollapseMenu(defaultCollapseMenu)}
-                      >
-                        {t("Cookie policy")}
-                      </NavLink>
-                    </li>
-                    <li>
-                      <NavLink
-                        to="/terms-of-agreement"
-                        className={({ isActive }) =>
-                          `block px-4 py-2 hover:text-gray-500 md:pb-4 dark:hover:text-gray-300 ${
-                            isActive ? "underline" : ""
-                          }`
-                        }
-                        onClick={() => setCollapseMenu(defaultCollapseMenu)}
-                      >
-                        {t("Terms of agreement")}
-                      </NavLink>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-              <li>
-                <NavLink
-                  to="/contact"
-                  className={({ isActive }) =>
-                    `p-2 ${commonLinkClasses} ${
-                      isActive ? `${commonActiveClasses}` : ""
-                    }`
-                  }
-                  onClick={() => setCollapseMenu(defaultCollapseMenu)}
-                >
-                  <div>
-                    <FontAwesomeIcon icon={faEnvelope} />
-                    <span className="ml-1">{t("Contact")}</span>
+                    {t("Products")}
+                    <svg
+                      className={`w-2 h-2 transition-transform ${
+                        collapseMenu.productMenu ? "" : "rotate-180"
+                      }`}
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 10 6"
+                    >
+                      <path
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="m1 1 4 4 4-4"
+                      />
+                    </svg>
+                  </button>
+                  <div
+                    className={`md:absolute md:z-10 md:right-0 md:mt-2 md:w-48 md:rounded-xl md:shadow-xl bg-white dark:bg-[#1e1e1e] md:border md:border-gray-200 dark:md:border-gray-700 text-gray-800 dark:text-white overflow-hidden ${
+                      collapseMenu.productMenu ? "hidden" : ""
+                    }`}
+                  >
+                    <ul className="text-sm py-1">
+                      <li>
+                        <NavLink
+                          to="/short-watch"
+                          className={({ isActive }) =>
+                            `block px-4 py-2.5 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors ${
+                              isActive ? "text-blue-500 font-medium" : ""
+                            }`
+                          }
+                          onClick={() => setCollapseMenu(defaultCollapseMenu)}
+                        >
+                          Short watch
+                        </NavLink>
+                      </li>
+                      <li>
+                        <NavLink
+                          to="/short-sellers"
+                          className={({ isActive }) =>
+                            `block px-4 py-2.5 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors ${
+                              isActive ? "text-blue-500 font-medium" : ""
+                            }`
+                          }
+                          onClick={() => setCollapseMenu(defaultCollapseMenu)}
+                        >
+                          Short sellers
+                        </NavLink>
+                      </li>
+                    </ul>
                   </div>
-                </NavLink>
-              </li>
-            </ul>
+                </li>
+                <li className="relative">
+                  <button
+                    className={`flex items-center gap-1.5 w-full md:w-auto ${
+                      isLegalActive ? activeLinkClasses : linkClasses
+                    }`}
+                    onClick={toggleLegalMenu}
+                  >
+                    {t("Legal")}
+                    <svg
+                      className={`w-2 h-2 transition-transform ${
+                        collapseMenu.legalMenu ? "" : "rotate-180"
+                      }`}
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 10 6"
+                    >
+                      <path
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="m1 1 4 4 4-4"
+                      />
+                    </svg>
+                  </button>
+                  <div
+                    className={`md:absolute md:z-10 md:right-0 md:mt-2 md:w-48 md:rounded-xl md:shadow-xl bg-white dark:bg-[#1e1e1e] md:border md:border-gray-200 dark:md:border-gray-700 text-gray-800 dark:text-white overflow-hidden ${
+                      collapseMenu.legalMenu ? "hidden" : ""
+                    }`}
+                  >
+                    <ul className="text-sm py-1">
+                      <li>
+                        <NavLink
+                          to="/privacy-policy"
+                          className={({ isActive }) =>
+                            `block px-4 py-2.5 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors ${
+                              isActive ? "text-blue-500 font-medium" : ""
+                            }`
+                          }
+                          onClick={() => setCollapseMenu(defaultCollapseMenu)}
+                        >
+                          {t("Privacy policy")}
+                        </NavLink>
+                      </li>
+                      <li>
+                        <NavLink
+                          to="/cookie-policy"
+                          className={({ isActive }) =>
+                            `block px-4 py-2.5 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors ${
+                              isActive ? "text-blue-500 font-medium" : ""
+                            }`
+                          }
+                          onClick={() => setCollapseMenu(defaultCollapseMenu)}
+                        >
+                          {t("Cookie policy")}
+                        </NavLink>
+                      </li>
+                      <li>
+                        <NavLink
+                          to="/terms-of-agreement"
+                          className={({ isActive }) =>
+                            `block px-4 py-2.5 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors ${
+                              isActive ? "text-blue-500 font-medium" : ""
+                            }`
+                          }
+                          onClick={() => setCollapseMenu(defaultCollapseMenu)}
+                        >
+                          {t("Terms of agreement")}
+                        </NavLink>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li>
+                  <NavLink
+                    to="/contact"
+                    className={({ isActive }) =>
+                      isActive ? activeLinkClasses : linkClasses
+                    }
+                    onClick={() => setCollapseMenu(defaultCollapseMenu)}
+                  >
+                    {t("Contact")}
+                  </NavLink>
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
-      </nav>
+        </nav>
+      </div>
       {(!collapseMenu.mainMenu ||
         !collapseMenu.legalMenu ||
         !collapseMenu.productMenu) && (
