@@ -4,11 +4,8 @@
       <stop offset="0%" style="stop-color:#0d1b4c;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#305f9e;stop-opacity:1" />
     </linearGradient>
-    <linearGradient id="fade" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="80%" style="stop-color:#fff;stop-opacity:0" />
-      <stop offset="100%" style="stop-color:#fff;stop-opacity:1" />
-    </linearGradient>
   </defs>
+  <rect width="1920" height="1082" fill="#ffffff" />
   <rect width="1920" height="1080" fill="url(#gradient)" />
-  <rect width="1920" height="1080" fill="url(#fade)" />
+  <path d="M0,980 C320,1020 640,900 960,940 C1280,980 1600,1060 1920,1000 L1920,1082 L0,1082 Z" fill="#ffffff" />
 </svg>
