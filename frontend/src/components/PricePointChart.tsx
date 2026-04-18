@@ -6,11 +6,9 @@ import {
   YAxis,
   Tooltip,
   ResponsiveContainer,
-  Legend,
   ComposedChart,
   Line,
   TooltipProps,
-  LegendProps,
 } from "recharts";
 import { useTranslation } from "react-i18next";
 import { formatTimestamp } from "../utils/dates";
@@ -29,15 +27,15 @@ const CustomTooltip: React.FC<TooltipProps<ValueType, NameType>> = ({
 }) => {
   if (active && payload && payload.length) {
     return (
-      <div className="rounded-xl shadow-lg px-4 py-3 bg-white/95 dark:bg-[#1e1e1e]/95 dark:text-white backdrop-blur-sm border border-gray-200 dark:border-gray-700">
-        <p className="text-xs text-gray-500 dark:text-gray-400 text-center mb-1.5">
+      <div className="rounded-xl shadow-lg px-4 py-3 bg-white/95 dark:bg-[#1e1e1e]/95 dark:text-white backdrop-blur-sm border border-gray-100 dark:border-gray-700">
+        <p className="text-[11px] text-gray-400 dark:text-gray-500 text-center mb-1">
           {`${formatTimestamp(label, "dateOnly")}`}
         </p>
-        <p className="text-center font-semibold text-base">{`${(+(
+        <p className="text-center font-bold text-lg tabular-nums">{`${(+(
           payload[0].value ?? 0
         )).toFixed(2)}%`}</p>
         {payload[1] && (
-          <p className="text-center text-sm text-purple-600 dark:text-purple-400 mt-0.5">
+          <p className="text-center text-sm text-purple-500 dark:text-purple-400 mt-0.5 tabular-nums">
             {`${(+(payload[1].value ?? 0)).toFixed(2)} DKK`}
           </p>
         )}
@@ -48,31 +46,16 @@ const CustomTooltip: React.FC<TooltipProps<ValueType, NameType>> = ({
   return null;
 };
 
-const RenderLegend: React.FC<LegendProps> = (props) => {
-  const { payload } = props;
-
-  return (
-    <ul className="flex gap-4 text-xs text-gray-500 dark:text-gray-400 pl-0 mb-0">
-      {payload?.map((entry, index) => (
-        <li key={`item-${index}`} className="flex items-center gap-1.5">
-          <span
-            className="inline-block w-2.5 h-2.5 rounded-full"
-            style={{ backgroundColor: entry?.color || "black" }}
-          />
-          {entry?.value}
-        </li>
-      ))}
-    </ul>
-  );
-};
-
 const PricePointChart: React.FC<{
   data: ChartPricePoint[];
   symbol: string;
 }> = (props) => {
   const { data: pricePoints, symbol } = props;
   const { t } = useTranslation();
-  const getChartHeight = useCallback(() => window.innerWidth >= 640 ? 290 : 220, []);
+  const getChartHeight = useCallback(
+    () => (window.innerWidth >= 640 ? 290 : 220),
+    []
+  );
   const [chartHeight, setChartHeight] = useState(getChartHeight);
 
   useEffect(() => {
@@ -125,34 +108,40 @@ const PricePointChart: React.FC<{
     <div>
       <ResponsiveContainer width="100%" height={chartHeight}>
         <ComposedChart
-          height={chartHeight - 20}
           data={pricePoints}
           margin={{
-            top: 10,
-            right: -5,
-            left: 25,
-            bottom: 0,
+            top: 5,
+            right: 0,
+            left: 20,
+            bottom: 5,
           }}
         >
           <defs>
-            <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#007AFF" stopOpacity={0.35} />
-              <stop offset="50%" stopColor="#007AFF" stopOpacity={0.12} />
-              <stop offset="100%" stopColor="#007AFF" stopOpacity={0.02} />
+            <linearGradient id="shortGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#007AFF" stopOpacity={0.4} />
+              <stop offset="40%" stopColor="#007AFF" stopOpacity={0.15} />
+              <stop offset="100%" stopColor="#007AFF" stopOpacity={0} />
             </linearGradient>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+              <feMerge>
+                <feMergeNode in="coloredBlur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
           </defs>
           <CartesianGrid
-            strokeDasharray="3 3"
+            horizontal={true}
             vertical={false}
-            stroke="#e5e7eb"
-            strokeOpacity={0.6}
+            stroke="#f0f0f0"
+            strokeWidth={1}
           />
           <XAxis dataKey="timestamp" hide />
           <YAxis
             dataKey="value"
             type="number"
             unit="%"
-            tick={{ fontSize: 11, fill: "#999", dx: -5 }}
+            tick={{ fontSize: 11, fill: "#bbb", dx: -5 }}
             tickFormatter={(value) => value.toFixed(1)}
             allowDecimals={true}
             orientation="right"
@@ -166,7 +155,7 @@ const PricePointChart: React.FC<{
             <YAxis
               dataKey="close"
               unit="DKK"
-              tick={{ fontSize: 11, fill: "#999" }}
+              tick={{ fontSize: 11, fill: "#bbb" }}
               tickFormatter={(value) => value.toFixed(0)}
               orientation="left"
               type="number"
@@ -182,73 +171,100 @@ const PricePointChart: React.FC<{
             cursor={{
               stroke: "#007AFF",
               strokeWidth: 1,
-              strokeDasharray: "4 4",
-              strokeOpacity: 0.5,
+              strokeOpacity: 0.3,
             }}
-          />
-          <Legend
-            verticalAlign="bottom"
-            height={6}
-            content={<RenderLegend />}
           />
           <Area
             type="step"
             dataKey="value"
             stroke="#007AFF"
-            strokeWidth={2}
-            fill="url(#colorUv)"
-            isAnimationActive={false}
+            strokeWidth={2.5}
+            fill="url(#shortGradient)"
             yAxisId="1"
             name={t("Short position")}
+            isAnimationActive={true}
+            animationDuration={800}
+            animationEasing="ease-out"
+            activeDot={{
+              r: 5,
+              fill: "#007AFF",
+              stroke: "#fff",
+              strokeWidth: 2,
+              filter: "url(#glow)",
+            }}
           />
           {showClosingPrices && (
             <Line
               dataKey="close"
-              stroke="#9333ea"
-              fill="#9333ea"
+              stroke="#a855f7"
               yAxisId="2"
-              type="linear"
+              type="monotone"
               name={t("Closing price")}
-              isAnimationActive={false}
+              isAnimationActive={true}
+              animationDuration={800}
+              animationEasing="ease-out"
               dot={false}
-              strokeWidth={1.5}
+              activeDot={{
+                r: 4,
+                fill: "#a855f7",
+                stroke: "#fff",
+                strokeWidth: 2,
+              }}
+              strokeWidth={2}
+              strokeOpacity={0.8}
             />
           )}
         </ComposedChart>
       </ResponsiveContainer>
-      <div className="flex items-center gap-2 justify-end pr-5 mt-1">
-        <button
-          onClick={toggleClosingPrices}
-          className={`w-[23px] h-[23px] rounded-full border-none flex justify-center items-center cursor-pointer ${
-            showClosingPrices
-              ? "bg-purple-600 hover:bg-purple-500"
-              : "bg-gray-300 hover:bg-gray-400"
-          }`}
-          title={
-            showClosingPrices
-              ? t("Hide closing prices")
-              : t("Show closing prices")
-          }
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="15"
-            height="15"
-            fill="none"
-            stroke={showClosingPrices ? "#fff" : "#333"}
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            viewBox="0 0 24 24"
+
+      {/* Controls + Legend */}
+      <div className="flex items-center justify-between px-5 mt-2">
+        <div className="flex items-center gap-3 text-xs text-gray-400 dark:text-gray-500">
+          <span className="flex items-center gap-1.5">
+            <span className="w-3 h-[3px] rounded-full bg-[#007AFF] inline-block" />
+            {t("Short position")}
+          </span>
+          {showClosingPrices && (
+            <span className="flex items-center gap-1.5">
+              <span className="w-3 h-[3px] rounded-full bg-[#a855f7] inline-block" />
+              {t("Closing price")}
+            </span>
+          )}
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={toggleClosingPrices}
+            className={`w-7 h-7 rounded-lg border flex justify-center items-center cursor-pointer transition-all duration-200 ${
+              showClosingPrices
+                ? "bg-purple-50 dark:bg-purple-900/20 border-purple-200 dark:border-purple-800 text-purple-600 dark:text-purple-400"
+                : "bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-400 dark:text-gray-500"
+            }`}
+            title={
+              showClosingPrices
+                ? t("Hide closing prices")
+                : t("Show closing prices")
+            }
           >
-            <line x1="4" y1="18" x2="4" y2="12" />
-            <line x1="8" y1="18" x2="8" y2="9" />
-            <line x1="12" y1="18" x2="12" y2="6" />
-            <line x1="16" y1="18" x2="16" y2="10" />
-            <line x1="20" y1="18" x2="20" y2="8" />
-          </svg>
-        </button>
-        <PricePointChartInfo pricePoints={pricePoints} symbol={symbol} />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              viewBox="0 0 24 24"
+            >
+              <line x1="4" y1="18" x2="4" y2="12" />
+              <line x1="8" y1="18" x2="8" y2="9" />
+              <line x1="12" y1="18" x2="12" y2="6" />
+              <line x1="16" y1="18" x2="16" y2="10" />
+              <line x1="20" y1="18" x2="20" y2="8" />
+            </svg>
+          </button>
+          <PricePointChartInfo pricePoints={pricePoints} symbol={symbol} />
+        </div>
       </div>
     </div>
   );
