@@ -53,16 +53,18 @@ const Navigation: React.FC = () => {
     location.pathname
   );
 
-  const commonLinkClasses = "block md:hover:bg-blue-600 md:hover:rounded-lg";
+  const commonLinkClasses = "block md:hover:bg-white/10 md:hover:rounded-lg";
 
   const commonActiveClasses =
-    "underline md:no-underline md:bg-blue-700 md:rounded-lg md:text-white  hover:bg-blue-600 ";
+    "underline md:no-underline md:bg-white/15 md:rounded-lg md:text-white hover:bg-white/20";
 
   return (
     <>
-      <nav className="relative px-4 md:px-10 py-2 text-2xl font-bold text-white font-display bg-[#0d1b4c] z-30">
+      <nav className="relative px-4 md:px-10 py-1.5 text-2xl font-bold text-white font-display bg-[#0d1b4c]/90 backdrop-blur-md z-30 border-b border-white/10">
         <div className="flex flex-wrap items-center justify-between">
-          <Link to="/">ZIRIUM</Link>
+          <Link to="/" className="tracking-wider text-xl">
+            ZIRIUM
+          </Link>
           <button
             type="button"
             className={`inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-white rounded-lg md:hidden ${
@@ -92,10 +94,10 @@ const Navigation: React.FC = () => {
             className={`${
               collapseMenu.mainMenu
                 ? "md:w-auto hidden"
-                : "absolute top-[3.1rem] right-0 w-[90%] mr-2 md:static md:w-auto md:m-0 text-gray-800 dark:text-white"
+                : "absolute top-[2.8rem] right-0 w-[90%] mr-2 md:static md:w-auto md:m-0 text-gray-800 dark:text-white"
             } md:block bg-transparent `}
           >
-            <ul className="flex flex-col text-sm p-4 md:p-0 mt-4 border border-gray-100 rounded-xl md:space-x-6 md:flex-row md:mt-0 md:border-0 bg-white dark:bg-[#121212] md:bg-[#0d1b4c] md:dark:bg-[#0d1b4c] ">
+            <ul className="flex flex-col text-sm p-4 md:p-0 mt-4 border border-gray-100 rounded-xl md:space-x-4 md:flex-row md:mt-0 md:border-0 bg-white dark:bg-[#121212] md:bg-transparent md:dark:bg-transparent">
               <li>
                 <NavLink
                   to="/"
@@ -143,8 +145,8 @@ const Navigation: React.FC = () => {
                   </svg>
                 </button>
                 <div
-                  className={`md:absolute md:z-10 md:shadow md:w-70 md:rounded-lg bg-white dark:bg-[#121212] font-normal divide-y divide-gray-100 md:border md:border-gray-100 text-gray-800 dark:text-white ${
-                    collapseMenu.productMenu ? "hidden" : "top-[3.8rem]"
+                  className={`md:absolute md:z-10 md:shadow-lg md:w-70 md:rounded-xl bg-white dark:bg-[#1e1e1e] font-normal divide-y divide-gray-100 dark:divide-gray-700 md:border md:border-gray-200 dark:md:border-gray-700 text-gray-800 dark:text-white ${
+                    collapseMenu.productMenu ? "hidden" : "top-[3.3rem]"
                   }`}
                 >
                   <ul className="text-sm md:text-base">
@@ -208,8 +210,8 @@ const Navigation: React.FC = () => {
                   </svg>
                 </button>
                 <div
-                  className={`md:absolute md:z-10 md:shadow md:w-70 md:rounded-lg bg-white dark:bg-[#121212] font-normal divide-y divide-gray-100 md:border md:border-gray-100 text-gray-800 dark:text-white ${
-                    collapseMenu.legalMenu ? "hidden" : "top-[3.8rem]"
+                  className={`md:absolute md:z-10 md:shadow-lg md:w-70 md:rounded-xl bg-white dark:bg-[#1e1e1e] font-normal divide-y divide-gray-100 dark:divide-gray-700 md:border md:border-gray-200 dark:md:border-gray-700 text-gray-800 dark:text-white ${
+                    collapseMenu.legalMenu ? "hidden" : "top-[3.3rem]"
                   }`}
                 >
                   <ul className="text-sm md:text-base">
