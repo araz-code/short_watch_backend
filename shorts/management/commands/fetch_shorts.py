@@ -6,7 +6,7 @@ import pytz
 import requests
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
-from django.db.models import Max
+from django.db.models import Max, Count
 from django.utils import timezone
 from firebase_admin.exceptions import InvalidArgumentError
 from firebase_admin.messaging import UnregisteredError
@@ -81,6 +81,7 @@ class Command(BaseCommand):
             Error.objects.create(message=f'Selenium fetch failed: {str(e)}'[:500])
 
         self.fetch_large_short_selling()
+        self.remove_duplicate_positions()
 
         delete_old_logs()
         process_visits()
@@ -400,3 +401,30 @@ class Command(BaseCommand):
 
         except LargeShortSelling.DoesNotExist:
             return None
+
+    @staticmethod
+    def remove_duplicate_positions():
+        duplicates = (
+            ShortPosition.objects
+            .values('stock', 'timestamp')
+            .annotate(count=Count('id'))
+            .filter(count__gt=1)
+        )
+
+        for dup in duplicates:
+            entries = list(ShortPosition.objects.filter(
+                stock=dup['stock'],
+                timestamp=dup['timestamp'],
+            ).select_related('stock').order_by('-id'))
+
+            kept = entries[0]
+            to_delete = entries[1:]
+            deleted_values = ', '.join(str(e.value) for e in to_delete)
+
+            Error.objects.create(
+                message=f'Duplicate removed for {kept.stock.symbol} at {dup["timestamp"]}: '
+                        f'kept {kept.value} (id={kept.id}), '
+                        f'deleted {deleted_values}'[:500]
+            )
+
+            ShortPosition.objects.filter(id__in=[e.id for e in to_delete]).delete()
