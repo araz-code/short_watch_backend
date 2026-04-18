@@ -1,11 +1,9 @@
-import { useTranslation } from "react-i18next";
 import ShortSeller from "../models/ShortSeller";
 import ChangeIndicator from "./UI/ChangeIndicator";
 import { formatTimestamp } from "../utils/dates";
 
 const ShortSellerRow: React.FC<ShortSeller> = (props) => {
   const { name, current, previous, lastUpdated } = props;
-  const { t } = useTranslation();
 
   return (
     <div className="mx-2 my-1.5 px-4 py-4 rounded-lg bg-white dark:bg-[#1e1e1e] shadow-sm hover:shadow-md hover:-translate-y-px transition-all duration-200 dark:text-white border border-gray-100 dark:border-gray-800">
