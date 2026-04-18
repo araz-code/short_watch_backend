@@ -48,45 +48,31 @@ const HomePage: React.FC = () => {
           <Navigation />
 
           <main className="flex flex-col sm:flex-row sm:max-w-[1000px] sm:justify-end gap-10 sm:h-[80%] mt-14 px-5 self-center sm:px-[20px]">
-            <div className="flex flex-col justify-start sm:pt-6 sm:pb-0 text-white gap-4 sm:w-[410px] sm:mr-5">
-              <p className="text-2xl text-center sm:text-left sm:text-4xl font-bold">
+            <div className="flex flex-col justify-start sm:pt-6 sm:pb-0 text-white gap-5 sm:w-[430px] sm:mr-5">
+              <h1 className="text-3xl text-center sm:text-left sm:text-5xl tracking-tight">
                 Danish Short Watch
-              </p>
-              {/* <p className="text-red-600 font-semibold text-center sm:text-left text-sm sm:text-base">
-                {t("FSA website updated warning")}
-              </p> */}
-              <p className="sm:text-md text-wrap">
+              </h1>
+              <p className="text-base text-white/80 leading-relaxed">
                 {t(
                   "An elegant and simplified solution for accessing information on short positions in Danish stocks."
                 )}
               </p>
-              <p className="sm:text-md text-wrap">
+              <p className="text-sm text-white/60 leading-relaxed">
                 {t(
                   "Download the app from the App Store for iPhone, iPad, and Apple Watch, or access the web application."
                 )}
               </p>
 
-              {false && (
-                <p className="sm:text-md text-wrap text-black border border-gray-300 p-4 rounded-lg bg-white">
-                  <span className="font-bold text-blue-700">
-                    {t("NEWS 31-08-2024: ")}
-                  </span>
-                  {t(
-                    "A new service (Short Sellers) where you can get insight into hedge funds with significant short positions in Danish stocks (over 0.5%). You can see which positions they currently hold and which they have held historically."
-                  )}
-                </p>
-              )}
-
-              <div className="flex flex-wrap justify-center sm:justify-start mt-2 gap-4 align-stretch">
+              <div className="flex flex-wrap justify-center sm:justify-start mt-3 gap-3">
                 <a
                   href="https://apps.apple.com/dk/app/danish-short-watch/id6471075439"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-white bg-black border border-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2.5 flex items-center h-[45px]"
+                  className="text-white bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 focus:outline-none font-medium rounded-full text-sm px-5 py-2.5 flex items-center h-[45px] transition-all duration-200"
                   onClick={() => handleClick("app store clicked")}
                 >
                   <svg
-                    className="w-7 h-7 me-2 -ms-3"
+                    className="w-6 h-6 me-2"
                     aria-hidden="true"
                     focusable="false"
                     data-prefix="fab"
@@ -101,23 +87,23 @@ const HomePage: React.FC = () => {
                     ></path>
                   </svg>
                   <div className="text-left leading-4">
-                    <p className="text-[9px]">Available on the</p>
-                    <p className="text-[15px]">App Store</p>
+                    <p className="text-[9px] text-white/70">Available on the</p>
+                    <p className="text-[14px]">App Store</p>
                   </div>
                 </a>
 
                 <Link to="/short-watch">
                   <button
-                    className="text-white bg-blue-400 border border-white hover:bg-[#85C1E9] focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-2 py-2.5 flex items-center h-[45px]"
+                    className="text-white bg-blue-500 hover:bg-blue-400 focus:outline-none font-medium rounded-full text-sm px-5 py-2.5 flex items-center h-[45px] transition-all duration-200 shadow-lg shadow-blue-500/25"
                     onClick={() => handleClick("short watch web app clicked")}
                   >
                     <FontAwesomeIcon
-                      className="mr-2 text-2xl align-middle"
+                      className="mr-2 text-lg"
                       icon={faChartSimple}
                     />
                     Shorts
                     <FontAwesomeIcon
-                      className="ml-1 align-middle hidden sm:block"
+                      className="ml-2 text-sm hidden sm:block"
                       icon={faArrowRight}
                     />
                   </button>
@@ -125,16 +111,16 @@ const HomePage: React.FC = () => {
 
                 <Link to="/short-sellers">
                   <button
-                    className="text-white bg-indigo-400 border border-white hover:bg-[#85C1E9] focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-2 py-2.5 flex items-center h-[45px]"
+                    className="text-white bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 focus:outline-none font-medium rounded-full text-sm px-5 py-2.5 flex items-center h-[45px] transition-all duration-200"
                     onClick={() => handleClick("short sellers web app clicked")}
                   >
                     <FontAwesomeIcon
-                      className="mr-2 text-2xl align-middle"
+                      className="mr-2 text-lg"
                       icon={faPerson}
                     />
                     Sellers
                     <FontAwesomeIcon
-                      className="ml-1 align-middle hidden sm:block"
+                      className="ml-2 text-sm hidden sm:block"
                       icon={faArrowRight}
                     />
                   </button>
@@ -144,14 +130,14 @@ const HomePage: React.FC = () => {
             <AppImage />
           </main>
         </div>
-        <section className="text-gray-800 mt-10 sm:mt-14">
-          <p className="text-3xl sm:text-4xl font-bold text-center my-10 sm:my-0 text-gray-800 dark:text-white">
-            Features
+        <section className="mt-10 sm:mt-14">
+          <p className="text-sm uppercase tracking-widest text-center text-gray-400 dark:text-gray-500 font-medium mb-2">
+            {t("What you get")}
           </p>
         </section>
       </div>
 
-      <section className="flex flex-wrap gap-2 justify-center sm:mt-10 pb-[20px]">
+      <section className="flex flex-wrap gap-2 justify-center sm:mt-4 pb-[20px]">
         {cards.map((item) => (
           <Card
             icon={item.icon}
@@ -161,22 +147,14 @@ const HomePage: React.FC = () => {
           />
         ))}
       </section>
+
+      <div className="py-6 text-center">
+        <p className="text-xs text-gray-400 dark:text-gray-500">
+          &copy; {new Date().getFullYear()} Zirium. All rights reserved.
+        </p>
+      </div>
     </div>
   );
 };
 
 export default HomePage;
-
-/*
-   <a
-                  href="https://apps.apple.com/dk/app/danish-short-watch/id6471075439"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <img
-                    className="inline-block box-shadow-none m-2 h-10 "
-                    src={appStoreLogo}
-                    alt="Floating Image"
-                  />
-                </a>
-*/
