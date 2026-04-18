@@ -64,9 +64,9 @@ const Navigation: React.FC = () => {
 
   return (
     <>
-      <div className="relative z-30 flex justify-center pt-3 px-4">
+      <div className="relative z-30 flex justify-center md:pt-3 md:px-4">
         <nav
-          className={`w-full max-w-[900px] px-4 py-2 rounded-2xl ${navClasses}`}
+          className={`w-full max-w-[900px] px-4 py-2 md:rounded-2xl ${navClasses}`}
         >
           <div className="flex items-center justify-between">
             <Link
@@ -111,7 +111,7 @@ const Navigation: React.FC = () => {
                 className={`flex flex-col text-sm p-3 md:p-0 rounded-xl md:flex-row md:items-center md:gap-1 md:rounded-none ${
                   collapseMenu.mainMenu
                     ? ""
-                    : "bg-white dark:bg-[#1e1e1e] border border-gray-200 dark:border-gray-700 shadow-xl text-gray-800 dark:text-white md:bg-transparent md:dark:bg-transparent md:border-0 md:shadow-none md:text-white"
+                    : "bg-[#0d1b4c] border border-white/15 shadow-xl text-white md:bg-transparent md:border-0 md:shadow-none"
                 }`}
               >
                 <li>

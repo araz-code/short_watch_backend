@@ -214,6 +214,7 @@ const ShortWatchPage: React.FC = () => {
                   {t("You can get more details by clicking on a row")}
                 </p>
                 {content}
+                <div className="h-4"></div>
               </div>
             </section>
           </div>
