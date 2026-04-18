@@ -83,6 +83,8 @@ class Command(BaseCommand):
         self.fetch_large_short_selling()
         self.remove_duplicate_positions()
 
+        RunStatus.objects.filter(executed_at__lt=timezone.now() - timedelta(days=3)).delete()
+
         delete_old_logs()
         process_visits()
 
