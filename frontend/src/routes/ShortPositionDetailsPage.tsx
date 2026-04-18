@@ -185,7 +185,7 @@ const ShortPositionDetailsPage: React.FC = () => {
   } else if (data) {
     content = (
       <>
-        <div className="text-center pb-5 dark:text-white">
+        <div className="text-center pb-4 dark:text-white">
           <h1 className="text-xl">
             {data.historic.length > 0 && data.historic[0].name}
           </h1>
@@ -202,9 +202,10 @@ const ShortPositionDetailsPage: React.FC = () => {
               )}
             </div>
           )}
+          <div className="mt-3 mx-auto w-12 h-0.5 rounded-full bg-blue-500/40" />
         </div>
         <div className="">
-          <div className="mb-5">
+          <div className="mb-3">
             <div className="px-8 grid w-full place-content-end mb-1">
               <div className="overflow-x-auto w-full">
                 <ToggleSwitch
