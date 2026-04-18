@@ -23,7 +23,7 @@ class ShortPositionView(ReadOnlyModelViewSet):
         stocks_with_latest_timestamp = Stock.objects.filter(active=True)\
             .annotate(latest_timestamp=Max('shortposition__timestamp'))
 
-        most_recent_short_positions = ShortPosition.objects.filter(
+        most_recent_short_positions = ShortPosition.objects.select_related('stock').filter(
             stock__in=stocks_with_latest_timestamp,
             timestamp__in=stocks_with_latest_timestamp.values('latest_timestamp')
         )
@@ -70,8 +70,14 @@ class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
 
     def retrieve(self, request, code=None, *args, **kwargs):
         try:
-            stock = Stock.objects.prefetch_related('shortposition_set', 'shortpositionchart_set',
-                                                   'largeshortselling_set').get(code=code)
+            stock = Stock.objects.prefetch_related(
+                'shortposition_set',
+                'shortpositionchart_set',
+                Prefetch('largeshortselling_set',
+                         queryset=LargeShortSelling.objects.select_related('stock', 'short_seller')),
+                Prefetch('announcement_set',
+                         queryset=Announcement.objects.select_related('stock')),
+            ).get(code=code)
 
             historic = stock.shortposition_set.all().order_by('-timestamp')[:100]
 
