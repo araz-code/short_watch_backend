@@ -146,9 +146,9 @@ const PricePointChart: React.FC<{
         </svg>
       </button>
       <PricePointChartInfo pricePoints={pricePoints} symbol={symbol} />
-      <ResponsiveContainer width="100%" height={220}>
+      <ResponsiveContainer width="100%" height={290}>
         <ComposedChart
-          height={200}
+          height={270}
           data={pricePoints}
           margin={{
             top: 10,

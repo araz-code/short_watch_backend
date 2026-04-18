@@ -134,55 +134,62 @@ const ShortSellersPage: React.FC = () => {
             </div>
 
             <section className="w-full">
-              <div className="flex items-center gap-2 mx-2 mb-2">
-                <div className="relative flex-1">
-                  <div className="absolute inset-y-0 left-0 flex items-center ps-3 pointer-events-none">
-                    <svg
-                      className="w-4 h-4 text-gray-400 dark:text-gray-500"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                      />
-                    </svg>
-                  </div>
-                  <input
-                    type="search"
-                    id="search"
-                    placeholder={t("Search")}
-                    ref={searchElement}
-                    onChange={(event) => setSearchTerm(event.target.value)}
-                    className="w-full border border-gray-200 dark:border-gray-700 p-2 pl-9 rounded-lg focus:outline-none dark:bg-[#1e1e1e] dark:text-white"
-                  />
+              <div className="relative mx-2 flex items-center">
+                <div className="absolute inset-y-0 left-0 flex items-center ps-3 pointer-events-none">
+                  <svg
+                    className="w-4 h-4 text-gray-400 dark:text-gray-500"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                    />
+                  </svg>
                 </div>
-                <DropDownMenu
-                  options={options}
-                  selectedMenuItem={selectedSorting}
-                  onSelectMenuItemChange={setSelectedSorting}
+                <input
+                  type="search"
+                  id="search"
+                  placeholder={t("Search")}
+                  ref={searchElement}
+                  onChange={(event) => setSearchTerm(event.target.value)}
+                  className="flex-1 border border-gray-200 dark:border-gray-700 p-2 pl-9 rounded-lg focus:outline-none w-full dark:bg-[#1e1e1e] dark:text-white"
                 />
-                <button
-                  className="text-sm font-medium text-blue-500 hover:text-blue-600 whitespace-nowrap"
-                  onClick={() => {
-                    handleClick(
-                      `current changed: ${
-                        showCurrent ? t("All") : t("Current")
-                      }`
-                    );
-                    setShowCurrent(!showCurrent);
-                  }}
-                >
-                  {showCurrent ? t("All") : t("Current")}
-                </button>
+              </div>
+              <div className="p-2 pb-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <DropDownMenu
+                      options={options}
+                      selectedMenuItem={selectedSorting}
+                      onSelectMenuItemChange={setSelectedSorting}
+                    />
+                    <button
+                      className="text-blue-500 text-center font-medium align-middle bg-transparent border-none ml-5 hover:text-blue-700"
+                      onClick={() => {
+                        handleClick(
+                          `current changed: ${
+                            showCurrent ? t("All") : t("Current")
+                          }`
+                        );
+                        setShowCurrent(!showCurrent);
+                      }}
+                    >
+                      {showCurrent ? t("All") : t("Current")}
+                    </button>
+                  </div>
+                </div>
               </div>
 
-              <div className="overflow-y-auto min-h-[300px] h-[calc(100svh-15rem)] sm:h-[calc(100svh-15.3rem)]">
+              <div className="overflow-y-auto min-h-[300px] h-[calc(100svh-18.5rem)] sm:h-[calc(100svh-18.8rem)]">
+                <p className="text-xs pl-2 dark:text-white">
+                  {t("You can get more details by clicking on a row")}
+                </p>
                 {content}
               </div>
             </section>
