@@ -1,14 +1,14 @@
 from collections import namedtuple
 from datetime import timedelta, datetime, date
 
-from django.db.models import Max
+from django.db.models import Max, Prefetch
 from django.utils import timezone
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet, GenericViewSet
 from rest_framework_api_key.permissions import HasAPIKey
 
-from shorts.models import ShortPosition, Stock, LargeShortSelling, ShortPositionChart, ShortSeller
+from shorts.models import ShortPosition, Stock, LargeShortSelling, ShortPositionChart, ShortSeller, Announcement
 from shorts.serializers import ShortPositionSerializer, ShortSellerSerializerOld, ShortPositionDetailSerializer, \
     ShortSellerListSerializer, ShortSellerDetailSerializer
 
@@ -108,7 +108,10 @@ class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
 
 
 class ShortSellerView(ReadOnlyModelViewSet):
-    queryset = ShortSeller.objects.prefetch_related('large_short_sellings', 'announcements').filter(
+    queryset = ShortSeller.objects.prefetch_related(
+        Prefetch('large_short_sellings', queryset=LargeShortSelling.objects.select_related('stock', 'short_seller')),
+        Prefetch('announcements', queryset=Announcement.objects.select_related('stock')),
+    ).filter(
         announcements__isnull=False,
         announcements__is_cancellation=False,
     ).distinct().order_by('name')

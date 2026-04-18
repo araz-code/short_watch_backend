@@ -124,19 +124,19 @@ class ShortSellerListSerializer(serializers.ModelSerializer):
 
     @staticmethod
     def get_previous(obj):
-        current = set(obj.large_short_sellings.values_list('stock__symbol', flat=True))
+        current = set(ls.stock.symbol for ls in obj.large_short_sellings.all())
         all_symbols = set(
-            obj.announcements.exclude(
-                Q(headline__icontains="CANCELLATION") | Q(headline__icontains="CANCELLED")
-            ).values_list('stock__symbol', flat=True)
+            a.stock.symbol for a in obj.announcements.all()
+            if "CANCELLATION" not in a.headline and "CANCELLED" not in a.headline
         )
         previous = all_symbols - current
         return list(previous)
 
     @staticmethod
     def get_last_updated(obj):
-        latest_date = obj.announcements.order_by('-published_date').values_list('published_date', flat=True).first()
-        if latest_date:
+        announcements = obj.announcements.all()
+        if announcements:
+            latest_date = max(a.published_date for a in announcements)
             return latest_date.strftime('%Y-%m-%dT%H:%M:%S%z')
         return None
 
