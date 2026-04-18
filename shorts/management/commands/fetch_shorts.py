@@ -369,9 +369,9 @@ class Command(BaseCommand):
                                 alert=messaging.ApsAlert(
                                     loc_key='YOUR_WATCHLIST_WAS_UPDATED',
                                     loc_args=[', '.join([stock for stock in stocks_changed])]
-                                    if app_user.version in {'v16'} else None,
+                                    if app_user.version in {'v16', 'v17'} else None,
                                 ),
-                                badge=1 if app_user.version in {'v13', 'v14', 'v15', 'v16'} else 0,
+                                badge=1 if app_user.version in {'v13', 'v14', 'v15', 'v16', 'v17'} else 0,
                                 sound=None
                             )
                         )
