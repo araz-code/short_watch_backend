@@ -190,7 +190,7 @@ const ShortPositionDetailsPage: React.FC = () => {
             {data.historic.length > 0 && data.historic[0].name}
           </h1>
           {data.historic.length > 0 && (
-            <div className="flex items-center justify-center gap-2 mt-1">
+            <div className="hidden sm:flex items-center justify-center gap-2 mt-1">
               <span className="text-3xl font-bold tabular-nums">
                 {data.historic[0].value.toFixed(2)}%
               </span>

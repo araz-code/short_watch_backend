@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   CartesianGrid,
   Area,
@@ -72,6 +72,15 @@ const PricePointChart: React.FC<{
 }> = (props) => {
   const { data: pricePoints, symbol } = props;
   const { t } = useTranslation();
+  const getChartHeight = useCallback(() => window.innerWidth >= 640 ? 290 : 220, []);
+  const [chartHeight, setChartHeight] = useState(getChartHeight);
+
+  useEffect(() => {
+    const handleResize = () => setChartHeight(getChartHeight());
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [getChartHeight]);
+
   const [showClosingPrices, setShowClosingPrices] = useState<boolean>(() => {
     const savedShowClosingPrices = localStorage.getItem("showClosingPrices");
     return savedShowClosingPrices ? JSON.parse(savedShowClosingPrices) : true;
@@ -114,9 +123,9 @@ const PricePointChart: React.FC<{
 
   return (
     <div>
-      <ResponsiveContainer width="100%" height={290}>
+      <ResponsiveContainer width="100%" height={chartHeight}>
         <ComposedChart
-          height={270}
+          height={chartHeight - 20}
           data={pricePoints}
           margin={{
             top: 10,
