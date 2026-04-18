@@ -52,15 +52,11 @@ const Navigation: React.FC = () => {
     ? "bg-white/10 backdrop-blur-lg border border-white/15 shadow-lg shadow-black/5"
     : "bg-[#0d1b4c] shadow-lg shadow-black/10";
 
-  const linkClasses = `block px-3 py-1.5 rounded-full transition-all duration-200 ${
-    isHome
-      ? "text-white/70 hover:text-white hover:bg-white/10"
-      : "text-white/70 hover:text-white hover:bg-white/10"
-  }`;
+  const linkClasses =
+    "block px-3 py-1.5 rounded-full transition-all duration-200 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10 md:text-white/70 md:hover:text-white md:hover:bg-white/10 md:dark:text-white/70 md:dark:hover:text-white";
 
-  const activeLinkClasses = `block px-3 py-1.5 rounded-full ${
-    isHome ? "text-white bg-white/15" : "text-white bg-white/15"
-  }`;
+  const activeLinkClasses =
+    "block px-3 py-1.5 rounded-full text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 md:text-white md:bg-white/15 md:dark:text-white md:dark:bg-white/15";
 
   return (
     <>
@@ -111,7 +107,7 @@ const Navigation: React.FC = () => {
                 className={`flex flex-col text-sm p-3 md:p-0 rounded-xl md:flex-row md:items-center md:gap-1 md:rounded-none ${
                   collapseMenu.mainMenu
                     ? ""
-                    : "bg-[#0d1b4c] border border-white/15 shadow-xl text-white md:bg-transparent md:border-0 md:shadow-none"
+                    : "bg-white/95 dark:bg-[#1e1e1e]/95 backdrop-blur-lg border border-gray-200 dark:border-gray-700 shadow-xl text-gray-700 dark:text-gray-200 md:bg-transparent md:dark:bg-transparent md:backdrop-blur-none md:border-0 md:shadow-none md:text-white"
                 }`}
               >
                 <li>
