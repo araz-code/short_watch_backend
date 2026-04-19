@@ -44,7 +44,7 @@ const Navigation: React.FC = () => {
     "/terms-of-agreement",
   ].includes(location.pathname);
 
-  const isProductActive = ["/short-watch", "/short-sellers"].includes(
+  const isProductActive = ["/short-watch", "/short-sellers", "/top-lists"].includes(
     location.pathname
   );
 
@@ -196,6 +196,19 @@ const Navigation: React.FC = () => {
                           onClick={() => setCollapseMenu(defaultCollapseMenu)}
                         >
                           Short sellers
+                        </NavLink>
+                      </li>
+                      <li>
+                        <NavLink
+                          to="/top-lists"
+                          className={({ isActive }) =>
+                            `block px-4 py-2.5 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors ${
+                              isActive ? "text-blue-500 font-medium" : ""
+                            }`
+                          }
+                          onClick={() => setCollapseMenu(defaultCollapseMenu)}
+                        >
+                          Top lists
                         </NavLink>
                       </li>
                     </ul>

@@ -20,6 +20,7 @@ import { useCookies } from "react-cookie";
 import CookiePolicyPage from "./routes/CookiePolicyPage.tsx";
 import LargestSellersPage from "./routes/ShortSellersPage.tsx";
 import ShortSellerDetailsPage from "./routes/ShortSellerDetailsPage.tsx";
+import TopListsPage from "./routes/TopListsPage.tsx";
 
 type ConsentButtonProps = {
   onClick: () => void;
@@ -72,6 +73,10 @@ const router = createBrowserRouter([
   {
     path: "short-seller-details",
     element: <ShortSellerDetailsPage />,
+  },
+  {
+    path: "top-lists",
+    element: <TopListsPage />,
   },
 
   {

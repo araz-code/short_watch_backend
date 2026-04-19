@@ -12,6 +12,8 @@ import { useTranslation } from "react-i18next";
 import AppImage from "../components/Homepage/AppImage";
 import { useEffect } from "react";
 import { handleClick, sendCustomPageView } from "../analytics";
+import { useQuery } from "react-query";
+import { fetchStats, ShortStats } from "../apis/ShortPositionAPI";
 
 const cards = [
   {
@@ -36,6 +38,12 @@ const cards = [
 
 const HomePage: React.FC = () => {
   const { t } = useTranslation();
+
+  const { data: stats } = useQuery<ShortStats>({
+    queryKey: ["stats"],
+    staleTime: 60000,
+    queryFn: ({ signal }) => fetchStats({ signal }),
+  });
 
   useEffect(() => {
     sendCustomPageView("/", "home");
@@ -68,7 +76,7 @@ const HomePage: React.FC = () => {
                   href="https://apps.apple.com/dk/app/danish-short-watch/id6471075439"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-white bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 focus:outline-none font-medium rounded-full text-sm px-5 py-2.5 flex items-center h-[45px] transition-all duration-200"
+                  className="text-white bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 focus:ring-2 focus:ring-white/40 font-medium rounded-full text-sm px-5 py-2.5 flex items-center h-[45px] transition-all duration-200"
                   onClick={() => handleClick("app store clicked")}
                 >
                   <svg
@@ -94,7 +102,7 @@ const HomePage: React.FC = () => {
 
                 <Link to="/short-watch">
                   <button
-                    className="text-white bg-blue-500 hover:bg-blue-400 focus:outline-none font-medium rounded-full text-sm px-5 py-2.5 flex items-center h-[45px] transition-all duration-200 shadow-lg shadow-blue-500/25"
+                    className="text-white bg-blue-500 hover:bg-blue-400 focus:ring-2 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 flex items-center h-[45px] transition-all duration-200 shadow-lg shadow-blue-500/25"
                     onClick={() => handleClick("short watch web app clicked")}
                   >
                     <FontAwesomeIcon
@@ -111,7 +119,7 @@ const HomePage: React.FC = () => {
 
                 <Link to="/short-sellers">
                   <button
-                    className="text-white bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 focus:outline-none font-medium rounded-full text-sm px-5 py-2.5 flex items-center h-[45px] transition-all duration-200"
+                    className="text-white bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 focus:ring-2 focus:ring-white/40 font-medium rounded-full text-sm px-5 py-2.5 flex items-center h-[45px] transition-all duration-200"
                     onClick={() => handleClick("short sellers web app clicked")}
                   >
                     <FontAwesomeIcon
@@ -130,7 +138,58 @@ const HomePage: React.FC = () => {
             <AppImage />
           </main>
         </div>
-        <section className="mt-10 sm:mt-14">
+
+        {/* Live stats */}
+        {stats && (
+          <section className="py-10 sm:py-12">
+            <div className="max-w-[900px] mx-auto px-6">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-y-8 gap-x-6">
+                {stats.shortedCount > 0 && (
+                  <div className="text-center">
+                    <p className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white tabular-nums">
+                      {stats.shortedCount}
+                    </p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                      {t("Stocks shorted")}
+                    </p>
+                  </div>
+                )}
+                {stats.mostShorted && (
+                  <div className="text-center">
+                    <p className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white tabular-nums">
+                      {stats.mostShorted.value.toFixed(2)}%
+                    </p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                      {t("Most shorted")} · {stats.mostShorted.symbol}
+                    </p>
+                  </div>
+                )}
+                {stats.mostViewed && (
+                  <div className="text-center">
+                    <p className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
+                      {stats.mostViewed.symbol}
+                    </p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                      {t("Most popular")}
+                    </p>
+                  </div>
+                )}
+                {stats.mostFollowed && (
+                  <div className="text-center">
+                    <p className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
+                      {stats.mostFollowed.symbol}
+                    </p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                      {t("Most followed")}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </section>
+        )}
+
+        <section className={stats ? "" : "mt-10 sm:mt-14"}>
           <p className="text-sm uppercase tracking-widest text-center text-gray-400 dark:text-gray-500 font-medium mb-2">
             {t("What you get")}
           </p>

@@ -200,3 +200,65 @@ export async function fetchLargeShortSellerDetails({
 
   return shortDetails;
 }
+
+export interface ShortStats {
+  shortedCount: number;
+  mostShorted: { symbol: string; name: string; code: string; value: number } | null;
+  mostViewed: { symbol: string; name: string; code: string; views: number } | null;
+  mostFollowed: { symbol: string; name: string; code: string; followers: number } | null;
+}
+
+export interface TopListStock {
+  symbol: string;
+  name: string;
+  code: string;
+}
+
+export interface TopListShortedStock extends TopListStock {
+  value: number;
+}
+
+export interface TopListActiveStock extends TopListStock {
+  updates: number;
+}
+
+export interface TopLists {
+  mostViewed: TopListStock[];
+  mostFollowed: TopListStock[];
+  mostShorted: TopListShortedStock[];
+  mostActive: TopListActiveStock[];
+}
+
+export async function fetchTopLists({ signal }: { signal?: AbortSignal }): Promise<TopLists> {
+  const url = `${HOST}/${VERSION}/shorts/top-lists`;
+
+  const response = await fetch(url, {
+    signal,
+    headers: {
+      Authorization: `API-Key ${"CK1OkkoF.2t0M6oZMc186nNJFlZdNOMxWC0u3YCQ5"}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch top lists");
+  }
+
+  return response.json();
+}
+
+export async function fetchStats({ signal }: { signal?: AbortSignal }): Promise<ShortStats> {
+  const url = `${HOST}/${VERSION}/shorts/homepage-stats`;
+
+  const response = await fetch(url, {
+    signal,
+    headers: {
+      Authorization: `API-Key ${"CK1OkkoF.2t0M6oZMc186nNJFlZdNOMxWC0u3YCQ5"}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch stats");
+  }
+
+  return response.json();
+}

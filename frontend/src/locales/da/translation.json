@@ -159,6 +159,23 @@
     "What you get": "Hvad du får",
     "Danish Short Watch": "Danish Short Watch",
     "We'd love to hear from you": "Vi vil meget gerne høre fra dig",
-    "stocks": "aktier"
+    "stocks": "aktier",
+    "Stocks shorted": "Aktier shortet",
+    "Most shorted": "Mest shortet",
+    "Trending": "Populær",
+    "Most popular": "Mest populær",
+    "Top Lists": "Toplister",
+    "Based on activity from the last 30 days": "Baseret på aktivitet de seneste 30 dage",
+    "Most viewed": "Mest sete",
+    "Top 10 most viewed stocks this month": "Top 10 mest sete aktier denne måned",
+    "Top 10 most followed stocks by app users": "Top 10 mest fulgte aktier af app-brugere",
+    "Failed to fetch data.": "Kunne ikke hente data.",
+    "Most active": "Mest aktive",
+    "Top 10 highest short positions right now": "Top 10 højeste shortpositioner lige nu",
+    "Top 10 stocks with most position changes this month": "Top 10 aktier med flest positionsændringer denne måned",
+    "updates": "opdateringer",
+    "Most followed": "Mest fulgt",
+    "views": "visninger",
+    "followers": "følgere"
   }
 }
