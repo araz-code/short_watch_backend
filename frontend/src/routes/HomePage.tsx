@@ -6,7 +6,6 @@ import {
   faClockRotateLeft,
   faPerson,
   faArrowRight,
-  faRankingStar,
 } from "@fortawesome/free-solid-svg-icons";
 import Card from "../components/UI/Card";
 import { useTranslation } from "react-i18next";
