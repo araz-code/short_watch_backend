@@ -55,12 +55,6 @@ window.addEventListener("resize", () => {
   document.documentElement.style.setProperty("--vh", `${vh}px`);
 });
 
-const SuspenseWrap: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <Suspense fallback={<div className="grid place-items-center h-screen dark:bg-[#121212]"><LoadingIndicator /></div>}>
-    {children}
-  </Suspense>
-);
-
 const router = createBrowserRouter([
   {
     path: "/",
@@ -69,44 +63,43 @@ const router = createBrowserRouter([
   },
   {
     path: "short-watch",
-    element: <SuspenseWrap><ShortWatchPage /></SuspenseWrap>,
+    element: <ShortWatchPage />,
   },
   {
     path: "short-watch-details",
-    element: <SuspenseWrap><ShortPositionDetailsPage /></SuspenseWrap>,
+    element: <ShortPositionDetailsPage />,
   },
   {
     path: "short-sellers",
-    element: <SuspenseWrap><LargestSellersPage /></SuspenseWrap>,
+    element: <LargestSellersPage />,
   },
   {
     path: "short-seller-details",
-    element: <SuspenseWrap><ShortSellerDetailsPage /></SuspenseWrap>,
+    element: <ShortSellerDetailsPage />,
   },
   {
     path: "top-lists",
-    element: <SuspenseWrap><TopListsPage /></SuspenseWrap>,
+    element: <TopListsPage />,
   },
-
   {
     path: "privacy-policy",
-    element: <SuspenseWrap><PrivacyPolicyPage /></SuspenseWrap>,
+    element: <PrivacyPolicyPage />,
   },
   {
     path: "privatlivspolitik",
-    element: <SuspenseWrap><PrivacyPolicyPage /></SuspenseWrap>,
+    element: <PrivacyPolicyPage />,
   },
   {
     path: "cookie-policy",
-    element: <SuspenseWrap><CookiePolicyPage /></SuspenseWrap>,
+    element: <CookiePolicyPage />,
   },
   {
     path: "terms-of-agreement",
-    element: <SuspenseWrap><TermsOfAgreementPage /></SuspenseWrap>,
+    element: <TermsOfAgreementPage />,
   },
   {
     path: "aftalevilkaar",
-    element: <SuspenseWrap><TermsOfAgreementPage /></SuspenseWrap>,
+    element: <TermsOfAgreementPage />,
   },
   {
     path: "contact",
@@ -147,7 +140,9 @@ function App() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
+        <Suspense fallback={<div className="grid place-items-center h-screen dark:bg-[#121212]"><LoadingIndicator /></div>}>
+          <RouterProvider router={router} />
+        </Suspense>
         {showConsentDialog && (
           <ConsentDialog
             onClose={() => setShowConsentDialog(false)}
