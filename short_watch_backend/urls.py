@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include, re_path
+from django.http import HttpResponse
 from django.views.generic import TemplateView
 from django.views.static import serve
 
@@ -67,6 +68,30 @@ urlpatterns = [
          {'path': 'images/apple-touch-icon-152x152.png', 'document_root': settings.STATIC_ROOT}),
     path('apple-touch-icon-180x180.png', serve,
          {'path': 'images/apple-touch-icon-180x180.png', 'document_root': settings.STATIC_ROOT}),
+    path('robots.txt', lambda r: HttpResponse(
+        "User-agent: *\n"
+        "Allow: /\n"
+        "Disallow: /admin/\n"
+        "Disallow: /stats/\n"
+        "Disallow: /v*/\n"
+        "Disallow: /measurements/\n"
+        "\n",
+        content_type="text/plain"
+    )),
+    path('sitemap.xml', lambda r: HttpResponse(
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        '  <url><loc>https://www.zirium.dk/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>\n'
+        '  <url><loc>https://www.zirium.dk/short-watch</loc><changefreq>hourly</changefreq><priority>0.9</priority></url>\n'
+        '  <url><loc>https://www.zirium.dk/short-sellers</loc><changefreq>daily</changefreq><priority>0.8</priority></url>\n'
+        '  <url><loc>https://www.zirium.dk/top-lists</loc><changefreq>daily</changefreq><priority>0.7</priority></url>\n'
+        '  <url><loc>https://www.zirium.dk/contact</loc><changefreq>monthly</changefreq><priority>0.3</priority></url>\n'
+        '  <url><loc>https://www.zirium.dk/privacy-policy</loc><changefreq>yearly</changefreq><priority>0.2</priority></url>\n'
+        '  <url><loc>https://www.zirium.dk/cookie-policy</loc><changefreq>yearly</changefreq><priority>0.2</priority></url>\n'
+        '  <url><loc>https://www.zirium.dk/terms-of-agreement</loc><changefreq>yearly</changefreq><priority>0.2</priority></url>\n'
+        '</urlset>\n',
+        content_type="application/xml"
+    )),
     path('', TemplateView.as_view(template_name="index.html")),
     re_path(r'^(?:.*)/?$', TemplateView.as_view(template_name="index.html")),
 ]
