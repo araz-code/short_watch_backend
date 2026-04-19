@@ -17,7 +17,7 @@ import ChangeIndicator from "../components/UI/ChangeIndicator";
 import { useSEO } from "../utils/useSEO";
 
 const detailOptions = ["Historic data", "Largest sellers"];
-const periodOptions = ["1W", "1M", "3M", "6M", "YTD", "Max."];
+const periodOptions = ["1W", "1M", "3M", "6M", "YTD", "Max"];
 
 const processChartValues = (
   pricePoints: ChartPricePoint[],
@@ -84,7 +84,7 @@ const processChartValues = (
       return getFilteredDataByMonths(6);
     case "YTD":
       return getFilteredDataYTD();
-    case "Max.":
+    case "Max":
       return sortedChartData;
     default:
       throw new Error("Invalid period");
@@ -217,14 +217,12 @@ const ShortPositionDetailsPage: React.FC = () => {
         </div>
         <div className="">
           <div className="mb-3">
-            <div className="px-8 grid w-full place-content-end mb-1">
-              <div className="overflow-x-auto w-full">
-                <ToggleSwitch
-                  options={periodOptions}
-                  selectedOption={selectedPeriod}
-                  onSelectChange={setSelectedPeriod}
-                />
-              </div>
+            <div className="flex justify-end pr-5 mb-1">
+              <ToggleSwitch
+                options={periodOptions}
+                selectedOption={selectedPeriod}
+                onSelectChange={setSelectedPeriod}
+              />
             </div>
             {(() => {
               const chartData = processChartValues(data.chartValues, selectedPeriod);

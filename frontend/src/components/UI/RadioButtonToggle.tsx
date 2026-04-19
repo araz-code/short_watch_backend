@@ -8,29 +8,35 @@ const RadioButtonToggle: React.FC<{
   const { t } = useTranslation();
 
   return (
-    <div className="inline-flex rounded-full bg-gray-100 dark:bg-[#2a2a2a] p-0.5">
-      {options.map((option, index) => (
-        <label
-          key={option}
-          htmlFor={`${option}-${index}`}
-          className={`block text-xs-plus sm:text-sm cursor-pointer select-none rounded-full px-3 sm:px-4 py-1.5 text-center ${
-            selectedOption === option
-              ? "bg-blue-500 text-white font-medium shadow-sm"
-              : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
-          }`}
-        >
-          <input
-            type="radio"
-            name={`toggle-${options.join("-")}`}
-            id={`${option}-${index}`}
-            value={option}
-            className="hidden"
-            checked={selectedOption === option}
-            onChange={(event) => onSelectChange(event.target.value)}
-          />
-          {t(option)}
-        </label>
-      ))}
+    <div
+      role="radiogroup"
+      className="inline-flex items-center gap-4 text-[11px] font-medium tracking-wide uppercase"
+    >
+      {options.map((option, index) => {
+        const isSelected = selectedOption === option;
+        return (
+          <label
+            key={option}
+            htmlFor={`${option}-${index}`}
+            className={`cursor-pointer select-none border-b-2 pb-0.5 transition-colors duration-150 ${
+              isSelected
+                ? "text-blue-500 border-blue-500"
+                : "text-gray-400 dark:text-gray-500 border-transparent hover:text-gray-600 dark:hover:text-gray-300"
+            }`}
+          >
+            <input
+              type="radio"
+              name={`toggle-${options.join("-")}`}
+              id={`${option}-${index}`}
+              value={option}
+              className="sr-only"
+              checked={isSelected}
+              onChange={(event) => onSelectChange(event.target.value)}
+            />
+            {t(option)}
+          </label>
+        );
+      })}
     </div>
   );
 };
