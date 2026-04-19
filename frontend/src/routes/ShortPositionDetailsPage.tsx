@@ -217,35 +217,17 @@ const ShortPositionDetailsPage: React.FC = () => {
         </div>
         <div className="">
           <div className="mb-3">
-            <div className="flex justify-end pr-5 mb-1">
-              <ToggleSwitch
-                options={periodOptions}
-                selectedOption={selectedPeriod}
-                onSelectChange={setSelectedPeriod}
-              />
-            </div>
-            {(() => {
-              const chartData = processChartValues(data.chartValues, selectedPeriod);
-              const periodChange = chartData.length >= 2
-                ? chartData[chartData.length - 1].value - chartData[0].value
-                : null;
-              return (
-                <>
-                  {periodChange !== null && (
-                    <p className="text-center text-[11px] sm:text-xs mb-1 sm:mb-2">
-                      <span className={periodChange > 0 ? "text-red-500" : periodChange < 0 ? "text-emerald-500" : "text-gray-400"}>
-                        {periodChange > 0 ? "+" : ""}{periodChange.toFixed(2)}%
-                      </span>
-                      <span className="text-gray-400 dark:text-gray-500"> {t("in period")}</span>
-                    </p>
-                  )}
-                  <PricePointChart
-                    data={chartData}
-                    symbol={data.historic.length > 0 && data.historic[0].symbol}
-                  />
-                </>
-              );
-            })()}
+            <PricePointChart
+              data={processChartValues(data.chartValues, selectedPeriod)}
+              symbol={data.historic.length > 0 && data.historic[0].symbol}
+              periodControl={
+                <ToggleSwitch
+                  options={periodOptions}
+                  selectedOption={selectedPeriod}
+                  onSelectChange={setSelectedPeriod}
+                />
+              }
+            />
           </div>
           <div className="mb-4 flex justify-center gap-6 border-b border-gray-200 dark:border-gray-700">
             {detailOptions.map((option) => (

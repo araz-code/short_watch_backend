@@ -55,9 +55,15 @@ const CustomTooltip: React.FC<TooltipProps<ValueType, NameType>> = ({
 const PricePointChart: React.FC<{
   data: ChartPricePoint[];
   symbol: string;
+  periodControl?: React.ReactNode;
 }> = (props) => {
-  const { data: pricePoints, symbol } = props;
+  const { data: pricePoints, symbol, periodControl } = props;
   const { t } = useTranslation();
+
+  const periodChange =
+    pricePoints.length >= 2
+      ? pricePoints[pricePoints.length - 1].value - pricePoints[0].value
+      : null;
   const getChartHeight = useCallback(
     () => (window.innerWidth >= 640 ? 290 : 180),
     []
@@ -116,6 +122,63 @@ const PricePointChart: React.FC<{
 
   return (
     <div>
+      <div className="flex items-center justify-between px-5 mb-1">
+        <div className="flex items-center gap-2">
+          <button
+            onClick={toggleClosingPrices}
+            className={`w-7 h-7 rounded-lg border flex justify-center items-center cursor-pointer transition-all duration-200 focus:ring-2 focus:ring-purple-300 ${
+              showClosingPrices
+                ? "bg-purple-50 dark:bg-purple-900/20 border-purple-200 dark:border-purple-800 text-purple-600 dark:text-purple-400"
+                : "bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-400 dark:text-gray-500"
+            }`}
+            aria-label={
+              showClosingPrices
+                ? t("Hide closing prices")
+                : t("Show closing prices")
+            }
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              viewBox="0 0 24 24"
+            >
+              <line x1="4" y1="18" x2="4" y2="12" />
+              <line x1="8" y1="18" x2="8" y2="9" />
+              <line x1="12" y1="18" x2="12" y2="6" />
+              <line x1="16" y1="18" x2="16" y2="10" />
+              <line x1="20" y1="18" x2="20" y2="8" />
+            </svg>
+          </button>
+          <PricePointChartInfo pricePoints={pricePoints} symbol={symbol} />
+        </div>
+        {periodControl}
+      </div>
+      {periodChange !== null && (
+        <p className="text-center text-[11px] sm:text-xs mb-1 sm:mb-2">
+          <span
+            className={
+              periodChange > 0
+                ? "text-red-500"
+                : periodChange < 0
+                ? "text-emerald-500"
+                : "text-gray-400"
+            }
+          >
+            {periodChange > 0 ? "+" : ""}
+            {periodChange.toFixed(2)}%
+          </span>
+          <span className="text-gray-400 dark:text-gray-500">
+            {" "}
+            {t("in period")}
+          </span>
+        </p>
+      )}
       <ResponsiveContainer width="100%" height={chartHeight}>
         <ComposedChart
           data={pricePoints}
@@ -245,8 +308,8 @@ const PricePointChart: React.FC<{
         </ComposedChart>
       </ResponsiveContainer>
 
-      {/* Controls + Legend */}
-      <div className="flex items-center justify-between px-5 mt-2">
+      {/* Legend */}
+      <div className="flex items-center px-5 mt-2">
         <div className="flex items-center gap-3 text-xs text-gray-400 dark:text-gray-500">
           <span className="flex items-center gap-1.5">
             <span className="w-3 h-[3px] rounded-full bg-[#007AFF] inline-block" />
@@ -264,40 +327,6 @@ const PricePointChart: React.FC<{
               </span>
             </>
           )}
-        </div>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={toggleClosingPrices}
-            className={`w-7 h-7 rounded-lg border flex justify-center items-center cursor-pointer transition-all duration-200 focus:ring-2 focus:ring-purple-300 ${
-              showClosingPrices
-                ? "bg-purple-50 dark:bg-purple-900/20 border-purple-200 dark:border-purple-800 text-purple-600 dark:text-purple-400"
-                : "bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-400 dark:text-gray-500"
-            }`}
-            aria-label={
-              showClosingPrices
-                ? t("Hide closing prices")
-                : t("Show closing prices")
-            }
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="14"
-              height="14"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              viewBox="0 0 24 24"
-            >
-              <line x1="4" y1="18" x2="4" y2="12" />
-              <line x1="8" y1="18" x2="8" y2="9" />
-              <line x1="12" y1="18" x2="12" y2="6" />
-              <line x1="16" y1="18" x2="16" y2="10" />
-              <line x1="20" y1="18" x2="20" y2="8" />
-            </svg>
-          </button>
-          <PricePointChartInfo pricePoints={pricePoints} symbol={symbol} />
         </div>
       </div>
     </div>
