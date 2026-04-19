@@ -211,7 +211,7 @@ const ShortPositionDetailsPage: React.FC = () => {
             </div>
           )}
           {(data.percentileAllTime != null || data.velocity7d != null) && (
-            <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-0.5 tabular-nums">
+            <p className="text-[11px] sm:text-xs text-gray-500 dark:text-gray-400 mt-0.5 tabular-nums">
               {data.percentileAllTime != null && (
                 <span className="text-yellow-500 dark:text-yellow-400 font-semibold">
                   {Math.round(data.percentileAllTime)}{t("th percentile")}
@@ -225,7 +225,7 @@ const ShortPositionDetailsPage: React.FC = () => {
               )}
             </p>
           )}
-          <p className="text-xs sm:text-sm text-gray-400 dark:text-gray-500 mt-0.5 tabular-nums">
+          <p className="text-[11px] sm:text-xs text-gray-400 dark:text-gray-500 mt-0.5 tabular-nums">
             {data.sellers ? data.sellers.length : 0} {(data.sellers?.length ?? 0) === 1 ? t("large seller") : t("large sellers")}
             {(data.sellers?.length ?? 0) > 0 && (
               <>
