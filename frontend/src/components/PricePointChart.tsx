@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import {
   CartesianGrid,
   Area,
+  Bar,
   XAxis,
   YAxis,
   Tooltip,
@@ -34,9 +35,14 @@ const CustomTooltip: React.FC<TooltipProps<ValueType, NameType>> = ({
         <p className="text-center font-bold text-lg tabular-nums">{`${(+(
           payload[0].value ?? 0
         )).toFixed(2)}%`}</p>
-        {payload[1] && (
+        {payload[1] && payload[1].value != null && (
           <p className="text-center text-sm text-purple-500 dark:text-purple-400 mt-0.5 tabular-nums">
             {`${(+(payload[1].value ?? 0)).toFixed(2)} DKK`}
+          </p>
+        )}
+        {payload[2] && payload[2].value != null && (
+          <p className="text-center text-xs text-gray-400 dark:text-gray-500 mt-0.5 tabular-nums">
+            {`Vol: ${Number(payload[2].value).toLocaleString()}`}
           </p>
         )}
       </div>
@@ -88,6 +94,10 @@ const PricePointChart: React.FC<{
   minPriceY = minPriceY - minPriceY * 0.003;
 
   if (minY < 0.3) minY = 0;
+
+  const maxVolume = pricePoints
+    .filter((x) => x.volume)
+    .reduce((max, point) => Math.max(max, point.volume ?? 0), 0);
 
   const toggleClosingPrices = () => {
     setShowClosingPrices((prevValue) => {
@@ -214,6 +224,24 @@ const PricePointChart: React.FC<{
               strokeOpacity={0.8}
             />
           )}
+          {showClosingPrices && maxVolume > 0 && (
+            <>
+              <YAxis
+                dataKey="volume"
+                yAxisId="3"
+                hide
+                domain={[0, maxVolume * 5]}
+              />
+              <Bar
+                dataKey="volume"
+                yAxisId="3"
+                fill="#9ca3af"
+                opacity={0.3}
+                isAnimationActive={false}
+                name={t("Volume")}
+              />
+            </>
+          )}
         </ComposedChart>
       </ResponsiveContainer>
 
@@ -225,10 +253,16 @@ const PricePointChart: React.FC<{
             {t("Short position")}
           </span>
           {showClosingPrices && (
-            <span className="flex items-center gap-1.5">
-              <span className="w-3 h-[3px] rounded-full bg-[#a855f7] inline-block" />
-              {t("Closing price")}
-            </span>
+            <>
+              <span className="flex items-center gap-1.5">
+                <span className="w-3 h-[3px] rounded-full bg-[#a855f7] inline-block" />
+                {t("Closing price")}
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="w-3 h-2 rounded-sm bg-gray-300 dark:bg-gray-600 inline-block" />
+                {t("Volume")}
+              </span>
+            </>
           )}
         </div>
         <div className="flex items-center gap-2">
