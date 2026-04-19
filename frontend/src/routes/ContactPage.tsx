@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import PageTemplate from "../components/PageTemplate";
-import image from "../static/mail-bird.png";
+import image from "../static/mail-bird.webp";
 import { useEffect } from "react";
 import { sendCustomPageView } from "../analytics";
 

@@ -1,26 +1,29 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { QueryClientProvider } from "react-query";
+import { lazy, Suspense, useEffect, useState } from "react";
 
 import HomePage from "./routes/HomePage.tsx";
 import ErrorPage from "./routes/ErrorPage.tsx";
-import PrivacyPolicyPage from "./routes/PrivacyPolicyPage.tsx";
-import TermsOfAgreementPage from "./routes/TermsOfAgreementPage.tsx";
-import ShortWatchPage from "./routes/ShortWatchPage.tsx";
 import { queryClient, statusCheck } from "./apis/ShortPositionAPI.tsx";
-import ShortPositionDetailsPage from "./routes/ShortPositionDetailsPage.tsx";
 import "./utils/i18n.ts";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCookieBite } from "@fortawesome/free-solid-svg-icons";
-import ContactPage from "./routes/ContactPage.tsx";
-import { useEffect, useState } from "react";
 import ConsentDialog from "./components/ConsentDialog.tsx";
 import { handleClick, initializeAnalytics } from "./analytics.tsx";
 import { useCookies } from "react-cookie";
-import CookiePolicyPage from "./routes/CookiePolicyPage.tsx";
-import LargestSellersPage from "./routes/ShortSellersPage.tsx";
-import ShortSellerDetailsPage from "./routes/ShortSellerDetailsPage.tsx";
-import TopListsPage from "./routes/TopListsPage.tsx";
+import LoadingIndicator from "./components/UI/LoadingIndicator.tsx";
+
+// Lazy loaded routes
+const ShortWatchPage = lazy(() => import("./routes/ShortWatchPage.tsx"));
+const ShortPositionDetailsPage = lazy(() => import("./routes/ShortPositionDetailsPage.tsx"));
+const LargestSellersPage = lazy(() => import("./routes/ShortSellersPage.tsx"));
+const ShortSellerDetailsPage = lazy(() => import("./routes/ShortSellerDetailsPage.tsx"));
+const TopListsPage = lazy(() => import("./routes/TopListsPage.tsx"));
+const ContactPage = lazy(() => import("./routes/ContactPage.tsx"));
+const PrivacyPolicyPage = lazy(() => import("./routes/PrivacyPolicyPage.tsx"));
+const TermsOfAgreementPage = lazy(() => import("./routes/TermsOfAgreementPage.tsx"));
+const CookiePolicyPage = lazy(() => import("./routes/CookiePolicyPage.tsx"));
 
 type ConsentButtonProps = {
   onClick: () => void;
@@ -52,6 +55,12 @@ window.addEventListener("resize", () => {
   document.documentElement.style.setProperty("--vh", `${vh}px`);
 });
 
+const SuspenseWrap: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <Suspense fallback={<div className="grid place-items-center h-screen dark:bg-[#121212]"><LoadingIndicator /></div>}>
+    {children}
+  </Suspense>
+);
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -60,44 +69,44 @@ const router = createBrowserRouter([
   },
   {
     path: "short-watch",
-    element: <ShortWatchPage />,
+    element: <SuspenseWrap><ShortWatchPage /></SuspenseWrap>,
   },
   {
     path: "short-watch-details",
-    element: <ShortPositionDetailsPage />,
+    element: <SuspenseWrap><ShortPositionDetailsPage /></SuspenseWrap>,
   },
   {
     path: "short-sellers",
-    element: <LargestSellersPage />,
+    element: <SuspenseWrap><LargestSellersPage /></SuspenseWrap>,
   },
   {
     path: "short-seller-details",
-    element: <ShortSellerDetailsPage />,
+    element: <SuspenseWrap><ShortSellerDetailsPage /></SuspenseWrap>,
   },
   {
     path: "top-lists",
-    element: <TopListsPage />,
+    element: <SuspenseWrap><TopListsPage /></SuspenseWrap>,
   },
 
   {
     path: "privacy-policy",
-    element: <PrivacyPolicyPage />,
+    element: <SuspenseWrap><PrivacyPolicyPage /></SuspenseWrap>,
   },
   {
     path: "privatlivspolitik",
-    element: <PrivacyPolicyPage />,
+    element: <SuspenseWrap><PrivacyPolicyPage /></SuspenseWrap>,
   },
   {
     path: "cookie-policy",
-    element: <CookiePolicyPage />,
+    element: <SuspenseWrap><CookiePolicyPage /></SuspenseWrap>,
   },
   {
     path: "terms-of-agreement",
-    element: <TermsOfAgreementPage />,
+    element: <SuspenseWrap><TermsOfAgreementPage /></SuspenseWrap>,
   },
   {
     path: "aftalevilkaar",
-    element: <TermsOfAgreementPage />,
+    element: <SuspenseWrap><TermsOfAgreementPage /></SuspenseWrap>,
   },
   {
     path: "contact",
