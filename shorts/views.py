@@ -265,10 +265,7 @@ def stats_view(request):
         }
         cache.set('homepage_stats', data, 300)
         return Response(data)
-    except Exception as e:
-        import traceback
-        print("stats_view ERROR:", repr(e))
-        traceback.print_exc()
+    except Exception:
         return Response({
             'shortedCount': 0,
             'shortedCountDelta': None,
