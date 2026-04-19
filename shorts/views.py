@@ -203,7 +203,7 @@ def stats_view(request):
         most_shorted_prev_value = None
         if most_shorted:
             prev_pos = ShortPosition.objects.filter(
-                stock_id=most_shorted.id,
+                stock=most_shorted,
                 timestamp__lt=seven_days_ago,
             ).order_by('-timestamp').first()
             if prev_pos:
