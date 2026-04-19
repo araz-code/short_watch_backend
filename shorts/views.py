@@ -173,6 +173,7 @@ def stats_view(request):
         shorted_count = 0
         most_shorted = None
         most_shorted_value = 0
+        latest_update = None
         for entry in latest_positions:
             pos = ShortPosition.objects.select_related('stock').filter(
                 stock_id=entry['stock'], timestamp=entry['latest']
@@ -182,6 +183,31 @@ def stats_view(request):
                 if pos.value > most_shorted_value:
                     most_shorted_value = pos.value
                     most_shorted = pos.stock
+                if latest_update is None or pos.timestamp > latest_update:
+                    latest_update = pos.timestamp
+
+        # 1b. Deltas vs. 7 days ago (freshness signal — works with daily-ish updates)
+        seven_days_ago = timezone.now() - timedelta(days=7)
+        prev_latest_positions = ShortPosition.objects.filter(
+            stock__active=True,
+            timestamp__lt=seven_days_ago,
+        ).values('stock').annotate(latest=Max('timestamp'))
+        prev_shorted_count = 0
+        for entry in prev_latest_positions:
+            pos = ShortPosition.objects.filter(
+                stock_id=entry['stock'], timestamp=entry['latest']
+            ).first()
+            if pos and pos.value > 0:
+                prev_shorted_count += 1
+
+        most_shorted_prev_value = None
+        if most_shorted:
+            prev_pos = ShortPosition.objects.filter(
+                stock_id=most_shorted.id,
+                timestamp__lt=seven_days_ago,
+            ).order_by('-timestamp').first()
+            if prev_pos:
+                most_shorted_prev_value = prev_pos.value
 
         # 2. Most viewed detail page in last month
         one_month_ago = timezone.now() - timedelta(days=30)
@@ -215,11 +241,13 @@ def stats_view(request):
 
         data = {
             'shortedCount': shorted_count,
+            'shortedCountDelta': (shorted_count - prev_shorted_count) if prev_shorted_count else None,
             'mostShorted': {
                 'symbol': most_shorted.symbol,
                 'name': most_shorted.name,
                 'code': most_shorted.code,
                 'value': most_shorted_value,
+                'prevValue': most_shorted_prev_value,
             } if most_shorted else None,
             'mostViewed': {
                 'symbol': most_viewed_stock.symbol,
@@ -233,15 +261,18 @@ def stats_view(request):
                 'code': most_followed.code,
                 'followers': most_followed.follower_count,
             } if most_followed and most_followed.follower_count > 0 else None,
+            'updatedAt': latest_update.isoformat() if latest_update else None,
         }
         cache.set('homepage_stats', data, 300)
         return Response(data)
     except Exception:
         return Response({
             'shortedCount': 0,
+            'shortedCountDelta': None,
             'mostShorted': None,
             'mostViewed': None,
             'mostFollowed': None,
+            'updatedAt': None,
         })
 
 

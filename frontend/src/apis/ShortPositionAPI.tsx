@@ -203,9 +203,11 @@ export async function fetchLargeShortSellerDetails({
 
 export interface ShortStats {
   shortedCount: number;
-  mostShorted: { symbol: string; name: string; code: string; value: number } | null;
+  shortedCountDelta?: number | null;
+  mostShorted: { symbol: string; name: string; code: string; value: number; prevValue?: number | null } | null;
   mostViewed: { symbol: string; name: string; code: string; views: number } | null;
   mostFollowed: { symbol: string; name: string; code: string; followers: number } | null;
+  updatedAt?: string | null;
 }
 
 export interface TopListStock {

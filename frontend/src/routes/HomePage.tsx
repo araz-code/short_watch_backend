@@ -15,6 +15,7 @@ import { handleClick, sendCustomPageView } from "../analytics";
 import { useSEO } from "../utils/useSEO";
 import { useQuery } from "react-query";
 import { fetchStats, ShortStats } from "../apis/ShortPositionAPI";
+import { formatTimestamp } from "../utils/dates";
 
 const cards = [
   {
@@ -192,7 +193,7 @@ const HomePage: React.FC = () => {
         {stats && (
           <section className="py-10 sm:py-12">
             <div className="max-w-[900px] mx-auto px-6">
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-y-8 gap-x-6">
+              <div className="grid grid-cols-3 gap-y-8 gap-x-4 sm:gap-x-6">
                 {stats.shortedCount > 0 && (
                   <div className="text-center">
                     <p className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white tabular-nums">
@@ -201,6 +202,18 @@ const HomePage: React.FC = () => {
                     <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                       {t("Stocks shorted")}
                     </p>
+                    {stats.shortedCountDelta != null && stats.shortedCountDelta !== 0 && (
+                      <p
+                        className={`text-[11px] mt-1 tabular-nums ${
+                          stats.shortedCountDelta > 0
+                            ? "text-red-500"
+                            : "text-emerald-500"
+                        }`}
+                      >
+                        {stats.shortedCountDelta > 0 ? "+" : ""}
+                        {stats.shortedCountDelta} {t("vs. 7d")}
+                      </p>
+                    )}
                   </div>
                 )}
                 {stats.mostShorted && (
@@ -211,6 +224,20 @@ const HomePage: React.FC = () => {
                     <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                       {t("Most shorted")} · {stats.mostShorted.symbol}
                     </p>
+                    {stats.mostShorted.prevValue != null && (() => {
+                      const diff = stats.mostShorted!.value - stats.mostShorted!.prevValue!;
+                      if (Math.abs(diff) < 0.01) return null;
+                      return (
+                        <p
+                          className={`text-[11px] mt-1 tabular-nums ${
+                            diff > 0 ? "text-red-500" : "text-emerald-500"
+                          }`}
+                        >
+                          {diff > 0 ? "+" : ""}
+                          {diff.toFixed(2)}% {t("vs. 7d")}
+                        </p>
+                      );
+                    })()}
                   </div>
                 )}
                 {stats.mostViewed && (
@@ -219,21 +246,16 @@ const HomePage: React.FC = () => {
                       {stats.mostViewed.symbol}
                     </p>
                     <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                      {t("Most popular")}
-                    </p>
-                  </div>
-                )}
-                {stats.mostFollowed && (
-                  <div className="text-center">
-                    <p className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
-                      {stats.mostFollowed.symbol}
-                    </p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                      {t("Most followed")}
+                      {t("Most viewed")}
                     </p>
                   </div>
                 )}
               </div>
+              {stats.updatedAt && (
+                <p className="text-center text-xs text-gray-400 dark:text-gray-500 mt-6">
+                  {t("Updated")} {formatTimestamp(stats.updatedAt, "dateAndTime")}
+                </p>
+              )}
             </div>
           </section>
         )}
