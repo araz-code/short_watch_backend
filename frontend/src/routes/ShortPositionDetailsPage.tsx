@@ -193,13 +193,13 @@ const ShortPositionDetailsPage: React.FC = () => {
   } else if (data) {
     content = (
       <>
-        <div className="text-center pb-3 sm:pb-4 dark:text-white">
+        <div className="text-center pb-5 sm:pb-6 dark:text-white">
           <h1 className="text-base sm:text-xl">
             {data.historic.length > 0 && data.historic[0].name}
           </h1>
           {data.historic.length > 0 && (
             <div className="flex items-center justify-center gap-2 mt-1">
-              <span className="text-2xl sm:text-3xl font-bold tabular-nums leading-none">
+              <span className="text-xl sm:text-2xl font-bold tabular-nums leading-none">
                 {data.historic[0].value.toFixed(2)}%
               </span>
               {data.historic.length > 1 && (
@@ -210,10 +210,23 @@ const ShortPositionDetailsPage: React.FC = () => {
               )}
             </div>
           )}
-          <p className="text-[11px] sm:text-xs text-gray-400 dark:text-gray-500 mt-1">
+          {(data.percentileAllTime != null || data.velocity7d != null) && (
+            <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-0.5 tabular-nums">
+              {data.percentileAllTime != null && (
+                <>{Math.round(data.percentileAllTime)}{t("th percentile all-time")}</>
+              )}
+              {data.percentileAllTime != null && data.velocity7d != null && " · "}
+              {data.velocity7d != null && (
+                <>{data.velocity7d >= 0 ? "+" : ""}{data.velocity7d.toFixed(2)}% 7d</>
+              )}
+            </p>
+          )}
+          <p className="text-xs sm:text-sm text-gray-400 dark:text-gray-500 mt-0.5 tabular-nums">
             {data.sellers ? data.sellers.length : 0} {(data.sellers?.length ?? 0) === 1 ? t("large seller") : t("large sellers")}
+            {(data.sellers?.length ?? 0) > 0 && (
+              <> · {(data.sellers as { value: number }[]).reduce((sum, s) => sum + (s.value ?? 0), 0).toFixed(2)}% {t("combined")}</>
+            )}
           </p>
-          <div className="mt-2 sm:mt-3 mx-auto w-12 h-0.5 rounded-full bg-blue-500/40" />
         </div>
         <div className="">
           <div className="mb-3">
