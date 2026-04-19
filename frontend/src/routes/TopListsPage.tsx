@@ -110,7 +110,7 @@ const TopListsPage: React.FC = () => {
         />
         <RankList
           title={t("Most position changes")}
-          subtitle={t("Top 10 stocks with most position changes this month")}
+          subtitle={t("Top 10 stocks with most position changes in the last 30 days")}
           items={data.mostActive}
           renderExtra={(stock) => (
             <span className="text-xs text-gray-400 dark:text-gray-500 tabular-nums shrink-0">
