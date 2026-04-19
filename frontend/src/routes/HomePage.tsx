@@ -22,19 +22,19 @@ const cards = [
     icon: faChartSimple,
     title: "Personal list",
     content:
-      "Build your own watchlist by selecting shorted Danish stocks that capture your interest or that you have in your portfolio.",
+      "Build a watchlist of the Danish stocks you care about.",
   },
   {
     icon: faClockRotateLeft,
     title: "Historic data",
     content:
-      "Delve into the historical data of short positions for Danish stocks, presented in both tabular formats and visualized through comprehensive charts.",
+      "Explore short positions over time — tables and charts included.",
   },
   {
     icon: faPerson,
     title: "Short sellers",
     content:
-      "See a list of short sellers who hold positions equal to or exceeding 0.50% for a given Danish stock.",
+      "See every short seller holding 0.50% or more in a given stock.",
   },
 ];
 
@@ -242,14 +242,17 @@ const HomePage: React.FC = () => {
           </section>
         )}
 
-        <section className={stats ? "" : "mt-10 sm:mt-14"}>
-          <p className="text-sm uppercase tracking-widest text-center text-gray-400 dark:text-gray-500 font-medium mb-2">
+        <section className={stats ? "mt-4" : "mt-10 sm:mt-14"}>
+          <p className="text-xs uppercase tracking-widest text-center text-blue-500 dark:text-blue-400 font-semibold mb-3">
             {t("What you get")}
           </p>
+          <h2 className="text-2xl sm:text-3xl font-semibold text-center text-gray-900 dark:text-white tracking-tight max-w-[600px] mx-auto px-4">
+            {t("Everything you need to track Danish short positions")}
+          </h2>
         </section>
       </div>
 
-      <section className="flex flex-wrap gap-2 justify-center sm:mt-4 pb-[20px]">
+      <section className="flex flex-wrap gap-2 justify-center mt-8 sm:mt-10 pb-[20px]">
         {cards.map((item) => (
           <Card
             icon={item.icon}
@@ -260,11 +263,27 @@ const HomePage: React.FC = () => {
         ))}
       </section>
 
-      <div className="py-6 text-center">
-        <p className="text-xs text-gray-400 dark:text-gray-500">
-          &copy; {new Date().getFullYear()} Zirium. All rights reserved.
-        </p>
-      </div>
+      <footer className="border-t border-gray-100 dark:border-gray-800 mt-4">
+        <div className="max-w-[1000px] mx-auto px-6 py-8 flex flex-col sm:flex-row items-center sm:justify-between gap-4">
+          <p className="text-xs text-gray-400 dark:text-gray-500 order-2 sm:order-1">
+            &copy; {new Date().getFullYear()} Zirium. All rights reserved.
+          </p>
+          <nav className="flex flex-wrap justify-center gap-x-5 gap-y-2 text-xs text-gray-500 dark:text-gray-400 order-1 sm:order-2">
+            <Link to="/privacy-policy" className="hover:text-gray-900 dark:hover:text-white transition-colors">
+              {t("Privacy")}
+            </Link>
+            <Link to="/terms-of-agreement" className="hover:text-gray-900 dark:hover:text-white transition-colors">
+              {t("Terms")}
+            </Link>
+            <Link to="/cookie-policy" className="hover:text-gray-900 dark:hover:text-white transition-colors">
+              {t("Cookies")}
+            </Link>
+            <Link to="/contact" className="hover:text-gray-900 dark:hover:text-white transition-colors">
+              {t("Contact")}
+            </Link>
+          </nav>
+        </div>
+      </footer>
     </div>
   );
 };
