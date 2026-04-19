@@ -213,9 +213,11 @@ const ShortPositionDetailsPage: React.FC = () => {
           {(data.percentileAllTime != null || data.velocity7d != null) && (
             <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-0.5 tabular-nums">
               {data.percentileAllTime != null && (
-                <>{Math.round(data.percentileAllTime)}{t("th percentile all-time")}</>
+                <>{Math.round(data.percentileAllTime)}{t("th percentile")}</>
               )}
-              {data.percentileAllTime != null && data.velocity7d != null && " · "}
+              {data.percentileAllTime != null && data.velocity7d != null && (
+                <span className="inline-block w-px h-3 mx-2 bg-gray-300 dark:bg-gray-600 align-middle" />
+              )}
               {data.velocity7d != null && (
                 <>{data.velocity7d >= 0 ? "+" : ""}{data.velocity7d.toFixed(2)}% 7d</>
               )}
@@ -224,7 +226,10 @@ const ShortPositionDetailsPage: React.FC = () => {
           <p className="text-xs sm:text-sm text-gray-400 dark:text-gray-500 mt-0.5 tabular-nums">
             {data.sellers ? data.sellers.length : 0} {(data.sellers?.length ?? 0) === 1 ? t("large seller") : t("large sellers")}
             {(data.sellers?.length ?? 0) > 0 && (
-              <> · {(data.sellers as { value: number }[]).reduce((sum, s) => sum + (s.value ?? 0), 0).toFixed(2)}% {t("combined")}</>
+              <>
+                <span className="inline-block w-px h-3 mx-2 bg-gray-300 dark:bg-gray-600 align-middle" />
+                {(data.sellers as { value: number }[]).reduce((sum, s) => sum + (s.value ?? 0), 0).toFixed(2)}% {t("combined")}
+              </>
             )}
           </p>
           <div className="mt-2 sm:mt-3 mx-auto w-12 h-0.5 rounded-full bg-blue-500/40" />
@@ -248,7 +253,7 @@ const ShortPositionDetailsPage: React.FC = () => {
               <button
                 key={option}
                 onClick={() => setSelectedDetailOption(option)}
-                className={`pb-2 text-sm font-medium transition-colors duration-200 border-b-2 -mb-px ${
+                className={`pb-2 text-xs sm:text-sm font-medium transition-colors duration-200 border-b-2 -mb-px ${
                   selectedDetailOption === option
                     ? "border-blue-500 text-blue-600 dark:text-blue-400"
                     : "border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
