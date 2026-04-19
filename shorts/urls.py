@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework import routers
 
-from shorts.views import ShortPositionView, OldShortSellerView, ShortPositionDetailView, ShortSellerView
+from shorts.views import ShortPositionView, OldShortSellerView, ShortPositionDetailView, ShortSellerView, stats_view, top_lists_view
 
 router = routers.DefaultRouter(trailing_slash=False)
 
@@ -26,5 +26,7 @@ for test_prefix in ['', 'test/']:
             router.register(f'{device}/{test_prefix}{category}/details', ShortPositionDetailView)
 
 urlpatterns = [
-    path('', include(router.urls))
+    path('homepage-stats', stats_view, name='stats'),
+    path('top-lists', top_lists_view, name='top-lists'),
+    path('', include(router.urls)),
 ]
