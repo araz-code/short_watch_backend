@@ -9,6 +9,7 @@ import {
   ResponsiveContainer,
   ComposedChart,
   Line,
+  ReferenceLine,
   TooltipProps,
 } from "recharts";
 import { useTranslation } from "react-i18next";
@@ -266,6 +267,16 @@ const PricePointChart: React.FC<{
               filter: "url(#glow)",
             }}
           />
+          {pricePoints.length > 0 && (
+            <ReferenceLine
+              y={pricePoints[pricePoints.length - 1].value}
+              yAxisId="1"
+              stroke="#eab308"
+              strokeDasharray="4 4"
+              strokeWidth={1.5}
+              ifOverflow="extendDomain"
+            />
+          )}
           {showClosingPrices && (
             <Line
               dataKey="close"
@@ -314,6 +325,13 @@ const PricePointChart: React.FC<{
           <span className="flex items-center gap-1.5">
             <span className="w-3 h-[3px] rounded-full bg-[#007AFF] inline-block" />
             Short
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="inline-flex items-center gap-[2px]">
+              <span className="w-[4px] h-[2px] bg-[#eab308] inline-block" />
+              <span className="w-[4px] h-[2px] bg-[#eab308] inline-block" />
+            </span>
+            {t("Current")}
           </span>
           {showClosingPrices && (
             <>

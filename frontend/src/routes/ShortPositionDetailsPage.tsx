@@ -213,7 +213,9 @@ const ShortPositionDetailsPage: React.FC = () => {
           {(data.percentileAllTime != null || data.velocity7d != null) && (
             <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-0.5 tabular-nums">
               {data.percentileAllTime != null && (
-                <>{Math.round(data.percentileAllTime)}{t("th percentile")}</>
+                <span className="text-yellow-500 dark:text-yellow-400 font-semibold">
+                  {Math.round(data.percentileAllTime)}{t("th percentile")}
+                </span>
               )}
               {data.percentileAllTime != null && data.velocity7d != null && (
                 <span className="inline-block w-px h-3 mx-2 bg-gray-300 dark:bg-gray-600 align-middle" />
