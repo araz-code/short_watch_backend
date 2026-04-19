@@ -1,5 +1,5 @@
 import { Link, NavLink, useLocation } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 const defaultCollapseMenu = {
@@ -48,6 +48,15 @@ const Navigation: React.FC = () => {
     location.pathname
   );
 
+  // Close menus on Escape key
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setCollapseMenu(defaultCollapseMenu);
+    };
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, []);
+
   const navClasses = isHome
     ? "bg-white/10 backdrop-blur-lg border border-white/15 shadow-lg shadow-black/5"
     : "bg-[#0d1b4c] shadow-lg shadow-black/10";
@@ -60,6 +69,12 @@ const Navigation: React.FC = () => {
 
   return (
     <>
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-white focus:text-blue-600 focus:rounded-lg focus:shadow-lg"
+      >
+        Skip to main content
+      </a>
       <div className="relative z-30 flex justify-center md:pt-3 md:px-4">
         <nav
           className={`w-full max-w-[900px] px-4 py-2 md:rounded-2xl ${navClasses}`}
@@ -73,7 +88,9 @@ const Navigation: React.FC = () => {
             </Link>
             <button
               type="button"
-              className={`inline-flex items-center p-2 w-9 h-9 justify-center text-sm text-white/80 rounded-lg md:hidden hover:bg-white/10 ${
+              aria-label="Toggle navigation menu"
+              aria-expanded={!collapseMenu.mainMenu}
+              className={`inline-flex items-center p-2 w-9 h-9 justify-center text-sm text-white/80 rounded-lg md:hidden hover:bg-white/10 focus:ring-2 focus:ring-white/40 ${
                 collapseMenu.mainMenu
                   ? ""
                   : "bg-white/15 ring-1 ring-white/30"
@@ -124,6 +141,7 @@ const Navigation: React.FC = () => {
                 </li>
                 <li className="relative">
                   <button
+                    aria-expanded={!collapseMenu.productMenu}
                     className={`flex items-center gap-1.5 w-full md:w-auto ${
                       isProductActive ? activeLinkClasses : linkClasses
                     }`}
@@ -185,6 +203,7 @@ const Navigation: React.FC = () => {
                 </li>
                 <li className="relative">
                   <button
+                    aria-expanded={!collapseMenu.legalMenu}
                     className={`flex items-center gap-1.5 w-full md:w-auto ${
                       isLegalActive ? activeLinkClasses : linkClasses
                     }`}
@@ -277,6 +296,9 @@ const Navigation: React.FC = () => {
         !collapseMenu.legalMenu ||
         !collapseMenu.productMenu) && (
         <div
+          role="button"
+          aria-label="Close menu"
+          tabIndex={-1}
           className="opacity-25 dark:opacity-50 fixed inset-0 z-20 bg-black"
           onClick={() => setCollapseMenu(defaultCollapseMenu)}
         ></div>

@@ -37,10 +37,18 @@ const PricePointChartInfo: React.FC<{
     }
   };
 
-  // Add event listener for clicks outside when the overlay is visible
+  // Add event listeners for clicks outside and Escape key when the overlay is visible
   useEffect(() => {
     if (showOverlay) {
       document.addEventListener("mousedown", handleClickOutside);
+      const handleEscape = (e: KeyboardEvent) => {
+        if (e.key === "Escape") setShowOverlay(false);
+      };
+      document.addEventListener("keydown", handleEscape);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+        document.removeEventListener("keydown", handleEscape);
+      };
     }
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -82,12 +90,12 @@ const PricePointChartInfo: React.FC<{
       <button
         onClick={toggleOverlay}
         ref={buttonRef}
-        className={`w-[23px] h-[23px] rounded-full border-none flex justify-center items-center cursor-pointer z-10 text-white italic ${
+        className={`w-[23px] h-[23px] rounded-full border-none flex justify-center items-center cursor-pointer z-10 text-white italic focus:ring-2 focus:ring-blue-300 ${
           showOverlay
             ? "bg-blue-600 hover:bg-blue-500"
             : "bg-blue-600 hover:bg-blue-500"
         }`}
-        title={t("Show summery")}
+        aria-label={t("Show summary")}
       >
         <FontAwesomeIcon icon={faInfo} size="xs" />
       </button>

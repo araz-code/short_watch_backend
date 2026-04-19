@@ -30,7 +30,8 @@ function ConsentButton({ onClick }: ConsentButtonProps) {
   return (
     <>
       <button
-        className="fixed bottom-3 left-2 sm:left-3 bg-transparent text-green-500 p-0 rounded-full shadow-lg focus:outline-none"
+        aria-label="Open cookie consent options"
+        className="fixed bottom-3 left-2 sm:left-3 bg-transparent text-green-500 p-0 rounded-full shadow-lg focus:ring-2 focus:ring-green-400 focus:ring-offset-2"
         onClick={() => {
           handleClick("cookie consent clicked");
           onClick();

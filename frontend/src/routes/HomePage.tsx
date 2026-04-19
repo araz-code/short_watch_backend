@@ -47,7 +47,7 @@ const HomePage: React.FC = () => {
         <div className="bg-wave-pattern dark:bg-wave-pattern-dark bg-cover bg-no-repeat bg-bottom h-[57%] flex flex-col pb-2 sm:pb-0 [@media(min-width:2000px)]:min-h-[770px]">
           <Navigation />
 
-          <main className="flex flex-col sm:flex-row sm:max-w-[1000px] sm:justify-end gap-10 sm:h-[80%] mt-14 px-5 self-center sm:px-[20px]">
+          <main id="main-content" className="flex flex-col sm:flex-row sm:max-w-[1000px] sm:justify-end gap-10 sm:h-[80%] mt-14 px-5 self-center sm:px-[20px]">
             <div className="flex flex-col justify-start sm:pt-6 sm:pb-0 text-white gap-5 sm:w-[430px] sm:mr-5">
               <h1 className="text-3xl text-center sm:text-left sm:text-5xl tracking-tight">
                 Danish Short Watch

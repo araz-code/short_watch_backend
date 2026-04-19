@@ -4,9 +4,9 @@ const PageTemplate: React.FC<React.PropsWithChildren> = (props) => {
   return (
     <div className="flex flex-col text-gray-800">
       <Navigation />
-      <div className="flex flex-col items-center justify-center">
+      <main id="main-content" className="flex flex-col items-center justify-center">
         {props.children}
-      </div>
+      </main>
     </div>
   );
 };

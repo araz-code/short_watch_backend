@@ -149,7 +149,7 @@ const ShortSellerDetailsPage: React.FC = () => {
 
           <div className="lg:w-[900px]">
             <button
-              className="text-blue-500 underline bg-transparent border-none text-lg pl-4 pt-4 hover:text-blue-700"
+              className="text-blue-500 underline bg-transparent border-none text-lg pl-4 pt-4 hover:text-blue-700 focus:ring-2 focus:ring-blue-300 rounded"
               onClick={() => {
                 if (window.history.length > 1 && window.history.state.idx > 0) {
                   navigate(-1);

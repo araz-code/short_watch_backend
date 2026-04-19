@@ -155,10 +155,11 @@ const ShortSellersPage: React.FC = () => {
                 <input
                   type="search"
                   id="search"
+                  aria-label={t("Search")}
                   placeholder={t("Search")}
                   ref={searchElement}
                   onChange={(event) => setSearchTerm(event.target.value)}
-                  className="flex-1 border border-gray-200 dark:border-gray-700 p-2 pl-9 rounded-lg focus:outline-none w-full dark:bg-[#1e1e1e] dark:text-white"
+                  className="flex-1 border border-gray-200 dark:border-gray-700 p-2 pl-9 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-transparent w-full dark:bg-[#1e1e1e] dark:text-white"
                 />
               </div>
               <div className="p-2 pb-4">

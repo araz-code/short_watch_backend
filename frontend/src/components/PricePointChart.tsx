@@ -234,12 +234,12 @@ const PricePointChart: React.FC<{
         <div className="flex items-center gap-2">
           <button
             onClick={toggleClosingPrices}
-            className={`w-7 h-7 rounded-lg border flex justify-center items-center cursor-pointer transition-all duration-200 ${
+            className={`w-7 h-7 rounded-lg border flex justify-center items-center cursor-pointer transition-all duration-200 focus:ring-2 focus:ring-purple-300 ${
               showClosingPrices
                 ? "bg-purple-50 dark:bg-purple-900/20 border-purple-200 dark:border-purple-800 text-purple-600 dark:text-purple-400"
                 : "bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-400 dark:text-gray-500"
             }`}
-            title={
+            aria-label={
               showClosingPrices
                 ? t("Hide closing prices")
                 : t("Show closing prices")
