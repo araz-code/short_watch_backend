@@ -6,11 +6,12 @@ import {
   faClockRotateLeft,
   faPerson,
   faArrowRight,
+  faRankingStar,
 } from "@fortawesome/free-solid-svg-icons";
 import Card from "../components/UI/Card";
 import { useTranslation } from "react-i18next";
 import AppImage from "../components/Homepage/AppImage";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { handleClick, sendCustomPageView } from "../analytics";
 import { useQuery } from "react-query";
 import { fetchStats, ShortStats } from "../apis/ShortPositionAPI";
@@ -39,6 +40,15 @@ const cards = [
 const HomePage: React.FC = () => {
   const { t } = useTranslation();
 
+  const [showBanner, setShowBanner] = useState(() => {
+    return localStorage.getItem("banner_dismissed_v1") !== "true";
+  });
+
+  const dismissBanner = () => {
+    setShowBanner(false);
+    localStorage.setItem("banner_dismissed_v1", "true");
+  };
+
   const { data: stats } = useQuery<ShortStats>({
     queryKey: ["stats"],
     staleTime: 60000,
@@ -54,6 +64,41 @@ const HomePage: React.FC = () => {
       <div className="flex flex-col sm:min-h-[650px]">
         <div className="bg-wave-pattern dark:bg-wave-pattern-dark bg-cover bg-no-repeat bg-bottom h-[57%] flex flex-col pb-2 sm:pb-0 [@media(min-width:2000px)]:min-h-[770px]">
           <Navigation />
+
+          {showBanner && (
+            <div className="mx-auto max-w-[900px] mt-4 px-4">
+              <div className="relative flex items-start gap-3 px-5 py-4 rounded-xl bg-white/10 backdrop-blur-sm border border-white/15 text-white text-sm">
+                <span className="text-lg mt-0.5">✨</span>
+                <div className="flex-1 leading-relaxed">
+                  <p className="font-semibold mb-1">{t("announcement_title")}</p>
+                  <p className="text-white/70">{t("announcement_body")}</p>
+                  <div className="flex gap-3 mt-3">
+                    <Link
+                      to="/short-sellers"
+                      className="text-xs font-medium px-3 py-1.5 rounded-full bg-white/15 hover:bg-white/25 transition-colors"
+                      onClick={() => handleClick("banner short sellers clicked")}
+                    >
+                      {t("Short sellers")} →
+                    </Link>
+                    <Link
+                      to="/top-lists"
+                      className="text-xs font-medium px-3 py-1.5 rounded-full bg-white/15 hover:bg-white/25 transition-colors"
+                      onClick={() => handleClick("banner top lists clicked")}
+                    >
+                      {t("Top Lists")} →
+                    </Link>
+                  </div>
+                </div>
+                <button
+                  onClick={dismissBanner}
+                  aria-label="Dismiss announcement"
+                  className="text-white/50 hover:text-white text-lg leading-none p-1"
+                >
+                  ×
+                </button>
+              </div>
+            </div>
+          )}
 
           <main id="main-content" className="flex flex-col sm:flex-row sm:max-w-[1000px] sm:justify-end gap-10 sm:h-[80%] mt-14 px-5 self-center sm:px-[20px]">
             <div className="flex flex-col justify-start sm:pt-6 sm:pb-0 text-white gap-5 sm:w-[430px] sm:mr-5">
@@ -109,28 +154,30 @@ const HomePage: React.FC = () => {
                       className="mr-2 text-lg"
                       icon={faChartSimple}
                     />
-                    Shorts
+                    {t("Web application")}
                     <FontAwesomeIcon
                       className="ml-2 text-sm hidden sm:block"
                       icon={faArrowRight}
                     />
                   </button>
                 </Link>
+              </div>
 
+              <div className="flex flex-wrap justify-center sm:justify-start gap-3">
                 <Link to="/short-sellers">
                   <button
-                    className="text-white bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 focus:ring-2 focus:ring-white/40 font-medium rounded-full text-sm px-5 py-2.5 flex items-center h-[45px] transition-all duration-200"
-                    onClick={() => handleClick("short sellers web app clicked")}
+                    className="text-white bg-white/10 border border-white/20 hover:bg-white/20 focus:ring-2 focus:ring-white/40 font-medium rounded-full text-xs px-4 py-1.5 flex items-center transition-all duration-200"
+                    onClick={() => handleClick("short sellers link clicked")}
                   >
-                    <FontAwesomeIcon
-                      className="mr-2 text-lg"
-                      icon={faPerson}
-                    />
-                    Sellers
-                    <FontAwesomeIcon
-                      className="ml-2 text-sm hidden sm:block"
-                      icon={faArrowRight}
-                    />
+                    {t("Short sellers")} →
+                  </button>
+                </Link>
+                <Link to="/top-lists">
+                  <button
+                    className="text-white bg-white/10 border border-white/20 hover:bg-white/20 focus:ring-2 focus:ring-white/40 font-medium rounded-full text-xs px-4 py-1.5 flex items-center transition-all duration-200"
+                    onClick={() => handleClick("top lists link clicked")}
+                  >
+                    {t("Top Lists")} →
                   </button>
                 </Link>
               </div>
