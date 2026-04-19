@@ -166,24 +166,6 @@ const HomePage: React.FC = () => {
                 </Link>
               </div>
 
-              <div className="flex flex-wrap justify-center sm:justify-start gap-3">
-                <Link to="/short-sellers">
-                  <button
-                    className="text-white bg-white/10 border border-white/20 hover:bg-white/20 focus:ring-2 focus:ring-white/40 font-medium rounded-full text-xs px-4 py-1.5 flex items-center transition-all duration-200"
-                    onClick={() => handleClick("short sellers link clicked")}
-                  >
-                    {t("Short sellers")} →
-                  </button>
-                </Link>
-                <Link to="/top-lists">
-                  <button
-                    className="text-white bg-white/10 border border-white/20 hover:bg-white/20 focus:ring-2 focus:ring-white/40 font-medium rounded-full text-xs px-4 py-1.5 flex items-center transition-all duration-200"
-                    onClick={() => handleClick("top lists link clicked")}
-                  >
-                    {t("Top Lists")} →
-                  </button>
-                </Link>
-              </div>
             </div>
             <AppImage />
           </main>

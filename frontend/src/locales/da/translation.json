@@ -181,11 +181,13 @@
     "large seller": "stor sælger",
     "large sellers": "store sælgere",
     "announcement_title": "Nye funktioner er lanceret!",
-    "announcement_body": "Udforsk Short Sellers for at se hvilke hedgefonde der shorter danske aktier med positioner over 0,5%. Plus vores nye Top Lister, hvor du kan se de mest shortede, mest fulgte og mest aktive aktier. Find dem under Produkter i menuen.",
+    "announcement_body": "Udforsk Short Sellers for at se hvilke hedgefonde der shorter danske aktier med positioner over 0,5%. Plus vores nye Top Lister, hvor du kan se de mest shortede, mest fulgte og mest aktive aktier. Begge er tilgængelige i menuen ovenfor.",
     "Most followed": "Mest fulgt",
     "views": "visninger",
     "followers": "følgere",
     "vs. 7d": "vs. 7d",
-    "Updated": "Opdateret"
+    "Updated": "Opdateret",
+    "Short Watch": "Short Watch",
+    "Short Sellers": "Shortsælgere"
   }
 }

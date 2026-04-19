@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 const defaultCollapseMenu = {
   mainMenu: true,
   legalMenu: true,
-  productMenu: true,
 };
 
 const Navigation: React.FC = () => {
@@ -18,23 +17,13 @@ const Navigation: React.FC = () => {
     setCollapseMenu((prev) => ({
       mainMenu: !prev.mainMenu,
       legalMenu: true,
-      productMenu: true,
     }));
   };
 
   const toggleLegalMenu = () => {
     setCollapseMenu((prev) => ({
       ...prev,
-      productMenu: true,
       legalMenu: !prev.legalMenu,
-    }));
-  };
-
-  const toggleProductMenu = () => {
-    setCollapseMenu((prev) => ({
-      ...prev,
-      legalMenu: true,
-      productMenu: !prev.productMenu,
     }));
   };
 
@@ -43,10 +32,6 @@ const Navigation: React.FC = () => {
     "/cookie-policy",
     "/terms-of-agreement",
   ].includes(location.pathname);
-
-  const isProductActive = ["/short-watch", "/short-sellers", "/top-lists"].includes(
-    location.pathname
-  );
 
   // Close menus on Escape key
   useEffect(() => {
@@ -139,80 +124,38 @@ const Navigation: React.FC = () => {
                     {t("Home")}
                   </NavLink>
                 </li>
-                <li className="relative">
-                  <button
-                    aria-expanded={!collapseMenu.productMenu}
-                    className={`flex items-center gap-1.5 w-full md:w-auto ${
-                      isProductActive ? activeLinkClasses : linkClasses
-                    }`}
-                    onClick={toggleProductMenu}
+                <li>
+                  <NavLink
+                    to="/short-watch"
+                    className={({ isActive }) =>
+                      isActive ? activeLinkClasses : linkClasses
+                    }
+                    onClick={() => setCollapseMenu(defaultCollapseMenu)}
                   >
-                    {t("Products")}
-                    <svg
-                      className={`w-2 h-2 transition-transform ${
-                        collapseMenu.productMenu ? "" : "rotate-180"
-                      }`}
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 10 6"
-                    >
-                      <path
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="m1 1 4 4 4-4"
-                      />
-                    </svg>
-                  </button>
-                  <div
-                    className={`md:absolute md:z-10 md:right-0 md:mt-2 md:w-48 md:rounded-xl md:shadow-xl bg-white dark:bg-[#1e1e1e] md:border md:border-gray-200 dark:md:border-gray-700 text-gray-800 dark:text-white overflow-hidden ${
-                      collapseMenu.productMenu ? "hidden" : ""
-                    }`}
+                    {t("Short Watch")}
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/short-sellers"
+                    className={({ isActive }) =>
+                      isActive ? activeLinkClasses : linkClasses
+                    }
+                    onClick={() => setCollapseMenu(defaultCollapseMenu)}
                   >
-                    <ul className="text-sm py-1">
-                      <li>
-                        <NavLink
-                          to="/short-watch"
-                          className={({ isActive }) =>
-                            `block px-4 py-2.5 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors ${
-                              isActive ? "text-blue-500 font-medium" : ""
-                            }`
-                          }
-                          onClick={() => setCollapseMenu(defaultCollapseMenu)}
-                        >
-                          Short watch
-                        </NavLink>
-                      </li>
-                      <li>
-                        <NavLink
-                          to="/short-sellers"
-                          className={({ isActive }) =>
-                            `block px-4 py-2.5 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors ${
-                              isActive ? "text-blue-500 font-medium" : ""
-                            }`
-                          }
-                          onClick={() => setCollapseMenu(defaultCollapseMenu)}
-                        >
-                          Short sellers
-                        </NavLink>
-                      </li>
-                      <li>
-                        <NavLink
-                          to="/top-lists"
-                          className={({ isActive }) =>
-                            `block px-4 py-2.5 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors ${
-                              isActive ? "text-blue-500 font-medium" : ""
-                            }`
-                          }
-                          onClick={() => setCollapseMenu(defaultCollapseMenu)}
-                        >
-                          Top lists
-                        </NavLink>
-                      </li>
-                    </ul>
-                  </div>
+                    {t("Short Sellers")}
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/top-lists"
+                    className={({ isActive }) =>
+                      isActive ? activeLinkClasses : linkClasses
+                    }
+                    onClick={() => setCollapseMenu(defaultCollapseMenu)}
+                  >
+                    {t("Top Lists")}
+                  </NavLink>
                 </li>
                 <li className="relative">
                   <button
@@ -305,9 +248,7 @@ const Navigation: React.FC = () => {
           </div>
         </nav>
       </div>
-      {(!collapseMenu.mainMenu ||
-        !collapseMenu.legalMenu ||
-        !collapseMenu.productMenu) && (
+      {(!collapseMenu.mainMenu || !collapseMenu.legalMenu) && (
         <div
           role="button"
           aria-label="Close menu"

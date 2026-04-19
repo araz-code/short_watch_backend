@@ -157,6 +157,6 @@
     "The FSA's homepage for publishing short positions is down at the moment, making it impossible to retrieve the latest data.": "The FSA's homepage for publishing short positions is down at the moment, making it impossible to retrieve the latest data.",
     "FSA website updated warning": "(8/1-2026) The Danish FSA (Finanstilsynet) has reopened access to aggregated short positions, but their solution is unstable, and some positions are updated only to be rolled back shortly after.",
     "announcement_title": "New features launched!",
-    "announcement_body": "Explore Short Sellers to see which hedge funds are shorting Danish stocks with positions above 0.5%. Plus our new Top Lists where you can discover the most shorted, most followed, and most active stocks. Find them under Products in the menu."
+    "announcement_body": "Explore Short Sellers to see which hedge funds are shorting Danish stocks with positions above 0.5%. Plus our new Top Lists where you can discover the most shorted, most followed, and most active stocks. Both are available in the menu above."
   }
 }
