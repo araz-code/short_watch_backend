@@ -13,6 +13,7 @@ import ConsentDialog from "./components/ConsentDialog.tsx";
 import { handleClick, initializeAnalytics } from "./analytics.tsx";
 import { useCookies } from "react-cookie";
 import LoadingIndicator from "./components/UI/LoadingIndicator.tsx";
+import ErrorBoundary from "./components/ErrorBoundary.tsx";
 
 // Lazy loaded routes
 const ShortWatchPage = lazy(() => import("./routes/ShortWatchPage.tsx"));
@@ -58,52 +59,52 @@ window.addEventListener("resize", () => {
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <HomePage />,
+    element: <ErrorBoundary><HomePage /></ErrorBoundary>,
     errorElement: <ErrorPage />,
   },
   {
     path: "short-watch",
-    element: <ShortWatchPage />,
+    element: <ErrorBoundary><ShortWatchPage /></ErrorBoundary>,
   },
   {
     path: "short-watch-details",
-    element: <ShortPositionDetailsPage />,
+    element: <ErrorBoundary><ShortPositionDetailsPage /></ErrorBoundary>,
   },
   {
     path: "short-sellers",
-    element: <LargestSellersPage />,
+    element: <ErrorBoundary><LargestSellersPage /></ErrorBoundary>,
   },
   {
     path: "short-seller-details",
-    element: <ShortSellerDetailsPage />,
+    element: <ErrorBoundary><ShortSellerDetailsPage /></ErrorBoundary>,
   },
   {
     path: "top-lists",
-    element: <TopListsPage />,
+    element: <ErrorBoundary><TopListsPage /></ErrorBoundary>,
   },
   {
     path: "privacy-policy",
-    element: <PrivacyPolicyPage />,
+    element: <ErrorBoundary><PrivacyPolicyPage /></ErrorBoundary>,
   },
   {
     path: "privatlivspolitik",
-    element: <PrivacyPolicyPage />,
+    element: <ErrorBoundary><PrivacyPolicyPage /></ErrorBoundary>,
   },
   {
     path: "cookie-policy",
-    element: <CookiePolicyPage />,
+    element: <ErrorBoundary><CookiePolicyPage /></ErrorBoundary>,
   },
   {
     path: "terms-of-agreement",
-    element: <TermsOfAgreementPage />,
+    element: <ErrorBoundary><TermsOfAgreementPage /></ErrorBoundary>,
   },
   {
     path: "aftalevilkaar",
-    element: <TermsOfAgreementPage />,
+    element: <ErrorBoundary><TermsOfAgreementPage /></ErrorBoundary>,
   },
   {
     path: "contact",
-    element: <ContactPage />,
+    element: <ErrorBoundary><ContactPage /></ErrorBoundary>,
   },
 ]);
 
