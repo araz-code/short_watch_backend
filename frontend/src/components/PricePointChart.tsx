@@ -65,7 +65,7 @@ const PricePointChart: React.FC<{
       ? pricePoints[pricePoints.length - 1].value - pricePoints[0].value
       : null;
   const getChartHeight = useCallback(
-    () => (window.innerWidth >= 640 ? 290 : 180),
+    () => (window.innerWidth >= 640 ? 290 : 160),
     []
   );
   const [chartHeight, setChartHeight] = useState(getChartHeight);

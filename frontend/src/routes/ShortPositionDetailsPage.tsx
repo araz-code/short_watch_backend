@@ -193,13 +193,13 @@ const ShortPositionDetailsPage: React.FC = () => {
   } else if (data) {
     content = (
       <>
-        <div className="text-center pb-5 sm:pb-6 dark:text-white">
+        <div className="text-center pb-1 sm:pb-2 dark:text-white">
           <h1 className="text-base sm:text-xl">
             {data.historic.length > 0 && data.historic[0].name}
           </h1>
           {data.historic.length > 0 && (
             <div className="flex items-center justify-center gap-2 mt-1">
-              <span className="text-xl sm:text-2xl font-bold tabular-nums leading-none">
+              <span className="text-2xl sm:text-3xl font-bold tabular-nums leading-none">
                 {data.historic[0].value.toFixed(2)}%
               </span>
               {data.historic.length > 1 && (
@@ -227,6 +227,7 @@ const ShortPositionDetailsPage: React.FC = () => {
               <> · {(data.sellers as { value: number }[]).reduce((sum, s) => sum + (s.value ?? 0), 0).toFixed(2)}% {t("combined")}</>
             )}
           </p>
+          <div className="mt-2 sm:mt-3 mx-auto w-12 h-0.5 rounded-full bg-blue-500/40" />
         </div>
         <div className="">
           <div className="mb-3">

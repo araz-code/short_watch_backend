@@ -8,7 +8,7 @@ const LargeShortSellingList: React.FC<{ sellings: LargestShortSelling[] }> = ({
   const { t } = useTranslation();
 
   return (
-    <div className="min-h-[150px] h-[calc(100svh-37rem)] sm:h-[calc(100svh-42.5rem)]">
+    <div className="min-h-[150px] h-[calc(100svh-35.5rem)] sm:h-[calc(100svh-42.5rem)]">
       <div className="overflow-y-auto h-full">
         {sellings.length !== 0 && (
           <p className="text-xs pl-6 dark:text-white">
