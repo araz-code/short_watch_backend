@@ -1,6 +1,7 @@
 from collections import namedtuple
 from datetime import timedelta, datetime, date
 
+from django.core.cache import cache
 from django.db.models import Max, Prefetch, Count
 from django.utils import timezone
 from rest_framework.generics import RetrieveAPIView
@@ -22,6 +23,11 @@ class ShortPositionView(ReadOnlyModelViewSet):
     lookup_field = 'code'
 
     def list(self, request, *args, **kwargs):
+        cache_key = 'short_positions_list'
+        cached = cache.get(cache_key)
+        if cached:
+            return Response(cached)
+
         stocks_with_latest_timestamp = Stock.objects.filter(active=True)\
             .annotate(latest_timestamp=Max('shortposition__timestamp'))
 
@@ -35,6 +41,7 @@ class ShortPositionView(ReadOnlyModelViewSet):
         sorted_data = [p for p in sorted_data if p.stock_id not in seen and not seen.add(p.stock_id)]
 
         serializer = self.serializer_class(sorted_data, many=True)
+        cache.set(cache_key, serializer.data, 300)
         return Response(serializer.data)
 
     def retrieve(self, request, code=None, *args, **kwargs):
@@ -127,6 +134,16 @@ class ShortSellerView(ReadOnlyModelViewSet):
     serializer_class = ShortSellerListSerializer
     detail_serializer_class = ShortSellerDetailSerializer
 
+    def list(self, request, *args, **kwargs):
+        cache_key = 'short_sellers_list'
+        cached = cache.get(cache_key)
+        if cached:
+            return Response(cached)
+
+        response = super().list(request, *args, **kwargs)
+        cache.set(cache_key, response.data, 300)
+        return response
+
     def get_serializer_class(self):
         if self.action == 'retrieve':
             if hasattr(self, 'detail_serializer_class'):
@@ -142,6 +159,10 @@ from rest_framework.decorators import api_view, permission_classes as perm
 @api_view(['GET'])
 @perm([HasAPIKey])
 def stats_view(request):
+    cached = cache.get('homepage_stats')
+    if cached:
+        return Response(cached)
+
     try:
         # 1. How many stocks are currently shorted (active stocks with position > 0)
         latest_positions = ShortPosition.objects.filter(
@@ -192,7 +213,7 @@ def stats_view(request):
             follower_count=Count('app_users')
         ).order_by('-follower_count').first()
 
-        return Response({
+        data = {
             'shortedCount': shorted_count,
             'mostShorted': {
                 'symbol': most_shorted.symbol,
@@ -212,7 +233,9 @@ def stats_view(request):
                 'code': most_followed.code,
                 'followers': most_followed.follower_count,
             } if most_followed and most_followed.follower_count > 0 else None,
-        })
+        }
+        cache.set('homepage_stats', data, 300)
+        return Response(data)
     except Exception:
         return Response({
             'shortedCount': 0,
@@ -225,6 +248,10 @@ def stats_view(request):
 @api_view(['GET'])
 @perm([HasAPIKey])
 def top_lists_view(request):
+    cached = cache.get('top_lists')
+    if cached:
+        return Response(cached)
+
     try:
         # Top 10 most viewed detail pages in last 30 days
         one_month_ago = timezone.now() - timedelta(days=30)
@@ -291,12 +318,14 @@ def top_lists_view(request):
             for e in most_updated
         ]
 
-        return Response({
+        data = {
             'mostViewed': most_viewed,
             'mostFollowed': most_followed,
             'mostShorted': most_shorted,
             'mostActive': most_active,
-        })
+        }
+        cache.set('top_lists', data, 300)
+        return Response(data)
     except Exception:
         return Response({
             'mostViewed': [],

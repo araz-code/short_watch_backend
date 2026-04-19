@@ -2,6 +2,7 @@ import re
 import time
 from datetime import datetime, timedelta
 
+from django.core.cache import cache
 import pytz
 import requests
 from django.core.management.base import BaseCommand, CommandError
@@ -82,6 +83,9 @@ class Command(BaseCommand):
 
         self.fetch_large_short_selling()
         self.remove_duplicate_positions()
+
+        # Invalidate caches after new data
+        cache.delete_many(['short_positions_list', 'short_sellers_list', 'homepage_stats', 'top_lists'])
 
         RunStatus.objects.filter(executed_at__lt=timezone.now() - timedelta(days=3)).delete()
 
