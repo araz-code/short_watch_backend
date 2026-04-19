@@ -66,7 +66,51 @@ class OldShortSellerView(GenericViewSet, RetrieveAPIView):
 
 
 ShortedStockDetailsResponse = namedtuple('ShortedStockDetailsResponse', ['chartValues', 'historic', 'sellers',
-                                                                         'announcements'])
+                                                                         'announcements',
+                                                                         'percentileAllTime',
+                                                                         'velocity7d',
+                                                                         'velocity30d'])
+
+
+def _compute_derived_metrics(chart_values, historic):
+    """Compute percentile (0-100) and 7/30-day velocity from full history."""
+    if historic:
+        current_val = historic[0].value
+    elif chart_values:
+        current_val = chart_values[0].value
+    else:
+        return None, None, None
+
+    if not chart_values:
+        return None, None, None
+
+    values = [cv.value for cv in chart_values]
+    total = len(values)
+    if total > 0:
+        below = sum(1 for v in values if v < current_val)
+        equal = sum(1 for v in values if v == current_val)
+        percentile = (below + equal / 2) / total * 100
+    else:
+        percentile = None
+
+    by_date = {cv.date: cv.value for cv in chart_values}
+    latest_date = chart_values[0].date
+
+    def value_on_or_before(target_date):
+        cursor = target_date
+        earliest = chart_values[-1].date
+        while cursor >= earliest:
+            if cursor in by_date:
+                return by_date[cursor]
+            cursor -= timedelta(days=1)
+        return None
+
+    val_7d = value_on_or_before(latest_date - timedelta(days=7))
+    val_30d = value_on_or_before(latest_date - timedelta(days=30))
+    velocity_7d = current_val - val_7d if val_7d is not None else None
+    velocity_30d = current_val - val_30d if val_30d is not None else None
+
+    return percentile, velocity_7d, velocity_30d
 
 FIRST_ENTRY_DATE = date(2023, 11, 6)
 
@@ -115,11 +159,15 @@ class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
 
             sellers = stock.largeshortselling_set.all().order_by('-date')
 
-            response = ShortedStockDetailsResponse(chart_values, historic, sellers, announcements)
+            percentile, velocity_7d, velocity_30d = _compute_derived_metrics(chart_values, historic)
+
+            response = ShortedStockDetailsResponse(chart_values, historic, sellers, announcements,
+                                                   percentile, velocity_7d, velocity_30d)
 
             return Response(self.get_serializer(response).data)
         except Stock.DoesNotExist:
-            return Response(self.get_serializer(ShortedStockDetailsResponse([], [], [])).data)
+            return Response(self.get_serializer(
+                ShortedStockDetailsResponse([], [], [], [], None, None, None)).data)
 
 
 class ShortSellerView(ReadOnlyModelViewSet):

@@ -82,6 +82,9 @@ class ShortPositionDetailSerializer(serializers.Serializer):
     historic = ShortPositionSerializer(many=True)
     sellers = LargeShortSellingSerializer(many=True)
     announcements = AnnouncementSerializer(many=True)
+    percentileAllTime = serializers.FloatField(allow_null=True, required=False)
+    velocity7d = serializers.FloatField(allow_null=True, required=False)
+    velocity30d = serializers.FloatField(allow_null=True, required=False)
 
 
 class LargeShortSellingForShortSellerSerializer(serializers.ModelSerializer):
