@@ -59,7 +59,7 @@ const PricePointChart: React.FC<{
   const { data: pricePoints, symbol } = props;
   const { t } = useTranslation();
   const getChartHeight = useCallback(
-    () => (window.innerWidth >= 640 ? 290 : 220),
+    () => (window.innerWidth >= 640 ? 290 : 180),
     []
   );
   const [chartHeight, setChartHeight] = useState(getChartHeight);
