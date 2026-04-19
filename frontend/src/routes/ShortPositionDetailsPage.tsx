@@ -193,13 +193,13 @@ const ShortPositionDetailsPage: React.FC = () => {
   } else if (data) {
     content = (
       <>
-        <div className="text-center pb-4 dark:text-white">
-          <h1 className="text-xl">
+        <div className="text-center pb-3 sm:pb-4 dark:text-white">
+          <h1 className="text-base sm:text-xl">
             {data.historic.length > 0 && data.historic[0].name}
           </h1>
           {data.historic.length > 0 && (
-            <div className="hidden sm:flex items-center justify-center gap-2 mt-1">
-              <span className="text-3xl font-bold tabular-nums">
+            <div className="flex items-center justify-center gap-2 mt-1">
+              <span className="text-2xl sm:text-3xl font-bold tabular-nums leading-none">
                 {data.historic[0].value.toFixed(2)}%
               </span>
               {data.historic.length > 1 && (
@@ -210,10 +210,10 @@ const ShortPositionDetailsPage: React.FC = () => {
               )}
             </div>
           )}
-          <p className="hidden sm:block text-xs text-gray-400 dark:text-gray-500 mt-1">
+          <p className="text-[11px] sm:text-xs text-gray-400 dark:text-gray-500 mt-1">
             {data.sellers ? data.sellers.length : 0} {(data.sellers?.length ?? 0) === 1 ? t("large seller") : t("large sellers")}
           </p>
-          <div className="mt-3 mx-auto w-12 h-0.5 rounded-full bg-blue-500/40" />
+          <div className="mt-2 sm:mt-3 mx-auto w-12 h-0.5 rounded-full bg-blue-500/40" />
         </div>
         <div className="">
           <div className="mb-3">
@@ -232,7 +232,7 @@ const ShortPositionDetailsPage: React.FC = () => {
               return (
                 <>
                   {periodChange !== null && (
-                    <p className="hidden sm:block text-center text-xs mb-2">
+                    <p className="text-center text-[11px] sm:text-xs mb-1 sm:mb-2">
                       <span className={periodChange > 0 ? "text-red-500" : periodChange < 0 ? "text-emerald-500" : "text-gray-400"}>
                         {periodChange > 0 ? "+" : ""}{periodChange.toFixed(2)}%
                       </span>
