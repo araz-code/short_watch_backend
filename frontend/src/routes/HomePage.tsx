@@ -12,6 +12,7 @@ import { useTranslation } from "react-i18next";
 import AppImage from "../components/Homepage/AppImage";
 import { useEffect, useState } from "react";
 import { handleClick, sendCustomPageView } from "../analytics";
+import { useSEO } from "../utils/useSEO";
 import { useQuery } from "react-query";
 import { fetchStats, ShortStats } from "../apis/ShortPositionAPI";
 
@@ -38,6 +39,8 @@ const cards = [
 
 const HomePage: React.FC = () => {
   const { t } = useTranslation();
+
+  useSEO("Danish Short Watch", "Track short selling positions in Danish stocks in real-time. View historical data, largest short sellers, and trending stocks. Free app for iPhone, iPad, and Apple Watch.");
 
   const [showBanner, setShowBanner] = useState(() => {
     return localStorage.getItem("banner_dismissed_v1") !== "true";

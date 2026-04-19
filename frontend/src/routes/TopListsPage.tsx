@@ -7,6 +7,7 @@ import ErrorBlock from "../components/UI/ErrorBlock";
 import LoadingIndicator from "../components/UI/LoadingIndicator";
 import { useTranslation } from "react-i18next";
 import { sendCustomPageView } from "../analytics";
+import { useSEO } from "../utils/useSEO";
 
 const medals = ["🥇", "🥈", "🥉"];
 
@@ -74,6 +75,8 @@ const TopListsPage: React.FC = () => {
     staleTime: 60000,
     queryFn: ({ signal }) => fetchTopLists({ signal }),
   });
+
+  useSEO("Top Lists", "Discover the top 10 most shorted, most viewed, and most followed Danish stocks. Updated daily.");
 
   useEffect(() => {
     sendCustomPageView("/top-lists", "top lists");

@@ -16,6 +16,7 @@ import { handleClick, sendCustomPageView } from "../analytics";
 import Announcement from "../models/Announcement";
 import ShortSellerDetails from "../models/ShortSellerDetails";
 import ShortSellerAnnouncementRow from "../components/ShortSellerAnnouncementRow";
+import { useSEO } from "../utils/useSEO";
 
 interface GroupedAnnouncements {
   [key: string]: Announcement[];
@@ -46,6 +47,11 @@ const ShortSellerDetailsPage: React.FC = () => {
         seller: seller ?? "",
       }),
   });
+
+  useSEO(
+    data?.name ? `${data.name}` : "Short Seller Details",
+    data?.name ? `View all short selling positions held by ${data.name} in Danish stocks.` : undefined
+  );
 
   useEffect(() => {
     handleClick(`large short seller details shown for: ${seller}`);

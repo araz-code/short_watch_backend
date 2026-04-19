@@ -3,9 +3,11 @@ import PageTemplate from "../components/PageTemplate";
 import image from "../static/mail-bird.webp";
 import { useEffect } from "react";
 import { sendCustomPageView } from "../analytics";
+import { useSEO } from "../utils/useSEO";
 
 const ContactPage: React.FC = () => {
   const { t } = useTranslation();
+  useSEO("Contact Us", "Get in touch with the Danish Short Watch team. Questions, feedback, or assistance.");
 
   useEffect(() => {
     sendCustomPageView("/contact", "contact");

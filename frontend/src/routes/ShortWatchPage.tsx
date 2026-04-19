@@ -11,7 +11,7 @@ import LoadingIndicator from "../components/UI/LoadingIndicator";
 import InfoDialog from "../components/InfoDialog";
 import { useTranslation } from "react-i18next";
 import { handleClick, sendCustomPageView } from "../analytics";
-//import advertisement from "../static/stresstilbud.jpg";
+import { useSEO } from "../utils/useSEO";
 
 const options = ["Symbol", "Name", "Date", "Value"];
 
@@ -36,6 +36,7 @@ const sort = (list: PricePoint[], selectedSorting: string) => {
 
 const ShortWatchPage: React.FC = () => {
   const { t } = useTranslation();
+  useSEO("Short Watch", "View all current short selling positions in Danish stocks with real-time data from the Danish Financial Supervisory Authority.");
   const searchElement = useRef<HTMLInputElement>(null);
   const [selectedSorting, setSelectedSorting] = useState<string>(() => {
     const savedSorting = localStorage.getItem("selectedSorting");

@@ -11,6 +11,7 @@ import { handleClick, sendCustomPageView } from "../analytics";
 import ShortSeller from "../models/ShortSeller";
 import ShortSellerRow from "../components/ShortSellerRow";
 import DropDownMenu from "../components/UI/DropDownMenu";
+import { useSEO } from "../utils/useSEO";
 
 const options = ["Name", "Date"];
 
@@ -31,6 +32,7 @@ const sort = (list: ShortSeller[], selectedSorting: string) => {
 
 const ShortSellersPage: React.FC = () => {
   const { t } = useTranslation();
+  useSEO("Short Sellers", "See which hedge funds and institutions hold large short positions in Danish stocks. Positions of 0.5% or greater reported by the Danish FSA.");
   const searchElement = useRef<HTMLInputElement>(null);
 
   const [showInfo, setShowInfo] = useState(false);

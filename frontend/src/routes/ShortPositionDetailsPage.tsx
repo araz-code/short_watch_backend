@@ -14,6 +14,7 @@ import PricePointList from "../components/PricePointList";
 import LargeShortSellingList from "../components/LargeShortSellingList";
 import FavoriteToggleButton from "../components/UI/FavoriteToggleButton";
 import ChangeIndicator from "../components/UI/ChangeIndicator";
+import { useSEO } from "../utils/useSEO";
 
 const detailOptions = ["Historic data", "Largest sellers"];
 const periodOptions = ["1W", "1M", "3M", "6M", "YTD", "Max."];
@@ -122,6 +123,13 @@ const ShortPositionDetailsPage: React.FC = () => {
         code: code ?? "",
       }),
   });
+
+  const stockName = data?.historic?.[0]?.name;
+  const stockSymbol = data?.historic?.[0]?.symbol;
+  useSEO(
+    stockName ? `${stockSymbol} – ${stockName}` : "Stock Details",
+    stockName ? `View short position data, charts, and largest sellers for ${stockName} (${stockSymbol}).` : undefined
+  );
 
   useEffect(() => {
     localStorage.setItem("selectedPeriod", selectedPeriod);
