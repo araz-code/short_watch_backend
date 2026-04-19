@@ -258,12 +258,49 @@ def top_lists_view(request):
             .values('symbol', 'name', 'code')
         )
 
+        # Top 10 most shorted stocks (highest current value)
+        latest_positions = ShortPosition.objects.filter(
+            stock__active=True
+        ).values('stock').annotate(latest=Max('timestamp'))
+
+        shorted_list = []
+        for entry in latest_positions:
+            pos = ShortPosition.objects.select_related('stock').filter(
+                stock_id=entry['stock'], timestamp=entry['latest']
+            ).first()
+            if pos and pos.value > 0:
+                shorted_list.append({
+                    'symbol': pos.stock.symbol,
+                    'name': pos.stock.name,
+                    'code': pos.stock.code,
+                    'value': pos.value,
+                })
+
+        most_shorted = sorted(shorted_list, key=lambda x: x['value'], reverse=True)[:10]
+
+        # Top 10 most frequently updated stocks (most ShortPosition entries in last 30 days)
+        most_updated = list(
+            ShortPosition.objects.filter(timestamp__gte=one_month_ago)
+            .values('stock__symbol', 'stock__name', 'stock__code')
+            .annotate(update_count=Count('id'))
+            .order_by('-update_count')[:10]
+        )
+        most_active = [
+            {'symbol': e['stock__symbol'], 'name': e['stock__name'], 'code': e['stock__code'],
+             'updates': e['update_count']}
+            for e in most_updated
+        ]
+
         return Response({
             'mostViewed': most_viewed,
             'mostFollowed': most_followed,
+            'mostShorted': most_shorted,
+            'mostActive': most_active,
         })
     except Exception:
         return Response({
             'mostViewed': [],
             'mostFollowed': [],
+            'mostShorted': [],
+            'mostActive': [],
         })
