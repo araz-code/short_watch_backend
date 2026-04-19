@@ -77,6 +77,18 @@ const PricePointChart: React.FC<{
     return () => window.removeEventListener("resize", handleResize);
   }, [getChartHeight]);
 
+  const [isDarkMode, setIsDarkMode] = useState(
+    () => typeof window !== "undefined" &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+  );
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    const handler = (e: MediaQueryListEvent) => setIsDarkMode(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
   const [showClosingPrices, setShowClosingPrices] = useState<boolean>(() => {
     const savedShowClosingPrices = localStorage.getItem("showClosingPrices");
     return savedShowClosingPrices ? JSON.parse(savedShowClosingPrices) : true;
@@ -309,8 +321,8 @@ const PricePointChart: React.FC<{
               <Bar
                 dataKey="volume"
                 yAxisId="3"
-                fill="#9ca3af"
-                opacity={0.3}
+                fill={isDarkMode ? "#d1d5db" : "#9ca3af"}
+                opacity={isDarkMode ? 0.5 : 0.3}
                 isAnimationActive={false}
                 name={t("Volume")}
               />
