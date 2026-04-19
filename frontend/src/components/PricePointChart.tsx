@@ -250,13 +250,13 @@ const PricePointChart: React.FC<{
         <div className="flex items-center gap-3 text-xs text-gray-400 dark:text-gray-500">
           <span className="flex items-center gap-1.5">
             <span className="w-3 h-[3px] rounded-full bg-[#007AFF] inline-block" />
-            {t("Short position")}
+            Short
           </span>
           {showClosingPrices && (
             <>
               <span className="flex items-center gap-1.5">
                 <span className="w-3 h-[3px] rounded-full bg-[#a855f7] inline-block" />
-                {t("Closing price")}
+                {t("Price")}
               </span>
               <span className="flex items-center gap-1.5">
                 <span className="w-3 h-2 rounded-sm bg-gray-300 dark:bg-gray-600 inline-block" />

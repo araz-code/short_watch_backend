@@ -210,6 +210,9 @@ const ShortPositionDetailsPage: React.FC = () => {
               )}
             </div>
           )}
+          <p className="hidden sm:block text-xs text-gray-400 dark:text-gray-500 mt-1">
+            {data.sellers ? data.sellers.length : 0} {(data.sellers?.length ?? 0) === 1 ? t("large seller") : t("large sellers")}
+          </p>
           <div className="mt-3 mx-auto w-12 h-0.5 rounded-full bg-blue-500/40" />
         </div>
         <div className="">
@@ -223,10 +226,28 @@ const ShortPositionDetailsPage: React.FC = () => {
                 />
               </div>
             </div>
-            <PricePointChart
-              data={processChartValues(data.chartValues, selectedPeriod)}
-              symbol={data.historic.length > 0 && data.historic[0].symbol}
-            />
+            {(() => {
+              const chartData = processChartValues(data.chartValues, selectedPeriod);
+              const periodChange = chartData.length >= 2
+                ? chartData[chartData.length - 1].value - chartData[0].value
+                : null;
+              return (
+                <>
+                  {periodChange !== null && (
+                    <p className="hidden sm:block text-center text-xs mb-2">
+                      <span className={periodChange > 0 ? "text-red-500" : periodChange < 0 ? "text-emerald-500" : "text-gray-400"}>
+                        {periodChange > 0 ? "+" : ""}{periodChange.toFixed(2)}%
+                      </span>
+                      <span className="text-gray-400 dark:text-gray-500"> {t("in period")}</span>
+                    </p>
+                  )}
+                  <PricePointChart
+                    data={chartData}
+                    symbol={data.historic.length > 0 && data.historic[0].symbol}
+                  />
+                </>
+              );
+            })()}
           </div>
           <div className="mb-4 flex justify-center gap-6 border-b border-gray-200 dark:border-gray-700">
             {detailOptions.map((option) => (
