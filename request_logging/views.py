@@ -514,6 +514,7 @@ def get_referer(_: Request) -> JsonResponse:
     client_ips_sellers_web = set()
     client_ips_sellers_iphone_detail = set()
     client_ips_sellers_web_detail = set()
+    client_ips_top_lists = set()
 
     check_ips = set()
 
@@ -540,6 +541,9 @@ def get_referer(_: Request) -> JsonResponse:
             elif "/short-sellers" in entry['requested_url']:
                 client_ips_sellers_web.add(client_ip)
 
+        if "/top-lists" in entry['requested_url']:
+            client_ips_top_lists.add(client_ip)
+
         check_ips.add(client_ip)
 
         if entry['referer'] and 'zirium.dk' not in entry['referer']:
@@ -559,6 +563,7 @@ def get_referer(_: Request) -> JsonResponse:
                                 'count': len(client_ips_sellers_iphone_detail)})
     sorted_referer_list.append({'referer': 'Web short-sellers', 'count': len(client_ips_sellers_web)})
     sorted_referer_list.append({'referer': 'Web short-sellers detail', 'count': len(client_ips_sellers_web_detail)})
+    sorted_referer_list.append({'referer': 'Top lists', 'count': len(client_ips_top_lists)})
 
     sorted_referer_list.append({'referer': 'Valid', 'count': valid_count})
 
