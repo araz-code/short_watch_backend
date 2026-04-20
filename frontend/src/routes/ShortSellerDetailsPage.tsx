@@ -155,7 +155,7 @@ const ShortSellerDetailsPage: React.FC = () => {
 
           <div className="lg:w-[900px]">
             <button
-              className="text-blue-500 underline bg-transparent border-none text-lg pl-4 pt-4 hover:text-blue-700 focus:ring-2 focus:ring-blue-300 rounded"
+              className="text-blue-500 hover:text-blue-700 bg-transparent border-none text-base pl-4 pt-4 inline-flex items-center gap-1.5 focus:ring-2 focus:ring-blue-300 rounded"
               onClick={() => {
                 if (window.history.length > 1 && window.history.state.idx > 0) {
                   navigate(-1);
@@ -164,6 +164,7 @@ const ShortSellerDetailsPage: React.FC = () => {
                 }
               }}
             >
+              <span aria-hidden="true">←</span>
               {t("Back")}
             </button>
             <div></div>
