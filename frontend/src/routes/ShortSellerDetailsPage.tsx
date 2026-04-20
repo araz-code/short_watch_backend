@@ -148,7 +148,7 @@ const ShortSellerDetailsPage: React.FC = () => {
   }
 
   return (
-    <div className="h-screen dark:bg-[#121212] overflow-hidden [@media(max-height:900px)_and_(orientation:landscape)]:overflow-auto [@media(max-height:900px)_and_(orientation:landscape)]:h-auto [@media(max-height:900px)_and_(orientation:landscape)]:min-h-screen">
+    <div className="h-screen dark:bg-[#121212] overflow-hidden [@media((max-height:900px)_and_(orientation:landscape))_or_(max-height:700px)]:overflow-auto [@media((max-height:900px)_and_(orientation:landscape))_or_(max-height:700px)]:h-auto [@media((max-height:900px)_and_(orientation:landscape))_or_(max-height:700px)]:min-h-screen">
       <PageTemplate>
         <div className="w-screen lg:flex lg:justify-center lg:gap-4  m-auto">
           <div className="w-1/3 justify-end items-center hidden"></div>

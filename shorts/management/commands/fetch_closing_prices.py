@@ -97,9 +97,8 @@ class Command(BaseCommand):
                             'volume': row[5]
                         }
                     )
-                except Exception as e:
-                    Error.objects.create(message=f'fill_initial_missing_data {stock.symbol}: '
-                                                 f"THIS SHOULD NOT HAPPEN: Value doesn't exist: {row.Index.date()}.")
+                except Exception:
+                    pass
 
     @staticmethod
     def did_a_split_occur(stock, data):

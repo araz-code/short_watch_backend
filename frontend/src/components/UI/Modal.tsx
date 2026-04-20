@@ -27,58 +27,67 @@ const Modal: React.FC<
       if (e.key === "Escape") onClose();
     };
     document.addEventListener("keydown", handleEscape);
-    return () => document.removeEventListener("keydown", handleEscape);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+      document.body.style.overflow = prevOverflow;
+    };
   }, [onClose]);
 
   return createPortal(
     <>
       <div
+        className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
+        onClick={enableXClose ? onClose : undefined}
+        aria-hidden="true"
+      />
+      <div
         role="dialog"
         aria-modal="true"
         aria-label={title}
-        className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50"
+        className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 pointer-events-none"
       >
-        <div className="relative w-auto my-6 mx-auto max-w-3xl ">
-          <div className="border-0 rounded-xl shadow-xl relative flex flex-col w-full bg-white dark:bg-[#1e1e1e] dark:text-white dark:border dark:border-gray-700">
-            <div className="flex items-start justify-between px-6 py-3 border-b border-solid border-blueGray-200 rounded-t-lg bg-[#0d1b4c] text-white">
-              <h3 className="text-xl font-semibold">{title}</h3>
-              {enableXClose && (
-                <button
-                  aria-label="Close dialog"
-                  className="p-1 ml-auto border-0 float-right text-3xl leading-none font-semibold text-white hover:text-gray-300 focus:ring-2 focus:ring-white/40 rounded"
-                  onClick={onClose}
-                >
-                  <span className="h-6 w-6 text-2xl block">×</span>
-                </button>
-              )}
-            </div>
-            <div className="relative px-6 flex-auto">
-              <div className="my-4 text-blueGray-500 text-lg leading-relaxed max-h-[300px] overflow-y-auto">
-                {children}
-              </div>
-            </div>
-            <div className="flex items-center justify-end px-6 py-2 border-t border-solid border-blueGray-200 rounded-b">
-              {okButtonTitle && (
-                <button
-                  className="text-blue-500 background-transparent font-medium px-6 py-2 mr-1 mb-1 ease-linear transition-all duration-150 hover:text-blue-700 focus:ring-2 focus:ring-blue-300 rounded"
-                  type="button"
-                  onClick={onOk}
-                >
-                  {t(okButtonTitle!)}
-                </button>
-              )}
+        <div className="pointer-events-auto relative w-full sm:w-auto sm:max-w-xl bg-white dark:bg-[#1e1e1e] rounded-t-2xl sm:rounded-2xl shadow-2xl border border-gray-100 dark:border-gray-800 flex flex-col max-h-[90vh]">
+          <div className="flex items-center justify-between px-6 pt-5 pb-3">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white tracking-tight">
+              {title}
+            </h3>
+            {enableXClose && (
               <button
-                className="text-blue-500 background-transparent font-medium px-6 py-2 mr-1 mb-1 ease-linear transition-all duration-150 hover:text-blue-700 focus:ring-2 focus:ring-blue-300 rounded"
-                type="button"
+                aria-label="Close dialog"
+                className="w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:ring-2 focus:ring-gray-300"
                 onClick={onClose}
               >
-                {t(closeButtonTitle)}
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M1 1L13 13M13 1L1 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                </svg>
               </button>
-            </div>
+            )}
+          </div>
+          <div className="px-6 pb-4 overflow-y-auto text-[15px] leading-relaxed text-gray-600 dark:text-gray-300">
+            {children}
+          </div>
+          <div className="flex items-center justify-end gap-2 px-6 py-4 border-t border-gray-100 dark:border-gray-800">
+            <button
+              className="px-4 py-2 rounded-full text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors focus:ring-2 focus:ring-gray-300"
+              type="button"
+              onClick={onClose}
+            >
+              {t(closeButtonTitle)}
+            </button>
+            {okButtonTitle && (
+              <button
+                className="px-4 py-2 rounded-full text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 transition-colors shadow-lg shadow-blue-500/25 focus:ring-2 focus:ring-blue-300"
+                type="button"
+                onClick={onOk}
+              >
+                {t(okButtonTitle!)}
+              </button>
+            )}
           </div>
         </div>
       </div>
-      <div className="opacity-25 dark:opacity-50 fixed inset-0 z-40 bg-black"></div>
     </>,
     document.getElementById("modal")!
   );

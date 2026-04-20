@@ -12,43 +12,39 @@ const TermsOfAgreementPage: React.FC = () => {
 
   return (
     <PageTemplate>
-      <div className="px-10 dark:text-white">
-        <div className="m-auto mb-12 mt-4">
-          <h1 className="text-4xl font-bold text-center">
+      <div className="max-w-[760px] mx-auto px-5 sm:px-8 py-10 sm:py-16 dark:text-white">
+        <header className="mb-10 sm:mb-14 text-center">
+          <h1 className="text-3xl sm:text-5xl font-semibold tracking-tight text-gray-900 dark:text-white">
             {t("Terms of agreement")}
           </h1>
-        </div>
+          <span className="inline-block mt-4 px-3 py-1 text-xs font-medium rounded-full bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400">
+            {t("Last Updated:")} 05-08-2024
+          </span>
+        </header>
 
-        <section className="lg:w-[900px] pb-3">
-          <p className="pb-5 font-bold">{t("Last Updated:")} 05-08-2024</p>
-          <p className="pb-3">
+        <article className="space-y-5 text-[15px] leading-relaxed text-gray-600 dark:text-gray-300">
+          <p>
             {t(
               "We cannot guarantee the accuracy of data within the Danish Short Watch app (the app). This data is collected from Danish FSA’s web portal which is a database for company announcements filed by companies which under section 25 of the Danish Capital Markets Act are obliged to file information with the Danish FSA."
             )}
           </p>
-
-          <p className="pb-3">
+          <p>
             {t(
               "We are not responsible for how users utilize the app or the information and materials published therein."
             )}
           </p>
-
-          <p className="pb-3">
+          <p>
             {t(
               "Users are solely responsible for downloading or using information and other resources publicly available in the app, including those accessed through external links."
             )}
           </p>
-
-          <p className="pb-3">
-            {t("We cannot be held liable for delays or errors in data.")}
-          </p>
-
-          <p className="pb-3">
+          <p>{t("We cannot be held liable for delays or errors in data.")}</p>
+          <p>
             {t(
               "We are not responsible for loss on the user or any indirect losses incurred."
             )}
           </p>
-        </section>
+        </article>
       </div>
     </PageTemplate>
   );

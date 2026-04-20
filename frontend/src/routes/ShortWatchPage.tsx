@@ -140,7 +140,7 @@ const ShortWatchPage: React.FC = () => {
   }
 
   return (
-    <div className="h-screen xl:h-[calc(100dvh)] min-h-[620px] overflow-hidden [@media(max-height:900px)_and_(orientation:landscape)]:overflow-auto [@media(max-height:900px)_and_(orientation:landscape)]:h-auto [@media(max-height:900px)_and_(orientation:landscape)]:min-h-screen">
+    <div className="h-screen xl:h-[calc(100dvh)] min-h-[620px] overflow-hidden [@media((max-height:900px)_and_(orientation:landscape))_or_(max-height:700px)]:overflow-auto [@media((max-height:900px)_and_(orientation:landscape))_or_(max-height:700px)]:h-auto [@media((max-height:900px)_and_(orientation:landscape))_or_(max-height:700px)]:min-h-screen">
       <PageTemplate>
         <div className="w-screen lg:flex lg:justify-center lg:gap-4  m-auto">
           <div className="w-1/3 justify-start items-center hidden"></div>
@@ -153,9 +153,9 @@ const ShortWatchPage: React.FC = () => {
             </p>*/}
             <section className="w-full">
               <div className="relative mx-2 flex items-center">
-                <div className="absolute inset-y-0 left-0 flex items-center ps-3 pointer-events-none">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
                   <svg
-                    className="w-4 h-4 text-gray-500 dark:text-gray-400 mr-3"
+                    className="w-[18px] h-[18px] text-gray-400 dark:text-gray-500"
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -171,14 +171,29 @@ const ShortWatchPage: React.FC = () => {
                   </svg>
                 </div>
                 <input
-                  type="search"
+                  type="text"
                   id="search"
                   aria-label={t("Search")}
                   placeholder={t("Search")}
                   ref={searchElement}
+                  value={searchTerm}
                   onChange={(event) => setSearchTerm(event.target.value)}
-                  className="flex-1 border border-gray-200 dark:border-gray-700 p-2 pl-9 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-transparent w-full dark:bg-[#1e1e1e] dark:text-white"
+                  className="w-full bg-gray-50 dark:bg-gray-800/50 border border-transparent focus:border-blue-400 dark:focus:border-blue-400 focus:bg-white dark:focus:bg-[#1e1e1e] pl-11 pr-10 py-2.5 rounded-xl text-sm text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-400/30 transition-colors"
                 />
+                {searchTerm && (
+                  <button
+                    type="button"
+                    aria-label="Clear search"
+                    onClick={() => setSearchTerm("")}
+                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
+                  >
+                    <span className="w-5 h-5 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M1 1L9 9M9 1L1 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                      </svg>
+                    </span>
+                  </button>
+                )}
               </div>
               <div className="p-2 pb-4">
                 <div className="flex items-center justify-between">
@@ -189,7 +204,7 @@ const ShortWatchPage: React.FC = () => {
                       onSelectMenuItemChange={setSelectedSorting}
                     />
                     <button
-                      className="text-blue-500 text-center font-medium align-middle bg-transparent border-none text ml-5 hover:text-blue-700"
+                      className="font-medium text-blue-500 bg-transparent border-none ml-3 px-2.5 py-1.5 rounded-md hover:bg-blue-50 dark:hover:bg-blue-500/10 transition-colors focus:ring-2 focus:ring-blue-300"
                       onClick={() => {
                         handleClick(
                           `list changed: ${
@@ -204,7 +219,7 @@ const ShortWatchPage: React.FC = () => {
                     </button>
                   </div>
                   <button
-                    className="text-blue-500 text-center font-medium align-middle bg-transparent border-none ml-4 hover:text-blue-700"
+                    className="font-medium text-blue-500 bg-transparent border-none px-2.5 py-1.5 rounded-md hover:bg-blue-50 dark:hover:bg-blue-500/10 transition-colors focus:ring-2 focus:ring-blue-300"
                     onClick={handleInfo}
                   >
                     Info
