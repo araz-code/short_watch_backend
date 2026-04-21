@@ -63,26 +63,43 @@ const PricePointChartInfo: React.FC<{
     curr.value > prev.value ? curr : prev
   );
 
-  const change =
-    pricePoints[0].value - pricePoints[pricePoints.length - 1].value;
+  const startValue = pricePoints[0].value;
+  const currentValue = pricePoints[pricePoints.length - 1].value;
+  const change = startValue - currentValue;
+  const average =
+    pricePoints.reduce((sum, curr) => sum + curr.value, 0) / pricePoints.length;
 
-  let changeElement;
+  let changeLabel: string;
+  let changeTone: "neutral" | "down" | "up";
 
   if (change === 0) {
-    changeElement = <span>{t("No change")}</span>;
+    changeLabel = t("No change");
+    changeTone = "neutral";
   } else if (change > 0) {
-    changeElement = (
-      <span>
-        {t("Decreased by")} {Math.abs(change).toFixed(2)}%
-      </span>
-    );
+    changeLabel = `${t("Decreased by")} ${Math.abs(change).toFixed(2)}%`;
+    changeTone = "down";
   } else {
-    changeElement = (
-      <span>
-        {t("Increased by")} {Math.abs(change).toFixed(2)}%
-      </span>
-    );
+    changeLabel = `${t("Increased by")} ${Math.abs(change).toFixed(2)}%`;
+    changeTone = "up";
   }
+
+  const toneClasses: Record<typeof changeTone, string> = {
+    neutral:
+      "bg-gray-100 text-gray-700 dark:bg-white/10 dark:text-gray-200",
+    down: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+    up: "bg-rose-500/10 text-rose-600 dark:text-rose-400",
+  };
+
+  const Row: React.FC<{ label: string; value: string }> = ({ label, value }) => (
+    <div className="flex items-center justify-between py-2.5 first:pt-0 last:pb-0 border-b border-gray-100 dark:border-white/5 last:border-b-0">
+      <span className="text-[13px] text-gray-500 dark:text-gray-400">
+        {label}
+      </span>
+      <span className="text-[14px] font-semibold tabular-nums text-gray-900 dark:text-gray-100">
+        {value}
+      </span>
+    </div>
+  );
 
   return (
     <div className="relative">
@@ -90,9 +107,9 @@ const PricePointChartInfo: React.FC<{
       <button
         onClick={toggleOverlay}
         ref={buttonRef}
-        className={`w-[23px] h-[23px] rounded-full border-none flex justify-center items-center cursor-pointer z-10 text-white italic focus:ring-2 focus:ring-blue-300 ${
+        className={`w-[23px] h-[23px] rounded-full border-none flex justify-center items-center cursor-pointer z-10 text-white italic focus:ring-2 focus:ring-blue-300 transition-colors ${
           showOverlay
-            ? "bg-blue-600 hover:bg-blue-500"
+            ? "bg-blue-700 hover:bg-blue-600"
             : "bg-blue-600 hover:bg-blue-500"
         }`}
         aria-label={t("Show summary")}
@@ -102,59 +119,61 @@ const PricePointChartInfo: React.FC<{
 
       {/* Info Overlay */}
       {showOverlay && (
-        <div
-          ref={overlayRef}
-          className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] p-2 bg-white/95 backdrop-blur-sm border border-gray-200 shadow-xl rounded-xl flex flex-col dark:bg-[#1e1e1e]/95 dark:text-white dark:border-gray-700"
-          style={{ zIndex: 50 }}
-        >
-          <div className="p-1 mx-auto">
-            <h2 className="text-lg font-semibold mb-2">
-              {t("Selected period:")}
-            </h2>
-            <p className="mb-4 text-sm">
-              {`${formatTimestamp(pricePoints[0].timestamp, "dateOnly")} - ${t(
-                "today"
-              )}`}
-            </p>
-            <h2 className="text-base font-semibold mb-2">
-              {t("Summary for the period:")}
-            </h2>
-            <ul className="list-disc pl-5 text-sm">
-              <li className="mb-2">
-                <span className="font-medium">{t("Change")}:</span>{" "}
-                {changeElement}
-              </li>
-              <li className="mb-2">
-                <span className="font-medium">{t("Period start")}:</span>{" "}
-                <span>{`${pricePoints[0].value.toFixed(2)}%`}</span>
-              </li>
-              <li className="mb-2">
-                <span className="font-medium">{t("Current")}:</span>{" "}
-                <span>{`${pricePoints[pricePoints.length - 1].value.toFixed(
-                  2
-                )}%`}</span>
-              </li>
-              <li className="mb-2">
-                <span className="font-medium">{t("Lowest")}:</span>{" "}
-                <span>{`${lowestPoint.value.toFixed(2)}%`}</span>
-              </li>
-              <li className="mb-2">
-                <span className="font-medium">{t("Highest")}:</span>{" "}
-                <span>{`${highestPoint.value.toFixed(2)}%`}</span>
-              </li>
-              <li className="">
-                <span className="font-medium">{t("Average")}:</span>{" "}
-                <span>
-                  {`${(
-                    pricePoints.reduce((sum, curr) => sum + curr.value, 0) /
-                    pricePoints.length
-                  ).toFixed(2)}`}
-                  %
-                </span>
-              </li>
-            </ul>
+        <>
+          <div
+            className="fixed inset-0 bg-black/30 backdrop-blur-[2px] z-40"
+            aria-hidden="true"
+          />
+          <div
+            ref={overlayRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label={t("Summary for the period:")}
+            className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] max-w-[calc(100vw-2rem)] bg-white dark:bg-[#1e1e1e] border border-gray-100 dark:border-white/10 shadow-2xl rounded-2xl overflow-hidden z-50"
+          >
+            {/* Header */}
+            <div className="px-5 pt-4 pb-3 border-b border-gray-100 dark:border-white/5">
+              <p className="text-[11px] font-semibold uppercase tracking-wider text-blue-500 dark:text-blue-400">
+                {t("Selected period:")}
+              </p>
+              <p className="mt-1 text-[14px] font-medium text-gray-900 dark:text-gray-100 tabular-nums">
+                {`${formatTimestamp(pricePoints[0].timestamp, "dateOnly")} — ${t(
+                  "today"
+                )}`}
+              </p>
+            </div>
+
+            {/* Change badge */}
+            <div className="px-5 pt-4">
+              <span
+                className={`inline-flex items-center px-3 py-1 rounded-full text-[12px] font-semibold ${toneClasses[changeTone]}`}
+              >
+                {changeLabel}
+              </span>
+            </div>
+
+            {/* Stats */}
+            <div className="px-5 py-3">
+              <Row
+                label={t("Period start")}
+                value={`${startValue.toFixed(2)}%`}
+              />
+              <Row
+                label={t("Current")}
+                value={`${currentValue.toFixed(2)}%`}
+              />
+              <Row
+                label={t("Lowest")}
+                value={`${lowestPoint.value.toFixed(2)}%`}
+              />
+              <Row
+                label={t("Highest")}
+                value={`${highestPoint.value.toFixed(2)}%`}
+              />
+              <Row label={t("Average")} value={`${average.toFixed(2)}%`} />
+            </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   );
