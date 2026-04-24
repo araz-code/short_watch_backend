@@ -25,6 +25,7 @@ const ContactPage = lazy(() => import("./routes/ContactPage.tsx"));
 const PrivacyPolicyPage = lazy(() => import("./routes/PrivacyPolicyPage.tsx"));
 const TermsOfAgreementPage = lazy(() => import("./routes/TermsOfAgreementPage.tsx"));
 const CookiePolicyPage = lazy(() => import("./routes/CookiePolicyPage.tsx"));
+const FAQPage = lazy(() => import("./routes/FAQPage.tsx"));
 
 type ConsentButtonProps = {
   onClick: () => void;
@@ -105,6 +106,10 @@ const router = createBrowserRouter([
   {
     path: "contact",
     element: <ErrorBoundary><ContactPage /></ErrorBoundary>,
+  },
+  {
+    path: "faq",
+    element: <ErrorBoundary><FAQPage /></ErrorBoundary>,
   },
 ]);
 

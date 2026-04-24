@@ -8,7 +8,7 @@ const localStorageConsentAccepted = "consentAccepted";
 const localStorageConsentVersion = "consentVersion";
 
 // Bump this whenever the cookie/privacy policy materially changes
-// (new tracking categories, new processors, etc.) — every existing user
+// (new tracking categories, new processors, etc.). Every existing user
 // will be re-prompted on their next visit.
 export const CURRENT_CONSENT_VERSION = 2;
 
@@ -41,7 +41,7 @@ const ConsentDialog: React.FC<{
 
   const consentDeclined = () => {
     // If GA was initialized earlier this session, scripts are already running
-    // and just clearing cookies won't stop tracking — reload to fully unload them.
+    // and just clearing cookies won't stop tracking, so reload to fully unload them.
     const wasAccepted =
       localStorage.getItem(localStorageConsentAccepted) === "true";
 

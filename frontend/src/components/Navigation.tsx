@@ -157,6 +157,17 @@ const Navigation: React.FC = () => {
                     {t("Top Lists")}
                   </NavLink>
                 </li>
+                <li>
+                  <NavLink
+                    to="/faq"
+                    className={({ isActive }) =>
+                      isActive ? activeLinkClasses : linkClasses
+                    }
+                    onClick={() => setCollapseMenu(defaultCollapseMenu)}
+                  >
+                    {t("FAQ")}
+                  </NavLink>
+                </li>
                 <li className="relative">
                   <button
                     aria-expanded={!collapseMenu.legalMenu}

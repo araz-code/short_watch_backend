@@ -198,7 +198,7 @@ const PricePointChartInfo: React.FC<{
                   {t("Selected period:")}
                 </p>
                 <p className="mt-1 text-[14px] font-medium text-gray-900 dark:text-gray-100 tabular-nums">
-                  {`${formatTimestamp(pricePoints[0].timestamp, "dateOnly")} — ${t(
+                  {`${formatTimestamp(pricePoints[0].timestamp, "dateOnly")} to ${t(
                     "today"
                   )}`}
                 </p>

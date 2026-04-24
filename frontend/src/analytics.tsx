@@ -8,7 +8,7 @@ export const initializeAnalytics = () => {
   });
 };
 
-// All event names in one place — greppable, typo-proof, easy to audit in GA4.
+// All event names in one place: greppable, typo-proof, easy to audit in GA4.
 export type AnalyticsEvent =
   | "sort_change"
   | "filter_change"
@@ -21,12 +21,13 @@ export type AnalyticsEvent =
   | "seller_to_position_click"
   | "seller_link_click"
   | "announcement_open"
-  | "info_dialog_open"
+  | "help_dialog_open"
   | "chart_info_open"
   | "chart_toggle_closing_prices"
   | "banner_click"
   | "outbound_click"
-  | "cookie_consent_open";
+  | "cookie_consent_open"
+  | "faq_question_open";
 
 type EventParams = Record<string, string | number | boolean | undefined>;
 

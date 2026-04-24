@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import ErrorBlock from "../components/UI/ErrorBlock";
 import LoadingIndicator from "../components/UI/LoadingIndicator";
-import InfoDialog from "../components/InfoDialog";
 import { useTranslation } from "react-i18next";
 import { trackEvent, trackPageView } from "../analytics";
 import ShortSeller from "../models/ShortSeller";
@@ -35,7 +34,6 @@ const ShortSellersPage: React.FC = () => {
   useSEO("Short Sellers", "See which hedge funds and institutions hold large short positions in Danish stocks. Positions of 0.5% or greater reported by the Danish FSA.");
   const searchElement = useRef<HTMLInputElement>(null);
 
-  const [showInfo, setShowInfo] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedSorting, setSelectedSorting] = useState<string>(() => {
     const savedSorting = localStorage.getItem("selectedSellersSorting");
@@ -216,12 +214,6 @@ const ShortSellersPage: React.FC = () => {
           <div className="w-1/3 justify-end items-center hidden"></div>
         </div>
       </PageTemplate>
-
-      {showInfo && (
-        <div className="w-screen lg:w-[900px] m-auto">
-          <InfoDialog onClose={() => setShowInfo(false)} />
-        </div>
-      )}
     </div>
   );
 };

@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import DropDownMenu from "../components/UI/DropDownMenu";
 import ErrorBlock from "../components/UI/ErrorBlock";
 import LoadingIndicator from "../components/UI/LoadingIndicator";
-import InfoDialog from "../components/InfoDialog";
+import HelpDialog from "../components/HelpDialog";
 import { useTranslation } from "react-i18next";
 import { trackEvent, trackPageView } from "../analytics";
 import { useSEO } from "../utils/useSEO";
@@ -52,7 +52,7 @@ const ShortWatchPage: React.FC = () => {
     const savedMyList = localStorage.getItem("myList");
     return savedMyList ? JSON.parse(savedMyList) : [];
   });
-  const [showInfo, setShowInfo] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["shorts"],
@@ -65,9 +65,9 @@ const ShortWatchPage: React.FC = () => {
       }),
   });
 
-  const handleInfo = () => {
-    trackEvent("info_dialog_open", { page: "short_watch" });
-    setShowInfo(true);
+  const handleHelp = () => {
+    trackEvent("help_dialog_open", { page: "short_watch" });
+    setShowHelp(true);
   };
 
   useEffect(() => {
@@ -220,9 +220,9 @@ const ShortWatchPage: React.FC = () => {
                   </div>
                   <button
                     className="font-medium text-blue-500 bg-transparent border-none px-2.5 py-1.5 rounded-md hover:bg-blue-50 dark:hover:bg-blue-500/10 transition-colors focus:ring-2 focus:ring-blue-300"
-                    onClick={handleInfo}
+                    onClick={handleHelp}
                   >
-                    Info
+                    {t("Help")}
                   </button>
                 </div>
               </div>
@@ -239,9 +239,9 @@ const ShortWatchPage: React.FC = () => {
         </div>
       </PageTemplate>
 
-      {showInfo && (
+      {showHelp && (
         <div className="w-screen lg:w-[900px] m-auto">
-          <InfoDialog onClose={() => setShowInfo(false)} />
+          <HelpDialog onClose={() => setShowHelp(false)} />
         </div>
       )}
     </div>

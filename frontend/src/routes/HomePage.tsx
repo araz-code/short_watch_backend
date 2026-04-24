@@ -28,7 +28,7 @@ const cards = [
     icon: faClockRotateLeft,
     title: "Historic data",
     content:
-      "Explore short positions over time — tables and charts included.",
+      "Explore short positions over time, tables and charts included.",
   },
   {
     icon: faPerson,
@@ -269,6 +269,9 @@ const HomePage: React.FC = () => {
             &copy; {new Date().getFullYear()} Zirium. All rights reserved.
           </p>
           <nav className="flex flex-wrap justify-center gap-x-5 gap-y-2 text-xs text-gray-500 dark:text-gray-400 order-1 sm:order-2">
+            <Link to="/faq" className="hover:text-gray-900 dark:hover:text-white transition-colors">
+              {t("FAQ")}
+            </Link>
             <Link to="/privacy-policy" className="hover:text-gray-900 dark:hover:text-white transition-colors">
               {t("Privacy")}
             </Link>
