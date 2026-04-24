@@ -9,7 +9,7 @@ import "./utils/i18n.ts";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCookieBite } from "@fortawesome/free-solid-svg-icons";
-import ConsentDialog from "./components/ConsentDialog.tsx";
+import ConsentDialog, { CURRENT_CONSENT_VERSION } from "./components/ConsentDialog.tsx";
 import { trackEvent, initializeAnalytics } from "./analytics.tsx";
 import { useCookies } from "react-cookie";
 import LoadingIndicator from "./components/UI/LoadingIndicator.tsx";
@@ -112,11 +112,14 @@ function App() {
   const [cookies, , removeCookie] = useCookies();
   const [showConsentDialog, setShowConsentDialog] = useState<boolean>(() => {
     const consentID = localStorage.getItem("consentId");
-    return consentID === null;
+    const acceptedVersion = Number(localStorage.getItem("consentVersion") ?? 0);
+    return consentID === null || acceptedVersion < CURRENT_CONSENT_VERSION;
   });
   const [consentAccepted, setConsentAccepted] = useState<boolean>(() => {
-    const consentID = localStorage.getItem("consentAccepted");
-    return consentID ? JSON.parse(consentID) : false;
+    const accepted = localStorage.getItem("consentAccepted");
+    const acceptedVersion = Number(localStorage.getItem("consentVersion") ?? 0);
+    if (acceptedVersion < CURRENT_CONSENT_VERSION) return false;
+    return accepted ? JSON.parse(accepted) : false;
   });
 
   useEffect(() => {

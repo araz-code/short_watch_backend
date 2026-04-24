@@ -5,6 +5,12 @@ import { updateConsent } from "../apis/ShortPositionAPI";
 
 const localStorageConsentIdKey = "consentId";
 const localStorageConsentAccepted = "consentAccepted";
+const localStorageConsentVersion = "consentVersion";
+
+// Bump this whenever the cookie/privacy policy materially changes
+// (new tracking categories, new processors, etc.) — every existing user
+// will be re-prompted on their next visit.
+export const CURRENT_CONSENT_VERSION = 2;
 
 const getOrGenerateConsentId = (): string => {
   const existingConsentId = localStorage.getItem(localStorageConsentIdKey);
@@ -26,6 +32,7 @@ const ConsentDialog: React.FC<{
 
   const consentAccepted = () => {
     localStorage.setItem(localStorageConsentAccepted, JSON.stringify(true));
+    localStorage.setItem(localStorageConsentVersion, String(CURRENT_CONSENT_VERSION));
     const consentId = getOrGenerateConsentId();
     updateConsent(consentId, true);
     onConsentAccepted(true);
@@ -33,12 +40,22 @@ const ConsentDialog: React.FC<{
   };
 
   const consentDeclined = () => {
+    // If GA was initialized earlier this session, scripts are already running
+    // and just clearing cookies won't stop tracking — reload to fully unload them.
+    const wasAccepted =
+      localStorage.getItem(localStorageConsentAccepted) === "true";
+
     localStorage.setItem(localStorageConsentAccepted, JSON.stringify(false));
+    localStorage.setItem(localStorageConsentVersion, String(CURRENT_CONSENT_VERSION));
 
     const consentId = getOrGenerateConsentId();
     updateConsent(consentId, false);
     onConsentAccepted(false);
     onClose();
+
+    if (wasAccepted) {
+      window.location.reload();
+    }
   };
 
   return createPortal(
