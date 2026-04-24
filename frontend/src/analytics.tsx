@@ -8,39 +8,40 @@ export const initializeAnalytics = () => {
   });
 };
 
-/*export const logPageView = (page: string, title: string) => {
-  ReactGA.send({ hitType: "pageview", page, title });
-};*/
+// All event names in one place — greppable, typo-proof, easy to audit in GA4.
+export type AnalyticsEvent =
+  | "sort_change"
+  | "filter_change"
+  | "period_change"
+  | "watchlist_add"
+  | "watchlist_remove"
+  | "seller_details_view"
+  | "position_details_view"
+  | "largest_sellers_view"
+  | "seller_to_position_click"
+  | "seller_link_click"
+  | "announcement_open"
+  | "info_dialog_open"
+  | "chart_info_open"
+  | "chart_toggle_closing_prices"
+  | "banner_click"
+  | "outbound_click"
+  | "cookie_consent_open";
+
+type EventParams = Record<string, string | number | boolean | undefined>;
+
+export const trackEvent = (event: AnalyticsEvent, params: EventParams = {}) => {
+  TagManager.dataLayer({
+    dataLayer: { event, ...params },
+  });
+};
+
+export const trackPageView = (pagePath: string, pageTitle: string) => {
+  TagManager.dataLayer({
+    dataLayer: { event: "page_view", pagePath, pageTitle },
+  });
+};
 
 export const logException = (description: string) => {
-  ReactGA.event({
-    category: "exception",
-    action: description,
-  });
-};
-
-/*export const logEvent = (category: string, action: string) => {
-  ReactGA.event({
-    category,
-    action,
-  });
-};*/
-
-export const handleClick = (action: string) => {
-  TagManager.dataLayer({
-    dataLayer: {
-      event: "user_action",
-      action: action,
-    },
-  });
-};
-
-export const sendCustomPageView = (pagePath: string, pageTitle: string) => {
-  TagManager.dataLayer({
-    dataLayer: {
-      event: "pageview",
-      pagePath,
-      pageTitle,
-    },
-  });
+  ReactGA.event("exception", { description, fatal: false });
 };

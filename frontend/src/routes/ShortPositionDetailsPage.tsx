@@ -8,7 +8,7 @@ import PageTemplate from "../components/PageTemplate";
 import ErrorBlock from "../components/UI/ErrorBlock";
 import LoadingIndicator from "../components/UI/LoadingIndicator";
 import { useTranslation } from "react-i18next";
-import { handleClick, sendCustomPageView } from "../analytics";
+import { trackEvent, trackPageView } from "../analytics";
 import ChartPricePoint from "../models/ChartPricePoint";
 import PricePointList from "../components/PricePointList";
 import LargeShortSellingList from "../components/LargeShortSellingList";
@@ -138,31 +138,31 @@ const ShortPositionDetailsPage: React.FC = () => {
 
   useEffect(() => {
     if (selectedDetailOption === "Largest sellers") {
-      handleClick(`largest sellers clicked for: ${code}`);
+      trackEvent("largest_sellers_view", { position_code: code ?? "" });
     }
   }, [selectedDetailOption, code]);
 
   useEffect(() => {
-    handleClick(`details shown for: ${code}`);
-    sendCustomPageView(`/short-watch-details`, "short watch details");
+    trackEvent("position_details_view", { position_code: code ?? "" });
+    trackPageView(`/short-watch-details`, "short watch details");
   }, [code]);
 
   useEffect(() => {
-    handleClick(`period changed to: ${selectedPeriod.toLowerCase()}`);
+    trackEvent("period_change", { page: "position_details", period: selectedPeriod });
   }, [selectedPeriod]);
 
   const addToMyList = () => {
     if (code) {
       setMyList((prev) => [...prev, code]);
 
-      handleClick(`added to list: ${code}`);
+      trackEvent("watchlist_add", { position_code: code });
     }
   };
 
   const removeFromMyList = () => {
     if (code) {
       setMyList((prev) => prev.filter((item) => item !== code));
-      handleClick(`removed from list: ${code}`);
+      trackEvent("watchlist_remove", { position_code: code });
     }
   };
 

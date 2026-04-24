@@ -11,7 +11,7 @@ import Card from "../components/UI/Card";
 import { useTranslation } from "react-i18next";
 import AppImage from "../components/Homepage/AppImage";
 import { useEffect, useState } from "react";
-import { handleClick, sendCustomPageView } from "../analytics";
+import { trackEvent, trackPageView } from "../analytics";
 import { useSEO } from "../utils/useSEO";
 import { useQuery } from "react-query";
 import { fetchStats, ShortStats } from "../apis/ShortPositionAPI";
@@ -59,7 +59,7 @@ const HomePage: React.FC = () => {
   });
 
   useEffect(() => {
-    sendCustomPageView("/", "home");
+    trackPageView("/", "home");
   }, []);
 
   return (
@@ -79,14 +79,14 @@ const HomePage: React.FC = () => {
                     <Link
                       to="/short-sellers"
                       className="text-xs font-medium px-3 py-1.5 rounded-full bg-white/15 hover:bg-white/25 transition-colors"
-                      onClick={() => handleClick("banner short sellers clicked")}
+                      onClick={() => trackEvent("banner_click", { destination: "short_sellers" })}
                     >
                       {t("Short sellers")} →
                     </Link>
                     <Link
                       to="/top-lists"
                       className="text-xs font-medium px-3 py-1.5 rounded-full bg-white/15 hover:bg-white/25 transition-colors"
-                      onClick={() => handleClick("banner top lists clicked")}
+                      onClick={() => trackEvent("banner_click", { destination: "top_lists" })}
                     >
                       {t("Top Lists")} →
                     </Link>
@@ -125,7 +125,7 @@ const HomePage: React.FC = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-white bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 focus:ring-2 focus:ring-white/40 font-medium rounded-full text-sm px-5 py-2.5 flex items-center h-[45px] transition-all duration-200"
-                  onClick={() => handleClick("app store clicked")}
+                  onClick={() => trackEvent("outbound_click", { destination: "app_store" })}
                 >
                   <svg
                     className="w-6 h-6 me-2"
@@ -151,7 +151,7 @@ const HomePage: React.FC = () => {
                 <Link to="/short-watch">
                   <button
                     className="text-white bg-blue-500 hover:bg-blue-400 focus:ring-2 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 flex items-center h-[45px] transition-all duration-200 shadow-lg shadow-blue-500/25"
-                    onClick={() => handleClick("short watch web app clicked")}
+                    onClick={() => trackEvent("outbound_click", { destination: "web_app" })}
                   >
                     <FontAwesomeIcon
                       className="mr-2 text-lg"

@@ -4,7 +4,7 @@ import { faInfo } from "@fortawesome/free-solid-svg-icons";
 import ChartPricePoint from "../models/ChartPricePoint";
 import { formatTimestamp } from "../utils/dates";
 import { useTranslation } from "react-i18next";
-import { handleClick } from "../analytics";
+import { trackEvent } from "../analytics";
 
 const PricePointChartInfo: React.FC<{
   pricePoints: ChartPricePoint[];
@@ -20,7 +20,7 @@ const PricePointChartInfo: React.FC<{
 
   // Toggle the overlay visibility
   const toggleOverlay = () => {
-    handleClick(`clicked on show detail info for: ${symbol}`);
+    trackEvent("chart_info_open", { symbol });
 
     setShowOverlay(!showOverlay);
   };

@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import PageTemplate from "../components/PageTemplate";
-import { sendCustomPageView } from "../analytics";
+import { trackPageView } from "../analytics";
 
 const TermsOfAgreementPage: React.FC = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    sendCustomPageView("/privacy-policy", "privacy policy");
+    trackPageView("/terms-of-agreement", "terms of agreement");
   }, []);
 
   return (

@@ -7,7 +7,7 @@ import ErrorBlock from "../components/UI/ErrorBlock";
 import LoadingIndicator from "../components/UI/LoadingIndicator";
 import InfoDialog from "../components/InfoDialog";
 import { useTranslation } from "react-i18next";
-import { handleClick, sendCustomPageView } from "../analytics";
+import { trackEvent, trackPageView } from "../analytics";
 import ShortSeller from "../models/ShortSeller";
 import ShortSellerRow from "../components/ShortSellerRow";
 import DropDownMenu from "../components/UI/DropDownMenu";
@@ -63,11 +63,11 @@ const ShortSellersPage: React.FC = () => {
   }, [selectedSorting, showCurrent]);
 
   useEffect(() => {
-    handleClick(`sorting changed to: ${selectedSorting.toLowerCase()}`);
+    trackEvent("sort_change", { page: "short_sellers", sort_value: selectedSorting });
   }, [selectedSorting]);
 
   useEffect(() => {
-    sendCustomPageView(`/short-sellers`, "short sellers");
+    trackPageView(`/short-sellers`, "short sellers");
   }, []);
 
   let content;
@@ -190,11 +190,11 @@ const ShortSellersPage: React.FC = () => {
                     <button
                       className="font-medium text-blue-500 bg-transparent border-none ml-3 px-2.5 py-1.5 rounded-md hover:bg-blue-50 dark:hover:bg-blue-500/10 transition-colors focus:ring-2 focus:ring-blue-300"
                       onClick={() => {
-                        handleClick(
-                          `current changed: ${
-                            showCurrent ? t("All") : t("Current")
-                          }`
-                        );
+                        trackEvent("filter_change", {
+                          page: "short_sellers",
+                          filter: "current_only",
+                          enabled: !showCurrent,
+                        });
                         setShowCurrent(!showCurrent);
                       }}
                     >

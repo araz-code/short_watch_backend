@@ -19,7 +19,7 @@ import {
   NameType,
   ValueType,
 } from "recharts/types/component/DefaultTooltipContent";
-import { handleClick } from "../analytics";
+import { trackEvent } from "../analytics";
 import PricePointChartInfo from "./PricePointChartInfo";
 
 const CustomTooltip: React.FC<TooltipProps<ValueType, NameType>> = ({
@@ -121,7 +121,7 @@ const PricePointChart: React.FC<{
   const toggleClosingPrices = () => {
     setShowClosingPrices((prevValue) => {
       const newValue = !prevValue;
-      handleClick(`clicked on toggle closing prices: ${newValue}`);
+      trackEvent("chart_toggle_closing_prices", { enabled: newValue });
       return newValue;
     });
   };

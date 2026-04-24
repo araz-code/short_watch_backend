@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import PageTemplate from "../components/PageTemplate";
-import { sendCustomPageView } from "../analytics";
+import { trackPageView } from "../analytics";
 
 const CookiePolicyPage: React.FC = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    sendCustomPageView("/cookie-policy", "contact");
+    trackPageView("/cookie-policy", "cookie policy");
   }, []);
 
   return (

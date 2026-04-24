@@ -12,7 +12,7 @@ import ErrorBlock from "../components/UI/ErrorBlock";
 import LoadingIndicator from "../components/UI/LoadingIndicator";
 import { useTranslation } from "react-i18next";
 
-import { handleClick, sendCustomPageView } from "../analytics";
+import { trackEvent, trackPageView } from "../analytics";
 import Announcement from "../models/Announcement";
 import ShortSellerDetails from "../models/ShortSellerDetails";
 import ShortSellerAnnouncementRow from "../components/ShortSellerAnnouncementRow";
@@ -54,8 +54,8 @@ const ShortSellerDetailsPage: React.FC = () => {
   );
 
   useEffect(() => {
-    handleClick(`large short seller details shown for: ${seller}`);
-    sendCustomPageView(`/short-seller-details`, "short seller details");
+    trackEvent("seller_details_view", { seller: seller ?? "" });
+    trackPageView(`/short-seller-details`, "short seller details");
   }, [seller]);
 
   let content;
@@ -118,9 +118,10 @@ const ShortSellerDetailsPage: React.FC = () => {
                     <Link
                       to={`/short-watch-details?code=${groupedAnnouncements[symbol][0].stockCode}`}
                       onClick={() => {
-                        handleClick(
-                          `clicked on link to shorts from seller ${data.name}: ${groupedAnnouncements[symbol][0].stockSymbol}`
-                        );
+                        trackEvent("seller_to_position_click", {
+                          seller: data.name,
+                          symbol: groupedAnnouncements[symbol][0].stockSymbol,
+                        });
                       }}
                       className="text-base font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
                     >

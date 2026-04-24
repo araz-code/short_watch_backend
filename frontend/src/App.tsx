@@ -10,7 +10,7 @@ import "./utils/i18n.ts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCookieBite } from "@fortawesome/free-solid-svg-icons";
 import ConsentDialog from "./components/ConsentDialog.tsx";
-import { handleClick, initializeAnalytics } from "./analytics.tsx";
+import { trackEvent, initializeAnalytics } from "./analytics.tsx";
 import { useCookies } from "react-cookie";
 import LoadingIndicator from "./components/UI/LoadingIndicator.tsx";
 import ErrorBoundary from "./components/ErrorBoundary.tsx";
@@ -38,7 +38,7 @@ function ConsentButton({ onClick }: ConsentButtonProps) {
         aria-label="Open cookie consent options"
         className="fixed bottom-3 left-2 sm:left-3 bg-transparent text-green-500 p-0 rounded-full shadow-lg focus:ring-2 focus:ring-green-400 focus:ring-offset-2"
         onClick={() => {
-          handleClick("cookie consent clicked");
+          trackEvent("cookie_consent_open");
           onClick();
         }}
       >

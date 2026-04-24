@@ -10,7 +10,7 @@ import ErrorBlock from "../components/UI/ErrorBlock";
 import LoadingIndicator from "../components/UI/LoadingIndicator";
 import InfoDialog from "../components/InfoDialog";
 import { useTranslation } from "react-i18next";
-import { handleClick, sendCustomPageView } from "../analytics";
+import { trackEvent, trackPageView } from "../analytics";
 import { useSEO } from "../utils/useSEO";
 
 const options = ["Symbol", "Name", "Date", "Value"];
@@ -66,7 +66,7 @@ const ShortWatchPage: React.FC = () => {
   });
 
   const handleInfo = () => {
-    handleClick(`info dialog clicked`);
+    trackEvent("info_dialog_open", { page: "short_watch" });
     setShowInfo(true);
   };
 
@@ -76,11 +76,11 @@ const ShortWatchPage: React.FC = () => {
   }, [selectedSorting, showMyList]);
 
   useEffect(() => {
-    handleClick(`sorting changed to: ${selectedSorting.toLowerCase()}`);
+    trackEvent("sort_change", { page: "short_watch", sort_value: selectedSorting });
   }, [selectedSorting]);
 
   useEffect(() => {
-    sendCustomPageView(`/short-watch`, "short watch");
+    trackPageView(`/short-watch`, "short watch");
   }, []);
 
   let content;
@@ -206,11 +206,11 @@ const ShortWatchPage: React.FC = () => {
                     <button
                       className="font-medium text-blue-500 bg-transparent border-none ml-3 px-2.5 py-1.5 rounded-md hover:bg-blue-50 dark:hover:bg-blue-500/10 transition-colors focus:ring-2 focus:ring-blue-300"
                       onClick={() => {
-                        handleClick(
-                          `list changed: ${
-                            showMyList ? t("all shorts") : t("my list")
-                          }`
-                        );
+                        trackEvent("filter_change", {
+                          page: "short_watch",
+                          filter: "my_list",
+                          enabled: !showMyList,
+                        });
 
                         setShowMyList(!showMyList);
                       }}

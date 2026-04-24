@@ -1,4 +1,4 @@
-import { handleClick } from "../analytics";
+import { trackEvent } from "../analytics";
 import Announcement from "../models/Announcement";
 import { formatTimestamp } from "../utils/dates";
 import { useTranslation } from "react-i18next";
@@ -12,7 +12,7 @@ const AnnouncementRow: React.FC<Announcement> = (props) => {
       href={`https://oam.finanstilsynet.dk/#!/announcement-details?Id=${dfsaId}`}
       target="_blank"
       onClick={() => {
-        handleClick(`clicked on announcement detail: ${headline}`);
+        trackEvent("announcement_open", { headline, dfsa_id: dfsaId });
       }}
     >
       <div className="mx-2 my-1.5 px-4 py-2.5 rounded-lg bg-white dark:bg-[#1e1e1e] shadow-sm hover:shadow-md hover:-translate-y-px transition-all duration-200 text-sm dark:text-white border border-gray-100 dark:border-gray-800">

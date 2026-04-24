@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import LargestShortSelling from "../models/LargestShortSelling";
 import { formatTimestamp } from "../utils/dates";
-import { handleClick } from "../analytics";
+import { trackEvent } from "../analytics";
 import ChangeIndicator from "./UI/ChangeIndicator";
 
 const LargeShortSellingRow: React.FC<LargestShortSelling> = (props) => {
@@ -15,7 +15,7 @@ const LargeShortSellingRow: React.FC<LargestShortSelling> = (props) => {
         hash: `#${stockSymbol}`,
       }}
       onClick={() => {
-        handleClick(`clicked on link back to seller: ${name}`);
+        trackEvent("seller_link_click", { seller_name: name, symbol: stockSymbol });
       }}
     >
       <div className="mx-2 my-1.5 px-4 py-3 rounded-lg flex items-center justify-between bg-white dark:bg-[#1e1e1e] shadow-sm hover:shadow-md hover:-translate-y-px transition-all duration-200 text-sm dark:text-white border border-gray-100 dark:border-gray-800">
