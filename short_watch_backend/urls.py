@@ -22,6 +22,9 @@ from django.views.static import serve
 
 from short_watch_backend import settings
 
+import os
+
+FRONTEND_DIST = os.path.join(settings.FRONTEND_DIR, 'dist')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -56,6 +59,9 @@ urlpatterns = [
     path('v17/users/', include('users.urls')),
     path('stats/', include('request_logging.urls')),
     path('favicon.png', serve, {'path': 'images/favicon.png', 'document_root': settings.STATIC_ROOT}),
+    path('manifest.json', serve, {'path': 'manifest.json', 'document_root': FRONTEND_DIST}),
+    path('icon-192.png', serve, {'path': 'icon-192.png', 'document_root': FRONTEND_DIST}),
+    path('icon-512.png', serve, {'path': 'icon-512.png', 'document_root': FRONTEND_DIST}),
     path('apple-touch-icon-57x57.png', serve,
          {'path': 'images/apple-touch-icon-57x57.png', 'document_root': settings.STATIC_ROOT}),
     path('apple-touch-icon-72x72.png', serve,
