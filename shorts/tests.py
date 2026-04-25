@@ -789,6 +789,19 @@ class HandleOrchestrationTests(TestCase):
     """We mock out every external collaborator and assert the side effects we care about."""
 
     @patch('shorts.management.commands.fetch_shorts.process_visits')
+    @patch('shorts.management.commands.fetch_shorts.delete_old_errors')
+    @patch('shorts.management.commands.fetch_shorts.delete_old_logs')
+    @patch.object(Command, 'remove_duplicate_positions')
+    @patch.object(Command, 'fetch_large_short_selling')
+    @patch.object(Command, 'fetch_short_positions_selenium')
+    @patch.object(Command, '_get_webdriver')
+    def test_handle_calls_delete_old_errors(
+        self, mock_driver, mock_selenium, mock_large, mock_remove, mock_logs, mock_errors, mock_visits
+    ):
+        Command().handle()
+        mock_errors.assert_called_once()
+
+    @patch('shorts.management.commands.fetch_shorts.process_visits')
     @patch('shorts.management.commands.fetch_shorts.delete_old_logs')
     @patch.object(Command, 'remove_duplicate_positions')
     @patch.object(Command, 'fetch_large_short_selling')
