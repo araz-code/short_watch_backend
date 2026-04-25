@@ -7,7 +7,7 @@ import pytz
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Count, Avg, Q, Max
 from django.db.models.functions import ExtractYear, ExtractMonth, ExtractDay, ExtractWeekDay, TruncDate
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.utils import timezone
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -507,6 +507,7 @@ def _today_visit_buckets():
     sellers_iphone, sellers_iphone_detail = set(), set()
     sellers_web, sellers_web_detail = set(), set()
     top_lists = set()
+    faq = set()
 
     for entry in queryset:
         ip = entry['client_ip']
@@ -534,6 +535,9 @@ def _today_visit_buckets():
         if "/top-lists" in url:
             top_lists.add(ip)
 
+        if "/stats/visit/faq" in url:
+            faq.add(ip)
+
     return {
         'iphone': iphone,
         'ipad': ipad,
@@ -544,6 +548,7 @@ def _today_visit_buckets():
         'sellers_web': sellers_web,
         'sellers_web_detail': sellers_web_detail,
         'top_lists': top_lists,
+        'faq': faq,
     }
 
 
@@ -578,12 +583,18 @@ def get_visits_by_section(_: Request) -> JsonResponse:
             {'section': 'Web — short sellers list', 'count': len(b['sellers_web'])},
             {'section': 'Web — short seller detail', 'count': len(b['sellers_web_detail'])},
             {'section': 'Top lists', 'count': len(b['top_lists'])},
+            {'section': 'FAQ', 'count': len(b['faq'])},
         ]
     })
 
 
 def clicked(code: str):
     return Response(status=204)
+
+
+def track_visit(_: Request, page: str) -> HttpResponse:
+    """No-op endpoint hit by the SPA to log a page visit via request_logging middleware."""
+    return HttpResponse(status=204)
 
 # def get_unique_user_agents_per_day_chart(_: Request, year: str) -> JsonResponse:
 #     queryset = RequestLog.objects.all()

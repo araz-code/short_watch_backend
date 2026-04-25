@@ -20,6 +20,7 @@ urlpatterns = [
     path('chart/requestlogging/visits-by-section/', views.get_visits_by_section),
 
     path('clicked/<str:code>', views.clicked),
+    path('visit/<str:page>/', views.track_visit),
 
 ]
 

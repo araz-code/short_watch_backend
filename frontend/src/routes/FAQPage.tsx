@@ -24,6 +24,7 @@ const FAQPage: React.FC = () => {
 
   useEffect(() => {
     trackPageView("/faq", "faq");
+    fetch("/stats/visit/faq/").catch(() => {});
   }, []);
 
   const items: { id: string; q: string; a: React.ReactNode }[] = [
