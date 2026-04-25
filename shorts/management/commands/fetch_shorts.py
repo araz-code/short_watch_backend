@@ -269,6 +269,7 @@ class Command(BaseCommand):
                 )
         count_new_closed_shorts = 0
         closure_stock_pks = set()
+        closure_chart_stock_pks = set()
         with transaction.atomic():
             subquery = ShortPosition.objects.values('stock__code', 'stock__name') \
                 .annotate(max_timestamp=Max('timestamp'))
@@ -276,6 +277,7 @@ class Command(BaseCommand):
 
             for short in distinct_stocks:
                 if short.stock.code not in short_codes:
+                    closure_chart_stock_pks.add(short.stock.pk)
                     if short.value != 0:
                         count_new_closed_shorts += 1
                         closure_stock_pks.add(short.stock.pk)
@@ -288,6 +290,20 @@ class Command(BaseCommand):
                     stock_id__in=closure_stock_pks
                 ).select_related('appuser'):
                     closure_app_users_by_stock[row.stock_id].append(row.appuser)
+
+            # Bulk-prefetch today's chart rows for closure stocks (broader set
+            # than closure_stock_pks: includes already-zero stocks that still
+            # get a 0.0 chart upsert).
+            closure_chart_now = timezone.now()
+            closure_chart_today_date = closure_chart_now.date()
+            closure_existing_charts_by_stock = {
+                c.stock_id: c
+                for c in ShortPositionChart.objects.filter(
+                    stock_id__in=closure_chart_stock_pks, date=closure_chart_today_date
+                )
+            }
+            closure_charts_to_create = []
+            closure_charts_to_update = []
 
             if count_new_closed_shorts > 30:
                 Error.objects.create(message=f'An unexpected number of shorts got closed: '
@@ -312,15 +328,27 @@ class Command(BaseCommand):
                                 except Exception as e:
                                     Error.objects.create(message=f'Exception occurred with add users_to_notify_dict 2: {str(e)[:400]}')
 
-                        now = timezone.now()
-                        ShortPositionChart.objects.update_or_create(
-                            stock=short.stock,
-                            date=now,
-                            defaults={
-                                'value': 0.0,
-                                'timestamp': now
-                            }
-                        )
+                        existing_chart = closure_existing_charts_by_stock.get(short.stock.pk)
+                        if existing_chart is not None:
+                            existing_chart.value = 0.0
+                            existing_chart.timestamp = closure_chart_now
+                            closure_charts_to_update.append(existing_chart)
+                        else:
+                            new_chart = ShortPositionChart(
+                                stock=short.stock,
+                                date=closure_chart_today_date,
+                                value=0.0,
+                                timestamp=closure_chart_now,
+                            )
+                            closure_charts_to_create.append(new_chart)
+                            closure_existing_charts_by_stock[short.stock.pk] = new_chart
+
+                if closure_charts_to_create:
+                    ShortPositionChart.objects.bulk_create(closure_charts_to_create)
+                if closure_charts_to_update:
+                    ShortPositionChart.objects.bulk_update(
+                        closure_charts_to_update, ['value', 'timestamp']
+                    )
         RunStatus.objects.create()
         for app_user, stocks in users_to_notify_dict.items():
             Command.send_push_notification(app_user, stocks)
