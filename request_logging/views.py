@@ -500,7 +500,7 @@ def get_requested_advertisement(_: Request) -> JsonResponse:
 
 def _today_visit_buckets():
     """Returns sets of public client IPs for today, bucketed by URL pattern."""
-    queryset = RequestLog.objects.filter(timestamp__date=timezone.now().date()) \
+    queryset = RequestLog.objects.filter(timestamp__date=timezone.localdate()) \
         .values('requested_url', 'client_ip')
 
     iphone, ipad, iwatch, web = set(), set(), set(), set()
