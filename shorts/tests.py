@@ -529,6 +529,104 @@ class FetchLargeShortSellingTests(TestCase):
         )
 
     @patch('shorts.management.commands.fetch_shorts.requests.post')
+    def test_same_date_repush_preserves_prev_value(self, mock_post):
+        """A re-publish on the same calendar day must keep the existing prev_value."""
+        seller = ShortSeller.objects.create(name='Marshall Wace LLP')
+        LargeShortSelling.objects.create(
+            stock=self.stock,
+            short_seller=seller,
+            name='Marshall Wace LLP',
+            business_id='',
+            value=1.20,
+            date=date(2026, 4, 24),
+            prev_value=0.95,
+        )
+
+        mock_post.return_value = self._api_response([{
+            'HeadlineColumn': (
+                'Marshall Wace LLP holds a net short position of 1,30% in '
+                'the share capital issued by Netcompany Group A/S'
+            ),
+            'IssuerColumn': 'Netcompany Group A/S',
+            'PublicationDateColumn': '24-04-2026 14:00:00',
+        }])
+
+        self.cmd.fetch_large_short_selling()
+
+        # Exactly one row remains for this (stock, seller_name)
+        record = LargeShortSelling.objects.get(stock=self.stock, name='Marshall Wace LLP')
+        # Value updated to today's number
+        self.assertAlmostEqual(record.value, 1.30)
+        # prev_value stays as the existing value (NOT shifted to 1.20)
+        self.assertAlmostEqual(record.prev_value, 0.95)
+        self.assertEqual(record.date, date(2026, 4, 24))
+
+    @patch('shorts.management.commands.fetch_shorts.requests.post')
+    def test_mixed_feed_creates_updates_and_deletes_in_one_call(self, mock_post):
+        """A single feed run can simultaneously create new, update returning, and delete stale rows."""
+        # Preload: one returning seller + one stale seller
+        returning_seller = ShortSeller.objects.create(name='Marshall Wace LLP')
+        stale_seller = ShortSeller.objects.create(name='Old Fund LP')
+        LargeShortSelling.objects.create(
+            stock=self.stock,
+            short_seller=returning_seller,
+            name='Marshall Wace LLP',
+            business_id='',
+            value=0.50,
+            date=date(2026, 4, 23),
+            prev_value=0.40,
+        )
+        LargeShortSelling.objects.create(
+            stock=self.stock,
+            short_seller=stale_seller,
+            name='Old Fund LP',
+            business_id='',
+            value=0.60,
+            date=date(2026, 4, 23),
+        )
+
+        # Feed: returning (with new value/date) + a brand-new seller; Old Fund LP missing
+        mock_post.return_value = self._api_response([
+            {
+                'HeadlineColumn': (
+                    'Marshall Wace LLP holds a net short position of 0,80% in '
+                    'the share capital issued by Netcompany Group A/S'
+                ),
+                'IssuerColumn': 'Netcompany Group A/S',
+                'PublicationDateColumn': '24-04-2026 12:00:00',
+            },
+            {
+                'HeadlineColumn': (
+                    'New Hedge LP holds a net short position of 0,55% in '
+                    'the share capital issued by Netcompany Group A/S'
+                ),
+                'IssuerColumn': 'Netcompany Group A/S',
+                'PublicationDateColumn': '24-04-2026 12:00:00',
+            },
+        ])
+
+        self.cmd.fetch_large_short_selling()
+
+        # Returning seller: row updated, prev_value carries the prior value (different date branch)
+        returning = LargeShortSelling.objects.get(stock=self.stock, name='Marshall Wace LLP')
+        self.assertAlmostEqual(returning.value, 0.80)
+        self.assertAlmostEqual(returning.prev_value, 0.50)
+        self.assertEqual(returning.date, date(2026, 4, 24))
+
+        # New seller: row inserted with prev_value=None
+        new_row = LargeShortSelling.objects.get(stock=self.stock, name='New Hedge LP')
+        self.assertAlmostEqual(new_row.value, 0.55)
+        self.assertIsNone(new_row.prev_value)
+
+        # Stale seller: row deleted
+        self.assertFalse(
+            LargeShortSelling.objects.filter(name='Old Fund LP').exists()
+        )
+
+        # No extras
+        self.assertEqual(LargeShortSelling.objects.count(), 2)
+
+    @patch('shorts.management.commands.fetch_shorts.requests.post')
     def test_existing_record_for_different_date_carries_old_value_as_prev(self, mock_post):
         seller = ShortSeller.objects.create(name='Marshall Wace LLP')
         LargeShortSelling.objects.create(

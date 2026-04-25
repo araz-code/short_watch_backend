@@ -98,13 +98,15 @@ class Command(BaseCommand):
 
             rows = response.json()['data']['rows']
 
-            # Pre-fetch all existing rows once so per-row prev_value lookups are
-            # dict accesses, not SELECTs.
+            # Pre-fetch all existing rows once. We use the dict for prev_value
+            # lookups, in-place updates, and to compute which rows are stale.
             existing_by_key = {
                 (r.stock_id, r.name): r for r in LargeShortSelling.objects.all()
             }
 
-            LargeShortSelling.objects.all().update(delete=True)
+            feed_keys = set()
+            to_create = []
+            to_update = []
 
             for row in rows:
                 headline = row['HeadlineColumn']
@@ -122,23 +124,42 @@ class Command(BaseCommand):
                 seller = get_or_create_seller(parsed['seller_name'])
                 published_date = parse_publication_date(row['PublicationDateColumn'])
 
-                existing_row = existing_by_key.get((stock.pk, parsed['seller_name']))
+                key = (stock.pk, parsed['seller_name'])
+                feed_keys.add(key)
+
+                existing_row = existing_by_key.get(key)
                 prev_value = self.get_prev_value_for_large_selling(existing_row, published_date)
 
-                LargeShortSelling.objects.update_or_create(
-                    stock=stock,
-                    name=parsed['seller_name'],
-                    defaults={
-                        'business_id': '',
-                        'value': parsed['value'],
-                        'short_seller': seller,
-                        'date': published_date.date(),
-                        'prev_value': prev_value,
-                        'delete': False,
-                    }
+                if existing_row is not None:
+                    existing_row.value = parsed['value']
+                    existing_row.short_seller = seller
+                    existing_row.date = published_date.date()
+                    existing_row.prev_value = prev_value
+                    to_update.append(existing_row)
+                else:
+                    to_create.append(LargeShortSelling(
+                        stock=stock,
+                        name=parsed['seller_name'],
+                        business_id='',
+                        value=parsed['value'],
+                        short_seller=seller,
+                        date=published_date.date(),
+                        prev_value=prev_value,
+                    ))
+
+            if to_create:
+                LargeShortSelling.objects.bulk_create(to_create)
+            if to_update:
+                LargeShortSelling.objects.bulk_update(
+                    to_update,
+                    ['value', 'short_seller', 'date', 'prev_value'],
                 )
 
-            LargeShortSelling.objects.filter(delete=True).delete()
+            stale_keys = set(existing_by_key) - feed_keys
+            if stale_keys:
+                LargeShortSelling.objects.filter(
+                    pk__in=[existing_by_key[k].pk for k in stale_keys]
+                ).delete()
 
         except CommandError:
             raise
