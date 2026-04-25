@@ -44,24 +44,6 @@ SEARCH_HEADERS = {
 class Command(BaseCommand):
     help = "Fetches newest short positions data"
 
-    SHORT_POSITIONS_URL = "https://ft-api.prod.oam.finanstilsynet.dk/api/v0.1/widget/" \
-                          "ad758542-8116-4055-95b3-ad57011ba36a/data"
-
-    SHORT_POSITIONS_HEADERS = {
-        'authorization': ANNOUNCEMENT_API_KEY,
-        'workersiteid': 'cc2aa132-ec77-4a8c-95af-abb101459cbc',
-    }
-
-    SHORT_POSITIONS_BODY = {
-        'Pagination': {'PageIndex': 1, 'PageSize': 75},
-        'clauses': None,
-        'container': {
-            'ContainerId': '7c3b384b-0762-49b0-a07e-ad57011c2812',
-            'ContainerType': 'WidgetContainer'
-        },
-        'sortedFields': []
-    }
-
     MAX_RETRIES = 2
     RETRY_SLEEP_INTERVAL = 60
 
@@ -157,56 +139,6 @@ class Command(BaseCommand):
         except Exception as e:
             Error.objects.create(message=str(e)[:500])
             raise CommandError(f'Error occurred: {str(e)}')
-
-    def fetch_short_positions_requests(self, driver):
-        retry_count = 0
-
-        while retry_count < self.MAX_RETRIES:
-            try:
-                response = requests.post(self.SHORT_POSITIONS_URL, headers=self.SHORT_POSITIONS_HEADERS,
-                                         json=self.SHORT_POSITIONS_BODY)
-
-                if response.status_code == 200:
-                    short_positions = response.json()['data']
-
-                    short_data = []
-
-                    for short_position in short_positions:
-                        try:
-                            corrected_datetime = datetime.strptime(short_position['LastReported'],
-                                                                   '%Y-%m-%dT%H:%M:%S.%fZ')
-                        except ValueError:
-                            corrected_datetime = datetime.strptime(short_position['LastReported'],
-                                                                   '%Y-%m-%dT%H:%M:%SZ')
-
-                        code = short_position['IssuerCode']
-                        name = short_position['IssuerName2']
-                        value = round(short_position['TotalPercentageShareCapital'], 2)
-
-                        utc_datetime = pytz.utc.localize(corrected_datetime)
-                        short_data.append(
-                            ShortPosition(stock=self.get_or_create_stock(code, name),
-                                          value=value,
-                                          timestamp=utc_datetime.astimezone(copenhagen_timezone))
-                        )
-
-                    self.fetch_short_positions(short_data)
-                else:
-                    Error.objects.create(message="fetch_short_positions_selenium was run instead")
-                    self.fetch_short_positions_selenium(driver)
-
-                break
-            except Exception as e:
-                retry_count += 1
-                Error.objects.create(message=f'Retrying ({retry_count}/{self.MAX_RETRIES}) after '
-                                             f'{self.RETRY_SLEEP_INTERVAL} seconds., Error occurred: {str(e)}'[:500])
-
-                time.sleep(self.RETRY_SLEEP_INTERVAL)
-
-        else:
-            message = f'Max retries ({self.MAX_RETRIES}) reached. Command failed.'
-            Error.objects.create(message=message)
-            raise CommandError(message)
 
     @staticmethod
     def fetch_short_positions(short_data):
