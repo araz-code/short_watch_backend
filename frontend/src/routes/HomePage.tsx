@@ -43,8 +43,10 @@ const HomePage: React.FC = () => {
 
   useSEO("Homepage", "Track short selling positions in Danish stocks in real-time. View historical data, largest short sellers, and trending stocks. Free app for iPhone, iPad, and Apple Watch.");
 
+  // Toggle to true and bump the storage key (e.g. _v2) when announcing a new feature.
+  const BANNER_ENABLED = false;
   const [showBanner, setShowBanner] = useState(() => {
-    return localStorage.getItem("banner_dismissed_v1") !== "true";
+    return BANNER_ENABLED && localStorage.getItem("banner_dismissed_v1") !== "true";
   });
 
   const dismissBanner = () => {
