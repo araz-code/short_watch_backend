@@ -199,31 +199,26 @@ class GetPrevValueForLargeSellingTests(TestCase):
 
     def test_returns_none_when_no_prior_record(self):
         published = CPH.localize(datetime(2026, 4, 24, 10, 0))
-        result = Command.get_prev_value_for_large_selling(
-            self.stock, 'Acme LP', published
-        )
+        result = Command.get_prev_value_for_large_selling(None, published)
         self.assertIsNone(result)
 
     def test_same_date_returns_existing_prev_value(self):
-        existing_date = date(2026, 4, 24)
-        LargeShortSelling.objects.create(
+        existing = LargeShortSelling.objects.create(
             stock=self.stock,
             short_seller=self.seller,
             name='Acme LP',
             business_id='',
             value=1.20,
-            date=existing_date,
+            date=date(2026, 4, 24),
             prev_value=0.95,
         )
         published = CPH.localize(datetime(2026, 4, 24, 12, 0))
-        result = Command.get_prev_value_for_large_selling(
-            self.stock, 'Acme LP', published
-        )
+        result = Command.get_prev_value_for_large_selling(existing, published)
         # Same publication date as record → keep the existing prev_value (don't shift)
         self.assertEqual(result, 0.95)
 
     def test_different_date_returns_existing_value_as_new_prev(self):
-        LargeShortSelling.objects.create(
+        existing = LargeShortSelling.objects.create(
             stock=self.stock,
             short_seller=self.seller,
             name='Acme LP',
@@ -233,9 +228,7 @@ class GetPrevValueForLargeSellingTests(TestCase):
             prev_value=0.95,
         )
         published = CPH.localize(datetime(2026, 4, 24, 12, 0))
-        result = Command.get_prev_value_for_large_selling(
-            self.stock, 'Acme LP', published
-        )
+        result = Command.get_prev_value_for_large_selling(existing, published)
         # New date → previous value becomes the new prev_value
         self.assertEqual(result, 1.20)
 

@@ -1,4 +1,3 @@
-import re
 import time
 from datetime import datetime, timedelta
 
@@ -16,7 +15,7 @@ from selenium.webdriver.common.by import By
 
 from errors.models import Error
 from request_logging.service import delete_old_logs, process_visits
-from short_watch_backend.settings import ANNOUNCEMENT_API_KEY, FCM_SERVICE_ACCOUNT_FILE, DEBUG
+from short_watch_backend.settings import FCM_SERVICE_ACCOUNT_FILE, DEBUG
 from shorts.models import ShortPosition, RunStatus, LargeShortSelling, ShortPositionChart, Stock
 from shorts.utils import parse_headline, parse_publication_date, get_stock_for_issuer, get_or_create_seller
 
@@ -99,6 +98,12 @@ class Command(BaseCommand):
 
             rows = response.json()['data']['rows']
 
+            # Pre-fetch all existing rows once so per-row prev_value lookups are
+            # dict accesses, not SELECTs.
+            existing_by_key = {
+                (r.stock_id, r.name): r for r in LargeShortSelling.objects.all()
+            }
+
             LargeShortSelling.objects.all().update(delete=True)
 
             for row in rows:
@@ -117,7 +122,8 @@ class Command(BaseCommand):
                 seller = get_or_create_seller(parsed['seller_name'])
                 published_date = parse_publication_date(row['PublicationDateColumn'])
 
-                prev_value = self.get_prev_value_for_large_selling(stock, parsed['seller_name'], published_date)
+                existing_row = existing_by_key.get((stock.pk, parsed['seller_name']))
+                prev_value = self.get_prev_value_for_large_selling(existing_row, published_date)
 
                 LargeShortSelling.objects.update_or_create(
                     stock=stock,
@@ -350,17 +356,21 @@ class Command(BaseCommand):
             app_user.save()
 
     @staticmethod
-    def get_prev_value_for_large_selling(stock, positions_holder, date):
-        try:
-            selling = LargeShortSelling.objects.get(stock=stock, name=positions_holder)
+    def get_prev_value_for_large_selling(existing_row, date):
+        """Compute the new prev_value for a LargeShortSelling row update.
 
-            if selling.date.strftime('%Y-%m-%d') == date.strftime('%Y-%m-%d'):
-                return selling.prev_value
-            else:
-                return selling.value
+        ``existing_row`` is the prior row for the (stock, seller_name) pair,
+        or None if none exists. ``date`` is the new publication datetime.
 
-        except LargeShortSelling.DoesNotExist:
+        - No prior row → None
+        - Prior row from the same calendar day → keep its existing prev_value
+        - Prior row from a different day → its current value becomes the new prev
+        """
+        if existing_row is None:
             return None
+        if existing_row.date.strftime('%Y-%m-%d') == date.strftime('%Y-%m-%d'):
+            return existing_row.prev_value
+        return existing_row.value
 
     @staticmethod
     def remove_duplicate_positions():
