@@ -241,6 +241,7 @@ class Command(BaseCommand):
                     }
                 )
         count_new_closed_shorts = 0
+        closure_stock_pks = set()
         with transaction.atomic():
             subquery = ShortPosition.objects.values('stock__code', 'stock__name') \
                 .annotate(max_timestamp=Max('timestamp'))
@@ -250,6 +251,16 @@ class Command(BaseCommand):
                 if short.stock.code not in short_codes:
                     if short.value != 0:
                         count_new_closed_shorts += 1
+                        closure_stock_pks.add(short.stock.pk)
+
+            # Prefetch followers for stocks that will be closed, so the loop
+            # below does dict lookups instead of per-row m2m SELECTs.
+            closure_app_users_by_stock = defaultdict(list)
+            if closure_stock_pks:
+                for row in stock_user_through.objects.filter(
+                    stock_id__in=closure_stock_pks
+                ).select_related('appuser'):
+                    closure_app_users_by_stock[row.stock_id].append(row.appuser)
 
             if count_new_closed_shorts > 30:
                 Error.objects.create(message=f'An unexpected number of shorts got closed: '
@@ -266,7 +277,7 @@ class Command(BaseCommand):
                             Error.objects.create(message=f'Short position for {short.stock.symbol} got closed!'
                                                          f' Check if error.')
 
-                            for app_user in short.stock.app_users.all():
+                            for app_user in closure_app_users_by_stock.get(short.stock.pk, ()):
                                 try:
                                     if app_user not in users_to_notify_dict:
                                         users_to_notify_dict[app_user] = []
