@@ -211,7 +211,6 @@ class Command(BaseCommand):
     @staticmethod
     def fetch_short_positions(short_data):
         short_codes = []
-        users_to_notify = set()
         users_to_notify_dict = {}
 
         with transaction.atomic():
@@ -234,8 +233,6 @@ class Command(BaseCommand):
                         short.prev_value = prev_short_position.value
                     short.save()
                     for app_user in short.stock.app_users.all():
-                        users_to_notify.add(app_user)
-
                         try:
                             if app_user not in users_to_notify_dict:
                                 users_to_notify_dict[app_user] = []
@@ -279,8 +276,6 @@ class Command(BaseCommand):
                                                          f' Check if error.')
 
                             for app_user in short.stock.app_users.all():
-                                users_to_notify.add(app_user)
-
                                 try:
                                     if app_user not in users_to_notify_dict:
                                         users_to_notify_dict[app_user] = []
@@ -298,8 +293,8 @@ class Command(BaseCommand):
                             }
                         )
         RunStatus.objects.create()
-        for app_user in users_to_notify:
-            Command.send_push_notification(app_user, users_to_notify_dict[app_user])
+        for app_user, stocks in users_to_notify_dict.items():
+            Command.send_push_notification(app_user, stocks)
 
     def fetch_short_positions_selenium(self, driver):
         retry_count = 0
