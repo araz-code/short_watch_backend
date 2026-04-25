@@ -212,6 +212,19 @@ class Command(BaseCommand):
             ).select_related('appuser'):
                 app_users_by_stock[row.stock_id].append(row.appuser)
 
+            # Bulk-prefetch today's chart rows so per-row update_or_create
+            # becomes dict lookups + bulk_create/bulk_update at the end.
+            chart_now = timezone.now()
+            chart_today_date = chart_now.date()
+            existing_charts_by_stock = {
+                c.stock_id: c
+                for c in ShortPositionChart.objects.filter(
+                    stock_id__in=stock_pks_in_batch, date=chart_today_date
+                )
+            }
+            charts_to_create = []
+            charts_to_update = []
+
             for short in short_data:
                 short_codes.append(short.stock.code)
 
@@ -231,14 +244,28 @@ class Command(BaseCommand):
                         except Exception as e:
                             Error.objects.create(message=f'Exception occurred with add users_to_notify_dict 1: {str(e)[:400]}')
 
-                now = timezone.now()
-                ShortPositionChart.objects.update_or_create(
-                    stock=short.stock,
-                    date=now,
-                    defaults={
-                        'value': short.value,
-                        'timestamp': now
-                    }
+                existing_chart = existing_charts_by_stock.get(short.stock.pk)
+                if existing_chart is not None:
+                    existing_chart.value = short.value
+                    existing_chart.timestamp = chart_now
+                    charts_to_update.append(existing_chart)
+                else:
+                    new_chart = ShortPositionChart(
+                        stock=short.stock,
+                        date=chart_today_date,
+                        value=short.value,
+                        timestamp=chart_now,
+                    )
+                    charts_to_create.append(new_chart)
+                    # Track in dict so a later row for the same stock updates
+                    # this in-memory instance instead of creating a duplicate.
+                    existing_charts_by_stock[short.stock.pk] = new_chart
+
+            if charts_to_create:
+                ShortPositionChart.objects.bulk_create(charts_to_create)
+            if charts_to_update:
+                ShortPositionChart.objects.bulk_update(
+                    charts_to_update, ['value', 'timestamp']
                 )
         count_new_closed_shorts = 0
         closure_stock_pks = set()
