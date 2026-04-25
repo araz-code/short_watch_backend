@@ -41,7 +41,7 @@ class ShortPositionView(ReadOnlyModelViewSet):
         sorted_data = [p for p in sorted_data if p.stock_id not in seen and not seen.add(p.stock_id)]
 
         serializer = self.serializer_class(sorted_data, many=True)
-        cache.set(cache_key, serializer.data, 300)
+        cache.set(cache_key, serializer.data, timeout=None)
         return Response(serializer.data)
 
     def retrieve(self, request, code=None, *args, **kwargs):
@@ -189,7 +189,7 @@ class ShortSellerView(ReadOnlyModelViewSet):
             return Response(cached)
 
         response = super().list(request, *args, **kwargs)
-        cache.set(cache_key, response.data, 300)
+        cache.set(cache_key, response.data, timeout=None)
         return response
 
     def get_serializer_class(self):
@@ -311,7 +311,7 @@ def stats_view(request):
             } if most_followed and most_followed.follower_count > 0 else None,
             'updatedAt': latest_update.isoformat() if latest_update else None,
         }
-        cache.set('homepage_stats', data, 300)
+        cache.set('homepage_stats', data, timeout=None)
         return Response(data)
     except Exception:
         return Response({
@@ -403,7 +403,7 @@ def top_lists_view(request):
             'mostShorted': most_shorted,
             'mostActive': most_active,
         }
-        cache.set('top_lists', data, 300)
+        cache.set('top_lists', data, timeout=None)
         return Response(data)
     except Exception:
         return Response({
