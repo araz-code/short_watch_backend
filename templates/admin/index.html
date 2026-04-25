@@ -10,108 +10,123 @@
     {% endif %}
 
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
 <script src="{% static 'dashboard/js/script.js' %}"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-v4-grid-only@1.0.0/dist/bootstrap-grid.min.css">
 
 {% block charts %}
 
-<div class="container-fluid">
-    <h2 class="text-center">Summary</h2>
-    <div class="row justify-content-center mt-4">
+<div class="container-fluid dashboard">
 
-        <div class="col-4">
-            <div class="card">
-                <div class="card-header">
-                    <span id="totalRequestsTitle"></span>
-                </div>
-                <div class="card-body text-center">
-                    <span id="totalRequests"></span>
+    <h2 class="dashboard-section-title">Summary</h2>
+    <div class="row g-3 mb-4">
+        <div class="col-xl-3 col-md-6">
+            <div class="dashboard-stat">
+                <div class="stat-icon stat-icon-primary"><i class="fas fa-server"></i></div>
+                <div class="stat-body">
+                    <div class="stat-title" id="totalRequestsTitle"></div>
+                    <div class="stat-value" id="totalRequests"></div>
                 </div>
             </div>
         </div>
 
-        <div class="col-4">
-            <div class="card">
-                <div class="card-header">
-                    <span id="totalTodayRequestsTitle"></span>
-                </div>
-                <div class="card-body text-center">
-                    <span id="totalTodayRequests"></span>
-                </div>
-            </div>
-        </div>
-
-
-
-        <div class="col-4">
-            <div class="card">
-                <div class="card-header">
-                    <span id="latestRequestTimestampTitle"></span>
-                </div>
-                <div class="card-body text-center">
-                    <span id="latestRequestTimestamp"></span>
+        <div class="col-xl-3 col-md-6">
+            <div class="dashboard-stat">
+                <div class="stat-icon stat-icon-success"><i class="fas fa-bolt"></i></div>
+                <div class="stat-body">
+                    <div class="stat-title" id="totalTodayRequestsTitle"></div>
+                    <div class="stat-value" id="totalTodayRequests"></div>
                 </div>
             </div>
         </div>
 
-        <div class="col-4">
-            <div class="card">
-                <div class="card-header">
-                    <span id="totalTodayIPsTitle"></span>
+        <div class="col-xl-3 col-md-6">
+            <div class="dashboard-stat">
+                <div class="stat-icon stat-icon-info"><i class="fas fa-clock"></i></div>
+                <div class="stat-body">
+                    <div class="stat-title" id="latestRequestTimestampTitle"></div>
+                    <div class="stat-value" id="latestRequestTimestamp"></div>
                 </div>
-                <div class="card-body text-center">
-                    <span id="totalTodayIPs"></span>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="dashboard-stat">
+                <div class="stat-icon stat-icon-warning"><i class="fas fa-network-wired"></i></div>
+                <div class="stat-body">
+                    <div class="stat-title" id="totalTodayIPsTitle"></div>
+                    <div class="stat-value" id="totalTodayIPs"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <h2 class="text-center mt-4 mb-3">Charts</h2>
-
-    <div class="row justify-content-center">
-
-        <div class="col-10">
-            <canvas id="requestsWeekChart"></canvas>
+    <h2 class="dashboard-section-title">Charts</h2>
+    <div class="row g-3 mb-4">
+        <div class="col-lg-6">
+            <div class="dashboard-card">
+                <div class="chart-wrapper">
+                    <canvas id="requestsWeekChart"></canvas>
+                </div>
+            </div>
         </div>
-
-        <div class="col-10">
-            <canvas id="requestsHourlyChart"></canvas>
+        <div class="col-lg-6">
+            <div class="dashboard-card">
+                <div class="chart-wrapper">
+                    <canvas id="requestsHourlyChart"></canvas>
+                </div>
+            </div>
         </div>
-
-        <div class="col-10">
-            <canvas id="pickRequestsHourlyChart"></canvas>
+        <div class="col-lg-6">
+            <div class="dashboard-card">
+                <div class="chart-wrapper">
+                    <canvas id="pickRequestsHourlyChart"></canvas>
+                </div>
+            </div>
         </div>
-
-        <div class="col-10">
-            <canvas id="watchRequestsHourlyChart"></canvas>
-        </div>
-    </div>
-
-     <h2 class="text-center mt-3 mb-5">Tables</h2>
-
-    <div class="row justify-content-left">
-        <div class="col-7">
-            <table class="table caption-top table-bordered" id="uniqueIpsTable"></table>
-        </div>
-
-        <div class="col-7 mt-5">
-            <table class="table caption-top table-bordered" id="requestedUrlsTable"></table>
-        </div>
-
-        <div class="col-7 mt-5">
-            <table class="table caption-top table-bordered" id="advertisementTable"></table>
-        </div>
-
-        <div class="col-7 mt-5">
-            <table class="table caption-top table-bordered" id="pickHistoricTable"></table>
-        </div>
-
-        <div class="col-7 mt-5">
-            <table class="table caption-top table-bordered" id="watchHistoricTable"></table>
+        <div class="col-lg-6">
+            <div class="dashboard-card">
+                <div class="chart-wrapper">
+                    <canvas id="watchRequestsHourlyChart"></canvas>
+                </div>
+            </div>
         </div>
     </div>
+
+    <h2 class="dashboard-section-title">Tables</h2>
+    <div class="row g-3">
+        <div class="col-lg-6">
+            <div class="dashboard-card">
+                <table class="table caption-top dashboard-table" id="uniqueIpsTable"></table>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="dashboard-card">
+                <table class="table caption-top dashboard-table" id="requestedUrlsTable"></table>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="dashboard-card">
+                <table class="table caption-top dashboard-table" id="visitsByPlatformTable"></table>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="dashboard-card">
+                <table class="table caption-top dashboard-table" id="visitsBySectionTable"></table>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="dashboard-card">
+                <table class="table caption-top dashboard-table" id="pickHistoricTable"></table>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="dashboard-card">
+                <table class="table caption-top dashboard-table" id="watchHistoricTable"></table>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="{% static 'dashboard/js/overview.js' %}"></script>
 

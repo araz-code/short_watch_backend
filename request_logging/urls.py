@@ -16,7 +16,8 @@ urlpatterns = [
     path('chart/requestlogging/pick-requests-hourly/', views.get_pick_request_per_hour_chart),
     path('chart/requestlogging/watch-requests-hourly/', views.get_watch_request_per_hour_chart),
 
-    path('chart/requestlogging/advertisement-clicked/', views.get_referer),
+    path('chart/requestlogging/visits-by-platform/', views.get_visits_by_platform),
+    path('chart/requestlogging/visits-by-section/', views.get_visits_by_section),
 
     path('clicked/<str:code>', views.clicked),
 

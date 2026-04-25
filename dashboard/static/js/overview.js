@@ -9,7 +9,8 @@ function loadAllCharts(year) {
 
   loadTable("requestedUrlsTable", `/stats/chart/requestlogging/requested-urls/${year}/`);
 
-  loadTable("advertisementTable", `/stats/chart/requestlogging/advertisement-clicked/`);
+  loadTable("visitsByPlatformTable", `/stats/chart/requestlogging/visits-by-platform/`);
+  loadTable("visitsBySectionTable", `/stats/chart/requestlogging/visits-by-section/`);
 
 
   loadTable("pickHistoricTable", `/stats/chart/requestlogging/pick-historic/${year}/`);

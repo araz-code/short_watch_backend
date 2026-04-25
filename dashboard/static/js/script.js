@@ -28,8 +28,8 @@ function loadChart(chart, endpoint) {
       chart.data.labels = [];
 
       // Load new data into the chart
-      chart.options.title.text = title;
-      chart.options.title.display = true;
+      chart.options.plugins.title.text = title;
+      chart.options.plugins.title.display = true;
       chart.data.labels = labels;
       datasets.forEach((dataset) => {
         chart.data.datasets.push(dataset);
@@ -87,23 +87,28 @@ function createBarChart(chartId) {
     type: "bar",
     options: {
       responsive: true,
+      maintainAspectRatio: false,
       layout: {
         padding: {
           left: 0,
           right: 0,
-          top: 30,
+          top: 8,
           bottom: 2,
         },
       },
       scales: {
-        yAxes: [
-          {
-            ticks: {
-              precision: 0,
-              suggestedMin: 0,
-            },
+        y: {
+          suggestedMin: 0,
+          ticks: {
+            precision: 0,
           },
-        ],
+        },
+      },
+      plugins: {
+        title: {
+          display: false,
+          text: "",
+        },
       },
     },
   });

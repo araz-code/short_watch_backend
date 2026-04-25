@@ -498,81 +498,87 @@ def get_requested_advertisement(_: Request) -> JsonResponse:
     })
 
 
-@staff_member_required
-def get_referer(_: Request) -> JsonResponse:
-    time_threshold = timezone.now().date()  # Ensure you're filtering by date correctly
-    queryset = RequestLog.objects.filter(timestamp__date=time_threshold).values(
-        'referer', 'requested_url', 'client_ip'
-    )
+def _today_visit_buckets():
+    """Returns sets of public client IPs for today, bucketed by URL pattern."""
+    queryset = RequestLog.objects.filter(timestamp__date=timezone.now().date()) \
+        .values('requested_url', 'client_ip')
 
-    referer = {}
-    client_ips_iwatch = set()
-    client_ips_iphone = set()
-    client_ips_ipad = set()
-    client_ips_web = set()
-    client_ips_sellers_iphone = set()
-    client_ips_sellers_web = set()
-    client_ips_sellers_iphone_detail = set()
-    client_ips_sellers_web_detail = set()
-    client_ips_top_lists = set()
-
-    check_ips = set()
+    iphone, ipad, iwatch, web = set(), set(), set(), set()
+    sellers_iphone, sellers_iphone_detail = set(), set()
+    sellers_web, sellers_web_detail = set(), set()
+    top_lists = set()
 
     for entry in queryset:
-        client_ip = entry['client_ip']
-
-        if ipaddress.ip_address(client_ip).is_private:
+        ip = entry['client_ip']
+        if ipaddress.ip_address(ip).is_private:
             continue
+        url = entry['requested_url']
 
-        if "/iwatch/" in entry['requested_url']:
-            client_ips_iwatch.add(client_ip)
-        elif "/iphone/" in entry['requested_url']:
-            client_ips_iphone.add(client_ip)
-            if "/short-sellers/" in entry['requested_url']:
-                client_ips_sellers_iphone_detail.add(client_ip)
-            elif "/short-sellers" in entry['requested_url']:
-                client_ips_sellers_iphone.add(client_ip)
-        elif "/ipad/" in entry['requested_url']:
-            client_ips_ipad.add(client_ip)
-        elif "/web/" in entry['requested_url']:
-            client_ips_web.add(client_ip)
-            if "/short-sellers/" in entry['requested_url']:
-                client_ips_sellers_web_detail.add(client_ip)
-            elif "/short-sellers" in entry['requested_url']:
-                client_ips_sellers_web.add(client_ip)
+        if "/iwatch/" in url:
+            iwatch.add(ip)
+        elif "/iphone/" in url:
+            iphone.add(ip)
+            if "/short-sellers/" in url:
+                sellers_iphone_detail.add(ip)
+            elif "/short-sellers" in url:
+                sellers_iphone.add(ip)
+        elif "/ipad/" in url:
+            ipad.add(ip)
+        elif "/web/" in url:
+            web.add(ip)
+            if "/short-sellers/" in url:
+                sellers_web_detail.add(ip)
+            elif "/short-sellers" in url:
+                sellers_web.add(ip)
 
-        if "/top-lists" in entry['requested_url']:
-            client_ips_top_lists.add(client_ip)
+        if "/top-lists" in url:
+            top_lists.add(ip)
 
-        check_ips.add(client_ip)
+    return {
+        'iphone': iphone,
+        'ipad': ipad,
+        'iwatch': iwatch,
+        'web': web,
+        'sellers_iphone': sellers_iphone,
+        'sellers_iphone_detail': sellers_iphone_detail,
+        'sellers_web': sellers_web,
+        'sellers_web_detail': sellers_web_detail,
+        'top_lists': top_lists,
+    }
 
-        if entry['referer'] and 'zirium.dk' not in entry['referer']:
-            referer[entry['referer']] = referer.get(entry['referer'], 0) + 1
 
-    referer_list = [{'referer': r, 'count': referer[r]} for r in referer.keys()]
-    sorted_referer_list = sorted(referer_list, key=lambda x: x['count'], reverse=True)
-
-    valid_count = len(client_ips_iphone | client_ips_ipad | client_ips_iwatch | client_ips_web)
-
-    sorted_referer_list.append({'referer': 'iPhone', 'count': len(client_ips_iphone)})
-    sorted_referer_list.append({'referer': 'iPad', 'count': len(client_ips_ipad)})
-    sorted_referer_list.append({'referer': 'Watch', 'count': len(client_ips_iwatch)})
-    sorted_referer_list.append({'referer': 'Web', 'count': len(client_ips_web)})
-    sorted_referer_list.append({'referer': 'iPhone short-sellers', 'count': len(client_ips_sellers_iphone)})
-    sorted_referer_list.append({'referer': 'iPhone short-sellers detail',
-                                'count': len(client_ips_sellers_iphone_detail)})
-    sorted_referer_list.append({'referer': 'Web short-sellers', 'count': len(client_ips_sellers_web)})
-    sorted_referer_list.append({'referer': 'Web short-sellers detail', 'count': len(client_ips_sellers_web_detail)})
-    sorted_referer_list.append({'referer': 'Top lists', 'count': len(client_ips_top_lists)})
-
-    sorted_referer_list.append({'referer': 'Valid', 'count': valid_count})
-
-    sorted_referer_list.append({'referer': 'Check', 'count': len(check_ips)})
+@staff_member_required
+def get_visits_by_platform(_: Request) -> JsonResponse:
+    b = _today_visit_buckets()
+    total = b['iphone'] | b['ipad'] | b['iwatch'] | b['web']
 
     return JsonResponse({
-        'caption': 'Advertisement clicked',
-        'headers': ['Referer', 'Count'],
-        'data': sorted_referer_list
+        'caption': "Today's unique visitors by platform",
+        'headers': ['Platform', 'Visitors'],
+        'data': [
+            {'platform': 'iPhone', 'count': len(b['iphone'])},
+            {'platform': 'iPad', 'count': len(b['ipad'])},
+            {'platform': 'Apple Watch', 'count': len(b['iwatch'])},
+            {'platform': 'Web', 'count': len(b['web'])},
+            {'platform': 'Total (any platform)', 'count': len(total)},
+        ]
+    })
+
+
+@staff_member_required
+def get_visits_by_section(_: Request) -> JsonResponse:
+    b = _today_visit_buckets()
+
+    return JsonResponse({
+        'caption': "Today's unique visitors by section",
+        'headers': ['Section', 'Visitors'],
+        'data': [
+            {'section': 'iPhone — short sellers list', 'count': len(b['sellers_iphone'])},
+            {'section': 'iPhone — short seller detail', 'count': len(b['sellers_iphone_detail'])},
+            {'section': 'Web — short sellers list', 'count': len(b['sellers_web'])},
+            {'section': 'Web — short seller detail', 'count': len(b['sellers_web_detail'])},
+            {'section': 'Top lists', 'count': len(b['top_lists'])},
+        ]
     })
 
 
