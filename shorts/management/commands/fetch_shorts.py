@@ -26,7 +26,8 @@ from firebase_admin import credentials, messaging
 copenhagen_timezone = pytz.timezone('Europe/Copenhagen')
 
 cred = credentials.Certificate(FCM_SERVICE_ACCOUNT_FILE)
-firebase_admin.initialize_app(cred)
+if not firebase_admin._apps:
+    firebase_admin.initialize_app(cred)
 
 SEARCH_URL = 'https://appft.gold.extension.gopublic.dk/api/9217fa13-5d9a-46c6-9921-69ee7e6cfaf6/search'
 
