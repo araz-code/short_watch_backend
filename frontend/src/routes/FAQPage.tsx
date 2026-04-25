@@ -5,6 +5,21 @@ import FAQItem from "../components/FAQItem";
 import { trackEvent, trackPageView } from "../analytics";
 import { useSEO } from "../utils/useSEO";
 
+const linkClass =
+  "text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 underline decoration-blue-500/30 underline-offset-2 transition-colors";
+
+const SourceLink: React.FC<{ href: string; label: string }> = ({
+  href,
+  label,
+}) => (
+  <>
+    {" "}
+    <a href={href} target="_blank" rel="noopener noreferrer" className={linkClass}>
+      {label}
+    </a>
+  </>
+);
+
 const FAQPage: React.FC = () => {
   const { t } = useTranslation();
   useSEO(
@@ -15,21 +30,6 @@ const FAQPage: React.FC = () => {
   useEffect(() => {
     trackPageView("/faq", "faq");
   }, []);
-
-  const linkClass =
-    "text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 underline decoration-blue-500/30 underline-offset-2 transition-colors";
-
-  const SourceLink: React.FC<{ href: string; label: string }> = ({
-    href,
-    label,
-  }) => (
-    <>
-      {" "}
-      <a href={href} target="_blank" rel="noopener noreferrer" className={linkClass}>
-        {label}
-      </a>
-    </>
-  );
 
   const items: { id: string; q: string; a: React.ReactNode }[] = [
     {

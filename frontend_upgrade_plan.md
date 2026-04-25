@@ -82,7 +82,7 @@ Each is independent and substantial. Don't bundle.
 | `tailwindcss` 3 → 4 | new oxide engine, CSS-first config, breaking config format | High | |
 | `vite` 5 → 8 | 3 majors, plugin churn | Medium-high | |
 | `typescript` 5 → 6 | stricter; expect new type errors | Medium | |
-| `eslint` 8 → 10 + `@typescript-eslint` 6 → 8 + `eslint-plugin-react-hooks` 4 → 7 | flat config required (v9+) | Medium-high; new config file format | |
+| `eslint` 8 → 10 + `@typescript-eslint` 6 → 8 + `eslint-plugin-react-hooks` 4 → 7 | flat config required (v9+) | Medium-high; new config file format | ✅ done. Migrated `.eslintrc.cjs` to flat `eslint.config.js`. New `react-hooks/static-components` and `react-hooks/purity` rules surfaced 17 real issues — fixed (moved inline components out of render, snapshotted `Date.now()` via `useState`) |
 
 **Order suggestion if doing all:** TanStack Query first (highest user-facing value), then ESLint flat config, then TS 6, then Vite 8, then Tailwind 4 last (biggest churn).
 

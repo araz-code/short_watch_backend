@@ -6,12 +6,35 @@ import { formatTimestamp } from "../utils/dates";
 import { useTranslation } from "react-i18next";
 import { trackEvent } from "../analytics";
 
+const Row: React.FC<{ label: string; value: string; sub?: string }> = ({
+  label,
+  value,
+  sub,
+}) => (
+  <div className="flex items-center justify-between py-2.5 first:pt-0 last:pb-0 border-b border-gray-100 dark:border-white/5 last:border-b-0">
+    <span className="text-[13px] text-gray-500 dark:text-gray-400">
+      {label}
+    </span>
+    <div className="flex flex-col items-end">
+      <span className="text-[14px] font-semibold tabular-nums text-gray-900 dark:text-gray-100">
+        {value}
+      </span>
+      {sub && (
+        <span className="text-[11px] text-gray-400 dark:text-gray-500 tabular-nums mt-0.5">
+          {sub}
+        </span>
+      )}
+    </div>
+  </div>
+);
+
 const PricePointChartInfo: React.FC<{
   pricePoints: ChartPricePoint[];
   symbol: string;
 }> = (props) => {
   const { pricePoints, symbol } = props;
   const [showOverlay, setShowOverlay] = useState(false);
+  const [now] = useState(() => Date.now());
   const { t } = useTranslation();
 
   // Ref to access the overlay DOM element
@@ -109,7 +132,7 @@ const PricePointChartInfo: React.FC<{
     lastChangeLabel = t("Unchanged");
     lastChangeSub = t("for the whole period");
   } else {
-    const daysSince = Math.max(0, Math.floor((Date.now() - lastChangeTs) / dayMs));
+    const daysSince = Math.max(0, Math.floor((now - lastChangeTs) / dayMs));
     if (daysSince === 0) {
       lastChangeLabel = t("Today");
     } else {
@@ -138,28 +161,6 @@ const PricePointChartInfo: React.FC<{
     down: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
     up: "bg-rose-500/10 text-rose-600 dark:text-rose-400",
   };
-
-  const Row: React.FC<{ label: string; value: string; sub?: string }> = ({
-    label,
-    value,
-    sub,
-  }) => (
-    <div className="flex items-center justify-between py-2.5 first:pt-0 last:pb-0 border-b border-gray-100 dark:border-white/5 last:border-b-0">
-      <span className="text-[13px] text-gray-500 dark:text-gray-400">
-        {label}
-      </span>
-      <div className="flex flex-col items-end">
-        <span className="text-[14px] font-semibold tabular-nums text-gray-900 dark:text-gray-100">
-          {value}
-        </span>
-        {sub && (
-          <span className="text-[11px] text-gray-400 dark:text-gray-500 tabular-nums mt-0.5">
-            {sub}
-          </span>
-        )}
-      </div>
-    </div>
-  );
 
   return (
     <div className="relative">
