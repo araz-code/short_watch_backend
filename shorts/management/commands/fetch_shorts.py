@@ -185,20 +185,29 @@ class Command(BaseCommand):
                 .values_list('pk', 'latest_value')
             )
 
+            # Bulk-fetch existing positions in the union of per-row 1-second windows
+            # so the duplicate check is set membership, not a SELECT per row.
+            existing_position_keys = set()
+            if short_data:
+                window_starts = [s.timestamp.replace(microsecond=0) for s in short_data]
+                window_min = min(window_starts)
+                window_max = max(window_starts) + timedelta(seconds=1)
+                existing_position_keys = {
+                    (p.stock_id, p.timestamp.replace(microsecond=0), p.value)
+                    for p in ShortPosition.objects.filter(
+                        stock_id__in=stock_pks_in_batch,
+                        timestamp__gte=window_min,
+                        timestamp__lt=window_max,
+                    )
+                }
+
             for short in short_data:
                 short_codes.append(short.stock.code)
 
                 timestamp_start = short.timestamp.replace(microsecond=0)
-                timestamp_end = timestamp_start + timedelta(seconds=1)
+                duplicate_key = (short.stock.pk, timestamp_start, short.value)
 
-                existing_short = ShortPosition.objects.filter(
-                    stock=short.stock,
-                    value=short.value,
-                    timestamp__gte=timestamp_start,
-                    timestamp__lt=timestamp_end,
-                ).first()
-
-                if existing_short is None:
+                if duplicate_key not in existing_position_keys:
                     prev_value = prev_value_by_stock.get(short.stock.pk)
                     if prev_value is not None:
                         short.prev_value = prev_value
