@@ -235,7 +235,7 @@ class Command(BaseCommand):
                                 users_to_notify_dict[app_user] = []
                             users_to_notify_dict[app_user].append(f'{short.stock.symbol} {short.value:.2f}%')
                         except Exception as e:
-                            Error.objects.create(message=f'Exception occurred with add users_to_notify_dict 1')
+                            Error.objects.create(message=f'Exception occurred with add users_to_notify_dict 1: {str(e)[:400]}')
 
                 now = timezone.now()
                 ShortPositionChart.objects.update_or_create(
@@ -280,7 +280,7 @@ class Command(BaseCommand):
                                         users_to_notify_dict[app_user] = []
                                     users_to_notify_dict[app_user].append(f'{short.stock.symbol} 0.00%')
                                 except Exception as e:
-                                    Error.objects.create(message=f'Exception occurred with add users_to_notify_dict 2')
+                                    Error.objects.create(message=f'Exception occurred with add users_to_notify_dict 2: {str(e)[:400]}')
 
                         now = timezone.now()
                         ShortPositionChart.objects.update_or_create(
