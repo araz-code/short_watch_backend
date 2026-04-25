@@ -153,7 +153,6 @@ LANGUAGE_CODE = 'da-dk'
 TIME_ZONE = 'Europe/Copenhagen'
 
 USE_I18N = False
-USE_L10N = True
 USE_TZ = True
 
 
@@ -187,20 +186,36 @@ JAZZMIN_SETTINGS = {
     "login_logo": "images/login_logo.png",
     "site_icon": "images/favicon.png",
     "site_logo_classes": "img-square",
+    "custom_css": "css/jazzmin_tweaks.css",
     "welcome_sign": "Welcome to the Danish Short Watch Admin",
     "copyright": "Zirium",
     "hide_apps": ['auth'],
     "order_with_respect_to": ["accounts", "shorts"],
     "icons": {
-        "accounts.shortwatchuser": "fas fa-user",
-        "shorts.shortposition": "fa fa-university",
-        "shorts.runstatus": "fa fa-check",
-        "shorts.stock": "fa fa-map",
-        "shorts.shortseller": "fa fa-users",
-        "shorts.shortpositionchart": "fas fa-chart-bar",
-        "errors.error": "fa fa-exclamation-circle",
-        "request_logging.requestlog": "fa fa-code",
-        "rest_framework_api_key.apikey": "fa fa-key"
+        # Users
+        "accounts.shortwatchuser": "fas fa-user-shield",
+        "users.appuser": "fas fa-mobile-screen",
+        "users.webuser": "fas fa-globe",
+
+        # Shorts domain
+        "shorts.shortposition": "fas fa-chart-line",
+        "shorts.shortpositionchart": "fas fa-chart-column",
+        "shorts.shortseller": "fas fa-user-tie",
+        "shorts.largeshortselling": "fas fa-money-bill-wave",
+        "shorts.stock": "fas fa-building",
+        "shorts.companymap": "fas fa-sitemap",
+        "shorts.announcement": "fas fa-bullhorn",
+        "shorts.runstatus": "fas fa-clipboard-check",
+
+        # Measurements
+        "measurements.measurement": "fas fa-gauge-high",
+
+        # Ops / logs
+        "errors.error": "fas fa-triangle-exclamation",
+        "request_logging.requestlog": "fas fa-code",
+        "request_logging.visitor": "fas fa-eye",
+        "request_logging.visitorlock": "fas fa-lock",
+        "rest_framework_api_key.apikey": "fas fa-key",
     },
     "show_ui_builder": True,
 }
@@ -226,6 +241,7 @@ JAZZMIN_UI_TWEAKS = {
     "sidebar_nav_legacy_style": False,
     "sidebar_nav_flat_style": False,
     "theme": "darkly",
+    "default_theme_mode": "dark",
     "button_classes": {
         "primary": "btn-primary",
         "secondary": "btn-secondary",

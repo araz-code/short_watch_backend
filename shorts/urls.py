@@ -6,24 +6,29 @@ from shorts.views import ShortPositionView, OldShortSellerView, ShortPositionDet
 router = routers.DefaultRouter(trailing_slash=False)
 
 
-router.register('pick', ShortPositionView)
-router.register('watch', ShortPositionView)
-router.register('pick/sellers', OldShortSellerView)
-router.register('watch/sellers', OldShortSellerView)
-router.register('watch/details', ShortPositionDetailView)
-router.register('pick/details', ShortPositionDetailView)
+def _register(prefix, viewset):
+    router.register(prefix, viewset, basename=prefix.replace('/', '-'))
 
-router.register('short-sellers', ShortSellerView)
+
+_register('pick', ShortPositionView)
+_register('watch', ShortPositionView)
+_register('pick/sellers', OldShortSellerView)
+_register('watch/sellers', OldShortSellerView)
+_register('watch/details', ShortPositionDetailView)
+_register('pick/details', ShortPositionDetailView)
+
+_register('short-sellers', ShortSellerView)
 
 devices = ['iphone', 'ipad', 'iwatch', 'web']
 
+for device in devices:
+    _register(f'{device}/short-sellers', ShortSellerView)
+
 for test_prefix in ['', 'test/']:
     for device in devices:
-        router.register(f'{device}/short-sellers', ShortSellerView)
-
         for category in ['pick', 'watch']:
-            router.register(f'{device}/{test_prefix}{category}', ShortPositionView)
-            router.register(f'{device}/{test_prefix}{category}/details', ShortPositionDetailView)
+            _register(f'{device}/{test_prefix}{category}', ShortPositionView)
+            _register(f'{device}/{test_prefix}{category}/details', ShortPositionDetailView)
 
 urlpatterns = [
     path('homepage-stats', stats_view, name='stats'),

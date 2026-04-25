@@ -1,0 +1,14 @@
+/* Hide "Jazzmin version" line in the admin footer */
+footer.app-footer .float-end {
+  display: none !important;
+}
+
+/* Hide the user panel (avatar + name) in the admin sidebar */
+.app-sidebar .user-panel {
+  display: none !important;
+}
+
+/* Hide breadcrumbs across admin pages */
+.breadcrumb {
+  display: none !important;
+}

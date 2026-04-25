@@ -4,15 +4,9 @@ $(document).ready(function () {
     type: "GET",
     dataType: "json",
     success: (jsonResponse) => {
-      // Load all the options
-      jsonResponse.options.forEach((option) => {
-        $("#year").append(new Option(option, option));
-      });
+      if (!jsonResponse.options || jsonResponse.options.length == 0) return;
 
-      // Load data for the first option if there is data
-      if ($("#year").children().length == 0) return;
-
-      loadAllCharts($("#year").children().first().val());
+      loadAllCharts(jsonResponse.options[0]);
     },
     error: () => console.log("Failed to fetch chart filter options!"),
   });
