@@ -80,7 +80,7 @@ Each is independent and substantial. Don't bundle.
 |---|---|---|---|
 | `react-query@3` → `@tanstack/react-query@5` | rename + new API | High — touches every query/mutation hook | ✅ done (5.100.5). All `useQuery` sites already used object signature; just import renames |
 | `tailwindcss` 3 → 4 | new oxide engine, CSS-first config, breaking config format | High | |
-| `vite` 5 → 8 | 3 majors, plugin churn | Medium-high | |
+| `vite` 5 → 8 | 3 majors, plugin churn | Medium-high | ✅ done (8.0.10). Swapped `@vitejs/plugin-react-swc` for `@vitejs/plugin-react@6` (rolldown-based default; we don't use any SWC plugins). Build ~5× faster and bundle ~24% smaller thanks to oxc minifier |
 | `typescript` 5 → 6 | stricter; expect new type errors | Medium | ✅ done (6.0.3). Clean bump — build and lint pass with no code changes |
 | `eslint` 8 → 10 + `@typescript-eslint` 6 → 8 + `eslint-plugin-react-hooks` 4 → 7 | flat config required (v9+) | Medium-high; new config file format | ✅ done. Migrated `.eslintrc.cjs` to flat `eslint.config.js`. New `react-hooks/static-components` and `react-hooks/purity` rules surfaced 17 real issues — fixed (moved inline components out of render, snapshotted `Date.now()` via `useState`) |
 
