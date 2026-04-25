@@ -1,6 +1,6 @@
 django==5.2.7
 djangorestframework==3.17.1
-mysql-connector-python==9.7.0
+mysqlclient==2.2.7
 django-jazzmin==3.0.4
 selenium==4.43.0
 djangorestframework-api-key==3.0.0
