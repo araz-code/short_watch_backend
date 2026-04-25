@@ -106,6 +106,13 @@ const FAQPage: React.FC = () => {
       ),
     },
     {
+      id: "percent_basis",
+      q: t("What is the short percentage measured against?"),
+      a: t(
+        "The percentage is calculated against the company's total issued shares, not the smaller free float that actually trades on the exchange. Issued shares means every share the company has put out, including those locked up by founders, the state, or other long-term holders who never sell. Because the float is usually much smaller than the total share count, the share of the freely traded stock that is short can be a lot higher than the headline percentage suggests. For example, a 5% short position against issued shares might represent 10% or more of the float."
+      ),
+    },
+    {
       id: "data_delay",
       q: t("Is the data live, or is there a delay?"),
       a: (
