@@ -32,13 +32,13 @@ Each can be done individually. Bump, scan changelog for breaking changes touchin
 
 | Package | Current | Target | Likely impact | Status |
 |---|---|---|---|---|
-| `@vitejs/plugin-react-swc` | 3.6.0 | ^4 | Mostly internal; minor config touch possible | |
-| `i18next-browser-languagedetector` | 7.2.0 | ^8 | Detector option renames possible | |
-| `react-cookie` | 7.2.0 | ^8 | Hooks API mostly stable | |
-| `react-ga4` | 2.1.0 | ^3 | Init signature change possible | |
-| `@fortawesome/fontawesome-svg-core` | 6.5.1 | ^7 | Icon set repackaging | |
-| `@fortawesome/free-solid-svg-icons` | 6.5.1 | ^7 | Icon set repackaging | |
-| `uuid` | 10.0.0 | ^14 | Tiny API surface; v11+ ships own types (drop `@types/uuid`) | |
+| `@vitejs/plugin-react-swc` | 3.6.0 | ^4 | Mostly internal; minor config touch possible | ✅ done (4.3.0) |
+| `i18next-browser-languagedetector` | 7.2.0 | ^8 | Detector option renames possible | ✅ done (8.2.1) |
+| `react-cookie` | 7.2.0 | ^8 | Hooks API mostly stable | ✅ done (8.1.0) |
+| `react-ga4` | 2.1.0 | ^3 | Init signature change possible — verify GA tracking still works | ✅ done (3.0.1) |
+| `@fortawesome/fontawesome-svg-core` | 6.5.1 | ^7 | Icon set repackaging | ✅ done (7.2.0) |
+| `@fortawesome/free-solid-svg-icons` | 6.5.1 | ^7 | Icon set repackaging | ✅ done (7.2.0) |
+| `uuid` | 10.0.0 | ^14 | Tiny API surface; v11+ ships own types (drop `@types/uuid`) | ✅ done (14.0.0); `@types/uuid` removed |
 
 **Test plan:** build + smoke after each. The fontawesome packages should be bumped together.
 
