@@ -383,7 +383,7 @@ class Command(BaseCommand):
                     ),
                     token=app_user.fcm_token,
                 )
-                if not DEBUG or True:
+                if not DEBUG:
                     messaging.send(message)
                 app_user.notifications_sent = app_user.notifications_sent + 1
                 app_user.save()
