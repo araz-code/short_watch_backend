@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { fetchTopLists, TopLists, TopListStock, TopListShortedStock, TopListActiveStock } from "../apis/ShortPositionAPI";
 import PageTemplate from "../components/PageTemplate";
 import { Link } from "react-router-dom";

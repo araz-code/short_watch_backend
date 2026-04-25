@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { fetchShortPositions } from "../apis/ShortPositionAPI";
 import PageTemplate from "../components/PageTemplate";
 import ShortPositionRow from "../components/ShortPositionRow";

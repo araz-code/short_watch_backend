@@ -1,4 +1,4 @@
-import { QueryClient } from "react-query";
+import { QueryClient } from "@tanstack/react-query";
 import { logException } from "../analytics";
 
 export const queryClient = new QueryClient();

@@ -78,7 +78,7 @@ Each is independent and substantial. Don't bundle.
 
 | Migration | Current → Target | Effort | Status |
 |---|---|---|---|
-| `react-query@3` → `@tanstack/react-query@5` | rename + new API | High — touches every query/mutation hook | |
+| `react-query@3` → `@tanstack/react-query@5` | rename + new API | High — touches every query/mutation hook | ✅ done (5.100.5). All `useQuery` sites already used object signature; just import renames |
 | `tailwindcss` 3 → 4 | new oxide engine, CSS-first config, breaking config format | High | |
 | `vite` 5 → 8 | 3 majors, plugin churn | Medium-high | |
 | `typescript` 5 → 6 | stricter; expect new type errors | Medium | |

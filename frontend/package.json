@@ -14,6 +14,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "@fortawesome/react-fontawesome": "^3.3.1",
     "@headlessui/react": "^2.2.10",
+    "@tanstack/react-query": "^5",
     "i18next": "^26.0.8",
     "i18next-browser-languagedetector": "^7.2.0",
     "react": "^19.2.5",
@@ -22,7 +23,6 @@
     "react-ga4": "^2.1.0",
     "react-gtm-module": "^2.0.11",
     "react-i18next": "^17.0.4",
-    "react-query": "^3.39.3",
     "react-router-dom": "^7.14.2",
     "recharts": "^3.8.1",
     "uuid": "^14.0.0"

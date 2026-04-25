@@ -13,7 +13,7 @@ import AppImage from "../components/Homepage/AppImage";
 import { useEffect, useState } from "react";
 import { trackEvent, trackPageView } from "../analytics";
 import { useSEO } from "../utils/useSEO";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { fetchStats, ShortStats } from "../apis/ShortPositionAPI";
 import { formatTimestamp } from "../utils/dates";
 
