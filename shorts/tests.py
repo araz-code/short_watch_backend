@@ -857,6 +857,159 @@ class HandleOrchestrationTests(TestCase):
             message__contains='Selenium fetch failed'
         ).exists())
 
+    @patch('shorts.management.commands.fetch_shorts.process_visits')
+    @patch('shorts.management.commands.fetch_shorts.delete_old_logs')
+    @patch.object(Command, 'remove_duplicate_positions')
+    @patch.object(Command, 'fetch_large_short_selling')
+    @patch.object(Command, 'fetch_short_positions_selenium')
+    @patch.object(Command, '_get_webdriver')
+    def test_handle_swallows_large_sellers_exceptions_and_continues(
+        self, mock_driver, mock_selenium, mock_large, mock_remove, mock_logs, mock_visits
+    ):
+        mock_driver.return_value = MagicMock()
+        mock_large.side_effect = Exception('http boom')
+
+        Command().handle()
+
+        # remove_duplicate_positions and the rest still run
+        mock_remove.assert_called_once()
+        mock_logs.assert_called_once()
+        mock_visits.assert_called_once()
+        self.assertTrue(Error.objects.filter(
+            message__contains='Large sellers fetch failed'
+        ).exists())
+
+    @patch('shorts.management.commands.fetch_shorts.process_visits')
+    @patch('shorts.management.commands.fetch_shorts.delete_old_logs')
+    @patch.object(Command, 'remove_duplicate_positions')
+    @patch.object(Command, 'fetch_large_short_selling')
+    @patch.object(Command, 'fetch_short_positions_selenium')
+    @patch.object(Command, '_get_webdriver')
+    def test_handle_only_invalidates_short_sellers_cache_when_selenium_fails(
+        self, mock_driver, mock_selenium, mock_large, mock_remove, mock_logs, mock_visits
+    ):
+        mock_driver.return_value = MagicMock()
+        mock_selenium.side_effect = Exception('chrome unavailable')
+
+        cache.set('short_positions_list', 'A', timeout=None)
+        cache.set('short_sellers_list', 'B', timeout=None)
+        cache.set('homepage_stats', 'C', timeout=None)
+        cache.set('top_lists', 'D', timeout=None)
+
+        Command().handle()
+
+        # Only short_sellers_list is invalidated; the position-derived caches
+        # stay because their underlying data was not refreshed.
+        self.assertEqual(cache.get('short_positions_list'), 'A')
+        self.assertIsNone(cache.get('short_sellers_list'))
+        self.assertEqual(cache.get('homepage_stats'), 'C')
+        self.assertEqual(cache.get('top_lists'), 'D')
+
+    @patch('shorts.management.commands.fetch_shorts.process_visits')
+    @patch('shorts.management.commands.fetch_shorts.delete_old_logs')
+    @patch.object(Command, 'remove_duplicate_positions')
+    @patch.object(Command, 'fetch_large_short_selling')
+    @patch.object(Command, 'fetch_short_positions_selenium')
+    @patch.object(Command, '_get_webdriver')
+    def test_handle_only_invalidates_position_caches_when_large_sellers_fails(
+        self, mock_driver, mock_selenium, mock_large, mock_remove, mock_logs, mock_visits
+    ):
+        mock_driver.return_value = MagicMock()
+        mock_large.side_effect = Exception('http boom')
+
+        cache.set('short_positions_list', 'A', timeout=None)
+        cache.set('short_sellers_list', 'B', timeout=None)
+        cache.set('homepage_stats', 'C', timeout=None)
+        cache.set('top_lists', 'D', timeout=None)
+
+        Command().handle()
+
+        self.assertIsNone(cache.get('short_positions_list'))
+        self.assertEqual(cache.get('short_sellers_list'), 'B')
+        self.assertIsNone(cache.get('homepage_stats'))
+        self.assertIsNone(cache.get('top_lists'))
+
+    @patch('shorts.management.commands.fetch_shorts.process_visits')
+    @patch('shorts.management.commands.fetch_shorts.delete_old_logs')
+    @patch.object(Command, 'remove_duplicate_positions')
+    @patch.object(Command, 'fetch_large_short_selling')
+    @patch.object(Command, 'fetch_short_positions_selenium')
+    @patch.object(Command, '_get_webdriver')
+    def test_handle_skips_cache_invalidation_when_both_fetches_fail(
+        self, mock_driver, mock_selenium, mock_large, mock_remove, mock_logs, mock_visits
+    ):
+        mock_driver.return_value = MagicMock()
+        mock_selenium.side_effect = Exception('chrome unavailable')
+        mock_large.side_effect = Exception('http boom')
+
+        cache.set('short_positions_list', 'A', timeout=None)
+        cache.set('short_sellers_list', 'B', timeout=None)
+        cache.set('homepage_stats', 'C', timeout=None)
+        cache.set('top_lists', 'D', timeout=None)
+
+        Command().handle()
+
+        # Nothing actually refreshed → no caches invalidated.
+        self.assertEqual(cache.get('short_positions_list'), 'A')
+        self.assertEqual(cache.get('short_sellers_list'), 'B')
+        self.assertEqual(cache.get('homepage_stats'), 'C')
+        self.assertEqual(cache.get('top_lists'), 'D')
+
+    @patch('shorts.management.commands.fetch_shorts.process_visits')
+    @patch('shorts.management.commands.fetch_shorts.delete_old_logs')
+    @patch.object(Command, 'remove_duplicate_positions')
+    @patch.object(Command, 'fetch_large_short_selling')
+    @patch.object(Command, 'fetch_short_positions_selenium')
+    @patch.object(Command, '_get_webdriver')
+    def test_handle_skips_cache_invalidation_when_fetches_succeed_but_data_unchanged(
+        self, mock_driver, mock_selenium, mock_large, mock_remove, mock_logs, mock_visits
+    ):
+        # Both fetches return False — feed parsed cleanly but every row was a
+        # no-op (already in DB). Caches must remain populated.
+        mock_driver.return_value = MagicMock()
+        mock_selenium.return_value = False
+        mock_large.return_value = False
+
+        cache.set('short_positions_list', 'A', timeout=None)
+        cache.set('short_sellers_list', 'B', timeout=None)
+        cache.set('homepage_stats', 'C', timeout=None)
+        cache.set('top_lists', 'D', timeout=None)
+
+        Command().handle()
+
+        self.assertEqual(cache.get('short_positions_list'), 'A')
+        self.assertEqual(cache.get('short_sellers_list'), 'B')
+        self.assertEqual(cache.get('homepage_stats'), 'C')
+        self.assertEqual(cache.get('top_lists'), 'D')
+
+    @patch('shorts.management.commands.fetch_shorts.process_visits')
+    @patch('shorts.management.commands.fetch_shorts.delete_old_logs')
+    @patch.object(Command, 'remove_duplicate_positions')
+    @patch.object(Command, 'fetch_large_short_selling')
+    @patch.object(Command, 'fetch_short_positions_selenium')
+    @patch.object(Command, '_get_webdriver')
+    def test_handle_invalidates_only_short_sellers_when_only_large_changed(
+        self, mock_driver, mock_selenium, mock_large, mock_remove, mock_logs, mock_visits
+    ):
+        # Selenium succeeded but the feed contained no new positions; large
+        # sellers fetch did mutate data. Only the short_sellers cache should
+        # be wiped.
+        mock_driver.return_value = MagicMock()
+        mock_selenium.return_value = False
+        mock_large.return_value = True
+
+        cache.set('short_positions_list', 'A', timeout=None)
+        cache.set('short_sellers_list', 'B', timeout=None)
+        cache.set('homepage_stats', 'C', timeout=None)
+        cache.set('top_lists', 'D', timeout=None)
+
+        Command().handle()
+
+        self.assertEqual(cache.get('short_positions_list'), 'A')
+        self.assertIsNone(cache.get('short_sellers_list'))
+        self.assertEqual(cache.get('homepage_stats'), 'C')
+        self.assertEqual(cache.get('top_lists'), 'D')
+
 
 # =============================================================================
 # _build_push_message — message-shape tests (pure, no network)

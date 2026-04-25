@@ -58,10 +58,13 @@ class Command(BaseCommand):
         return webdriver.Chrome(options=chrome_options)
 
     def handle(self, *args, **options):
+        short_positions_data_changed = False
+        large_sellers_data_changed = False
+
         driver = None
         try:
             driver = self._get_webdriver()
-            self.fetch_short_positions_selenium(driver)
+            short_positions_data_changed = bool(self.fetch_short_positions_selenium(driver))
         except Exception as e:
             Error.objects.create(message=f'Selenium fetch failed: {str(e)}'[:500])
         finally:
@@ -71,11 +74,27 @@ class Command(BaseCommand):
                 except Exception:
                     pass
 
-        self.fetch_large_short_selling()
+        try:
+            large_sellers_data_changed = bool(self.fetch_large_short_selling())
+        except Exception as e:
+            # The function already writes its own Error row on failure; this
+            # extra catch keeps the rest of handle() running (matching the
+            # selenium block above) so we can still invalidate caches for any
+            # source that DID succeed.
+            Error.objects.create(message=f'Large sellers fetch failed: {str(e)}'[:500])
+
         self.remove_duplicate_positions()
 
-        # Invalidate caches after new data
-        cache.delete_many(['short_positions_list', 'short_sellers_list', 'homepage_stats', 'top_lists'])
+        # Only invalidate caches whose underlying data actually changed. A
+        # successful fetch with zero new/changed rows leaves the cache alone —
+        # recomputing would just rebuild identical data from the same DB rows.
+        keys_to_invalidate = []
+        if short_positions_data_changed:
+            keys_to_invalidate.extend(['short_positions_list', 'homepage_stats', 'top_lists'])
+        if large_sellers_data_changed:
+            keys_to_invalidate.append('short_sellers_list')
+        if keys_to_invalidate:
+            cache.delete_many(keys_to_invalidate)
 
         RunStatus.objects.filter(executed_at__lt=timezone.now() - timedelta(days=3)).delete()
 
@@ -83,6 +102,10 @@ class Command(BaseCommand):
         process_visits()
 
     def fetch_large_short_selling(self):
+        """Returns True if any LargeShortSelling row was created, value-changed,
+        or deleted. Returns False if the feed yielded no actual data changes
+        (so callers can skip cache invalidation).
+        """
         try:
             body = {
                 'query': '',
@@ -131,13 +154,24 @@ class Command(BaseCommand):
 
                 existing_row = existing_by_key.get(key)
                 prev_value = self.get_prev_value_for_large_selling(existing_row, published_date)
+                new_date = published_date.date()
 
                 if existing_row is not None:
-                    existing_row.value = parsed['value']
-                    existing_row.short_seller = seller
-                    existing_row.date = published_date.date()
-                    existing_row.prev_value = prev_value
-                    to_update.append(existing_row)
+                    # Only update if something actually changed — skips no-op
+                    # writes and lets the caller tell whether real data
+                    # mutated.
+                    unchanged = (
+                        existing_row.value == parsed['value']
+                        and existing_row.short_seller_id == seller.pk
+                        and existing_row.date == new_date
+                        and existing_row.prev_value == prev_value
+                    )
+                    if not unchanged:
+                        existing_row.value = parsed['value']
+                        existing_row.short_seller = seller
+                        existing_row.date = new_date
+                        existing_row.prev_value = prev_value
+                        to_update.append(existing_row)
                 else:
                     to_create.append(LargeShortSelling(
                         stock=stock,
@@ -145,7 +179,7 @@ class Command(BaseCommand):
                         business_id='',
                         value=parsed['value'],
                         short_seller=seller,
-                        date=published_date.date(),
+                        date=new_date,
                         prev_value=prev_value,
                     ))
 
@@ -163,6 +197,8 @@ class Command(BaseCommand):
                     pk__in=[existing_by_key[k].pk for k in stale_keys]
                 ).delete()
 
+            return bool(to_create) or bool(to_update) or bool(stale_keys)
+
         except CommandError:
             raise
         except Exception as e:
@@ -171,8 +207,13 @@ class Command(BaseCommand):
 
     @staticmethod
     def fetch_short_positions(short_data):
+        """Returns True if any ShortPosition was saved (new position or
+        closure-zero), so callers can decide whether to invalidate caches
+        whose contents derive from ShortPosition rows.
+        """
         short_codes = []
         users_to_notify_dict = {}
+        any_position_saved = False
 
         with transaction.atomic():
             # Bulk-fetch each stock's most recent ShortPosition.value into a dict
@@ -241,6 +282,7 @@ class Command(BaseCommand):
                     if prev_value is not None:
                         short.prev_value = prev_value
                     short.save()
+                    any_position_saved = True
                     for app_user in app_users_by_stock.get(short.stock.pk, ()):
                         try:
                             if app_user not in users_to_notify_dict:
@@ -335,6 +377,7 @@ class Command(BaseCommand):
                                       value=0.0,
                                       prev_value=short.value,
                                       timestamp=timezone.now()).save()
+                        any_position_saved = True
 
                         Error.objects.create(message=f'Short position for {short.stock.symbol} got closed!'
                                                      f' Check if error.')
@@ -377,8 +420,13 @@ class Command(BaseCommand):
                     )
         RunStatus.objects.create()
         Command.send_push_notifications(users_to_notify_dict)
+        return any_position_saved
 
     def fetch_short_positions_selenium(self, driver):
+        """Returns the bool from fetch_short_positions on success — True iff
+        any ShortPosition was actually saved. Raises CommandError if max
+        retries are exhausted, matching the previous failure mode.
+        """
         retry_count = 0
 
         while retry_count < self.MAX_RETRIES:
@@ -415,9 +463,8 @@ class Command(BaseCommand):
                     for code, _, value, corrected_datetime in parsed_rows
                 ]
 
-                self.fetch_short_positions(short_data)
+                return self.fetch_short_positions(short_data)
 
-                break
             except Exception as e:
                 retry_count += 1
                 Error.objects.create(message=f'Retrying ({retry_count}/{self.MAX_RETRIES}) after '
