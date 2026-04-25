@@ -50,16 +50,16 @@ Must be done together — peer-deps cascade.
 
 | Package | Current | Target | Notes | Status |
 |---|---|---|---|---|
-| `react` | 18.3 (after Tier 1) | ^19 | Major — see below | |
-| `react-dom` | 18.3 | ^19 | Same | |
-| `@types/react` | 18.3 | ^19 | | |
-| `@types/react-dom` | 18.3 | ^19 | | |
-| `react-router-dom` | 6.22.0 | ^7 | New file-based routing optional; existing API mostly compatible | |
-| `react-i18next` | 14.0.5 | ^17 | 3 majors | |
-| `i18next` | 23.8.2 | ^26 | 3 majors | |
-| `@headlessui/react` | 1.7.18 | ^2 | New component API for some primitives | |
-| `@fortawesome/react-fontawesome` | 0.2.0 | ^3 | First stable major | |
-| `recharts` | 2.11.0 | ^3 | API tightening; check chart code | |
+| `react` | 18.3 (after Tier 1) | ^19 | Major — see below | ✅ done (19.2.5) |
+| `react-dom` | 18.3 | ^19 | Same | ✅ done (19.2.5) |
+| `@types/react` | 18.3 | ^19 | | ✅ done (19.2.14) |
+| `@types/react-dom` | 18.3 | ^19 | | ✅ done (19.2.3) |
+| `react-router-dom` | 6.22.0 | ^7 | New file-based routing optional; existing API mostly compatible | ✅ done (7.14.2) |
+| `react-i18next` | 14.0.5 | ^17 | 3 majors | ✅ done (17.0.4) |
+| `i18next` | 23.8.2 | ^26 | 3 majors | ✅ done (26.0.8) |
+| `@headlessui/react` | 1.7.18 | ^2 | New component API for some primitives | ✅ done (2.2.10). Legacy `Menu.Button`/`Transition` render-prop API still works |
+| `@fortawesome/react-fontawesome` | 0.2.0 | ^3 | First stable major | ✅ done (3.3.1) |
+| `recharts` | 2.11.0 | ^3 | API tightening; check chart code | ✅ done (3.8.1). Custom tooltip switched from `TooltipProps` to `TooltipContentProps` |
 
 **React 19 migration steps:**
 1. Resolve all Tier 1 deprecation warnings first

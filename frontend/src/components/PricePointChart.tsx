@@ -10,11 +10,11 @@ import {
   ComposedChart,
   Line,
   ReferenceLine,
-  TooltipProps,
 } from "recharts";
 import { useTranslation } from "react-i18next";
 import { formatTimestamp } from "../utils/dates";
 import ChartPricePoint from "../models/ChartPricePoint";
+import { TooltipContentProps } from "recharts/types/component/Tooltip";
 import {
   NameType,
   ValueType,
@@ -22,7 +22,7 @@ import {
 import { trackEvent } from "../analytics";
 import PricePointChartInfo from "./PricePointChartInfo";
 
-const CustomTooltip: React.FC<TooltipProps<ValueType, NameType>> = ({
+const CustomTooltip: React.FC<TooltipContentProps<ValueType, NameType>> = ({
   active,
   payload,
   label,
@@ -31,7 +31,7 @@ const CustomTooltip: React.FC<TooltipProps<ValueType, NameType>> = ({
     return (
       <div className="rounded-xl shadow-lg px-4 py-3 bg-white/95 dark:bg-[#1e1e1e]/95 dark:text-white backdrop-blur-sm border border-gray-100 dark:border-gray-700">
         <p className="text-[11px] text-gray-400 dark:text-gray-500 text-center mb-1">
-          {`${formatTimestamp(label, "dateOnly")}`}
+          {`${formatTimestamp(String(label), "dateOnly")}`}
         </p>
         <p className="text-center font-bold text-lg tabular-nums">{`${(+(
           payload[0].value ?? 0
@@ -251,9 +251,7 @@ const PricePointChart: React.FC<{
             />
           )}
           <Tooltip
-            content={({ active, payload, label }) => (
-              <CustomTooltip active={active} payload={payload} label={label} />
-            )}
+            content={(props) => <CustomTooltip {...props} />}
             cursor={{
               stroke: "#007AFF",
               strokeWidth: 1,
