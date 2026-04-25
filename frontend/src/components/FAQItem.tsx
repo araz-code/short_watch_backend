@@ -1,20 +1,26 @@
-import { useState } from "react";
 import { trackEvent } from "../analytics";
 
 interface FAQItemProps {
   id: string;
   question: string;
   answer: React.ReactNode;
+  open: boolean;
+  onToggle: (id: string, nextOpen: boolean) => void;
 }
 
-const FAQItem: React.FC<FAQItemProps> = ({ id, question, answer }) => {
-  const [open, setOpen] = useState(false);
-
+const FAQItem: React.FC<FAQItemProps> = ({
+  id,
+  question,
+  answer,
+  open,
+  onToggle,
+}) => {
   const toggle = () => {
-    if (!open) {
+    const nextOpen = !open;
+    if (nextOpen) {
       trackEvent("faq_question_open", { question_id: id, question });
     }
-    setOpen(!open);
+    onToggle(id, nextOpen);
   };
 
   return (

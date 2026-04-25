@@ -228,7 +228,7 @@
     "For questions about the EU short selling rules, reporting thresholds, and what the numbers mean, see our": "Hvis du har spørgsmål om EU's regler for shortsalg, indberetningsgrænser og hvad tallene betyder, kan du se vores",
     "FAQ page": "FAQ-side",
     "Frequently asked questions": "Ofte stillede spørgsmål",
-    "Short selling rules in the EU: the essentials.": "EU's regler for shortsalg: det vigtigste.",
+    "Short selling rules in the EU: The essentials.": "EU's regler for shortsalg: Det vigtigste.",
     "This page provides general information only and does not constitute legal advice.": "Denne side indeholder kun generelle oplysninger og udgør ikke juridisk rådgivning.",
     "What is short selling?": "Hvad er shortsalg?",
     "Short selling means selling a stock you don't own (usually borrowed) in the hope of buying it back later at a lower price. The difference is the profit. If the price rises instead, the short seller loses money.": "Shortsalg betyder at sælge en aktie, man ikke ejer (normalt lånt), i håb om at kunne købe den tilbage senere til en lavere pris. Forskellen er fortjenesten. Hvis prisen i stedet stiger, taber shortsælgeren penge.",
@@ -260,6 +260,8 @@
     "All data comes from official public disclosures published by Finanstilsynet, the Danish Financial Supervisory Authority.": "Alle data stammer fra officielle offentlige indberetninger, som offentliggøres af Finanstilsynet.",
     "Finanstilsynet's public data →": "Finanstilsynets offentlige data →",
     "How often is the data updated?": "Hvor ofte opdateres data?",
-    "Short Watch checks Finanstilsynet's public register every 15 minutes and pulls in any new or changed positions.": "Short Watch tjekker Finanstilsynets offentlige register hvert 15. minut og indlæser alle nye eller ændrede positioner."
+    "Short Watch checks Finanstilsynet's public register every 15 minutes and pulls in any new or changed positions.": "Short Watch tjekker Finanstilsynets offentlige register hvert 15. minut og indlæser alle nye eller ændrede positioner.",
+    "Expand all": "Vis alle svar",
+    "Collapse all": "Skjul alle svar"
   }
 }

@@ -1,8 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import PageTemplate from "../components/PageTemplate";
 import FAQItem from "../components/FAQItem";
-import { trackPageView } from "../analytics";
+import { trackEvent, trackPageView } from "../analytics";
 import { useSEO } from "../utils/useSEO";
 
 const FAQPage: React.FC = () => {
@@ -174,6 +174,31 @@ const FAQPage: React.FC = () => {
     },
   ];
 
+  const [openIds, setOpenIds] = useState<Set<string>>(new Set());
+  const allOpen = openIds.size === items.length;
+
+  const handleToggle = (id: string, nextOpen: boolean) => {
+    setOpenIds((prev) => {
+      const next = new Set(prev);
+      if (nextOpen) {
+        next.add(id);
+      } else {
+        next.delete(id);
+      }
+      return next;
+    });
+  };
+
+  const handleExpandCollapseAll = () => {
+    if (allOpen) {
+      trackEvent("faq_collapse_all");
+      setOpenIds(new Set());
+    } else {
+      trackEvent("faq_expand_all");
+      setOpenIds(new Set(items.map((item) => item.id)));
+    }
+  };
+
   return (
     <PageTemplate>
       <div className="w-full max-w-[760px] mx-auto px-5 sm:px-8 py-10 sm:py-16 dark:text-white">
@@ -181,12 +206,49 @@ const FAQPage: React.FC = () => {
           {t("Frequently asked questions")}
         </h1>
         <p className="text-sm text-gray-500 dark:text-gray-400 mb-8">
-          {t("Short selling rules in the EU: the essentials.")}
+          {t("Short selling rules in the EU: The essentials.")}
         </p>
+
+        <div className="flex justify-end mb-3">
+          <button
+            type="button"
+            onClick={handleExpandCollapseAll}
+            aria-pressed={allOpen}
+            className="inline-flex items-center gap-1.5 text-xs font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 px-2.5 py-1.5 rounded-md hover:bg-blue-50 dark:hover:bg-blue-500/10 transition-colors focus-visible:ring-2 focus-visible:ring-blue-300 outline-none"
+          >
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 12 12"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+              className={`transition-transform duration-200 ${
+                allOpen ? "rotate-180" : ""
+              }`}
+            >
+              <path
+                d="M2 4l4 4 4-4"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            {allOpen ? t("Collapse all") : t("Expand all")}
+          </button>
+        </div>
 
         <div className="rounded-2xl bg-white dark:bg-[#1e1e1e] border border-gray-100 dark:border-gray-800 px-5 sm:px-6">
           {items.map((item) => (
-            <FAQItem key={item.id} id={item.id} question={item.q} answer={item.a} />
+            <FAQItem
+              key={item.id}
+              id={item.id}
+              question={item.q}
+              answer={item.a}
+              open={openIds.has(item.id)}
+              onToggle={handleToggle}
+            />
           ))}
         </div>
 

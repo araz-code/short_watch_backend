@@ -27,7 +27,9 @@ export type AnalyticsEvent =
   | "banner_click"
   | "outbound_click"
   | "cookie_consent_open"
-  | "faq_question_open";
+  | "faq_question_open"
+  | "faq_expand_all"
+  | "faq_collapse_all";
 
 type EventParams = Record<string, string | number | boolean | undefined>;
 
