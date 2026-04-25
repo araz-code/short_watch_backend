@@ -221,7 +221,7 @@ const FAQPage: React.FC = () => {
             type="button"
             onClick={handleExpandCollapseAll}
             aria-pressed={allOpen}
-            className="inline-flex items-center gap-1.5 text-xs font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 px-2.5 py-1.5 rounded-md hover:bg-blue-50 dark:hover:bg-blue-500/10 transition-colors focus-visible:ring-2 focus-visible:ring-blue-300 outline-none"
+            className="inline-flex items-center gap-1.5 text-xs font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 px-2.5 py-1.5 rounded-md hover:bg-blue-50 dark:hover:bg-blue-500/10 transition-colors focus-visible:ring-2 focus-visible:ring-blue-300 outline-hidden"
           >
             <svg
               width="12"

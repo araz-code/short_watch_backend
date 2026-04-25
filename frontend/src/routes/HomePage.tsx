@@ -72,7 +72,7 @@ const HomePage: React.FC = () => {
 
           {showBanner && (
             <div className="mx-auto max-w-[900px] mt-4 px-4">
-              <div className="relative flex items-start gap-3 px-5 py-4 rounded-xl bg-white/10 backdrop-blur-sm border border-white/15 text-white text-sm">
+              <div className="relative flex items-start gap-3 px-5 py-4 rounded-xl bg-white/10 backdrop-blur-xs border border-white/15 text-white text-sm">
                 <span className="text-lg mt-0.5">✨</span>
                 <div className="flex-1 leading-relaxed">
                   <p className="font-semibold mb-1">{t("announcement_title")}</p>
@@ -126,7 +126,7 @@ const HomePage: React.FC = () => {
                   href="https://apps.apple.com/dk/app/danish-short-watch/id6471075439"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-white bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 focus:ring-2 focus:ring-white/40 font-medium rounded-full text-sm px-5 py-2.5 flex items-center h-[45px] transition-all duration-200"
+                  className="text-white bg-white/10 backdrop-blur-xs border border-white/20 hover:bg-white/20 focus:ring-2 focus:ring-white/40 font-medium rounded-full text-sm px-5 py-2.5 flex items-center h-[45px] transition-all duration-200"
                   onClick={() => trackEvent("outbound_click", { destination: "app_store" })}
                 >
                   <svg

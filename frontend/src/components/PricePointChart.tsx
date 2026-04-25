@@ -29,7 +29,7 @@ const CustomTooltip: React.FC<TooltipContentProps<ValueType, NameType>> = ({
 }) => {
   if (active && payload && payload.length) {
     return (
-      <div className="rounded-xl shadow-lg px-4 py-3 bg-white/95 dark:bg-[#1e1e1e]/95 dark:text-white backdrop-blur-sm border border-gray-100 dark:border-gray-700">
+      <div className="rounded-xl shadow-lg px-4 py-3 bg-white/95 dark:bg-[#1e1e1e]/95 dark:text-white backdrop-blur-xs border border-gray-100 dark:border-gray-700">
         <p className="text-[11px] text-gray-400 dark:text-gray-500 text-center mb-1">
           {`${formatTimestamp(String(label), "dateOnly")}`}
         </p>
@@ -350,7 +350,7 @@ const PricePointChart: React.FC<{
                 {t("Price")}
               </span>
               <span className="flex items-center gap-1.5">
-                <span className="w-3 h-2 rounded-sm bg-gray-300 dark:bg-gray-600 inline-block" />
+                <span className="w-3 h-2 rounded-xs bg-gray-300 dark:bg-gray-600 inline-block" />
                 {t("Volume")}
               </span>
             </>

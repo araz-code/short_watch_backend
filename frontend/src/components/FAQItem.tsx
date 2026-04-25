@@ -29,7 +29,7 @@ const FAQItem: React.FC<FAQItemProps> = ({
         type="button"
         onClick={toggle}
         aria-expanded={open}
-        className="w-full flex items-start justify-between gap-4 py-4 text-left bg-transparent border-none cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue-300 rounded-md"
+        className="w-full flex items-start justify-between gap-4 py-4 text-left bg-transparent border-none cursor-pointer outline-hidden focus-visible:ring-2 focus-visible:ring-blue-300 rounded-md"
       >
         <span className="text-sm sm:text-base font-medium text-gray-900 dark:text-white leading-snug">
           {question}

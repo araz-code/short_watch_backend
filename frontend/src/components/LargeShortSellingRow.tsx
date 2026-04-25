@@ -18,7 +18,7 @@ const LargeShortSellingRow: React.FC<LargestShortSelling> = (props) => {
         trackEvent("seller_link_click", { seller_name: name, symbol: stockSymbol });
       }}
     >
-      <div className="mx-2 my-1.5 px-4 py-3 rounded-lg flex items-center justify-between bg-white dark:bg-[#1e1e1e] shadow-sm hover:shadow-md hover:-translate-y-px transition-all duration-200 text-sm dark:text-white border border-gray-100 dark:border-gray-800">
+      <div className="mx-2 my-1.5 px-4 py-3 rounded-lg flex items-center justify-between bg-white dark:bg-[#1e1e1e] shadow-xs hover:shadow-md hover:-translate-y-px transition-all duration-200 text-sm dark:text-white border border-gray-100 dark:border-gray-800">
         {/* Left: name + date stacked */}
         <div className="min-w-0">
           <div className="font-medium truncate">{name}</div>

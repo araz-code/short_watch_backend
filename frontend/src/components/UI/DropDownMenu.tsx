@@ -18,7 +18,7 @@ const DropDownMenu: React.FC<{
     <Menu as="div" className="relative inline-block text-left">
       {({ open }) => (
         <>
-          <Menu.Button className="inline-flex items-center gap-2 rounded-lg bg-white dark:bg-[#1e1e1e] px-3 py-2 text-sm font-semibold text-blue-500 shadow-sm ring-1 ring-inset ring-gray-200 dark:ring-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors focus:ring-2 focus:ring-blue-300">
+          <Menu.Button className="inline-flex items-center gap-2 rounded-lg bg-white dark:bg-[#1e1e1e] px-3 py-2 text-sm font-semibold text-blue-500 shadow-xs ring-1 ring-inset ring-gray-200 dark:ring-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors focus:ring-2 focus:ring-blue-300">
             {t(selectedMenuItem) || "Symbol"}
             <FontAwesomeIcon
               icon={faChevronDown}
@@ -39,7 +39,7 @@ const DropDownMenu: React.FC<{
             leaveFrom="transform opacity-100 scale-100"
             leaveTo="transform opacity-0 scale-95"
           >
-            <Menu.Items className="absolute left-0 z-20 mt-2 w-56 origin-top-left rounded-2xl bg-white dark:bg-[#1e1e1e] shadow-2xl ring-1 ring-gray-100 dark:ring-gray-800 focus:outline-none overflow-hidden">
+            <Menu.Items className="absolute left-0 z-20 mt-2 w-56 origin-top-left rounded-2xl bg-white dark:bg-[#1e1e1e] shadow-2xl ring-1 ring-gray-100 dark:ring-gray-800 focus:outline-hidden overflow-hidden">
               <p className="px-4 pt-3 pb-2 text-[11px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">
                 {t("Sort list by")}
               </p>

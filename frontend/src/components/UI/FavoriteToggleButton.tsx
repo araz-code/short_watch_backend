@@ -10,7 +10,7 @@ const FavoriteToggleButton: React.FC<{
 
   return (
     <button
-      className="underline bg-transparent border-none text-lg pr-4 pt-4 text-amber-500 hover:text-amber-600 focus:ring-2 focus:ring-amber-300 rounded"
+      className="underline bg-transparent border-none text-lg pr-4 pt-4 text-amber-500 hover:text-amber-600 focus:ring-2 focus:ring-amber-300 rounded-sm"
       onClick={() => (isFavorite ? removeFromMyList() : addToMyList())}
       aria-label={isFavorite ? t("Remove from my list") : t("Add to my list")}
     >

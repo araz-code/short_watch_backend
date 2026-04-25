@@ -6,7 +6,7 @@ const ShortSellerRow: React.FC<ShortSeller> = (props) => {
   const { name, current, previous, lastUpdated } = props;
 
   return (
-    <div className="mx-2 my-1.5 px-4 py-4 rounded-lg bg-white dark:bg-[#1e1e1e] shadow-sm hover:shadow-md hover:-translate-y-px transition-all duration-200 dark:text-white border border-gray-100 dark:border-gray-800">
+    <div className="mx-2 my-1.5 px-4 py-4 rounded-lg bg-white dark:bg-[#1e1e1e] shadow-xs hover:shadow-md hover:-translate-y-px transition-all duration-200 dark:text-white border border-gray-100 dark:border-gray-800">
       {/* Header: name + date */}
       <div className="flex items-center justify-between mb-3">
         <div className="font-semibold text-base">{name}</div>
@@ -39,7 +39,7 @@ const ShortSellerRow: React.FC<ShortSeller> = (props) => {
           {previous.map((item, index) => (
             <span
               key={index}
-              className="text-xs text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-[#282828] rounded px-2 py-0.5"
+              className="text-xs text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-[#282828] rounded-sm px-2 py-0.5"
             >
               {item}
             </span>
