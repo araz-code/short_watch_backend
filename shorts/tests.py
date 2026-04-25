@@ -412,6 +412,126 @@ class FetchShortPositionsTests(TestCase):
         # Still exactly the one zero that was there before
         self.assertEqual(zeros.count(), 1)
 
+    def test_closure_path_handles_duplicate_positions_at_same_timestamp(self, mock_push):
+        """
+        A stock can have two ShortPosition rows with the EXACT same timestamp
+        — that is precisely why remove_duplicate_positions() exists. Such a
+        stock surfaces twice in distinct_stocks (the latest-per-stock filter
+        is timestamp-based, so two rows at max_timestamp both pass through).
+        When that stock is not in today's feed, the closure branch must
+        complete cleanly and produce exactly one chart row for today.
+        """
+        stock = make_stock(code='DK_DUP', symbol='DUP')
+        earlier = self.now - timedelta(hours=1)
+        # Two rows with the SAME timestamp.
+        ShortPosition.objects.create(stock=stock, value=0.5, timestamp=earlier)
+        ShortPosition.objects.create(stock=stock, value=0.5, timestamp=earlier)
+
+        # Empty feed → closure path runs for stock DK_DUP.
+        Command.fetch_short_positions([])
+
+        # Exactly one chart row for today, value=0.0. (No double-create or
+        # same-instance-in-both-bulk-lists corruption.)
+        today_charts = ShortPositionChart.objects.filter(
+            stock=stock, date=self.now.date()
+        )
+        self.assertEqual(today_charts.count(), 1)
+        self.assertAlmostEqual(today_charts.first().value, 0.0)
+
+    def test_new_positions_path_handles_duplicate_entries_for_same_stock(self, mock_push):
+        """
+        If the parser ever yields two entries for the same stock in one batch
+        (rare but possible — e.g. scraper returning a row twice), the chart
+        upsert in the new-positions branch must still produce exactly one
+        chart row for today, and that row must reflect the LATEST value seen
+        for the stock in the batch.
+        """
+        stock = make_stock(code='DK_DUP', symbol='DUP')
+        first_entry = self._build(stock, 0.40, timestamp=self.now)
+        second_entry = self._build(stock, 0.55, timestamp=self.now)
+
+        Command.fetch_short_positions([first_entry, second_entry])
+
+        today_charts = ShortPositionChart.objects.filter(
+            stock=stock, date=self.now.date()
+        )
+        self.assertEqual(today_charts.count(), 1)
+        # The chart should reflect the latest value processed for this stock.
+        self.assertAlmostEqual(today_charts.first().value, 0.55)
+
+    def test_closure_chart_upsert_safe_when_bulk_create_does_not_backfill_pk(self, mock_push):
+        """
+        Production MySQL does NOT backfill primary keys on instances passed
+        to bulk_create (unlike SQLite/Postgres). If the closure path ever
+        puts the same chart instance into BOTH the bulk_create and
+        bulk_update lists, the subsequent bulk_update call will raise
+        ValueError("All bulk_update() objects must have a primary key set.")
+        on the pk=None instance.
+
+        We simulate that backend behaviour here by stripping pks after
+        bulk_create, so this regression is caught on SQLite too.
+        """
+        stock = make_stock(code='DK_DUP', symbol='DUP')
+        earlier = self.now - timedelta(hours=1)
+        # Two rows with identical timestamps → distinct_stocks returns the
+        # stock twice → closure path iterates it twice.
+        ShortPosition.objects.create(stock=stock, value=0.5, timestamp=earlier)
+        ShortPosition.objects.create(stock=stock, value=0.5, timestamp=earlier)
+
+        real_bulk_create = ShortPositionChart.objects.bulk_create
+
+        def bulk_create_strip_pk(objs, *args, **kwargs):
+            result = real_bulk_create(objs, *args, **kwargs)
+            for obj in objs:
+                obj.pk = None
+            return result
+
+        with mock.patch.object(
+            ShortPositionChart.objects,
+            'bulk_create',
+            side_effect=bulk_create_strip_pk,
+        ):
+            # Must not raise.
+            Command.fetch_short_positions([])
+
+        today_charts = ShortPositionChart.objects.filter(
+            stock=stock, date=self.now.date()
+        )
+        self.assertEqual(today_charts.count(), 1)
+        self.assertAlmostEqual(today_charts.first().value, 0.0)
+
+    def test_new_positions_chart_upsert_safe_when_bulk_create_does_not_backfill_pk(self, mock_push):
+        """
+        MySQL counterpart for the new-positions branch: two entries for the
+        same stock in a single batch must not put the same chart instance
+        into both bulk_create and bulk_update lists.
+        """
+        stock = make_stock(code='DK_DUP', symbol='DUP')
+        first_entry = self._build(stock, 0.40, timestamp=self.now)
+        second_entry = self._build(stock, 0.55, timestamp=self.now)
+
+        real_bulk_create = ShortPositionChart.objects.bulk_create
+
+        def bulk_create_strip_pk(objs, *args, **kwargs):
+            result = real_bulk_create(objs, *args, **kwargs)
+            for obj in objs:
+                obj.pk = None
+            return result
+
+        with mock.patch.object(
+            ShortPositionChart.objects,
+            'bulk_create',
+            side_effect=bulk_create_strip_pk,
+        ):
+            # Must not raise.
+            Command.fetch_short_positions([first_entry, second_entry])
+
+        today_charts = ShortPositionChart.objects.filter(
+            stock=stock, date=self.now.date()
+        )
+        self.assertEqual(today_charts.count(), 1)
+        self.assertAlmostEqual(today_charts.first().value, 0.55)
+
 
 # =============================================================================
 # fetch_large_short_selling

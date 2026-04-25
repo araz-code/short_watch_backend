@@ -222,8 +222,13 @@ class Command(BaseCommand):
                     stock_id__in=stock_pks_in_batch, date=chart_today_date
                 )
             }
-            charts_to_create = []
-            charts_to_update = []
+            # Keyed by stock_pk so each stock lands in exactly one list. If the
+            # batch contains the same stock twice we mutate the same in-memory
+            # instance rather than appending it to both lists (which would
+            # break bulk_update on backends that don't backfill pks, e.g.
+            # MySQL).
+            charts_to_create_by_pk = {}
+            charts_to_update_by_pk = {}
 
             for short in short_data:
                 short_codes.append(short.stock.code)
@@ -244,43 +249,55 @@ class Command(BaseCommand):
                         except Exception as e:
                             Error.objects.create(message=f'Exception occurred with add users_to_notify_dict 1: {str(e)[:400]}')
 
-                existing_chart = existing_charts_by_stock.get(short.stock.pk)
-                if existing_chart is not None:
-                    existing_chart.value = short.value
-                    existing_chart.timestamp = chart_now
-                    charts_to_update.append(existing_chart)
+                stock_pk = short.stock.pk
+                if stock_pk in charts_to_create_by_pk:
+                    chart = charts_to_create_by_pk[stock_pk]
+                    chart.value = short.value
+                    chart.timestamp = chart_now
+                elif stock_pk in charts_to_update_by_pk:
+                    chart = charts_to_update_by_pk[stock_pk]
+                    chart.value = short.value
+                    chart.timestamp = chart_now
                 else:
-                    new_chart = ShortPositionChart(
-                        stock=short.stock,
-                        date=chart_today_date,
-                        value=short.value,
-                        timestamp=chart_now,
-                    )
-                    charts_to_create.append(new_chart)
-                    # Track in dict so a later row for the same stock updates
-                    # this in-memory instance instead of creating a duplicate.
-                    existing_charts_by_stock[short.stock.pk] = new_chart
+                    existing_chart = existing_charts_by_stock.get(stock_pk)
+                    if existing_chart is not None:
+                        existing_chart.value = short.value
+                        existing_chart.timestamp = chart_now
+                        charts_to_update_by_pk[stock_pk] = existing_chart
+                    else:
+                        charts_to_create_by_pk[stock_pk] = ShortPositionChart(
+                            stock=short.stock,
+                            date=chart_today_date,
+                            value=short.value,
+                            timestamp=chart_now,
+                        )
 
-            if charts_to_create:
-                ShortPositionChart.objects.bulk_create(charts_to_create)
-            if charts_to_update:
+            if charts_to_create_by_pk:
+                ShortPositionChart.objects.bulk_create(list(charts_to_create_by_pk.values()))
+            if charts_to_update_by_pk:
                 ShortPositionChart.objects.bulk_update(
-                    charts_to_update, ['value', 'timestamp']
+                    list(charts_to_update_by_pk.values()), ['value', 'timestamp']
                 )
-        count_new_closed_shorts = 0
-        closure_stock_pks = set()
-        closure_chart_stock_pks = set()
         with transaction.atomic():
             subquery = ShortPosition.objects.values('stock__code', 'stock__name') \
                 .annotate(max_timestamp=Max('timestamp'))
-            distinct_stocks = ShortPosition.objects.filter(timestamp__in=subquery.values('max_timestamp'))
+            # Materialize the latest-per-stock rows once and filter to closure
+            # candidates (stocks not in today's feed). select_related('stock')
+            # avoids a per-row SELECT on every short.stock access below.
+            closure_candidates = [
+                s for s in ShortPosition.objects
+                .filter(timestamp__in=subquery.values('max_timestamp'))
+                .select_related('stock')
+                if s.stock.code not in short_codes
+            ]
 
-            for short in distinct_stocks:
-                if short.stock.code not in short_codes:
-                    closure_chart_stock_pks.add(short.stock.pk)
-                    if short.value != 0:
-                        count_new_closed_shorts += 1
-                        closure_stock_pks.add(short.stock.pk)
+            closure_chart_stock_pks = {s.stock.pk for s in closure_candidates}
+            closure_stock_pks = {s.stock.pk for s in closure_candidates if s.value != 0}
+            # Count ROWS (not distinct stock pks) to preserve original threshold
+            # semantics: if distinct_stocks ever returns multiple rows for the
+            # same stock (e.g. two stocks share the same max timestamp), the
+            # original code counted each row.
+            count_new_closed_shorts = sum(1 for s in closure_candidates if s.value != 0)
 
             # Prefetch followers for stocks that will be closed, so the loop
             # below does dict lookups instead of per-row m2m SELECTs.
@@ -302,52 +319,61 @@ class Command(BaseCommand):
                     stock_id__in=closure_chart_stock_pks, date=closure_chart_today_date
                 )
             }
-            closure_charts_to_create = []
-            closure_charts_to_update = []
+            # Keyed by stock_pk: if a stock appears twice in closure_candidates
+            # (e.g. duplicate ShortPosition rows at the same timestamp) we keep
+            # exactly one chart instance in exactly one list.
+            closure_charts_to_create_by_pk = {}
+            closure_charts_to_update_by_pk = {}
 
-            if count_new_closed_shorts > 30:
+            if count_new_closed_shorts > 5:
                 Error.objects.create(message=f'An unexpected number of shorts got closed: '
                                              f'{count_new_closed_shorts}. Most be an error.')
             else:
-                for short in distinct_stocks:
-                    if short.stock.code not in short_codes:
-                        if short.value != 0:
-                            ShortPosition(stock=short.stock,
-                                          value=0.0,
-                                          prev_value=short.value,
-                                          timestamp=timezone.now()).save()
+                for short in closure_candidates:
+                    if short.value != 0:
+                        ShortPosition(stock=short.stock,
+                                      value=0.0,
+                                      prev_value=short.value,
+                                      timestamp=timezone.now()).save()
 
-                            Error.objects.create(message=f'Short position for {short.stock.symbol} got closed!'
-                                                         f' Check if error.')
+                        Error.objects.create(message=f'Short position for {short.stock.symbol} got closed!'
+                                                     f' Check if error.')
 
-                            for app_user in closure_app_users_by_stock.get(short.stock.pk, ()):
-                                try:
-                                    if app_user not in users_to_notify_dict:
-                                        users_to_notify_dict[app_user] = []
-                                    users_to_notify_dict[app_user].append(f'{short.stock.symbol} 0.00%')
-                                except Exception as e:
-                                    Error.objects.create(message=f'Exception occurred with add users_to_notify_dict 2: {str(e)[:400]}')
+                        for app_user in closure_app_users_by_stock.get(short.stock.pk, ()):
+                            try:
+                                if app_user not in users_to_notify_dict:
+                                    users_to_notify_dict[app_user] = []
+                                users_to_notify_dict[app_user].append(f'{short.stock.symbol} 0.00%')
+                            except Exception as e:
+                                Error.objects.create(message=f'Exception occurred with add users_to_notify_dict 2: {str(e)[:400]}')
 
-                        existing_chart = closure_existing_charts_by_stock.get(short.stock.pk)
-                        if existing_chart is not None:
-                            existing_chart.value = 0.0
-                            existing_chart.timestamp = closure_chart_now
-                            closure_charts_to_update.append(existing_chart)
-                        else:
-                            new_chart = ShortPositionChart(
-                                stock=short.stock,
-                                date=closure_chart_today_date,
-                                value=0.0,
-                                timestamp=closure_chart_now,
-                            )
-                            closure_charts_to_create.append(new_chart)
-                            closure_existing_charts_by_stock[short.stock.pk] = new_chart
+                    stock_pk = short.stock.pk
+                    if (stock_pk in closure_charts_to_create_by_pk
+                            or stock_pk in closure_charts_to_update_by_pk):
+                        # Already queued for this stock — closure value is
+                        # always 0.0, so no mutation is needed for repeats.
+                        continue
+                    existing_chart = closure_existing_charts_by_stock.get(stock_pk)
+                    if existing_chart is not None:
+                        existing_chart.value = 0.0
+                        existing_chart.timestamp = closure_chart_now
+                        closure_charts_to_update_by_pk[stock_pk] = existing_chart
+                    else:
+                        closure_charts_to_create_by_pk[stock_pk] = ShortPositionChart(
+                            stock=short.stock,
+                            date=closure_chart_today_date,
+                            value=0.0,
+                            timestamp=closure_chart_now,
+                        )
 
-                if closure_charts_to_create:
-                    ShortPositionChart.objects.bulk_create(closure_charts_to_create)
-                if closure_charts_to_update:
+                if closure_charts_to_create_by_pk:
+                    ShortPositionChart.objects.bulk_create(
+                        list(closure_charts_to_create_by_pk.values())
+                    )
+                if closure_charts_to_update_by_pk:
                     ShortPositionChart.objects.bulk_update(
-                        closure_charts_to_update, ['value', 'timestamp']
+                        list(closure_charts_to_update_by_pk.values()),
+                        ['value', 'timestamp'],
                     )
         RunStatus.objects.create()
         for app_user, stocks in users_to_notify_dict.items():
