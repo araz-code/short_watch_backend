@@ -7,7 +7,6 @@ import ErrorBlock from "../components/UI/ErrorBlock";
 import LoadingIndicator from "../components/UI/LoadingIndicator";
 import { useTranslation } from "react-i18next";
 import { trackPageView } from "../analytics";
-import { useSEO } from "../utils/useSEO";
 
 const medals = ["🥇", "🥈", "🥉"];
 
@@ -76,8 +75,6 @@ const TopListsPage: React.FC = () => {
     queryFn: ({ signal }) => fetchTopLists({ signal }),
   });
 
-  useSEO("Top Lists", "Discover the top 10 most shorted, most viewed, and most followed Danish stocks. Updated daily.");
-
   useEffect(() => {
     trackPageView("/top-lists", "top lists");
   }, []);
@@ -137,6 +134,8 @@ const TopListsPage: React.FC = () => {
 
   return (
     <div className="min-h-screen dark:bg-[#121212] overflow-auto">
+      <title>Zirium | Top Lists</title>
+      <meta name="description" content="Discover the top 10 most shorted, most viewed, and most followed Danish stocks. Updated daily." />
       <PageTemplate>
         <div className="w-screen lg:flex lg:justify-center lg:gap-4 m-auto">
           <div className="lg:w-[900px]">

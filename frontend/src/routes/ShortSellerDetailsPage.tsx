@@ -16,7 +16,6 @@ import { trackEvent, trackPageView } from "../analytics";
 import Announcement from "../models/Announcement";
 import ShortSellerDetails from "../models/ShortSellerDetails";
 import ShortSellerAnnouncementRow from "../components/ShortSellerAnnouncementRow";
-import { useSEO } from "../utils/useSEO";
 
 interface GroupedAnnouncements {
   [key: string]: Announcement[];
@@ -47,11 +46,6 @@ const ShortSellerDetailsPage: React.FC = () => {
         seller: seller ?? "",
       }),
   });
-
-  useSEO(
-    data?.name ? `${data.name}` : "Short Seller Details",
-    data?.name ? `View all short selling positions held by ${data.name} in Danish stocks.` : undefined
-  );
 
   useEffect(() => {
     trackEvent("seller_details_view", { seller: seller ?? "" });
@@ -150,6 +144,10 @@ const ShortSellerDetailsPage: React.FC = () => {
 
   return (
     <div className="h-screen dark:bg-[#121212] overflow-hidden [@media((max-height:900px)_and_(orientation:landscape))_or_(max-height:700px)]:overflow-auto [@media((max-height:900px)_and_(orientation:landscape))_or_(max-height:700px)]:h-auto [@media((max-height:900px)_and_(orientation:landscape))_or_(max-height:700px)]:min-h-screen">
+      <title>{data?.name ? `Zirium | ${data.name}` : "Zirium | Short Seller Details"}</title>
+      {data?.name && (
+        <meta name="description" content={`View all short selling positions held by ${data.name} in Danish stocks.`} />
+      )}
       <PageTemplate>
         <div className="w-screen lg:flex lg:justify-center lg:gap-4  m-auto">
           <div className="w-1/3 justify-end items-center hidden"></div>

@@ -3,11 +3,9 @@ import PageTemplate from "../components/PageTemplate";
 import image from "../static/mail-bird.webp";
 import { useEffect } from "react";
 import { trackPageView } from "../analytics";
-import { useSEO } from "../utils/useSEO";
 
 const ContactPage: React.FC = () => {
   const { t } = useTranslation();
-  useSEO("Contact Us", "Get in touch with the Danish Short Watch team. Questions, feedback, or assistance.");
 
   useEffect(() => {
     trackPageView("/contact", "contact");
@@ -15,6 +13,8 @@ const ContactPage: React.FC = () => {
 
   return (
     <PageTemplate>
+      <title>Zirium | Contact Us</title>
+      <meta name="description" content="Get in touch with the Danish Short Watch team. Questions, feedback, or assistance." />
       <div className="w-full max-w-[900px] mx-auto px-6 py-12 dark:text-white">
         <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
           {/* Left side: text content */}

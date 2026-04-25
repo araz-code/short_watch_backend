@@ -12,7 +12,6 @@ import { useTranslation } from "react-i18next";
 import AppImage from "../components/Homepage/AppImage";
 import { useEffect, useState } from "react";
 import { trackEvent, trackPageView } from "../analytics";
-import { useSEO } from "../utils/useSEO";
 import { useQuery } from "@tanstack/react-query";
 import { fetchStats, ShortStats } from "../apis/ShortPositionAPI";
 import { formatTimestamp } from "../utils/dates";
@@ -41,8 +40,6 @@ const cards = [
 const HomePage: React.FC = () => {
   const { t } = useTranslation();
 
-  useSEO("Homepage", "Track short selling positions in Danish stocks in real-time. View historical data, largest short sellers, and trending stocks. Free app for iPhone, iPad, and Apple Watch.");
-
   // Toggle to true and bump the storage key (e.g. _v2) when announcing a new feature.
   const BANNER_ENABLED = false;
   const [showBanner, setShowBanner] = useState(() => {
@@ -66,6 +63,8 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="bg-white dark:bg-[#121212]">
+      <title>Zirium | Homepage</title>
+      <meta name="description" content="Track short selling positions in Danish stocks in real-time. View historical data, largest short sellers, and trending stocks. Free app for iPhone, iPad, and Apple Watch." />
       <div className="flex flex-col sm:min-h-[650px]">
         <div className="bg-wave-pattern dark:bg-wave-pattern-dark bg-cover bg-no-repeat bg-bottom h-[57%] flex flex-col pb-2 sm:pb-0 [@media(min-width:2000px)]:min-h-[770px]">
           <Navigation />

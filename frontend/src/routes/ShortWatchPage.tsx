@@ -11,7 +11,6 @@ import LoadingIndicator from "../components/UI/LoadingIndicator";
 import HelpDialog from "../components/HelpDialog";
 import { useTranslation } from "react-i18next";
 import { trackEvent, trackPageView } from "../analytics";
-import { useSEO } from "../utils/useSEO";
 
 const options = ["Symbol", "Name", "Date", "Value"];
 
@@ -36,7 +35,6 @@ const sort = (list: PricePoint[], selectedSorting: string) => {
 
 const ShortWatchPage: React.FC = () => {
   const { t } = useTranslation();
-  useSEO("Short Watch", "View all current short selling positions in Danish stocks with real-time data from the Danish Financial Supervisory Authority.");
   const searchElement = useRef<HTMLInputElement>(null);
   const [selectedSorting, setSelectedSorting] = useState<string>(() => {
     const savedSorting = localStorage.getItem("selectedSorting");
@@ -141,6 +139,8 @@ const ShortWatchPage: React.FC = () => {
 
   return (
     <div className="h-screen xl:h-[calc(100dvh)] min-h-[620px] overflow-hidden [@media((max-height:900px)_and_(orientation:landscape))_or_(max-height:700px)]:overflow-auto [@media((max-height:900px)_and_(orientation:landscape))_or_(max-height:700px)]:h-auto [@media((max-height:900px)_and_(orientation:landscape))_or_(max-height:700px)]:min-h-screen">
+      <title>Zirium | Short Watch</title>
+      <meta name="description" content="View all current short selling positions in Danish stocks with real-time data from the Danish Financial Supervisory Authority." />
       <PageTemplate>
         <div className="w-screen lg:flex lg:justify-center lg:gap-4  m-auto">
           <div className="w-1/3 justify-start items-center hidden"></div>

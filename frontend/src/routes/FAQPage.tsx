@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import PageTemplate from "../components/PageTemplate";
 import FAQItem from "../components/FAQItem";
 import { trackEvent, trackPageView } from "../analytics";
-import { useSEO } from "../utils/useSEO";
 
 const linkClass =
   "text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 underline decoration-blue-500/30 underline-offset-2 transition-colors";
@@ -22,10 +21,6 @@ const SourceLink: React.FC<{ href: string; label: string }> = ({
 
 const FAQPage: React.FC = () => {
   const { t } = useTranslation();
-  useSEO(
-    "FAQ",
-    "Frequently asked questions about EU short selling rules: reporting thresholds, public disclosure, and who has to report."
-  );
 
   useEffect(() => {
     trackPageView("/faq", "faq");
@@ -208,6 +203,8 @@ const FAQPage: React.FC = () => {
 
   return (
     <PageTemplate>
+      <title>Zirium | FAQ</title>
+      <meta name="description" content="Frequently asked questions about EU short selling rules: reporting thresholds, public disclosure, and who has to report." />
       <div className="w-full max-w-[760px] mx-auto px-5 sm:px-8 py-10 sm:py-16 dark:text-white">
         <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight mb-2">
           {t("Frequently asked questions")}

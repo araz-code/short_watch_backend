@@ -14,7 +14,6 @@ import PricePointList from "../components/PricePointList";
 import LargeShortSellingList from "../components/LargeShortSellingList";
 import FavoriteToggleButton from "../components/UI/FavoriteToggleButton";
 import ChangeIndicator from "../components/UI/ChangeIndicator";
-import { useSEO } from "../utils/useSEO";
 
 const detailOptions = ["Historic data", "Largest sellers"];
 const periodOptions = ["1W", "1M", "3M", "6M", "YTD", "Max"];
@@ -126,10 +125,6 @@ const ShortPositionDetailsPage: React.FC = () => {
 
   const stockName = data?.historic?.[0]?.name;
   const stockSymbol = data?.historic?.[0]?.symbol;
-  useSEO(
-    stockName ? `${stockSymbol} – ${stockName}` : "Stock Details",
-    stockName ? `View short position data, charts, and largest sellers for ${stockName} (${stockSymbol}).` : undefined
-  );
 
   useEffect(() => {
     localStorage.setItem("selectedPeriod", selectedPeriod);
@@ -281,6 +276,10 @@ const ShortPositionDetailsPage: React.FC = () => {
 
   return (
     <div className="h-screen dark:bg-[#121212] overflow-hidden [@media((max-height:900px)_and_(orientation:landscape))_or_(max-height:700px)]:overflow-auto [@media((max-height:900px)_and_(orientation:landscape))_or_(max-height:700px)]:h-auto [@media((max-height:900px)_and_(orientation:landscape))_or_(max-height:700px)]:min-h-screen">
+      <title>{stockName ? `Zirium | ${stockSymbol} – ${stockName}` : "Zirium | Stock Details"}</title>
+      {stockName && (
+        <meta name="description" content={`View short position data, charts, and largest sellers for ${stockName} (${stockSymbol}).`} />
+      )}
       <PageTemplate>
         <div className="w-screen lg:flex lg:justify-center lg:gap-4  m-auto">
           <div className="w-1/3 justify-end items-center hidden"></div>
