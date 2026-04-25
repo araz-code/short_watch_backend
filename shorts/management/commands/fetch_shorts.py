@@ -1,4 +1,5 @@
 import time
+from collections import defaultdict
 from datetime import datetime, timedelta
 
 from django.core.cache import cache
@@ -18,6 +19,7 @@ from request_logging.service import delete_old_logs, process_visits
 from short_watch_backend.settings import FCM_SERVICE_ACCOUNT_FILE, DEBUG
 from shorts.models import ShortPosition, RunStatus, LargeShortSelling, ShortPositionChart, Stock
 from shorts.utils import parse_headline, parse_publication_date, get_stock_for_issuer, get_or_create_seller
+from users.models import AppUser
 
 import firebase_admin
 from firebase_admin import credentials, messaging
@@ -201,6 +203,15 @@ class Command(BaseCommand):
                     )
                 }
 
+            # Bulk-fetch followers per stock so the per-row app_users.all() call
+            # is a dict access. One query joins the m2m through table to AppUser.
+            app_users_by_stock = defaultdict(list)
+            stock_user_through = AppUser.stocks.through
+            for row in stock_user_through.objects.filter(
+                stock_id__in=stock_pks_in_batch
+            ).select_related('appuser'):
+                app_users_by_stock[row.stock_id].append(row.appuser)
+
             for short in short_data:
                 short_codes.append(short.stock.code)
 
@@ -212,7 +223,7 @@ class Command(BaseCommand):
                     if prev_value is not None:
                         short.prev_value = prev_value
                     short.save()
-                    for app_user in short.stock.app_users.all():
+                    for app_user in app_users_by_stock.get(short.stock.pk, ()):
                         try:
                             if app_user not in users_to_notify_dict:
                                 users_to_notify_dict[app_user] = []
