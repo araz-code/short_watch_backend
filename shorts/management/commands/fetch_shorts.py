@@ -58,6 +58,13 @@ class Command(BaseCommand):
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--headless")
         chrome_options.add_argument("--disable-gpu")
+        # Skip image downloads — the scraper only reads text spans, so images
+        # are pure overhead.
+        chrome_options.add_argument("--blink-settings=imagesEnabled=false")
+        # Don't block driver.get() until window.load — return as soon as the
+        # request is dispatched and let WebDriverWait gate on the table cell
+        # appearing. Avoids waiting on the long tail of fonts/trackers/etc.
+        chrome_options.page_load_strategy = 'none'
 
         return webdriver.Chrome(options=chrome_options)
 
