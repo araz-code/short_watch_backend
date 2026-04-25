@@ -270,7 +270,7 @@ class RemoveDuplicatePositionsTests(TestCase):
 # =============================================================================
 
 
-@patch.object(Command, 'send_push_notification')
+@patch.object(Command, 'send_push_notifications')
 class FetchShortPositionsTests(TestCase):
     """
     These tests call the static ingestion method directly with a manually built
@@ -346,11 +346,11 @@ class FetchShortPositionsTests(TestCase):
 
         Command.fetch_short_positions([self._build(stock, 0.50)])
 
-        # send_push_notification was called once for the only affected user.
+        # send_push_notifications is called once with a dict keyed by user.
         self.assertEqual(mock_push.call_count, 1)
-        called_user, called_messages = mock_push.call_args.args
-        self.assertEqual(called_user.pk, user.pk)
-        self.assertEqual(called_messages, ['TST 0.50%'])
+        called_dict = mock_push.call_args.args[0]
+        self.assertIn(user, called_dict)
+        self.assertEqual(called_dict[user], ['TST 0.50%'])
 
     def test_app_user_not_following_is_not_notified(self, mock_push):
         stock_a = make_stock(code='DK1', symbol='AAA')
@@ -360,7 +360,10 @@ class FetchShortPositionsTests(TestCase):
 
         Command.fetch_short_positions([self._build(stock_a, 0.30)])
 
-        self.assertEqual(mock_push.call_count, 0)
+        # send_push_notifications is always called once at the end, but the
+        # dispatched dict must be empty since no followed stock changed.
+        self.assertEqual(mock_push.call_count, 1)
+        self.assertEqual(mock_push.call_args.args[0], {})
 
     def test_disappearing_stock_is_closed_with_zero(self, mock_push):
         """A stock with a non-zero position not in the new feed is auto-closed at 0%."""
@@ -856,68 +859,183 @@ class HandleOrchestrationTests(TestCase):
 
 
 # =============================================================================
-# send_push_notification
+# _build_push_message — message-shape tests (pure, no network)
 # =============================================================================
 
 
-@patch('shorts.management.commands.fetch_shorts.DEBUG', False)
-@patch('shorts.management.commands.fetch_shorts.messaging.send')
-class SendPushNotificationTests(TestCase):
+class BuildPushMessageTests(TestCase):
+    """The Message returned by _build_push_message is what gets handed to FCM,
+    so its structure must match what the iOS clients expect on each version.
+    """
+
     def setUp(self):
         self.user = AppUser.objects.create(fcm_token='token-abc', version='v17')
 
-    def test_no_token_means_no_send(self, mock_send):
+    def test_no_token_returns_none(self):
         user = AppUser.objects.create(fcm_token=None, version='v17')
-        Command.send_push_notification(user, ['TST 0.50%'])
-        mock_send.assert_not_called()
+        self.assertIsNone(Command._build_push_message(user, ['TST 0.50%']))
 
-    def test_invalid_user_means_no_send(self, mock_send):
+    def test_invalid_user_returns_none(self):
         self.user.invalid = timezone.now()
         self.user.save()
-        Command.send_push_notification(self.user, ['TST 0.50%'])
-        mock_send.assert_not_called()
+        self.assertIsNone(Command._build_push_message(self.user, ['TST 0.50%']))
 
-    def test_successful_send_increments_counter(self, mock_send):
+    def test_v17_includes_loc_args_with_joined_stocks(self):
+        message = Command._build_push_message(self.user, ['TST 0.50%', 'BBB 0.30%'])
+        self.assertEqual(message.apns.payload.aps.alert.loc_args, ['TST 0.50%, BBB 0.30%'])
+
+    def test_old_version_omits_loc_args(self):
+        old_user = AppUser.objects.create(fcm_token='t', version='v10')
+        message = Command._build_push_message(old_user, ['TST 0.50%'])
+        self.assertIsNone(message.apns.payload.aps.alert.loc_args)
+
+    def test_v15_sets_badge_to_one_v10_keeps_zero(self):
+        v15_user = AppUser.objects.create(fcm_token='t15', version='v15')
+        v10_user = AppUser.objects.create(fcm_token='t10', version='v10')
+        v15_msg = Command._build_push_message(v15_user, ['TST 0.50%'])
+        v10_msg = Command._build_push_message(v10_user, ['TST 0.50%'])
+        self.assertEqual(v15_msg.apns.payload.aps.badge, 1)
+        self.assertEqual(v10_msg.apns.payload.aps.badge, 0)
+
+
+# =============================================================================
+# send_push_notifications — batch dispatch
+# =============================================================================
+
+
+def _make_send_response(success, exception=None):
+    """Build a stand-in for firebase_admin.messaging.SendResponse."""
+    r = MagicMock()
+    r.success = success
+    r.exception = exception
+    return r
+
+
+def _make_batch_response(responses):
+    br = MagicMock()
+    br.responses = list(responses)
+    br.success_count = sum(1 for r in responses if r.success)
+    br.failure_count = sum(1 for r in responses if not r.success)
+    return br
+
+
+@patch('shorts.management.commands.fetch_shorts.DEBUG', False)
+@patch('shorts.management.commands.fetch_shorts.messaging.send_each')
+class SendPushNotificationsTests(TestCase):
+    """The batch dispatcher: chunks of 500, per-user error handling, counters."""
+
+    def setUp(self):
+        self.user = AppUser.objects.create(fcm_token='token-abc', version='v17')
+
+    def test_skips_send_when_no_sendable_users(self, mock_send_each):
+        user_no_token = AppUser.objects.create(fcm_token=None, version='v17')
+        Command.send_push_notifications({user_no_token: ['TST 0.50%']})
+        mock_send_each.assert_not_called()
+
+    def test_empty_dict_does_not_call_fcm(self, mock_send_each):
+        Command.send_push_notifications({})
+        mock_send_each.assert_not_called()
+
+    def test_successful_send_increments_counter(self, mock_send_each):
+        mock_send_each.return_value = _make_batch_response([_make_send_response(True)])
         before = self.user.notifications_sent
-        Command.send_push_notification(self.user, ['TST 0.50%'])
+
+        Command.send_push_notifications({self.user: ['TST 0.50%']})
+
         self.user.refresh_from_db()
         self.assertEqual(self.user.notifications_sent, before + 1)
-        mock_send.assert_called_once()
+        mock_send_each.assert_called_once()
+        # exactly one Message handed to FCM
+        sent_messages = mock_send_each.call_args.args[0]
+        self.assertEqual(len(sent_messages), 1)
 
-    def test_unregistered_error_marks_user_invalid(self, mock_send):
-        mock_send.side_effect = UnregisteredError('gone')
-        Command.send_push_notification(self.user, ['TST 0.50%'])
+    def test_unregistered_error_marks_user_invalid(self, mock_send_each):
+        mock_send_each.return_value = _make_batch_response([
+            _make_send_response(False, UnregisteredError('gone')),
+        ])
+
+        Command.send_push_notifications({self.user: ['TST 0.50%']})
+
         self.user.refresh_from_db()
         self.assertIsNotNone(self.user.invalid)
         self.assertTrue(Error.objects.filter(message__contains="FCM token doesn't exist").exists())
+        # Counter NOT incremented for failed sends
+        self.assertEqual(self.user.notifications_sent, 0)
 
-    def test_invalid_argument_error_marks_user_invalid(self, mock_send):
-        mock_send.side_effect = InvalidArgumentError('bad token')
-        Command.send_push_notification(self.user, ['TST 0.50%'])
+    def test_invalid_argument_error_marks_user_invalid(self, mock_send_each):
+        mock_send_each.return_value = _make_batch_response([
+            _make_send_response(False, InvalidArgumentError('bad token')),
+        ])
+
+        Command.send_push_notifications({self.user: ['TST 0.50%']})
+
         self.user.refresh_from_db()
         self.assertIsNotNone(self.user.invalid)
         self.assertTrue(Error.objects.filter(message__contains='FCM token is invalid').exists())
 
-    def test_v17_includes_loc_args_with_joined_stocks(self, mock_send):
-        Command.send_push_notification(self.user, ['TST 0.50%', 'BBB 0.30%'])
-        sent_message = mock_send.call_args.args[0]
-        loc_args = sent_message.apns.payload.aps.alert.loc_args
-        self.assertEqual(loc_args, ['TST 0.50%, BBB 0.30%'])
+    def test_other_exception_logs_generic_error_but_does_not_mark_invalid(self, mock_send_each):
+        mock_send_each.return_value = _make_batch_response([
+            _make_send_response(False, RuntimeError('transient FCM hiccup')),
+        ])
 
-    def test_old_version_omits_loc_args(self, mock_send):
-        old_user = AppUser.objects.create(fcm_token='t', version='v10')
-        Command.send_push_notification(old_user, ['TST 0.50%'])
-        sent_message = mock_send.call_args.args[0]
-        self.assertIsNone(sent_message.apns.payload.aps.alert.loc_args)
+        Command.send_push_notifications({self.user: ['TST 0.50%']})
 
-    def test_v15_sets_badge_to_one_v10_keeps_zero(self, mock_send):
-        v15_user = AppUser.objects.create(fcm_token='t15', version='v15')
-        v10_user = AppUser.objects.create(fcm_token='t10', version='v10')
+        self.user.refresh_from_db()
+        # Generic transient errors should NOT permanently invalidate the user
+        self.assertIsNone(self.user.invalid)
+        self.assertTrue(Error.objects.filter(message__contains='FCM send failed').exists())
 
-        Command.send_push_notification(v15_user, ['TST 0.50%'])
-        Command.send_push_notification(v10_user, ['TST 0.50%'])
+    def test_partial_failure_only_affects_failing_user(self, mock_send_each):
+        good_user = AppUser.objects.create(fcm_token='good', version='v17')
+        bad_user = AppUser.objects.create(fcm_token='bad', version='v17')
 
-        first_msg = mock_send.call_args_list[0].args[0]
-        second_msg = mock_send.call_args_list[1].args[0]
-        self.assertEqual(first_msg.apns.payload.aps.badge, 1)
-        self.assertEqual(second_msg.apns.payload.aps.badge, 0)
+        # Order of dict insertion is preserved in 3.7+, so good comes first.
+        mock_send_each.return_value = _make_batch_response([
+            _make_send_response(True),
+            _make_send_response(False, UnregisteredError('gone')),
+        ])
+
+        Command.send_push_notifications({
+            good_user: ['TST 0.50%'],
+            bad_user: ['TST 0.50%'],
+        })
+
+        good_user.refresh_from_db()
+        bad_user.refresh_from_db()
+        self.assertEqual(good_user.notifications_sent, 1)
+        self.assertIsNone(good_user.invalid)
+        self.assertEqual(bad_user.notifications_sent, 0)
+        self.assertIsNotNone(bad_user.invalid)
+
+    def test_batches_split_when_more_than_500_messages(self, mock_send_each):
+        # 501 users → 1 batch of 500 + 1 batch of 1 → two send_each calls.
+        users = [
+            AppUser.objects.create(fcm_token=f't-{i}', version='v17')
+            for i in range(501)
+        ]
+        # Each call returns a fresh BatchResponse sized to the chunk.
+        def fake_send_each(messages):
+            return _make_batch_response([_make_send_response(True) for _ in messages])
+        mock_send_each.side_effect = fake_send_each
+
+        Command.send_push_notifications({u: ['TST 0.50%'] for u in users})
+
+        self.assertEqual(mock_send_each.call_count, 2)
+        first_chunk = mock_send_each.call_args_list[0].args[0]
+        second_chunk = mock_send_each.call_args_list[1].args[0]
+        self.assertEqual(len(first_chunk), 500)
+        self.assertEqual(len(second_chunk), 1)
+
+
+@patch('shorts.management.commands.fetch_shorts.DEBUG', True)
+@patch('shorts.management.commands.fetch_shorts.messaging.send_each')
+class SendPushNotificationsDebugModeTests(TestCase):
+    """In DEBUG, send_each must NOT be called, but counters still tick on
+    sendable users so dev runs see the same DB side-effects as prod success."""
+
+    def test_debug_mode_skips_network_but_increments_counter(self, mock_send_each):
+        user = AppUser.objects.create(fcm_token='token-abc', version='v17')
+        Command.send_push_notifications({user: ['TST 0.50%']})
+        user.refresh_from_db()
+        self.assertEqual(user.notifications_sent, 1)
+        mock_send_each.assert_not_called()

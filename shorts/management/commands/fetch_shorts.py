@@ -376,8 +376,7 @@ class Command(BaseCommand):
                         ['value', 'timestamp'],
                     )
         RunStatus.objects.create()
-        for app_user, stocks in users_to_notify_dict.items():
-            Command.send_push_notification(app_user, stocks)
+        Command.send_push_notifications(users_to_notify_dict)
 
     def fetch_short_positions_selenium(self, driver):
         retry_count = 0
@@ -456,49 +455,96 @@ class Command(BaseCommand):
 
         return stocks_by_code
 
+    FCM_BATCH_LIMIT = 500
+
     @staticmethod
-    def send_push_notification(app_user, stocks_changed):
-        try:
-            if not app_user.invalid and app_user.fcm_token:
-                current_time = datetime.now(copenhagen_timezone).time()
+    def _build_push_message(app_user, stocks_changed):
+        """Build the FCM Message for a user, or return None if not sendable.
 
-                # Define quiet hours
-                quiet_start = datetime.now(copenhagen_timezone).replace(hour=21, minute=30).time()
-                quiet_end = datetime.now(copenhagen_timezone).replace(hour=7, minute=30).time()
+        A user is not sendable when they have been marked invalid or do not
+        have an FCM token. Sound is held at None — the quiet-hours block is
+        retained for symmetry with the previous implementation.
+        """
+        if app_user.invalid or not app_user.fcm_token:
+            return None
 
-                if current_time >= quiet_start or current_time < quiet_end:
-                    sound = None
-                else:
-                    sound = 'default'
+        current_time = datetime.now(copenhagen_timezone).time()
+        # Define quiet hours
+        quiet_start = datetime.now(copenhagen_timezone).replace(hour=21, minute=30).time()
+        quiet_end = datetime.now(copenhagen_timezone).replace(hour=7, minute=30).time()
+        if current_time >= quiet_start or current_time < quiet_end:
+            sound = None
+        else:
+            sound = 'default'
 
-                message = messaging.Message(
-                    apns=messaging.APNSConfig(
-                        payload=messaging.APNSPayload(
-                            aps=messaging.Aps(
-                                alert=messaging.ApsAlert(
-                                    loc_key='YOUR_WATCHLIST_WAS_UPDATED',
-                                    loc_args=[', '.join([stock for stock in stocks_changed])]
-                                    if app_user.version in {'v16', 'v17'} else None,
-                                ),
-                                badge=1 if app_user.version in {'v13', 'v14', 'v15', 'v16', 'v17'} else 0,
-                                sound=None
-                            )
-                        )
-                    ),
-                    token=app_user.fcm_token,
+        return messaging.Message(
+            apns=messaging.APNSConfig(
+                payload=messaging.APNSPayload(
+                    aps=messaging.Aps(
+                        alert=messaging.ApsAlert(
+                            loc_key='YOUR_WATCHLIST_WAS_UPDATED',
+                            loc_args=[', '.join([stock for stock in stocks_changed])]
+                            if app_user.version in {'v16', 'v17'} else None,
+                        ),
+                        badge=1 if app_user.version in {'v13', 'v14', 'v15', 'v16', 'v17'} else 0,
+                        sound=None
+                    )
                 )
-                if not DEBUG:
-                    messaging.send(message)
-                app_user.notifications_sent = app_user.notifications_sent + 1
-                app_user.save()
-        except UnregisteredError:
-            Error.objects.create(message=f"FCM token doesn't exist: {app_user.user_id}")
-            app_user.invalid = timezone.now()
-            app_user.save()
-        except InvalidArgumentError:
-            Error.objects.create(message=f"FCM token is invalid: {app_user.user_id}")
-            app_user.invalid = timezone.now()
-            app_user.save()
+            ),
+            token=app_user.fcm_token,
+        )
+
+    @staticmethod
+    def send_push_notifications(user_to_stocks_dict):
+        """Dispatch FCM push notifications in batches of up to 500.
+
+        FCM's send_each accepts at most 500 messages per call, so we chunk.
+        Per-user errors mirror the previous per-user behaviour:
+          * UnregisteredError → mark user invalid, log "FCM token doesn't exist"
+          * InvalidArgumentError → mark user invalid, log "FCM token is invalid"
+          * any other exception → log a generic FCM send error for that user
+          * success → increment notifications_sent
+        """
+        sendable = []  # list of (app_user, message)
+        for app_user, stocks in user_to_stocks_dict.items():
+            message = Command._build_push_message(app_user, stocks)
+            if message is not None:
+                sendable.append((app_user, message))
+
+        if not sendable:
+            return
+
+        for start in range(0, len(sendable), Command.FCM_BATCH_LIMIT):
+            chunk = sendable[start:start + Command.FCM_BATCH_LIMIT]
+            messages = [msg for _, msg in chunk]
+
+            if DEBUG:
+                # Skip the network call but keep the counter behaviour so tests
+                # / dev runs still observe the same DB side-effects on success.
+                for user, _ in chunk:
+                    user.notifications_sent = user.notifications_sent + 1
+                    user.save()
+                continue
+
+            batch_response = messaging.send_each(messages)
+            for (user, _), response in zip(chunk, batch_response.responses):
+                if response.success:
+                    user.notifications_sent = user.notifications_sent + 1
+                    user.save()
+                    continue
+                exc = response.exception
+                if isinstance(exc, UnregisteredError):
+                    Error.objects.create(message=f"FCM token doesn't exist: {user.user_id}")
+                    user.invalid = timezone.now()
+                    user.save()
+                elif isinstance(exc, InvalidArgumentError):
+                    Error.objects.create(message=f"FCM token is invalid: {user.user_id}")
+                    user.invalid = timezone.now()
+                    user.save()
+                else:
+                    Error.objects.create(
+                        message=f"FCM send failed for {user.user_id}: {str(exc)[:400]}"
+                    )
 
     @staticmethod
     def get_prev_value_for_large_selling(existing_row, date):
