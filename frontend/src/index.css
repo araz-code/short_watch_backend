@@ -4,38 +4,7 @@
   --background-image-wave-pattern: url('/src/static/wave.svg');
   --background-image-wave-pattern-dark: url('/src/static/wave-dark.svg');
 
-  --background-size-16: 4rem;
-  --background-size-50\%: 100%;
-
   --height-screen: 100svh /* fallback for Opera, IE and etc. */, 100dvh;
-
-  --animate-fadeIn: fadeIn 0.5s forwards;
-  --animate-fadeOut: fadeOut 0.5s forwards;
-
-  --text-xs-plus: 0.85rem;
-
-  --font-nums: 'Inter', sans-serif;
-
-  @keyframes fadeIn {
-    0% {
-      opacity: 0;
-      transform: scale(0.95);
-    }
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-  @keyframes fadeOut {
-    0% {
-      opacity: 1;
-      transform: scale(1);
-    }
-    100% {
-      opacity: 0;
-      transform: scale(0.95);
-    }
-  }
 }
 
 /*
@@ -77,32 +46,4 @@ body {
   body {
     background-color: #121212;
   }
-}
-
-.modal {
-  margin: 0;
-  padding: 2rem;
-  position: fixed;
-  top: 10vh;
-  left: calc(50% - 15rem);
-  width: 30rem;
-  max-height: 80vh;
-  background: #e2e5eb;
-  border: none;
-  border-radius: 6px;
-  z-index: 100;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  animation: slide-down-fade-in 300ms ease-out forwards;
-}
-
-.modal::backdrop {
-  height: 100vh;
-  width: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  position: fixed;
-  top: 0;
-  left: 0;
 }
