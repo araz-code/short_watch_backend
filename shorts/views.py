@@ -114,6 +114,27 @@ def _compute_derived_metrics(chart_values, historic):
 
 FIRST_ENTRY_DATE = date(2023, 11, 6)
 
+# Versioned cache for per-stock detail responses. We can't delete by pattern
+# on DatabaseCache, so we bump this version to invalidate every detail key
+# at once (old keys become unreachable and expire on TTL).
+DETAIL_CACHE_VERSION_KEY = 'detail_cache_version'
+
+
+def _detail_cache_key(code):
+    version = cache.get(DETAIL_CACHE_VERSION_KEY, 0)
+    return f'detail_v{version}_{code}'
+
+
+def invalidate_detail_caches():
+    """Bump the detail cache version so every existing detail_v{n}_<code>
+    key becomes unreachable on the next read.
+    """
+    try:
+        cache.incr(DETAIL_CACHE_VERSION_KEY)
+    except ValueError:
+        # Key didn't exist yet (or backend can't incr a missing key).
+        cache.set(DETAIL_CACHE_VERSION_KEY, 1, timeout=None)
+
 
 class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
     queryset = ShortPosition.objects.all()
@@ -122,6 +143,11 @@ class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
     lookup_field = 'code'
 
     def retrieve(self, request, code=None, *args, **kwargs):
+        cache_key = _detail_cache_key(code)
+        cached = cache.get(cache_key)
+        if cached:
+            return Response(cached)
+
         try:
             stock = Stock.objects.prefetch_related(
                 'shortposition_set',
@@ -164,7 +190,9 @@ class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
             response = ShortedStockDetailsResponse(chart_values, historic, sellers, announcements,
                                                    percentile, velocity_7d, velocity_30d)
 
-            return Response(self.get_serializer(response).data)
+            data = self.get_serializer(response).data
+            cache.set(cache_key, data, timeout=None)
+            return Response(data)
         except Stock.DoesNotExist:
             return Response(self.get_serializer(
                 ShortedStockDetailsResponse([], [], [], [], None, None, None)).data)
