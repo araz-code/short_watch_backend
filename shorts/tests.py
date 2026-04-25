@@ -140,21 +140,56 @@ class ParsePublicationDateTests(TestCase):
 # =============================================================================
 
 
-class GetOrCreateStockTests(TestCase):
-    def test_returns_existing_stock_unmodified(self):
+class GetOrCreateStocksBulkTests(TestCase):
+    def test_returns_existing_stocks_unmodified(self):
         existing = make_stock(code='DK1', name='Original Name', symbol='ORIG')
-        result = Command.get_or_create_stock('DK1', 'Some Other Name')
-        self.assertEqual(result.pk, existing.pk)
-        self.assertEqual(result.name, 'Original Name')
-        self.assertEqual(result.symbol, 'ORIG')
+        result = Command.get_or_create_stocks_bulk([('DK1', 'Some Other Name')])
+        self.assertIn('DK1', result)
+        self.assertEqual(result['DK1'].pk, existing.pk)
+        self.assertEqual(result['DK1'].name, 'Original Name')
+        self.assertEqual(result['DK1'].symbol, 'ORIG')
 
     def test_creates_new_stock_with_symbol_truncated_to_20_chars(self):
         long_name = 'A Very Very Very Long Company Name A/S'
-        result = Command.get_or_create_stock('DK_NEW', long_name)
-        self.assertEqual(result.code, 'DK_NEW')
-        self.assertEqual(result.name, long_name)
-        self.assertEqual(result.symbol, long_name[:20])
-        self.assertEqual(len(result.symbol), 20)
+        result = Command.get_or_create_stocks_bulk([('DK_NEW', long_name)])
+        stock = result['DK_NEW']
+        self.assertEqual(stock.code, 'DK_NEW')
+        self.assertEqual(stock.name, long_name)
+        self.assertEqual(stock.symbol, long_name[:20])
+        self.assertEqual(len(stock.symbol), 20)
+        self.assertTrue(Stock.objects.filter(code='DK_NEW').exists())
+
+    def test_mixed_existing_and_new_in_one_call(self):
+        make_stock(code='DK1', name='Existing', symbol='EX')
+        result = Command.get_or_create_stocks_bulk([
+            ('DK1', 'Name from feed'),
+            ('DK2', 'Brand New A/S'),
+        ])
+        self.assertEqual(set(result.keys()), {'DK1', 'DK2'})
+        self.assertEqual(result['DK1'].name, 'Existing')
+        self.assertEqual(result['DK2'].name, 'Brand New A/S')
+
+    def test_duplicate_codes_in_input_are_deduped(self):
+        result = Command.get_or_create_stocks_bulk([
+            ('DK_DUP', 'First Name'),
+            ('DK_DUP', 'Second Name'),
+        ])
+        self.assertEqual(Stock.objects.filter(code='DK_DUP').count(), 1)
+        self.assertEqual(result['DK_DUP'].name, 'First Name')
+
+    def test_empty_input_returns_empty_dict(self):
+        self.assertEqual(Command.get_or_create_stocks_bulk([]), {})
+
+    def test_uses_bounded_query_count(self):
+        make_stock(code='EXIST1')
+        make_stock(code='EXIST2')
+        with self.assertNumQueries(2):  # in_bulk + bulk_create
+            Command.get_or_create_stocks_bulk([
+                ('EXIST1', 'A'),
+                ('EXIST2', 'B'),
+                ('NEW1', 'New One'),
+                ('NEW2', 'New Two'),
+            ])
 
 
 class GetPrevValueForLargeSellingTests(TestCase):

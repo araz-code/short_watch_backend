@@ -243,22 +243,27 @@ class Command(BaseCommand):
                 percentage_elements = driver.find_elements(By.CSS_SELECTOR, 'td[data-header="Sum af korte nettopositioner (%)"] span')
                 date_elements = driver.find_elements(By.CSS_SELECTOR, 'td[data-header="Senest rapporterede korte nettoposition"] span')
 
-                short_data = []
-
+                parsed_rows = []
                 for i in range(len(isin_elements)):
                     corrected_datetime = datetime.strptime(date_elements[i].text, '%d-%m-%Y %H:%M:%S')
                     code = isin_elements[i].text
                     name = name_elements[i].text
                     try:
                         value = float(percentage_elements[i].text.replace(',', '.'))
-                    except ValueError as e:
+                    except ValueError:
                         continue
+                    parsed_rows.append((code, name, value, corrected_datetime))
 
-                    short_data.append(
-                        ShortPosition(stock=self.get_or_create_stock(code, name),
-                                      value=value,
-                                      timestamp=copenhagen_timezone.localize(corrected_datetime))
-                    )
+                stocks_by_code = self.get_or_create_stocks_bulk(
+                    [(code, name) for code, name, _, _ in parsed_rows]
+                )
+
+                short_data = [
+                    ShortPosition(stock=stocks_by_code[code],
+                                  value=value,
+                                  timestamp=copenhagen_timezone.localize(corrected_datetime))
+                    for code, _, value, corrected_datetime in parsed_rows
+                ]
 
                 self.fetch_short_positions(short_data)
 
@@ -276,14 +281,29 @@ class Command(BaseCommand):
             raise CommandError(message)
 
     @staticmethod
-    def get_or_create_stock(code, name):
-        try:
-            stock = Stock.objects.get(code=code)
-        except Stock.DoesNotExist:
-            stock = Stock(code=code, name=name, symbol=name[:20])
-            stock.save()
+    def get_or_create_stocks_bulk(pairs):
+        """Resolve all (code, name) pairs to Stock instances in two queries max.
 
-        return stock
+        Returns a dict {code: Stock}. Existing stocks are returned unchanged;
+        missing ones are created with ``symbol = name[:20]``.
+        """
+        unique_pairs = {}
+        for code, name in pairs:
+            unique_pairs.setdefault(code, name)
+
+        stocks_by_code = Stock.objects.in_bulk(list(unique_pairs.keys()), field_name='code')
+
+        new_stocks = [
+            Stock(code=code, name=name, symbol=name[:20])
+            for code, name in unique_pairs.items()
+            if code not in stocks_by_code
+        ]
+        if new_stocks:
+            Stock.objects.bulk_create(new_stocks)
+            for stock in new_stocks:
+                stocks_by_code[stock.code] = stock
+
+        return stocks_by_code
 
     @staticmethod
     def send_push_notification(app_user, stocks_changed):
