@@ -75,12 +75,18 @@ class Command(BaseCommand):
         return webdriver.Chrome(options=chrome_options)
 
     def handle(self, *args, **options):
+        driver = None
         try:
             driver = self._get_webdriver()
             self.fetch_short_positions_selenium(driver)
-            driver.quit()
         except Exception as e:
             Error.objects.create(message=f'Selenium fetch failed: {str(e)}'[:500])
+        finally:
+            if driver is not None:
+                try:
+                    driver.quit()
+                except Exception:
+                    pass
 
         self.fetch_large_short_selling()
         self.remove_duplicate_positions()
