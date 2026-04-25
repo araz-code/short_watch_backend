@@ -6,7 +6,7 @@ import pytz
 import requests
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
-from django.db.models import Max, Count
+from django.db.models import Max, Count, Subquery, OuterRef
 from django.utils import timezone
 from firebase_admin.exceptions import InvalidArgumentError
 from firebase_admin.messaging import UnregisteredError
@@ -173,6 +173,18 @@ class Command(BaseCommand):
         users_to_notify_dict = {}
 
         with transaction.atomic():
+            # Bulk-fetch each stock's most recent ShortPosition.value into a dict
+            # so the per-row prev_value lookup below is a dict access, not a SELECT.
+            stock_pks_in_batch = {s.stock.pk for s in short_data}
+            latest_value_subq = ShortPosition.objects.filter(
+                stock_id=OuterRef('pk')
+            ).order_by('-timestamp').values('value')[:1]
+            prev_value_by_stock = dict(
+                Stock.objects.filter(pk__in=stock_pks_in_batch)
+                .annotate(latest_value=Subquery(latest_value_subq))
+                .values_list('pk', 'latest_value')
+            )
+
             for short in short_data:
                 short_codes.append(short.stock.code)
 
@@ -187,9 +199,9 @@ class Command(BaseCommand):
                 ).first()
 
                 if existing_short is None:
-                    prev_short_position = ShortPosition.objects.filter(stock=short.stock).order_by('-timestamp').first()
-                    if prev_short_position:
-                        short.prev_value = prev_short_position.value
+                    prev_value = prev_value_by_stock.get(short.stock.pk)
+                    if prev_value is not None:
+                        short.prev_value = prev_value
                     short.save()
                     for app_user in short.stock.app_users.all():
                         try:
