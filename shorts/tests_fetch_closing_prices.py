@@ -300,10 +300,13 @@ class UpdateTodayPriceVolumeTests(TestCase):
         self.assertAlmostEqual(chart_yest.close, 10.0)  # untouched
         self.assertEqual(chart_yest.volume, 100)        # untouched
 
-    def test_silently_swallows_exceptions(self):
-        stock = make_stock()
-        # Empty DataFrame → tail(1).iloc[0] raises; must not propagate.
+    def test_logs_error_and_does_not_propagate_on_exception(self):
+        stock = make_stock(symbol='ERR1')
+        # Empty DataFrame → iloc[-1] raises; must be logged, not propagated.
         Command.update_today_price_volume(pd.DataFrame(), stock)
+        self.assertTrue(
+            Error.objects.filter(message__contains='update_today_price_volume ERR1').exists()
+        )
 
 
 # =============================================================================
@@ -389,10 +392,18 @@ class DidASplitOccurTests(TestCase):
         self.assertAlmostEqual(chart_b.close, 50.0)
         self.assertEqual(chart_b.volume, 500)
 
-    def test_silently_swallows_exceptions(self):
-        stock = make_stock()
-        # Empty DataFrame → tail(2).index.date raises AttributeError
-        Command.did_a_split_occur(stock, pd.DataFrame())
+    def test_logs_error_and_does_not_propagate_on_exception(self):
+        stock = make_stock(symbol='ERR2')
+        # DataFrame with no DatetimeIndex → data.index[-2].date() raises;
+        # must be logged, not propagated.
+        bad = pd.DataFrame(
+            [[1, 1, 1, 1, 1], [2, 2, 2, 2, 2]],
+            columns=['Close', 'High', 'Low', 'Open', 'Volume'],
+        )
+        Command.did_a_split_occur(stock, bad)
+        self.assertTrue(
+            Error.objects.filter(message__contains='did_a_split_occur ERR2').exists()
+        )
 
 
 # =============================================================================

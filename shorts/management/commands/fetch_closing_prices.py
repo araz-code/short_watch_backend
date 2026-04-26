@@ -86,7 +86,9 @@ class Command(BaseCommand):
             ShortPositionChart.objects.filter(stock=stock, date=data.index[-1].date()) \
                 .update(close=round(last.Close, 2), volume=last.Volume)
         except Exception as e:
-            print('update_today_price_volume error')
+            Error.objects.create(
+                message=f'update_today_price_volume {stock.symbol}: {str(e)[:400]}'
+            )
 
     @staticmethod
     def create_missing_chart_values(stock: Stock):
@@ -165,7 +167,9 @@ class Command(BaseCommand):
                                              f'The percentage difference is {percent_diff} so rerun.')
                 ShortPositionChart.objects.filter(stock=stock).update(close=None, volume=None)
         except Exception as e:
-            print('did_a_split_occur error')
+            Error.objects.create(
+                message=f'did_a_split_occur {stock.symbol}: {str(e)[:400]}'
+            )
 
 
     @staticmethod
