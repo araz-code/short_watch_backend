@@ -159,8 +159,7 @@ def get_watch_historic_chart(request: Request, year: str) -> JsonResponse:
 
 @staff_member_required
 def get_unique_ips_today(_: Request) -> JsonResponse:
-    today = timezone.now()
-    queryset = RequestLog.objects.filter(timestamp__date=today.date()).values('client_ip')
+    queryset = RequestLog.objects.filter(timestamp__date=timezone.localdate()).values('client_ip')
 
     # Filter out private IPs
     queryset = [entry['client_ip'] for entry in queryset if not ipaddress.ip_address(entry['client_ip']).is_private]
@@ -193,8 +192,7 @@ def get_avg_request_count(_: Request, year: str) -> JsonResponse:
 
 @staff_member_required
 def get_total_requests_today(_: Request) -> JsonResponse:
-    today = timezone.now()
-    queryset = RequestLog.objects.filter(timestamp__date=today.date())
+    queryset = RequestLog.objects.filter(timestamp__date=timezone.localdate())
 
     return JsonResponse({
         'title': f'Total requests today',
@@ -230,10 +228,13 @@ def _rotate_week(lst: List[Union[str, int]]) -> List[Union[str, int]]:
 
 @staff_member_required
 def get_requests_week_chart(_: Request) -> JsonResponse:
-    time_threshold = timezone.now().replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(days=6)
+    local_now = timezone.localtime()
+    today_start = local_now.replace(hour=0, minute=0, second=0, microsecond=0)
+    today_end = local_now.replace(hour=23, minute=59, second=59, microsecond=999999)
+
+    time_threshold = today_start - timedelta(days=6)
     queryset = RequestLog.objects.all().filter(timestamp__gte=time_threshold,
-                                               timestamp__lte=timezone.now()
-                                               .replace(hour=23, minute=59, second=59, microsecond=999999))
+                                               timestamp__lte=today_end)
 
     queryset = queryset.annotate(week_day=ExtractWeekDay('timestamp')) \
         .values('week_day') \
@@ -243,8 +244,8 @@ def get_requests_week_chart(_: Request) -> JsonResponse:
     for value in queryset:
         this_week_values[value['week_day'] - 1] = value['count']
 
-    time_threshold_start = timezone.now().replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(days=13)
-    time_threshold_end = timezone.now().replace(hour=23, minute=59, second=59, microsecond=999999)- timedelta(days=7)
+    time_threshold_start = today_start - timedelta(days=13)
+    time_threshold_end = today_end - timedelta(days=7)
 
     queryset = RequestLog.objects.all().filter(timestamp__gte=time_threshold_start,
                                                timestamp__lte=time_threshold_end)
@@ -283,9 +284,9 @@ def get_requests_week_chart(_: Request) -> JsonResponse:
 
 @staff_member_required
 def get_request_per_hour_chart(request: Request) -> JsonResponse:
-    today = timezone.now()
+    today = timezone.localdate()
 
-    queryset = RequestLog.objects.filter(timestamp__date=today.date()) \
+    queryset = RequestLog.objects.filter(timestamp__date=today) \
         .values('timestamp__hour') \
         .annotate(count=Count('id')) \
         .order_by('timestamp__hour')
@@ -300,7 +301,7 @@ def get_request_per_hour_chart(request: Request) -> JsonResponse:
 
     week_ago = today - timedelta(days=7)
 
-    queryset = RequestLog.objects.filter(timestamp__date=week_ago.date()) \
+    queryset = RequestLog.objects.filter(timestamp__date=week_ago) \
         .values('timestamp__hour') \
         .annotate(count=Count('id')) \
         .order_by('timestamp__hour')
@@ -338,9 +339,9 @@ def get_request_per_hour_chart(request: Request) -> JsonResponse:
 
 @staff_member_required
 def get_pick_request_per_hour_chart(request: Request) -> JsonResponse:
-    today = timezone.now()
+    today = timezone.localdate()
 
-    queryset = RequestLog.objects.filter(timestamp__date=today.date(), requested_url__iendswith='pick') \
+    queryset = RequestLog.objects.filter(timestamp__date=today, requested_url__iendswith='pick') \
         .values('timestamp__hour') \
         .annotate(count=Count('id')) \
         .order_by('timestamp__hour')
@@ -355,7 +356,7 @@ def get_pick_request_per_hour_chart(request: Request) -> JsonResponse:
 
     week_ago = today - timedelta(days=7)
 
-    queryset = RequestLog.objects.filter(timestamp__date=week_ago.date(),  requested_url__iendswith='pick') \
+    queryset = RequestLog.objects.filter(timestamp__date=week_ago,  requested_url__iendswith='pick') \
         .values('timestamp__hour') \
         .annotate(count=Count('id')) \
         .order_by('timestamp__hour')
@@ -393,9 +394,9 @@ def get_pick_request_per_hour_chart(request: Request) -> JsonResponse:
 
 @staff_member_required
 def get_watch_request_per_hour_chart(request: Request) -> JsonResponse:
-    today = timezone.now()
+    today = timezone.localdate()
 
-    queryset = RequestLog.objects.filter(timestamp__date=today.date(), requested_url__iendswith='watch') \
+    queryset = RequestLog.objects.filter(timestamp__date=today, requested_url__iendswith='watch') \
         .values('timestamp__hour') \
         .annotate(count=Count('id')) \
         .order_by('timestamp__hour')
@@ -410,7 +411,7 @@ def get_watch_request_per_hour_chart(request: Request) -> JsonResponse:
 
     week_ago = today - timedelta(days=7)
 
-    queryset = RequestLog.objects.filter(timestamp__date=week_ago.date(),  requested_url__iendswith='watch') \
+    queryset = RequestLog.objects.filter(timestamp__date=week_ago,  requested_url__iendswith='watch') \
         .values('timestamp__hour') \
         .annotate(count=Count('id')) \
         .order_by('timestamp__hour')

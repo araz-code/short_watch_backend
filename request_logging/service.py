@@ -40,7 +40,7 @@ def process_visits():
 
     try:
         queryset = RequestLog.objects.filter(processed=False).order_by('timestamp')[:15000]
-        today = timezone.now().date()
+        today = timezone.localdate()
 
         for request_log in queryset:
             device_match = device_pattern.search(request_log.requested_url)
@@ -65,7 +65,7 @@ def process_visits():
                     'previous': request_log.timestamp,
                     'last': request_log.timestamp,
                     'visits': 1,
-                    'visits_today': 1 if request_log.timestamp.date() == today else 0,
+                    'visits_today': 1 if timezone.localtime(request_log.timestamp).date() == today else 0,
                     'watch': json.dumps({code: 1}) if action == 'watch' and code else '{}',
                     'pick': json.dumps({code: 1}) if action == 'pick' and code else '{}',
                     'web': request_log.timestamp if device == 'web' else None,
@@ -82,7 +82,7 @@ def process_visits():
             )
 
             if not created:
-                visitor.visits_today = visitor.visits_today + 1 if request_log.timestamp.date() == today else 0
+                visitor.visits_today = visitor.visits_today + 1 if timezone.localtime(request_log.timestamp).date() == today else 0
                 if visitor.last - visitor.previous > timedelta(hours=1):
                     visitor.previous = visitor.last
                 visitor.last = request_log.timestamp
