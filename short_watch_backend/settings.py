@@ -64,7 +64,6 @@ INSTALLED_APPS = [
     'errors',
     'request_logging',
     'home_page',
-    'measurements'
 ]
 
 MIDDLEWARE = [
@@ -206,9 +205,6 @@ JAZZMIN_SETTINGS = {
         "shorts.companymap": "fas fa-sitemap",
         "shorts.announcement": "fas fa-bullhorn",
         "shorts.runstatus": "fas fa-clipboard-check",
-
-        # Measurements
-        "measurements.measurement": "fas fa-gauge-high",
 
         # Ops / logs
         "errors.error": "fas fa-triangle-exclamation",

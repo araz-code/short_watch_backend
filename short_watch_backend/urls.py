@@ -28,7 +28,6 @@ FRONTEND_DIST = os.path.join(settings.FRONTEND_DIR, 'dist')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('measurements/', include('measurements.urls')),
     path('shorts/', include('shorts.urls')),
     path('v2/shorts/', include('shorts.urls')),
     path('v3/shorts/', include('shorts.urls')),
@@ -80,7 +79,6 @@ urlpatterns = [
         "Disallow: /admin/\n"
         "Disallow: /stats/\n"
         "Disallow: /v*/\n"
-        "Disallow: /measurements/\n"
         "\n",
         content_type="text/plain"
     )),
