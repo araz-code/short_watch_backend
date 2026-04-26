@@ -1,15 +1,5 @@
 $(document).ready(function () {
-  $.ajax({
-    url: "/stats/chart/filter-options/",
-    type: "GET",
-    dataType: "json",
-    success: (jsonResponse) => {
-      if (!jsonResponse.options || jsonResponse.options.length == 0) return;
-
-      loadAllCharts(jsonResponse.options[0]);
-    },
-    error: () => console.log("Failed to fetch chart filter options!"),
-  });
+  loadAllCharts();
 });
 
 function loadChart(chart, endpoint) {

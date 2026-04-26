@@ -1,32 +1,23 @@
-function loadAllCharts(year) {
-  loadNumber("totalRequests", `/stats/chart/requestlogging/total/${year}/`);
-  loadNumber("totalTodayRequests", `/stats/chart/requestlogging/total-today/`);
-   loadNumber("totalTodayIPs", `/stats/chart/requestlogging/total-unique-ips-today/`);
+function loadAllCharts() {
+  loadNumber("totalRequests", `/stats/chart/total/`);
+  loadNumber("totalTodayRequests", `/stats/chart/total-today/`);
+  loadNumber("totalTodayIPs", `/stats/chart/total-unique-ips-today/`);
+  loadNumber("latestRequestTimestamp", `/stats/chart/latest-request-timestamp/`);
 
-  loadNumber("latestRequestTimestamp", `/stats/chart/requestlogging/latest-request-timestamp/`);
+  loadTable("requestedUrlsTable", `/stats/chart/static-pages/`);
+  loadTable("visitsByPlatformTable", `/stats/chart/visits-by-platform/`);
+  loadTable("visitsBySectionTable", `/stats/chart/visits-by-section/`);
+  loadTable("pickHistoricTable", `/stats/chart/pick-history/`);
+  loadTable("watchHistoricTable", `/stats/chart/watch-history/`);
+  loadTable("uniqueIpsTable", `/stats/chart/unique-ips/`);
 
-
-
-  loadTable("requestedUrlsTable", `/stats/chart/requestlogging/requested-urls/${year}/`);
-
-  loadTable("visitsByPlatformTable", `/stats/chart/requestlogging/visits-by-platform/`);
-  loadTable("visitsBySectionTable", `/stats/chart/requestlogging/visits-by-section/`);
-
-
-  loadTable("pickHistoricTable", `/stats/chart/requestlogging/pick-historic/${year}/`);
-  loadTable("watchHistoricTable", `/stats/chart/requestlogging/watch-historic/${year}/`);
-
-  loadTable("uniqueIpsTable", `/stats/chart/requestlogging/unique-ips/`);
-
-  loadChart(requestsWeekChart, `/stats/chart/requestlogging/requests-week/`);
-  loadChart(requestsHourlyChart, `/stats/chart/requestlogging/requests-hourly/`);
-  loadChart(pickRequestsHourlyChart, `/stats/chart/requestlogging/pick-requests-hourly/`);
-  loadChart(watchRequestsHourlyChart, `/stats/chart/requestlogging/watch-requests-hourly/`);
+  loadChart(requestsWeekChart, `/stats/chart/requests-week/`);
+  loadChart(requestsHourlyChart, `/stats/chart/requests-hourly/`);
+  loadChart(pickRequestsHourlyChart, `/stats/chart/pick-requests-hourly/`);
+  loadChart(watchRequestsHourlyChart, `/stats/chart/watch-requests-hourly/`);
 }
 
 const requestsWeekChart = createBarChart("requestsWeekChart");
 const requestsHourlyChart = createBarChart("requestsHourlyChart");
 const pickRequestsHourlyChart = createBarChart("pickRequestsHourlyChart");
 const watchRequestsHourlyChart = createBarChart("watchRequestsHourlyChart");
-
-

@@ -6,14 +6,8 @@ from datetime import timedelta, datetime
 from typing import List, Optional
 
 from django.db import transaction, IntegrityError
-from django.db.models import Avg, Count, Max, Q
-from django.db.models.functions import (
-    ExtractDay,
-    ExtractMonth,
-    ExtractWeekDay,
-    ExtractYear,
-    TruncDate,
-)
+from django.db.models import Count, Max, Q
+from django.db.models.functions import ExtractWeekDay, TruncDate
 from django.utils import timezone
 
 from request_logging.models import VisitorLock, RequestLog, Visitor
@@ -147,20 +141,8 @@ def rotate_week(lst):
     return lst[(week_day + 1) % 7:] + lst[:(week_day + 1) % 7]
 
 
-def _filter_by_year(queryset, year):
-    if year and str(year).isnumeric():
-        return queryset.filter(timestamp__year=year)
-    return queryset
-
-
-def get_filter_year_options() -> list:
-    years = RequestLog.objects.annotate(year=ExtractYear('timestamp')) \
-        .values_list('year', flat=True).order_by('-year')
-    return ['all'] + list(set(years))
-
-
-def count_total_requests(year=None) -> int:
-    return _filter_by_year(RequestLog.objects.all(), year).count()
+def count_total_requests() -> int:
+    return RequestLog.objects.count()
 
 
 def count_total_requests_today() -> int:
@@ -178,23 +160,6 @@ def latest_request_local() -> datetime:
     return timezone.localtime(RequestLog.objects.latest('timestamp').timestamp)
 
 
-def avg_requests_per_ip(year=None) -> int:
-    queryset = _filter_by_year(RequestLog.objects.all(), year) \
-        .values('client_ip').annotate(entry_count=Count('id'))
-    avg = queryset.aggregate(avg_entry_count=Avg('entry_count'))
-    return int(avg['avg_entry_count'] or 0)
-
-
-def avg_requests_per_ip_per_day() -> int:
-    queryset = RequestLog.objects.annotate(
-        year=ExtractYear('timestamp'),
-        month=ExtractMonth('timestamp'),
-        day=ExtractDay('timestamp'),
-    ).values('client_ip', 'year', 'month', 'day').annotate(entry_count=Count('id'))
-    avg = queryset.aggregate(avg_entry_count=Avg('entry_count'))
-    return int(avg['avg_entry_count'] or 0)
-
-
 _STATIC_PAGE_FILTERS = (
     Q(requested_url__iendswith="cookie-policy") |
     Q(requested_url__iendswith="privacy-policy") |
@@ -207,9 +172,9 @@ _STATIC_PAGE_FILTERS = (
 )
 
 
-def requested_static_pages(year=None) -> list:
+def static_page_hits() -> list:
     """Per-URL count and most recent lookup for static-page hits."""
-    queryset = _filter_by_year(RequestLog.objects.all(), year).filter(_STATIC_PAGE_FILTERS) \
+    queryset = RequestLog.objects.filter(_STATIC_PAGE_FILTERS) \
         .values('requested_url') \
         .annotate(count=Count('id')) \
         .annotate(max_timestamp=Max('timestamp')) \
@@ -229,9 +194,9 @@ def _symbol_for(url: str, code_to_symbol: dict) -> str:
     return code_to_symbol.get(last_part, last_part)
 
 
-def historic_by_symbol(prefix: str, year=None) -> list:
+def history_by_symbol(prefix: str) -> list:
     """Aggregate /pick/<n> or /watch/<n> hits by stock symbol."""
-    queryset = _filter_by_year(RequestLog.objects.all(), year).filter(
+    queryset = RequestLog.objects.filter(
         Q(requested_url__icontains=f"{prefix}/") &
         ~Q(requested_url__icontains=f"{prefix}/sellers/") &
         Q(requested_url__iregex=r'[0-9]+$')
@@ -353,20 +318,3 @@ def today_visit_buckets() -> dict:
         'sellers_web': sellers_web, 'sellers_web_detail': sellers_web_detail,
         'top_lists': top_lists, 'faq': faq,
     }
-
-
-def requested_advertisement_summary() -> dict:
-    queryset = RequestLog.objects.filter(
-        Q(requested_url__iendswith="stresstilbud_appeared_main/") |
-        Q(requested_url__iendswith="stresstilbud_appeared_detail/") |
-        Q(requested_url__iendswith="stresstilbud_clicked_main/") |
-        Q(requested_url__iendswith="stresstilbud_clicked_detail/")
-    )
-    appeared, clicked = {}, {}
-    for entry in queryset:
-        if entry.requested_url.endswith('stresstilbud_appeared_main/') or \
-                entry.requested_url.endswith('stresstilbud_appeared_detail/'):
-            appeared[entry.client_ip] = appeared.get(entry.client_ip, 0) + 1
-        else:
-            clicked[entry.client_ip] = clicked.get(entry.client_ip, 0) + 1
-    return {'appeared': len(appeared), 'clicked': len(clicked)}

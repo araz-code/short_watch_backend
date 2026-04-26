@@ -7,7 +7,7 @@ COLOR_PRIMARY = 'rgba(33, 97, 140, 0.9)'
 COLOR_SECONDARY = 'rgba(161, 202, 193, 0.9)'
 
 
-def _bar_chart_payload(title, labels, today_label, today_data,
+def _bar_chart_payload(title, labels, primary_label, primary_data,
                        comparison_label, comparison_data):
     return {
         'title': title,
@@ -22,8 +22,8 @@ def _bar_chart_payload(title, labels, today_label, today_data,
                     'borderWidth': 1,
                 },
                 {
-                    'label': today_label,
-                    'data': today_data,
+                    'label': primary_label,
+                    'data': primary_data,
                     'backgroundColor': COLOR_PRIMARY,
                     'borderColor': COLOR_PRIMARY,
                     'borderWidth': 1,
@@ -33,84 +33,17 @@ def _bar_chart_payload(title, labels, today_label, today_data,
     }
 
 
-@staff_member_required
-def get_filter_options(_: HttpRequest) -> JsonResponse:
-    return JsonResponse({'options': service.get_filter_year_options()})
+# --- Stat cards --------------------------------------------------------------
 
 
 @staff_member_required
-def get_total_requests(_: HttpRequest, year: str) -> JsonResponse:
+def get_total_requests(_: HttpRequest) -> JsonResponse:
+    # Trigger pending visit aggregation. TODO: move to a scheduled task so the
+    # dashboard read endpoint has no side effects.
     service.process_visits()
     return JsonResponse({
-        'title': f'Total requests ({year})',
-        'count': service.count_total_requests(year),
-    })
-
-
-@staff_member_required
-def get_latest_request_timestamp(_: HttpRequest) -> JsonResponse:
-    return JsonResponse({
-        'title': 'Latest request',
-        'count': service.latest_request_local().strftime(service.LOCAL_TIME_FORMAT),
-    })
-
-
-@staff_member_required
-def get_requested_urls_chart(_: HttpRequest, year: str) -> JsonResponse:
-    rows = service.requested_static_pages(year)
-    return JsonResponse({
-        'caption': f'List of requested_url ({year})',
-        'headers': ['Requested URL', 'Count', 'Most recent lookup'],
-        'data': [
-            {
-                'requested_url': r['requested_url'],
-                'count': r['count'],
-                'max_timestamp': r['max_timestamp'].strftime(service.LOCAL_TIME_FORMAT),
-            }
-            for r in rows
-        ],
-    })
-
-
-def _historic_response(year: str, prefix: str) -> JsonResponse:
-    rows = service.historic_by_symbol(prefix, year)
-    return JsonResponse({
-        'caption': f'List of historic data from {prefix} ({year})',
-        'headers': ['Stock', 'Count', 'Most recent lookup'],
-        'data': [
-            {
-                'symbol': r['symbol'],
-                'count': r['count'],
-                'max_timestamp': r['max_timestamp'].strftime(service.LOCAL_TIME_FORMAT),
-            }
-            for r in rows
-        ],
-    })
-
-
-@staff_member_required
-def get_pick_historic_chart(_: HttpRequest, year: str) -> JsonResponse:
-    return _historic_response(year, "pick")
-
-
-@staff_member_required
-def get_watch_historic_chart(_: HttpRequest, year: str) -> JsonResponse:
-    return _historic_response(year, "watch")
-
-
-@staff_member_required
-def get_unique_ips_today(_: HttpRequest) -> JsonResponse:
-    return JsonResponse({
-        'title': "Total IP's today",
-        'count': service.count_unique_ips_today(),
-    })
-
-
-@staff_member_required
-def get_avg_request_count(_: HttpRequest, year: str) -> JsonResponse:
-    return JsonResponse({
-        'title': f'Avg requests per IP ({year})',
-        'count': service.avg_requests_per_ip(year),
+        'title': 'Total requests',
+        'count': service.count_total_requests(),
     })
 
 
@@ -123,11 +56,22 @@ def get_total_requests_today(_: HttpRequest) -> JsonResponse:
 
 
 @staff_member_required
-def get_avg_request_today_count(_: HttpRequest) -> JsonResponse:
+def get_unique_ips_today(_: HttpRequest) -> JsonResponse:
     return JsonResponse({
-        'title': 'Avg requests per IP per day',
-        'count': service.avg_requests_per_ip_per_day(),
+        'title': "Total IP's today",
+        'count': service.count_unique_ips_today(),
     })
+
+
+@staff_member_required
+def get_latest_request_timestamp(_: HttpRequest) -> JsonResponse:
+    return JsonResponse({
+        'title': 'Latest request',
+        'count': service.latest_request_local().strftime(service.LOCAL_TIME_FORMAT),
+    })
+
+
+# --- Charts ------------------------------------------------------------------
 
 
 @staff_member_required
@@ -137,8 +81,8 @@ def get_requests_week_chart(_: HttpRequest) -> JsonResponse:
     return JsonResponse(_bar_chart_payload(
         title='Requests per day in week',
         labels=labels,
-        today_label='This week',
-        today_data=service.rotate_week(this_week),
+        primary_label='This week',
+        primary_data=service.rotate_week(this_week),
         comparison_label='Last week',
         comparison_data=service.rotate_week(last_week),
     ))
@@ -150,8 +94,8 @@ def _hourly_chart(title: str, suffix=None) -> JsonResponse:
     return JsonResponse(_bar_chart_payload(
         title=title,
         labels=labels,
-        today_label='Today',
-        today_data=today_data,
+        primary_label='Today',
+        primary_data=today_data,
         comparison_label='Week ago',
         comparison_data=week_ago_data,
     ))
@@ -172,6 +116,53 @@ def get_watch_request_per_hour_chart(_: HttpRequest) -> JsonResponse:
     return _hourly_chart('Watch requests per Hour', suffix='watch')
 
 
+# --- Tables ------------------------------------------------------------------
+
+
+@staff_member_required
+def get_static_pages_table(_: HttpRequest) -> JsonResponse:
+    rows = service.static_page_hits()
+    return JsonResponse({
+        'caption': 'Static page hits',
+        'headers': ['Requested URL', 'Count', 'Most recent lookup'],
+        'data': [
+            {
+                'requested_url': r['requested_url'],
+                'count': r['count'],
+                'max_timestamp': r['max_timestamp'].strftime(service.LOCAL_TIME_FORMAT),
+            }
+            for r in rows
+        ],
+    })
+
+
+def _history_table(prefix: str) -> JsonResponse:
+    rows = service.history_by_symbol(prefix)
+    return JsonResponse({
+        'caption': f'{prefix.capitalize()} history by stock',
+        'headers': ['Stock', 'Count', 'Most recent lookup'],
+        'data': [
+            {
+                'symbol': r['symbol'],
+                'count': r['count'],
+                'max_timestamp': r['max_timestamp'].strftime(service.LOCAL_TIME_FORMAT),
+            }
+            for r in rows
+        ],
+    })
+
+
+@staff_member_required
+def get_pick_history_table(_: HttpRequest) -> JsonResponse:
+    return _history_table("pick")
+
+
+@staff_member_required
+def get_watch_history_table(_: HttpRequest) -> JsonResponse:
+    return _history_table("watch")
+
+
+@staff_member_required
 def get_unique_ips_per_day_table(_: HttpRequest) -> JsonResponse:
     rows = service.unique_ips_per_day()
     return JsonResponse({
@@ -185,20 +176,7 @@ def get_unique_ips_per_day_table(_: HttpRequest) -> JsonResponse:
 
 
 @staff_member_required
-def get_requested_advertisement(_: HttpRequest) -> JsonResponse:
-    summary = service.requested_advertisement_summary()
-    return JsonResponse({
-        'caption': 'Advertisement clicked',
-        'headers': ['Type', 'Count'],
-        'data': [
-            {'type': 'Appeared', 'count': summary['appeared']},
-            {'type': 'Clicked', 'count': summary['clicked']},
-        ],
-    })
-
-
-@staff_member_required
-def get_visits_by_platform(_: HttpRequest) -> JsonResponse:
+def get_visits_by_platform_table(_: HttpRequest) -> JsonResponse:
     b = service.today_visit_buckets()
     total = b['iphone'] | b['ipad'] | b['iwatch'] | b['web']
     return JsonResponse({
@@ -215,7 +193,7 @@ def get_visits_by_platform(_: HttpRequest) -> JsonResponse:
 
 
 @staff_member_required
-def get_visits_by_section(_: HttpRequest) -> JsonResponse:
+def get_visits_by_section_table(_: HttpRequest) -> JsonResponse:
     b = service.today_visit_buckets()
     return JsonResponse({
         'caption': "Today's unique visitors by section",
@@ -229,6 +207,9 @@ def get_visits_by_section(_: HttpRequest) -> JsonResponse:
             {'section': 'FAQ', 'count': len(b['faq'])},
         ],
     })
+
+
+# --- Tracking endpoints ------------------------------------------------------
 
 
 def clicked(_: HttpRequest, code: str) -> HttpResponse:
