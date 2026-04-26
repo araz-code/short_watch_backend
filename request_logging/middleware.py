@@ -1,5 +1,7 @@
+from django.utils import timezone
+
 from errors.models import Error
-from request_logging.models import RequestLog
+from request_logging.log_writer import enqueue
 from short_watch_backend.utils import get_client_ip
 
 
@@ -14,20 +16,19 @@ class RequestLoggingMiddleware:
                 and not request.path.startswith('/stats/clicked')
                 and not request.path.startswith('/stats/visit/')
             ):
-                response = self.get_response(request)
-                return response
-            client_ip = get_client_ip(request)
-            user_agent = request.META.get('HTTP_USER_AGENT', "")[:255]
-            referer = request.META.get('HTTP_REFERER', '')[:255]
-            requested_url = request.build_absolute_uri()
+                return self.get_response(request)
 
-            RequestLog.objects.create(client_ip=client_ip, user_agent=user_agent,
-                                      requested_url=requested_url, referer=referer)
-
-            response = self.get_response(request)
-            return response
+            enqueue({
+                'timestamp': timezone.now(),
+                'client_ip': get_client_ip(request),
+                'user_agent': request.META.get('HTTP_USER_AGENT', "")[:255],
+                'requested_url': request.build_absolute_uri(),
+                'referer': request.META.get('HTTP_REFERER', '')[:255],
+            })
+            return self.get_response(request)
         except Exception as e:
-            Error.objects.create(message=str(e)[:500])
-            response = self.get_response(request)
-            return response
-
+            try:
+                Error.objects.create(message=str(e)[:500])
+            except Exception:
+                pass
+            return self.get_response(request)
