@@ -15,40 +15,69 @@ class Command(BaseCommand):
     help = "Add price data to the chart model"
 
     def handle(self, *args, **options):
-        stocks = Stock.objects.all()
+        stocks = list(Stock.objects.filter(active=True))
 
+        # Phase 1: backfill chart skeleton per stock (no network)
+        ready = []
         for stock in stocks:
             try:
-                if stock.symbol in ['CHR', 'NZYM-B', 'TOP', 'NOBLE']:
-                    continue
-
                 self.create_missing_chart_values(stock)
+                ready.append(stock)
+            except Exception as e:
+                Error.objects.create(message=str(e)[:500])
 
-                data = yf.download(
-                    f'{stock.symbol}.CO',
-                    start='2023-11-06',
-                    auto_adjust=True,
-                    progress=False,
-                )
+        if not ready:
+            return
 
-                # yfinance returns MultiIndex columns ([(price_type, ticker), ...])
-                # for single-ticker downloads; flatten to single-level so helpers
-                # can use name-based access (data['Close'], row.Volume, etc.).
-                if isinstance(data.columns, pd.MultiIndex):
-                    data.columns = data.columns.get_level_values(0)
+        # Phase 2: single bulk yf.download for all tickers
+        tickers = [f'{s.symbol}.CO' for s in ready]
+        try:
+            bulk_data = yf.download(
+                ' '.join(tickers),
+                start='2023-11-06',
+                auto_adjust=True,
+                progress=False,
+                group_by='ticker',
+            )
+        except Exception as e:
+            Error.objects.create(message=f'bulk yf.download failed: {str(e)[:480]}')
+            return
 
-                if data.empty:
+        # Phase 3: per-stock pipeline against the sliced frame
+        for stock in ready:
+            try:
+                data = self._extract_ticker_frame(bulk_data, f'{stock.symbol}.CO')
+                if data is None or data.empty:
                     continue
 
                 self.did_a_split_occur(stock, data)
-
                 self.fill_initial_missing_data(stock, data)
-
                 self.update_today_price_volume(data, stock)
-
                 self.fill_holes_in_chart_values(stock)
             except Exception as e:
                 Error.objects.create(message=str(e)[:500])
+
+    @staticmethod
+    def _extract_ticker_frame(bulk_data, ticker):
+        """
+        Slice a single-ticker flat-column OHLCV frame out of a bulk yf.download
+        response.
+
+        With group_by='ticker' and multiple tickers, columns are a MultiIndex
+        of (ticker, price_type); selecting bulk_data[ticker] yields a flat
+        frame. With a single ticker yfinance returns flat columns directly.
+        Rows that are all-NaN (no quote that day for this ticker) are dropped.
+        """
+        if bulk_data is None or bulk_data.empty:
+            return None
+        if isinstance(bulk_data.columns, pd.MultiIndex):
+            if ticker not in bulk_data.columns.get_level_values(0):
+                return None
+            df = bulk_data[ticker]
+        else:
+            df = bulk_data
+        df = df.dropna(how='all')
+        return df if not df.empty else None
 
     @staticmethod
     def update_today_price_volume(data, stock):
