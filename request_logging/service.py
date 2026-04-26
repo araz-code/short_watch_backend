@@ -1,13 +1,27 @@
+import ipaddress
 import json
 import re
-from collections import OrderedDict
+from collections import OrderedDict, defaultdict
 from datetime import timedelta, datetime
+from typing import List, Optional
 
 from django.db import transaction, IntegrityError
+from django.db.models import Avg, Count, Max, Q
+from django.db.models.functions import (
+    ExtractDay,
+    ExtractMonth,
+    ExtractWeekDay,
+    ExtractYear,
+    TruncDate,
+)
 from django.utils import timezone
 
 from request_logging.models import VisitorLock, RequestLog, Visitor
 from shorts.models import Stock
+
+LOCAL_TIME_FORMAT = "%Y-%m-%d, %H:%M"
+
+WEEK_DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
 device_pattern = re.compile(r'/shorts/(web|iphone|ipad|iwatch)')
 action_pattern = re.compile(r'/(watch|pick)')
@@ -118,3 +132,241 @@ def update_json_count(field, code):
     sorted_field_dict = OrderedDict(sorted(field_dict.items(), key=lambda item: item[1], reverse=True))
 
     return json.dumps(sorted_field_dict)
+
+
+# --- Dashboard analytics -----------------------------------------------------
+#
+# Functions below feed the admin dashboard. Views in views.py are thin wrappers
+# that format these results as JSON. Returns are plain Python data (ints, lists
+# of dicts with datetime objects) so they're testable without HTTP.
+
+
+def rotate_week(lst):
+    """Rotate a 7-element list so that today ends up at the right edge."""
+    week_day = timezone.localtime().isoweekday()
+    return lst[(week_day + 1) % 7:] + lst[:(week_day + 1) % 7]
+
+
+def _filter_by_year(queryset, year):
+    if year and str(year).isnumeric():
+        return queryset.filter(timestamp__year=year)
+    return queryset
+
+
+def get_filter_year_options() -> list:
+    years = RequestLog.objects.annotate(year=ExtractYear('timestamp')) \
+        .values_list('year', flat=True).order_by('-year')
+    return ['all'] + list(set(years))
+
+
+def count_total_requests(year=None) -> int:
+    return _filter_by_year(RequestLog.objects.all(), year).count()
+
+
+def count_total_requests_today() -> int:
+    return RequestLog.objects.filter(timestamp__date=timezone.localdate()).count()
+
+
+def count_unique_ips_today() -> int:
+    queryset = RequestLog.objects.filter(timestamp__date=timezone.localdate()) \
+        .values_list('client_ip', flat=True)
+    public = {ip for ip in queryset if not ipaddress.ip_address(ip).is_private}
+    return len(public)
+
+
+def latest_request_local() -> datetime:
+    return timezone.localtime(RequestLog.objects.latest('timestamp').timestamp)
+
+
+def avg_requests_per_ip(year=None) -> int:
+    queryset = _filter_by_year(RequestLog.objects.all(), year) \
+        .values('client_ip').annotate(entry_count=Count('id'))
+    avg = queryset.aggregate(avg_entry_count=Avg('entry_count'))
+    return int(avg['avg_entry_count'] or 0)
+
+
+def avg_requests_per_ip_per_day() -> int:
+    queryset = RequestLog.objects.annotate(
+        year=ExtractYear('timestamp'),
+        month=ExtractMonth('timestamp'),
+        day=ExtractDay('timestamp'),
+    ).values('client_ip', 'year', 'month', 'day').annotate(entry_count=Count('id'))
+    avg = queryset.aggregate(avg_entry_count=Avg('entry_count'))
+    return int(avg['avg_entry_count'] or 0)
+
+
+_STATIC_PAGE_FILTERS = (
+    Q(requested_url__iendswith="cookie-policy") |
+    Q(requested_url__iendswith="privacy-policy") |
+    Q(requested_url__iendswith="terms-of-agreement") |
+    Q(requested_url__iendswith="privatlivspolitik") |
+    Q(requested_url__iendswith="aftalevilkaar") |
+    Q(requested_url="http://localhost:8000/") |
+    Q(requested_url="http://www.zirium.dk/") |
+    Q(requested_url="https://www.zirium.dk/")
+)
+
+
+def requested_static_pages(year=None) -> list:
+    """Per-URL count and most recent lookup for static-page hits."""
+    queryset = _filter_by_year(RequestLog.objects.all(), year).filter(_STATIC_PAGE_FILTERS) \
+        .values('requested_url') \
+        .annotate(count=Count('id')) \
+        .annotate(max_timestamp=Max('timestamp')) \
+        .order_by('-max_timestamp')
+    return [
+        {
+            'requested_url': entry['requested_url'],
+            'count': entry['count'],
+            'max_timestamp': timezone.localtime(entry['max_timestamp']),
+        }
+        for entry in queryset
+    ]
+
+
+def _symbol_for(url: str, code_to_symbol: dict) -> str:
+    last_part = url.split('/')[-1]
+    return code_to_symbol.get(last_part, last_part)
+
+
+def historic_by_symbol(prefix: str, year=None) -> list:
+    """Aggregate /pick/<n> or /watch/<n> hits by stock symbol."""
+    queryset = _filter_by_year(RequestLog.objects.all(), year).filter(
+        Q(requested_url__icontains=f"{prefix}/") &
+        ~Q(requested_url__icontains=f"{prefix}/sellers/") &
+        Q(requested_url__iregex=r'[0-9]+$')
+    ).values('requested_url') \
+        .annotate(count=Count('id')) \
+        .annotate(max_timestamp=Max('timestamp')) \
+        .order_by('-max_timestamp')
+
+    code_to_symbol = {entry['code']: entry['name']
+                      for entry in Stock.objects.all().values('code', 'name')}
+
+    aggregated = defaultdict(lambda: {'count': 0, 'max_timestamp': None})
+    for entry in queryset:
+        symbol = _symbol_for(entry['requested_url'], code_to_symbol)
+        local_ts = timezone.localtime(entry['max_timestamp'])
+        bucket = aggregated[symbol]
+        if bucket['max_timestamp'] is None or local_ts > bucket['max_timestamp']:
+            bucket['max_timestamp'] = local_ts
+        bucket['count'] += entry['count']
+
+    rows = [
+        {'symbol': symbol, 'count': data['count'], 'max_timestamp': data['max_timestamp']}
+        for symbol, data in aggregated.items()
+    ]
+    rows.sort(key=lambda x: x['max_timestamp'], reverse=True)
+    return rows
+
+
+def _hourly_counts(date, suffix: Optional[str] = None) -> List[int]:
+    queryset = RequestLog.objects.filter(timestamp__date=date)
+    if suffix:
+        queryset = queryset.filter(requested_url__iendswith=suffix)
+    queryset = queryset.values('timestamp__hour').annotate(count=Count('id')) \
+        .order_by('timestamp__hour')
+    data = [0] * 24
+    for entry in queryset:
+        data[entry['timestamp__hour']] = entry['count']
+    return data
+
+
+def requests_per_hour_today_vs_week_ago(suffix: Optional[str] = None):
+    today = timezone.localdate()
+    return _hourly_counts(today, suffix), _hourly_counts(today - timedelta(days=7), suffix)
+
+
+def _weekday_counts(start, end) -> List[int]:
+    queryset = RequestLog.objects.filter(timestamp__gte=start, timestamp__lte=end) \
+        .annotate(week_day=ExtractWeekDay('timestamp')) \
+        .values('week_day').annotate(count=Count('id'))
+    data = [0] * 7
+    for entry in queryset:
+        data[entry['week_day'] - 1] = entry['count']
+    return data
+
+
+def requests_per_weekday_this_vs_last_week():
+    local_now = timezone.localtime()
+    today_start = local_now.replace(hour=0, minute=0, second=0, microsecond=0)
+    today_end = local_now.replace(hour=23, minute=59, second=59, microsecond=999999)
+    this_week = _weekday_counts(today_start - timedelta(days=6), today_end)
+    last_week = _weekday_counts(today_start - timedelta(days=13), today_end - timedelta(days=7))
+    return this_week, last_week
+
+
+def unique_ips_per_day(days: int = 10) -> list:
+    start_date = timezone.localdate() - timedelta(days=days)
+    queryset = RequestLog.objects.filter(timestamp__date__gt=start_date) \
+        .annotate(date=TruncDate('timestamp')) \
+        .exclude(Q(client_ip__istartswith='192.168.') |
+                 Q(client_ip__istartswith='10.') |
+                 Q(client_ip__istartswith='172.16.')) \
+        .values('date') \
+        .annotate(unique_ips=Count('client_ip', distinct=True)) \
+        .order_by('-date')[:days]
+    return [{'date': entry['date'], 'num_ips': entry['unique_ips']} for entry in queryset]
+
+
+def today_visit_buckets() -> dict:
+    """Public client IPs for today, bucketed by URL pattern (platform/section)."""
+    queryset = RequestLog.objects.filter(timestamp__date=timezone.localdate()) \
+        .values('requested_url', 'client_ip')
+
+    iphone, ipad, iwatch, web = set(), set(), set(), set()
+    sellers_iphone, sellers_iphone_detail = set(), set()
+    sellers_web, sellers_web_detail = set(), set()
+    top_lists, faq = set(), set()
+
+    for entry in queryset:
+        ip = entry['client_ip']
+        if ipaddress.ip_address(ip).is_private:
+            continue
+        url = entry['requested_url']
+
+        if "/iwatch/" in url:
+            iwatch.add(ip)
+        elif "/iphone/" in url:
+            iphone.add(ip)
+            if "/short-sellers/" in url:
+                sellers_iphone_detail.add(ip)
+            elif "/short-sellers" in url:
+                sellers_iphone.add(ip)
+        elif "/ipad/" in url:
+            ipad.add(ip)
+        elif "/web/" in url:
+            web.add(ip)
+            if "/short-sellers/" in url:
+                sellers_web_detail.add(ip)
+            elif "/short-sellers" in url:
+                sellers_web.add(ip)
+
+        if "/top-lists" in url:
+            top_lists.add(ip)
+        if "/stats/visit/faq" in url:
+            faq.add(ip)
+
+    return {
+        'iphone': iphone, 'ipad': ipad, 'iwatch': iwatch, 'web': web,
+        'sellers_iphone': sellers_iphone, 'sellers_iphone_detail': sellers_iphone_detail,
+        'sellers_web': sellers_web, 'sellers_web_detail': sellers_web_detail,
+        'top_lists': top_lists, 'faq': faq,
+    }
+
+
+def requested_advertisement_summary() -> dict:
+    queryset = RequestLog.objects.filter(
+        Q(requested_url__iendswith="stresstilbud_appeared_main/") |
+        Q(requested_url__iendswith="stresstilbud_appeared_detail/") |
+        Q(requested_url__iendswith="stresstilbud_clicked_main/") |
+        Q(requested_url__iendswith="stresstilbud_clicked_detail/")
+    )
+    appeared, clicked = {}, {}
+    for entry in queryset:
+        if entry.requested_url.endswith('stresstilbud_appeared_main/') or \
+                entry.requested_url.endswith('stresstilbud_appeared_detail/'):
+            appeared[entry.client_ip] = appeared.get(entry.client_ip, 0) + 1
+        else:
+            clicked[entry.client_ip] = clicked.get(entry.client_ip, 0) + 1
+    return {'appeared': len(appeared), 'clicked': len(clicked)}
