@@ -59,7 +59,7 @@ urlpatterns = [
     path('v18/shorts/', include('shorts.urls')),
     path('v18/users/', include('users.urls')),
     path('stats/', include('request_logging.urls')),
-    path('favicon.png', serve, {'path': 'images/favicon.png', 'document_root': settings.STATIC_ROOT}),
+    path('favicon.png', serve, {'path': 'favicon.png', 'document_root': FRONTEND_DIST}),
     path('manifest.json', serve, {'path': 'manifest.json', 'document_root': FRONTEND_DIST}),
     path('icon-192.png', serve, {'path': 'icon-192.png', 'document_root': FRONTEND_DIST}),
     path('icon-512.png', serve, {'path': 'icon-512.png', 'document_root': FRONTEND_DIST}),
