@@ -57,7 +57,7 @@ const PricePointChart: React.FC<{
   symbol: string;
   periodControl?: React.ReactNode;
 }> = (props) => {
-  const { data: pricePoints, symbol, periodControl } = props;
+  const { data: pricePoints, periodControl } = props;
   const { t } = useTranslation();
 
   const periodChange =
