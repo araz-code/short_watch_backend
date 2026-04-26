@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta, time
+import pandas as pd
 import pytz
 from django.core.management.base import BaseCommand, CommandError
 from django.utils import timezone
@@ -23,7 +24,21 @@ class Command(BaseCommand):
 
                 self.create_missing_chart_values(stock)
 
-                data = yf.download(f'{stock.symbol}.CO', start='2023-11-06')
+                data = yf.download(
+                    f'{stock.symbol}.CO',
+                    start='2023-11-06',
+                    auto_adjust=True,
+                    progress=False,
+                )
+
+                # yfinance returns MultiIndex columns ([(price_type, ticker), ...])
+                # for single-ticker downloads; flatten to single-level so helpers
+                # can use name-based access (data['Close'], row.Volume, etc.).
+                if isinstance(data.columns, pd.MultiIndex):
+                    data.columns = data.columns.get_level_values(0)
+
+                if data.empty:
+                    continue
 
                 self.did_a_split_occur(stock, data)
 
@@ -38,11 +53,9 @@ class Command(BaseCommand):
     @staticmethod
     def update_today_price_volume(data, stock):
         try:
-            ShortPositionChart.objects.filter(stock=stock, date=data.tail(1).index.date[0]) \
-                .update(close=round(data.tail(1).iloc[0].Close[0], 2), volume=data.tail(1).iloc[0].Volume[0])
-
-            #ShortPositionChart.objects.filter(stock=stock, date=data.tail(1).index[0].to_pydatetime().date()) \
-             #   .update(close=round(data.tail(1).iloc[0].Close, 2), volume=data.tail(1).iloc[0].Volume)
+            last = data.iloc[-1]
+            ShortPositionChart.objects.filter(stock=stock, date=data.index[-1].date()) \
+                .update(close=round(last.Close, 2), volume=last.Volume)
         except Exception as e:
             print('update_today_price_volume error')
 
@@ -93,8 +106,8 @@ class Command(BaseCommand):
                         stock=stock,
                         date=row.Index.date(),
                         defaults={
-                            'close': round(row[1], 2),
-                            'volume': row[5]
+                            'close': round(row.Close, 2),
+                            'volume': row.Volume,
                         }
                     )
                 except Exception:
@@ -103,13 +116,17 @@ class Command(BaseCommand):
     @staticmethod
     def did_a_split_occur(stock, data):
         try:
-            prev_chart_point = ShortPositionChart.objects.filter(stock=stock, date=data.tail(2).index.date[0]).first()
-            # prev_chart_point = ShortPositionChart.objects.filter(stock=stock, date=data.tail(2).index[0].to_pydatetime().date()).first()
+            if len(data) < 2:
+                return
+
+            prev_chart_point = ShortPositionChart.objects.filter(
+                stock=stock, date=data.index[-2].date()
+            ).first()
 
             if not prev_chart_point or prev_chart_point.close is None:
                 return
 
-            current_close = data.tail(1).iloc[0][0]
+            current_close = data['Close'].iloc[-1]
             prev_close = prev_chart_point.close
 
             percent_diff = abs((current_close - prev_close) / prev_close) * 100 if prev_close else 0
