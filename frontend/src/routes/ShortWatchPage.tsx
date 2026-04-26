@@ -138,21 +138,21 @@ const ShortWatchPage: React.FC = () => {
   }
 
   return (
-    <div className="h-dvh min-h-[620px] overflow-hidden [@media((max-height:900px)_and_(orientation:landscape))_or_(max-height:700px)]:overflow-auto [@media((max-height:900px)_and_(orientation:landscape))_or_(max-height:700px)]:h-auto [@media((max-height:900px)_and_(orientation:landscape))_or_(max-height:700px)]:min-h-dvh">
+    <div className="h-dvh min-h-[620px] flex flex-col overflow-hidden [@media(max-height:900px)_and_(orientation:landscape)]:overflow-auto [@media(max-height:900px)_and_(orientation:landscape)]:h-auto [@media(max-height:900px)_and_(orientation:landscape)]:min-h-dvh">
       <title>Zirium | Short Watch</title>
       <meta name="description" content="View all current short selling positions in Danish stocks with real-time data from the Danish Financial Supervisory Authority." />
       <PageTemplate>
-        <div className="w-screen lg:flex lg:justify-center lg:gap-4  m-auto">
+        <div className="w-screen lg:justify-center lg:gap-4 m-auto flex flex-col flex-1 min-h-0 lg:flex-row">
           <div className="w-1/3 justify-start items-center hidden"></div>
-          <div className="lg:w-[900px]">
-            <h1 className="text-2xl lg:text-3xl text-center py-6 dark:text-white">
+          <div className="lg:w-[900px] flex flex-col flex-1 min-h-0 lg:flex-initial">
+            <h1 className="text-2xl lg:text-3xl text-center py-6 dark:text-white shrink-0">
               Danish Short Watch
             </h1>
             {/*<p className="text-red-600 font-semibold text-center text-sm lg:text-base px-2">
               {t("FSA website updated warning")}
             </p>*/}
-            <section className="w-full">
-              <div className="relative mx-2 flex items-center">
+            <section className="w-full flex flex-col flex-1 min-h-0">
+              <div className="relative mx-2 flex items-center shrink-0">
                 <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
                   <svg
                     className="w-[18px] h-[18px] text-gray-400 dark:text-gray-500"
@@ -195,7 +195,7 @@ const ShortWatchPage: React.FC = () => {
                   </button>
                 )}
               </div>
-              <div className="p-2 pb-4">
+              <div className="p-2 pb-4 shrink-0">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
                     <DropDownMenu
@@ -226,7 +226,7 @@ const ShortWatchPage: React.FC = () => {
                   </button>
                 </div>
               </div>
-              <div className="overflow-y-auto min-h-[300px] h-[calc(100svh-15.7rem)] sm:h-[calc(100svh-16.2rem)]">
+              <div className="flex-1 min-h-0 overflow-y-auto [@media(max-height:900px)_and_(orientation:landscape)]:flex-none [@media(max-height:900px)_and_(orientation:landscape)]:overflow-visible">
                 <p className="text-xs pl-2 dark:text-white">
                   {t("You can get more details by clicking on a row")}
                 </p>

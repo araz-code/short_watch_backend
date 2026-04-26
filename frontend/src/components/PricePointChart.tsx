@@ -65,10 +65,14 @@ const PricePointChart: React.FC<{
     pricePoints.length >= 2
       ? pricePoints[pricePoints.length - 1].value - pricePoints[0].value
       : null;
-  const getChartHeight = useCallback(
-    () => (window.innerWidth >= 640 ? 290 : 160),
-    []
-  );
+  const getChartHeight = useCallback(() => {
+    if (window.innerWidth < 640) return 160;
+    const isLandscapeShort = window.matchMedia(
+      "(orientation: landscape) and (max-height: 1100px)"
+    ).matches;
+    if (isLandscapeShort) return 220;
+    return 290;
+  }, []);
   const [chartHeight, setChartHeight] = useState(getChartHeight);
 
   useEffect(() => {

@@ -188,7 +188,7 @@ const ShortPositionDetailsPage: React.FC = () => {
   } else if (data) {
     content = (
       <>
-        <div className="text-center pb-1 sm:pb-2 dark:text-white">
+        <div className="text-center pb-1 sm:pb-2 dark:text-white shrink-0">
           <h1 className="text-base sm:text-xl">
             {data.historic.length > 0 && data.historic[0].name}
           </h1>
@@ -231,8 +231,8 @@ const ShortPositionDetailsPage: React.FC = () => {
           </p>
           <div className="mt-2 sm:mt-3 mx-auto w-12 h-0.5 rounded-full bg-blue-500/40" />
         </div>
-        <div className="">
-          <div className="mb-3">
+        <div className="flex flex-col flex-1 min-h-0">
+          <div className="mb-3 shrink-0">
             <PricePointChart
               data={processChartValues(data.chartValues, selectedPeriod)}
               symbol={data.historic.length > 0 && data.historic[0].symbol}
@@ -245,7 +245,7 @@ const ShortPositionDetailsPage: React.FC = () => {
               }
             />
           </div>
-          <div className="mb-4 flex justify-center gap-6 border-b border-gray-200 dark:border-gray-700">
+          <div className="mb-4 flex justify-center gap-6 border-b border-gray-200 dark:border-gray-700 shrink-0">
             {detailOptions.map((option) => (
               <button
                 key={option}
@@ -275,17 +275,17 @@ const ShortPositionDetailsPage: React.FC = () => {
   }
 
   return (
-    <div className="h-dvh dark:bg-[#121212] overflow-hidden [@media((max-height:900px)_and_(orientation:landscape))_or_(max-height:700px)]:overflow-auto [@media((max-height:900px)_and_(orientation:landscape))_or_(max-height:700px)]:h-auto [@media((max-height:900px)_and_(orientation:landscape))_or_(max-height:700px)]:min-h-dvh">
+    <div className="h-dvh dark:bg-[#121212] flex flex-col overflow-hidden [@media(max-height:900px)_and_(orientation:landscape)]:overflow-auto [@media(max-height:900px)_and_(orientation:landscape)]:h-auto [@media(max-height:900px)_and_(orientation:landscape)]:min-h-dvh">
       <title>{stockName ? `Zirium | ${stockSymbol} – ${stockName}` : "Zirium | Stock Details"}</title>
       {stockName && (
         <meta name="description" content={`View short position data, charts, and largest sellers for ${stockName} (${stockSymbol}).`} />
       )}
       <PageTemplate>
-        <div className="w-screen lg:flex lg:justify-center lg:gap-4  m-auto">
+        <div className="w-screen lg:justify-center lg:gap-4 m-auto flex flex-col flex-1 min-h-0 lg:flex-row">
           <div className="w-1/3 justify-end items-center hidden"></div>
 
-          <div className="lg:w-[900px]">
-            <div className="flex place-content-between">
+          <div className="lg:w-[900px] flex flex-col flex-1 min-h-0 lg:flex-initial">
+            <div className="flex place-content-between shrink-0">
               <button
                 className="text-blue-500 hover:text-blue-700 bg-transparent border-none text-base pl-4 pt-4 inline-flex items-center gap-1.5 focus:ring-2 focus:ring-blue-300 rounded-sm"
                 onClick={() => {

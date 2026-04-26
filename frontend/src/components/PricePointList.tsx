@@ -5,8 +5,8 @@ const PricePointList: React.FC<{ pricePoints: [PricePoint] }> = ({
   pricePoints,
 }) => {
   return (
-    <div className="min-h-[150px] h-[calc(100svh-35.5rem)] sm:h-[calc(100svh-42.5rem)]">
-      <div className="overflow-y-auto h-full">
+    <div className="flex-1 min-h-0 [@media(max-height:900px)_and_(orientation:landscape)]:flex-none">
+      <div className="overflow-y-auto h-full [@media(max-height:900px)_and_(orientation:landscape)]:overflow-visible [@media(max-height:900px)_and_(orientation:landscape)]:h-auto">
         <ul className="mx-4">
           {pricePoints.map((short: PricePoint, index: number) => (
             <li key={short.timestamp}>

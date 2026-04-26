@@ -92,7 +92,7 @@ const ShortSellerDetailsPage: React.FC = () => {
 
     content = (
       <>
-        <div className="text-center pb-4 dark:text-white">
+        <div className="text-center pb-4 dark:text-white shrink-0">
           <h1 className="text-xl">{data.name}</h1>
           <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
             {t("Data on this page comes from announcements.")}{" "}
@@ -100,8 +100,8 @@ const ShortSellerDetailsPage: React.FC = () => {
           </p>
           <div className="mt-3 mx-auto w-12 h-0.5 rounded-full bg-blue-500/40" />
         </div>
-        <div className="min-h-[150px] h-[calc(100svh-13rem)]">
-          <div className="overflow-y-auto h-full">
+        <div className="flex-1 min-h-0 [@media(max-height:900px)_and_(orientation:landscape)]:flex-none">
+          <div className="overflow-y-auto h-full [@media(max-height:900px)_and_(orientation:landscape)]:overflow-visible [@media(max-height:900px)_and_(orientation:landscape)]:h-auto">
             <ul className="mx-4">
               {Object.keys(groupedAnnouncements).map((symbol) => (
                 <div key={symbol}>
@@ -143,18 +143,18 @@ const ShortSellerDetailsPage: React.FC = () => {
   }
 
   return (
-    <div className="h-dvh dark:bg-[#121212] overflow-hidden [@media((max-height:900px)_and_(orientation:landscape))_or_(max-height:700px)]:overflow-auto [@media((max-height:900px)_and_(orientation:landscape))_or_(max-height:700px)]:h-auto [@media((max-height:900px)_and_(orientation:landscape))_or_(max-height:700px)]:min-h-dvh">
+    <div className="h-dvh dark:bg-[#121212] flex flex-col overflow-hidden [@media(max-height:900px)_and_(orientation:landscape)]:overflow-auto [@media(max-height:900px)_and_(orientation:landscape)]:h-auto [@media(max-height:900px)_and_(orientation:landscape)]:min-h-dvh">
       <title>{data?.name ? `Zirium | ${data.name}` : "Zirium | Short Seller Details"}</title>
       {data?.name && (
         <meta name="description" content={`View all short selling positions held by ${data.name} in Danish stocks.`} />
       )}
       <PageTemplate>
-        <div className="w-screen lg:flex lg:justify-center lg:gap-4  m-auto">
+        <div className="w-screen lg:justify-center lg:gap-4 m-auto flex flex-col flex-1 min-h-0 lg:flex-row">
           <div className="w-1/3 justify-end items-center hidden"></div>
 
-          <div className="lg:w-[900px]">
+          <div className="lg:w-[900px] flex flex-col flex-1 min-h-0 lg:flex-initial">
             <button
-              className="text-blue-500 hover:text-blue-700 bg-transparent border-none text-base pl-4 pt-4 inline-flex items-center gap-1.5 focus:ring-2 focus:ring-blue-300 rounded-sm"
+              className="text-blue-500 hover:text-blue-700 bg-transparent border-none text-base pl-4 pt-4 inline-flex items-center gap-1.5 focus:ring-2 focus:ring-blue-300 rounded-sm shrink-0 self-start"
               onClick={() => {
                 if (window.history.length > 1 && window.history.state.idx > 0) {
                   navigate(-1);
