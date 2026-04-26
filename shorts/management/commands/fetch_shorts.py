@@ -527,6 +527,18 @@ class Command(BaseCommand):
         return stocks_by_code
 
     FCM_BATCH_LIMIT = 500
+    LOC_ARGS_MIN_VERSION = 16
+    BADGE_MIN_VERSION = 13
+
+    @staticmethod
+    def _version_number(version):
+        """Parse 'v17' → 17. Returns None if version is missing or malformed."""
+        if not isinstance(version, str) or not version.startswith('v'):
+            return None
+        try:
+            return int(version[1:])
+        except ValueError:
+            return None
 
     @staticmethod
     def _build_push_message(app_user, stocks_changed):
@@ -548,17 +560,29 @@ class Command(BaseCommand):
         else:
             sound = 'default'
 
+        version_num = Command._version_number(app_user.version)
+
+        loc_args = (
+            [', '.join([stock for stock in stocks_changed])]
+            if version_num is not None and version_num >= Command.LOC_ARGS_MIN_VERSION
+            else None
+        )
+        badge = (
+            1
+            if version_num is not None and version_num >= Command.BADGE_MIN_VERSION
+            else 0
+        )
+
         return messaging.Message(
             apns=messaging.APNSConfig(
                 payload=messaging.APNSPayload(
                     aps=messaging.Aps(
                         alert=messaging.ApsAlert(
                             loc_key='YOUR_WATCHLIST_WAS_UPDATED',
-                            loc_args=[', '.join([stock for stock in stocks_changed])]
-                            if app_user.version in {'v16', 'v17'} else None,
+                            loc_args=loc_args,
                         ),
-                        badge=1 if app_user.version in {'v13', 'v14', 'v15', 'v16', 'v17'} else 0,
-                        sound=None
+                        badge=badge,
+                        sound=None,
                     )
                 )
             ),
