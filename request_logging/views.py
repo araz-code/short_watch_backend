@@ -38,9 +38,6 @@ def _bar_chart_payload(title, labels, primary_label, primary_data,
 
 @staff_member_required
 def get_total_requests(_: HttpRequest) -> JsonResponse:
-    # Trigger pending visit aggregation. TODO: move to a scheduled task so the
-    # dashboard read endpoint has no side effects.
-    service.process_visits()
     return JsonResponse({
         'title': 'Total requests',
         'count': service.count_total_requests(),

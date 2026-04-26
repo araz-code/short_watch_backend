@@ -249,9 +249,11 @@ JAZZMIN_UI_TWEAKS = {
     "actions_sticky_top": True,
 }
 
-CORS_ALLOW_ALL_ORIGINS = True
-
-CORS_ALLOW_HEADERS = '*'
+CORS_ALLOWED_ORIGINS = [
+    "https://www.zirium.dk",
+    "https://zirium.dk",
+    "http://localhost:5173",
+]
 
 # CSRF_COOKIE_SECURE = True
 # CSRF_COOKIE_HTTPONLY = False

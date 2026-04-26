@@ -5,12 +5,9 @@ from shorts.models import ShortPosition, LargeShortSelling, ShortPositionChart, 
 
 
 class ShortPositionSerializer(serializers.ModelSerializer):
-    code = type('SerializerMethodField', (serializers.SerializerMethodField,
-                                          serializers.CharField), dict())()
-    name = type('SerializerMethodField', (serializers.SerializerMethodField,
-                                          serializers.CharField), dict())()
-    symbol = type('SerializerMethodField', (serializers.SerializerMethodField,
-                                            serializers.CharField), dict())()
+    code = serializers.SerializerMethodField()
+    name = serializers.SerializerMethodField()
+    symbol = serializers.SerializerMethodField()
     timestamp = serializers.DateTimeField(format='%Y-%m-%dT%H:%M:%S%z')
     prevValue = serializers.FloatField(source='prev_value')
 

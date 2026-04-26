@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework_api_key.permissions import HasAPIKey
 
 from errors.models import Error
+from short_watch_backend.utils import get_client_ip
 from shorts.models import Stock
 from .models import AppUser, WebUser
 from .serializers import AppUserSerializer, AddRemoveStockSerializer, UpdateNotificationStatusSerializer, \
@@ -216,16 +217,3 @@ def status_check(request):
             return Response(status=status.HTTP_204_NO_CONTENT)
 
     return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-def get_client_ip(request):
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-
-    if x_forwarded_for:
-        ip = x_forwarded_for.split(',')[0]
-    elif request.META.get('HTTP_X_REAL_IP'):
-        ip = request.META.get('HTTP_X_REAL_IP')
-    else:
-        ip = request.META.get('REMOTE_ADDR')
-
-    return ip
