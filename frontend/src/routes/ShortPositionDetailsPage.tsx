@@ -275,7 +275,7 @@ const ShortPositionDetailsPage: React.FC = () => {
   }
 
   return (
-    <div className="h-screen dark:bg-[#121212] overflow-hidden [@media((max-height:900px)_and_(orientation:landscape))_or_(max-height:700px)]:overflow-auto [@media((max-height:900px)_and_(orientation:landscape))_or_(max-height:700px)]:h-auto [@media((max-height:900px)_and_(orientation:landscape))_or_(max-height:700px)]:min-h-screen">
+    <div className="h-dvh dark:bg-[#121212] overflow-hidden pb-[env(safe-area-inset-bottom)] [@media((max-height:900px)_and_(orientation:landscape))_or_(max-height:700px)]:overflow-auto [@media((max-height:900px)_and_(orientation:landscape))_or_(max-height:700px)]:h-auto [@media((max-height:900px)_and_(orientation:landscape))_or_(max-height:700px)]:min-h-dvh">
       <title>{stockName ? `Zirium | ${stockSymbol} – ${stockName}` : "Zirium | Stock Details"}</title>
       {stockName && (
         <meta name="description" content={`View short position data, charts, and largest sellers for ${stockName} (${stockSymbol}).`} />

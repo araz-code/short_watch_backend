@@ -3,8 +3,6 @@
 @theme {
   --background-image-wave-pattern: url('/src/static/wave.svg');
   --background-image-wave-pattern-dark: url('/src/static/wave-dark.svg');
-
-  --height-screen: 100svh /* fallback for Opera, IE and etc. */, 100dvh;
 }
 
 /*
