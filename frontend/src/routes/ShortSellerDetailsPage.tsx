@@ -143,7 +143,7 @@ const ShortSellerDetailsPage: React.FC = () => {
   }
 
   return (
-    <div className="h-dvh dark:bg-[#121212] overflow-hidden pb-[env(safe-area-inset-bottom)] [@media((max-height:900px)_and_(orientation:landscape))_or_(max-height:700px)]:overflow-auto [@media((max-height:900px)_and_(orientation:landscape))_or_(max-height:700px)]:h-auto [@media((max-height:900px)_and_(orientation:landscape))_or_(max-height:700px)]:min-h-dvh">
+    <div className="h-dvh dark:bg-[#121212] overflow-hidden [@media((max-height:900px)_and_(orientation:landscape))_or_(max-height:700px)]:overflow-auto [@media((max-height:900px)_and_(orientation:landscape))_or_(max-height:700px)]:h-auto [@media((max-height:900px)_and_(orientation:landscape))_or_(max-height:700px)]:min-h-dvh">
       <title>{data?.name ? `Zirium | ${data.name}` : "Zirium | Short Seller Details"}</title>
       {data?.name && (
         <meta name="description" content={`View all short selling positions held by ${data.name} in Danish stocks.`} />
