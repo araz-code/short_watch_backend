@@ -141,8 +141,11 @@ class Command(BaseCommand):
                             'volume': row.Volume,
                         }
                     )
-                except Exception:
-                    pass
+                except Exception as e:
+                    Error.objects.create(
+                        message=f'fill_initial_missing_data {stock.symbol} '
+                                f'{row.Index.date()}: {str(e)[:300]}'
+                    )
 
     @staticmethod
     def did_a_split_occur(stock, data):

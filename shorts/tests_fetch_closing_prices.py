@@ -206,7 +206,7 @@ class FillInitialMissingDataTests(TestCase):
         row = ShortPositionChart.objects.get(stock=stock, date=date(2024, 1, 1))
         self.assertAlmostEqual(row.close, 100.0)  # 99.999 → 100.00
 
-    def test_per_row_exception_does_not_break_loop(self):
+    def test_per_row_exception_logs_error_and_does_not_break_loop(self):
         stock = make_stock(symbol='TST')
         for i in range(11):
             make_chart(stock, date(2024, 1, 1) + timedelta(days=i), close=None)
@@ -228,10 +228,19 @@ class FillInitialMissingDataTests(TestCase):
         ):
             Command.fill_initial_missing_data(stock, data)
 
-        # 10 of 11 succeeded; one was silently skipped
+        # 10 of 11 succeeded; the failing row was logged but did not break the loop
         self.assertEqual(
             ShortPositionChart.objects.filter(stock=stock, close__isnull=False).count(),
             10,
+        )
+        # The failing row's error was logged with symbol + date
+        self.assertTrue(
+            Error.objects.filter(
+                message__contains='fill_initial_missing_data TST 2024-01-03'
+            ).exists()
+        )
+        self.assertTrue(
+            Error.objects.filter(message__contains='boom').exists()
         )
 
 
