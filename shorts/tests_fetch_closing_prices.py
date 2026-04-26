@@ -192,31 +192,6 @@ class FillInitialMissingDataTests(TestCase):
             message__contains='fill_initial_missing_data'
         ).exists())
 
-    def test_svitzr_above_186_threshold_fills(self):
-        stock = make_stock(code='SVITZR_CODE', symbol='SVITZR')
-        for i in range(187):
-            make_chart(stock, date(2024, 1, 1) + timedelta(days=i), close=None)
-        data = make_yf_data([
-            (date(2024, 1, 1), 100.0, 105, 99, 101, 1000),
-        ])
-        Command.fill_initial_missing_data(stock, data)
-        row = ShortPositionChart.objects.get(stock=stock, date=date(2024, 1, 1))
-        self.assertAlmostEqual(row.close, 100.0)
-        self.assertEqual(row.volume, 1000)
-
-    def test_svitzr_at_186_threshold_skips(self):
-        stock = make_stock(code='SVITZR_CODE', symbol='SVITZR')
-        for i in range(186):  # 186 is NOT > 186 → skip
-            make_chart(stock, date(2024, 1, 1) + timedelta(days=i), close=None)
-        data = make_yf_data([
-            (date(2024, 1, 1), 100.0, 105, 99, 101, 1000),
-        ])
-        Command.fill_initial_missing_data(stock, data)
-        self.assertEqual(
-            ShortPositionChart.objects.filter(stock=stock, close__isnull=False).count(),
-            0,
-        )
-
     def test_close_is_rounded_to_two_decimals(self):
         stock = make_stock(symbol='TST')
         for i in range(11):

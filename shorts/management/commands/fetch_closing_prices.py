@@ -127,7 +127,7 @@ class Command(BaseCommand):
     def fill_initial_missing_data(stock, data):
         count = ShortPositionChart.objects.filter(stock=stock, close=None).count()
 
-        if count > 10 and stock.symbol != 'SVITZR' or count > 186 and stock.symbol == 'SVITZR':
+        if count > 10:
             Error.objects.create(message=f'fill_initial_missing_data {stock.symbol}: '
                                          f'Filling out empty values.')
 
@@ -174,13 +174,19 @@ class Command(BaseCommand):
 
     @staticmethod
     def fill_holes_in_chart_values(stock):
-        chart_values = ShortPositionChart.objects.filter(stock=stock).order_by('date')
+        chart_values = list(
+            ShortPositionChart.objects.filter(stock=stock).order_by('date')
+        )
 
+        to_update = []
         prev = None
-        for chart_value in list(chart_values):
+        for chart_value in chart_values:
             if prev and chart_value.close is None:
                 chart_value.close = prev.close
                 chart_value.volume = prev.volume
-                chart_value.save()
+                to_update.append(chart_value)
             else:
                 prev = chart_value
+
+        if to_update:
+            ShortPositionChart.objects.bulk_update(to_update, ['close', 'volume'])
