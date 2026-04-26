@@ -20,7 +20,6 @@ import {
   ValueType,
 } from "recharts/types/component/DefaultTooltipContent";
 import { trackEvent } from "../analytics";
-import PricePointChartInfo from "./PricePointChartInfo";
 
 const CustomTooltip: React.FC<TooltipContentProps<ValueType, NameType>> = ({
   active,
@@ -172,7 +171,6 @@ const PricePointChart: React.FC<{
               <line x1="20" y1="18" x2="20" y2="8" />
             </svg>
           </button>
-          <PricePointChartInfo pricePoints={pricePoints} symbol={symbol} />
         </div>
         {periodControl}
       </div>
