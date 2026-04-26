@@ -1,7 +1,5 @@
-from django.utils import timezone
-
 from errors.models import Error
-from request_logging.log_writer import enqueue
+from request_logging.models import RequestLog
 from short_watch_backend.utils import get_client_ip
 
 
@@ -18,13 +16,12 @@ class RequestLoggingMiddleware:
             ):
                 return self.get_response(request)
 
-            enqueue({
-                'timestamp': timezone.now(),
-                'client_ip': get_client_ip(request),
-                'user_agent': request.META.get('HTTP_USER_AGENT', "")[:255],
-                'requested_url': request.build_absolute_uri(),
-                'referer': request.META.get('HTTP_REFERER', '')[:255],
-            })
+            RequestLog.objects.create(
+                client_ip=get_client_ip(request),
+                user_agent=request.META.get('HTTP_USER_AGENT', "")[:255],
+                requested_url=request.build_absolute_uri(),
+                referer=request.META.get('HTTP_REFERER', '')[:255],
+            )
             return self.get_response(request)
         except Exception as e:
             try:
