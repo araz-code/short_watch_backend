@@ -274,6 +274,52 @@ def unique_ips_per_day(days: int = 10) -> list:
     return [{'date': entry['date'], 'num_ips': entry['unique_ips']} for entry in queryset]
 
 
+def versions_called() -> list:
+    """Per-API-version request count, unique-IP count, and most recent hit,
+    split into web vs app (iphone/ipad/iwatch). Sorted by version desc, web first."""
+    queryset = RequestLog.objects.filter(
+        requested_url__iregex=r'/v\d+/(shorts|users|sellers)/'
+    ) \
+        .values('requested_url', 'client_ip') \
+        .annotate(count=Count('id')) \
+        .annotate(max_timestamp=Max('timestamp'))
+
+    aggregated = defaultdict(lambda: {'count': 0, 'ips': set(), 'max_timestamp': None})
+    for entry in queryset:
+        version_match = version_pattern.search(entry['requested_url'])
+        if not version_match:
+            continue
+        version = version_match.group(1)
+
+        device_match = device_pattern.search(entry['requested_url'])
+        if device_match and device_match.group(1) == 'web':
+            platform = 'web'
+        elif device_match and device_match.group(1) in ('iphone', 'ipad', 'iwatch'):
+            platform = 'app'
+        else:
+            platform = ''
+
+        local_ts = timezone.localtime(entry['max_timestamp'])
+        bucket = aggregated[(version, platform)]
+        if bucket['max_timestamp'] is None or local_ts > bucket['max_timestamp']:
+            bucket['max_timestamp'] = local_ts
+        bucket['count'] += entry['count']
+        bucket['ips'].add(entry['client_ip'])
+
+    rows = [
+        {
+            'version': version,
+            'platform': platform,
+            'count': data['count'],
+            'unique_ips': len(data['ips']),
+            'max_timestamp': data['max_timestamp'],
+        }
+        for (version, platform), data in aggregated.items()
+    ]
+    rows.sort(key=lambda x: (-int(x['version'][1:]), x['platform']))
+    return rows
+
+
 def today_visit_buckets() -> dict:
     """Public client IPs for today, bucketed by URL pattern (platform/section)."""
     queryset = RequestLog.objects.filter(timestamp__date=timezone.localdate()) \

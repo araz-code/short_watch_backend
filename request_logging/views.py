@@ -173,6 +173,25 @@ def get_unique_ips_per_day_table(_: HttpRequest) -> JsonResponse:
 
 
 @staff_member_required
+def get_versions_table(_: HttpRequest) -> JsonResponse:
+    rows = service.versions_called()
+    return JsonResponse({
+        'caption': 'Versions called',
+        'headers': ['Version', 'Platform', 'Count', 'Unique IPs', 'Most recent call'],
+        'data': [
+            {
+                'version': r['version'],
+                'platform': r['platform'],
+                'count': r['count'],
+                'unique_ips': r['unique_ips'],
+                'max_timestamp': r['max_timestamp'].strftime(service.LOCAL_TIME_FORMAT),
+            }
+            for r in rows
+        ],
+    })
+
+
+@staff_member_required
 def get_visits_by_platform_table(_: HttpRequest) -> JsonResponse:
     b = service.today_visit_buckets()
     total = b['iphone'] | b['ipad'] | b['iwatch'] | b['web']

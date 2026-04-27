@@ -5,6 +5,7 @@ function loadAllCharts() {
   loadNumber("latestRequestTimestamp", `/stats/chart/latest-request-timestamp/`);
 
   loadTable("requestedUrlsTable", `/stats/chart/static-pages/`);
+  loadTable("versionsTable", `/stats/chart/versions/`);
   loadTable("visitsByPlatformTable", `/stats/chart/visits-by-platform/`);
   loadTable("visitsBySectionTable", `/stats/chart/visits-by-section/`);
   loadTable("pickHistoricTable", `/stats/chart/pick-history/`);
