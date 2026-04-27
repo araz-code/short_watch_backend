@@ -13,8 +13,6 @@ from firebase_admin.exceptions import InvalidArgumentError
 from firebase_admin.messaging import UnregisteredError
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
 
 from errors.models import Error
 from errors.service import delete_old_errors
@@ -61,10 +59,6 @@ class Command(BaseCommand):
         # Skip image downloads — the scraper only reads text spans, so images
         # are pure overhead.
         chrome_options.add_argument("--blink-settings=imagesEnabled=false")
-        # Don't block driver.get() until window.load — return as soon as the
-        # request is dispatched and let WebDriverWait gate on the table cell
-        # appearing. Avoids waiting on the long tail of fonts/trackers/etc.
-        chrome_options.page_load_strategy = 'none'
 
         return webdriver.Chrome(options=chrome_options)
 
@@ -450,14 +444,7 @@ class Command(BaseCommand):
 
             try:
                 driver.get('https://www.finanstilsynet.dk/finansielle-temaer/kapitalmarked/selskabsmeddelelser/aggregerede-korte-nettopositioner')
-                # Wait for the JS-rendered table to actually appear instead of
-                # sleeping a fixed 9s on every run. Times out at 15s; the
-                # outer except-clause then handles the retry as before.
-                WebDriverWait(driver, 15).until(
-                    EC.presence_of_element_located(
-                        (By.CSS_SELECTOR, 'td[data-header="ISIN"] span')
-                    )
-                )
+                time.sleep(9)
 
                 # Extract data from the new table structure
                 isin_elements = driver.find_elements(By.CSS_SELECTOR, 'td[data-header="ISIN"] span')
