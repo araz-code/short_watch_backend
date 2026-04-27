@@ -2,9 +2,9 @@ import appImage from "../../static/app.webp";
 
 const AppImage: React.FC = () => {
   return (
-    <div className="relative inline-block self-center">
+    <div className="relative w-full max-w-[400px] self-center">
       <img
-        className="max-w-[400px] h-auto self-center drop-shadow-2xl"
+        className="w-full h-auto drop-shadow-2xl"
         src={appImage}
         alt="Danish Short Watch application showing stock data and charts"
         loading="lazy"
