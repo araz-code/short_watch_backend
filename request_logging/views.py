@@ -176,12 +176,30 @@ def get_unique_ips_per_day_table(_: HttpRequest) -> JsonResponse:
 def get_versions_table(_: HttpRequest) -> JsonResponse:
     rows = service.versions_called()
     return JsonResponse({
-        'caption': 'Versions called',
+        'caption': 'Versions called today',
         'headers': ['Version', 'Platform', 'Count', 'Unique IPs', 'Most recent call'],
         'data': [
             {
                 'version': r['version'],
                 'platform': r['platform'],
+                'count': r['count'],
+                'unique_ips': r['unique_ips'],
+                'max_timestamp': r['max_timestamp'].strftime(service.LOCAL_TIME_FORMAT),
+            }
+            for r in rows
+        ],
+    })
+
+
+@staff_member_required
+def get_referers_table(_: HttpRequest) -> JsonResponse:
+    rows = service.referers_called()
+    return JsonResponse({
+        'caption': 'External referers today',
+        'headers': ['Host', 'Count', 'Unique IPs', 'Most recent hit'],
+        'data': [
+            {
+                'host': r['host'],
                 'count': r['count'],
                 'unique_ips': r['unique_ips'],
                 'max_timestamp': r['max_timestamp'].strftime(service.LOCAL_TIME_FORMAT),

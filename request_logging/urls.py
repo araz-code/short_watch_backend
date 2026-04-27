@@ -17,6 +17,7 @@ urlpatterns = [
     # Tables
     path('chart/static-pages/', views.get_static_pages_table),
     path('chart/versions/', views.get_versions_table),
+    path('chart/referers/', views.get_referers_table),
     path('chart/pick-history/', views.get_pick_history_table),
     path('chart/watch-history/', views.get_watch_history_table),
     path('chart/unique-ips/', views.get_unique_ips_per_day_table),

@@ -6,6 +6,7 @@ function loadAllCharts() {
 
   loadTable("requestedUrlsTable", `/stats/chart/static-pages/`);
   loadTable("versionsTable", `/stats/chart/versions/`);
+  loadTable("referersTable", `/stats/chart/referers/`);
   loadTable("visitsByPlatformTable", `/stats/chart/visits-by-platform/`);
   loadTable("visitsBySectionTable", `/stats/chart/visits-by-section/`);
   loadTable("pickHistoricTable", `/stats/chart/pick-history/`);

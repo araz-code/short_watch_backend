@@ -4,6 +4,7 @@ import re
 from collections import OrderedDict, defaultdict
 from datetime import timedelta, datetime
 from typing import List, Optional
+from urllib.parse import urlparse
 
 from django.db import transaction, IntegrityError
 from django.db.models import Count, Max, Q
@@ -278,7 +279,8 @@ def versions_called() -> list:
     """Per-API-version request count, unique-IP count, and most recent hit,
     split into web vs app (iphone/ipad/iwatch). Sorted by version desc, web first."""
     queryset = RequestLog.objects.filter(
-        requested_url__iregex=r'/v\d+/(shorts|users|sellers)/'
+        requested_url__iregex=r'/v\d+/(shorts|users|sellers)/',
+        timestamp__date=timezone.localdate(),
     ) \
         .values('requested_url', 'client_ip') \
         .annotate(count=Count('id')) \
@@ -317,6 +319,46 @@ def versions_called() -> list:
         for (version, platform), data in aggregated.items()
     ]
     rows.sort(key=lambda x: (-int(x['version'][1:]), x['platform']))
+    return rows
+
+
+_INTERNAL_REFERER_HOSTS = ('zirium.dk', 'localhost', '127.0.0.1')
+
+
+def referers_called() -> list:
+    """External referer hosts with request count, unique-IP count, and most
+    recent hit. Internal hosts (zirium.dk / localhost) are excluded."""
+    queryset = RequestLog.objects.exclude(referer='') \
+        .filter(timestamp__date=timezone.localdate()) \
+        .values('referer', 'client_ip') \
+        .annotate(count=Count('id')) \
+        .annotate(max_timestamp=Max('timestamp'))
+
+    aggregated = defaultdict(lambda: {'count': 0, 'ips': set(), 'max_timestamp': None})
+    for entry in queryset:
+        try:
+            host = urlparse(entry['referer']).netloc.lower()
+        except Exception:
+            continue
+        if not host or any(internal in host for internal in _INTERNAL_REFERER_HOSTS):
+            continue
+        local_ts = timezone.localtime(entry['max_timestamp'])
+        bucket = aggregated[host]
+        if bucket['max_timestamp'] is None or local_ts > bucket['max_timestamp']:
+            bucket['max_timestamp'] = local_ts
+        bucket['count'] += entry['count']
+        bucket['ips'].add(entry['client_ip'])
+
+    rows = [
+        {
+            'host': host,
+            'count': data['count'],
+            'unique_ips': len(data['ips']),
+            'max_timestamp': data['max_timestamp'],
+        }
+        for host, data in aggregated.items()
+    ]
+    rows.sort(key=lambda x: x['count'], reverse=True)
     return rows
 
 
