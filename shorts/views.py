@@ -143,11 +143,6 @@ class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
     lookup_field = 'code'
 
     def retrieve(self, request, code=None, *args, **kwargs):
-        cache_key = _detail_cache_key(code)
-        cached = cache.get(cache_key)
-        if cached:
-            return Response(cached)
-
         try:
             stock = Stock.objects.prefetch_related(
                 'shortposition_set',
@@ -191,7 +186,6 @@ class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
                                                    percentile, velocity_7d, velocity_30d)
 
             data = self.get_serializer(response).data
-            cache.set(cache_key, data, timeout=300)
             return Response(data)
         except Stock.DoesNotExist:
             return Response(self.get_serializer(
