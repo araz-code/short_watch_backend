@@ -294,13 +294,15 @@ class Command(BaseCommand):
                         short.prev_value = prev_value
                     short.save()
                     any_position_saved = True
-                    for app_user in app_users_by_stock.get(short.stock.pk, ()):
-                        try:
-                            if app_user not in users_to_notify_dict:
-                                users_to_notify_dict[app_user] = []
-                            users_to_notify_dict[app_user].append(f'{short.stock.symbol} {short.value:.2f}%')
-                        except Exception as e:
-                            Error.objects.create(message=f'Exception occurred with add users_to_notify_dict 1: {str(e)[:400]}')
+                    is_stale = (timezone.now() - short.timestamp) > timedelta(hours=5)
+                    if not is_stale:
+                        for app_user in app_users_by_stock.get(short.stock.pk, ()):
+                            try:
+                                if app_user not in users_to_notify_dict:
+                                    users_to_notify_dict[app_user] = []
+                                users_to_notify_dict[app_user].append(f'{short.stock.symbol} {short.value:.2f}%')
+                            except Exception as e:
+                                Error.objects.create(message=f'Exception occurred with add users_to_notify_dict 1: {str(e)[:400]}')
 
                 stock_pk = short.stock.pk
                 if stock_pk in charts_to_create_by_pk:
