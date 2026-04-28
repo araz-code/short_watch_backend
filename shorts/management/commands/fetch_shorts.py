@@ -294,7 +294,7 @@ class Command(BaseCommand):
                         short.prev_value = prev_value
                     short.save()
                     any_position_saved = True
-                    is_stale = (timezone.now() - short.timestamp) > timedelta(hours=5)
+                    is_stale = (timezone.now() - short.timestamp) > timedelta(hours=1)
                     if not is_stale:
                         for app_user in app_users_by_stock.get(short.stock.pk, ()):
                             try:
