@@ -4,7 +4,7 @@ import re
 from collections import OrderedDict, defaultdict
 from datetime import timedelta, datetime
 from typing import List, Optional
-from urllib.parse import urlparse
+from urllib.parse import urlparse, parse_qs
 
 from django.db import transaction, IntegrityError
 from django.db.models import Count, Max, Q
@@ -325,6 +325,30 @@ def versions_called() -> list:
 _INTERNAL_REFERER_HOSTS = ('zirium.dk', 'localhost', '127.0.0.1')
 
 
+def _referer_page_label(requested_url: str, stock_names: dict) -> str:
+    """Display label for a landing page; resolves stock code → name when present."""
+    try:
+        parsed = urlparse(requested_url)
+    except Exception:
+        return requested_url
+    path = parsed.path or requested_url
+
+    code = None
+    qs_code = parse_qs(parsed.query).get('code')
+    if qs_code:
+        code = qs_code[0]
+    else:
+        match = code_pattern.search(path)
+        if match:
+            code = match.group(1)
+
+    if code:
+        name = stock_names.get(code.upper()) or stock_names.get(code)
+        if name:
+            return f'{path}: {name}'
+    return path
+
+
 def referers_called() -> list:
     """External referer hosts with request count, unique-IP count, most
     recent hit, and the pages visitors landed on. Internal hosts
@@ -334,6 +358,8 @@ def referers_called() -> list:
         .values('referer', 'requested_url', 'client_ip') \
         .annotate(count=Count('id')) \
         .annotate(max_timestamp=Max('timestamp'))
+
+    stock_names = dict(Stock.objects.values_list('code', 'name'))
 
     aggregated = defaultdict(lambda: {
         'count': 0,
@@ -354,11 +380,7 @@ def referers_called() -> list:
             bucket['max_timestamp'] = local_ts
         bucket['count'] += entry['count']
         bucket['ips'].add(entry['client_ip'])
-        try:
-            path = urlparse(entry['requested_url']).path or entry['requested_url']
-        except Exception:
-            path = entry['requested_url']
-        bucket['pages'][path] += entry['count']
+        bucket['pages'][_referer_page_label(entry['requested_url'], stock_names)] += entry['count']
 
     rows = [
         {
