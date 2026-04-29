@@ -196,13 +196,14 @@ def get_referers_table(_: HttpRequest) -> JsonResponse:
     rows = service.referers_called()
     return JsonResponse({
         'caption': 'External referers today',
-        'headers': ['Host', 'Count', 'Unique IPs', 'Most recent hit'],
+        'headers': ['Host', 'Count', 'Unique IPs', 'Most recent hit', 'Pages'],
         'data': [
             {
                 'host': r['host'],
                 'count': r['count'],
                 'unique_ips': r['unique_ips'],
                 'max_timestamp': r['max_timestamp'].strftime(service.LOCAL_TIME_FORMAT),
+                'pages': '\n'.join(f'{path} ({count})' for path, count in r['pages']),
             }
             for r in rows
         ],

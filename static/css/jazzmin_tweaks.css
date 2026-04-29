@@ -118,3 +118,9 @@ footer.app-footer .float-end {
 .dashboard-table tbody td {
   border-color: rgba(255, 255, 255, 0.05);
 }
+
+#referersTable tbody td:last-child {
+  white-space: pre-line;
+  font-size: 0.8rem;
+  opacity: 0.85;
+}

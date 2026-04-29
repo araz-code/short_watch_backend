@@ -326,15 +326,21 @@ _INTERNAL_REFERER_HOSTS = ('zirium.dk', 'localhost', '127.0.0.1')
 
 
 def referers_called() -> list:
-    """External referer hosts with request count, unique-IP count, and most
-    recent hit. Internal hosts (zirium.dk / localhost) are excluded."""
+    """External referer hosts with request count, unique-IP count, most
+    recent hit, and the pages visitors landed on. Internal hosts
+    (zirium.dk / localhost) are excluded."""
     queryset = RequestLog.objects.exclude(referer='') \
         .filter(timestamp__date=timezone.localdate()) \
-        .values('referer', 'client_ip') \
+        .values('referer', 'requested_url', 'client_ip') \
         .annotate(count=Count('id')) \
         .annotate(max_timestamp=Max('timestamp'))
 
-    aggregated = defaultdict(lambda: {'count': 0, 'ips': set(), 'max_timestamp': None})
+    aggregated = defaultdict(lambda: {
+        'count': 0,
+        'ips': set(),
+        'max_timestamp': None,
+        'pages': defaultdict(int),
+    })
     for entry in queryset:
         try:
             host = urlparse(entry['referer']).netloc.lower()
@@ -348,6 +354,11 @@ def referers_called() -> list:
             bucket['max_timestamp'] = local_ts
         bucket['count'] += entry['count']
         bucket['ips'].add(entry['client_ip'])
+        try:
+            path = urlparse(entry['requested_url']).path or entry['requested_url']
+        except Exception:
+            path = entry['requested_url']
+        bucket['pages'][path] += entry['count']
 
     rows = [
         {
@@ -355,6 +366,7 @@ def referers_called() -> list:
             'count': data['count'],
             'unique_ips': len(data['ips']),
             'max_timestamp': data['max_timestamp'],
+            'pages': sorted(data['pages'].items(), key=lambda x: x[1], reverse=True),
         }
         for host, data in aggregated.items()
     ]
