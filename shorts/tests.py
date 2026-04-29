@@ -814,16 +814,16 @@ class HandleOrchestrationTests(TestCase):
         cache.set('short_sellers_list', 'B', timeout=None)
         cache.set('homepage_stats', 'C', timeout=None)
         cache.set('top_lists', 'D', timeout=None)
-        # An unrelated key should NOT be wiped
         cache.set('unrelated_key', 'KEEP', timeout=None)
 
         Command().handle()
 
+        # cache.clear() wipes the whole backend, including unrelated keys.
         self.assertIsNone(cache.get('short_positions_list'))
         self.assertIsNone(cache.get('short_sellers_list'))
         self.assertIsNone(cache.get('homepage_stats'))
         self.assertIsNone(cache.get('top_lists'))
-        self.assertEqual(cache.get('unrelated_key'), 'KEEP')
+        self.assertIsNone(cache.get('unrelated_key'))
 
     @patch('shorts.management.commands.fetch_shorts.process_visits')
     @patch('shorts.management.commands.fetch_shorts.delete_old_logs')
@@ -911,12 +911,11 @@ class HandleOrchestrationTests(TestCase):
 
         Command().handle()
 
-        # Only short_sellers_list is invalidated; the position-derived caches
-        # stay because their underlying data was not refreshed.
-        self.assertEqual(cache.get('short_positions_list'), 'A')
+        # Large sellers refresh succeeded → cache.clear() wipes everything.
+        self.assertIsNone(cache.get('short_positions_list'))
         self.assertIsNone(cache.get('short_sellers_list'))
-        self.assertEqual(cache.get('homepage_stats'), 'C')
-        self.assertEqual(cache.get('top_lists'), 'D')
+        self.assertIsNone(cache.get('homepage_stats'))
+        self.assertIsNone(cache.get('top_lists'))
 
     @patch('shorts.management.commands.fetch_shorts.process_visits')
     @patch('shorts.management.commands.fetch_shorts.delete_old_logs')
@@ -937,8 +936,9 @@ class HandleOrchestrationTests(TestCase):
 
         Command().handle()
 
+        # Selenium refresh succeeded → cache.clear() wipes everything.
         self.assertIsNone(cache.get('short_positions_list'))
-        self.assertEqual(cache.get('short_sellers_list'), 'B')
+        self.assertIsNone(cache.get('short_sellers_list'))
         self.assertIsNone(cache.get('homepage_stats'))
         self.assertIsNone(cache.get('top_lists'))
 
@@ -1005,8 +1005,7 @@ class HandleOrchestrationTests(TestCase):
         self, mock_driver, mock_selenium, mock_large, mock_remove, mock_logs, mock_visits
     ):
         # Selenium succeeded but the feed contained no new positions; large
-        # sellers fetch did mutate data. Only the short_sellers cache should
-        # be wiped.
+        # sellers fetch did mutate data. cache.clear() wipes everything.
         mock_driver.return_value = MagicMock()
         mock_selenium.return_value = False
         mock_large.return_value = True
@@ -1018,115 +1017,64 @@ class HandleOrchestrationTests(TestCase):
 
         Command().handle()
 
-        self.assertEqual(cache.get('short_positions_list'), 'A')
+        self.assertIsNone(cache.get('short_positions_list'))
         self.assertIsNone(cache.get('short_sellers_list'))
-        self.assertEqual(cache.get('homepage_stats'), 'C')
-        self.assertEqual(cache.get('top_lists'), 'D')
+        self.assertIsNone(cache.get('homepage_stats'))
+        self.assertIsNone(cache.get('top_lists'))
 
-    @patch('shorts.management.commands.fetch_shorts.invalidate_detail_caches')
     @patch('shorts.management.commands.fetch_shorts.process_visits')
     @patch('shorts.management.commands.fetch_shorts.delete_old_logs')
     @patch.object(Command, 'remove_duplicate_positions')
     @patch.object(Command, 'fetch_large_short_selling')
     @patch.object(Command, 'fetch_short_positions_selenium')
     @patch.object(Command, '_get_webdriver')
-    def test_handle_bumps_detail_cache_when_short_positions_changed(
-        self, mock_driver, mock_selenium, mock_large, mock_remove, mock_logs, mock_visits, mock_invalidate
+    def test_handle_clears_cache_when_short_positions_changed(
+        self, mock_driver, mock_selenium, mock_large, mock_remove, mock_logs, mock_visits
     ):
         mock_driver.return_value = MagicMock()
         mock_selenium.return_value = True
         mock_large.return_value = False
 
+        cache.set('detail_DK1', 'old', timeout=None)
         Command().handle()
 
-        mock_invalidate.assert_called_once()
+        self.assertIsNone(cache.get('detail_DK1'))
 
-    @patch('shorts.management.commands.fetch_shorts.invalidate_detail_caches')
     @patch('shorts.management.commands.fetch_shorts.process_visits')
     @patch('shorts.management.commands.fetch_shorts.delete_old_logs')
     @patch.object(Command, 'remove_duplicate_positions')
     @patch.object(Command, 'fetch_large_short_selling')
     @patch.object(Command, 'fetch_short_positions_selenium')
     @patch.object(Command, '_get_webdriver')
-    def test_handle_bumps_detail_cache_when_large_sellers_changed(
-        self, mock_driver, mock_selenium, mock_large, mock_remove, mock_logs, mock_visits, mock_invalidate
+    def test_handle_clears_cache_when_large_sellers_changed(
+        self, mock_driver, mock_selenium, mock_large, mock_remove, mock_logs, mock_visits
     ):
         mock_driver.return_value = MagicMock()
         mock_selenium.return_value = False
         mock_large.return_value = True
 
+        cache.set('detail_DK1', 'old', timeout=None)
         Command().handle()
 
-        mock_invalidate.assert_called_once()
+        self.assertIsNone(cache.get('detail_DK1'))
 
-    @patch('shorts.management.commands.fetch_shorts.invalidate_detail_caches')
     @patch('shorts.management.commands.fetch_shorts.process_visits')
     @patch('shorts.management.commands.fetch_shorts.delete_old_logs')
     @patch.object(Command, 'remove_duplicate_positions')
     @patch.object(Command, 'fetch_large_short_selling')
     @patch.object(Command, 'fetch_short_positions_selenium')
     @patch.object(Command, '_get_webdriver')
-    def test_handle_does_not_bump_detail_cache_when_neither_changed(
-        self, mock_driver, mock_selenium, mock_large, mock_remove, mock_logs, mock_visits, mock_invalidate
+    def test_handle_does_not_clear_cache_when_neither_changed(
+        self, mock_driver, mock_selenium, mock_large, mock_remove, mock_logs, mock_visits
     ):
         mock_driver.return_value = MagicMock()
         mock_selenium.return_value = False
         mock_large.return_value = False
 
+        cache.set('detail_DK1', 'old', timeout=None)
         Command().handle()
 
-        mock_invalidate.assert_not_called()
-
-
-# =============================================================================
-# Detail-view caching — versioned key + invalidate_detail_caches()
-# =============================================================================
-
-
-class DetailCacheTests(TestCase):
-    """Detail responses are cached under detail_v{version}_<code>. Bumping the
-    version makes every previously-cached detail key unreachable.
-    """
-
-    def setUp(self):
-        cache.clear()
-
-    def test_invalidate_detail_caches_increments_version_from_unset(self):
-        from shorts.views import invalidate_detail_caches, DETAIL_CACHE_VERSION_KEY
-
-        self.assertIsNone(cache.get(DETAIL_CACHE_VERSION_KEY))
-        invalidate_detail_caches()
-        self.assertEqual(cache.get(DETAIL_CACHE_VERSION_KEY), 1)
-
-    def test_invalidate_detail_caches_increments_existing_version(self):
-        from shorts.views import invalidate_detail_caches, DETAIL_CACHE_VERSION_KEY
-
-        cache.set(DETAIL_CACHE_VERSION_KEY, 7, timeout=None)
-        invalidate_detail_caches()
-        self.assertEqual(cache.get(DETAIL_CACHE_VERSION_KEY), 8)
-
-    def test_detail_cache_key_uses_current_version(self):
-        from shorts.views import _detail_cache_key, DETAIL_CACHE_VERSION_KEY
-
-        # No version set → defaults to 0
-        self.assertEqual(_detail_cache_key('DK1'), 'detail_v0_DK1')
-
-        cache.set(DETAIL_CACHE_VERSION_KEY, 3, timeout=None)
-        self.assertEqual(_detail_cache_key('DK1'), 'detail_v3_DK1')
-
-    def test_old_version_key_becomes_unreachable_after_bump(self):
-        from shorts.views import invalidate_detail_caches, _detail_cache_key
-
-        # Cache something under v0
-        key_v0 = _detail_cache_key('DK1')
-        cache.set(key_v0, 'old_payload', timeout=None)
-        self.assertEqual(cache.get(key_v0), 'old_payload')
-
-        # Bump version → readers compute a new key and miss
-        invalidate_detail_caches()
-        key_v1 = _detail_cache_key('DK1')
-        self.assertNotEqual(key_v0, key_v1)
-        self.assertIsNone(cache.get(key_v1))
+        self.assertEqual(cache.get('detail_DK1'), 'old')
 
 
 # =============================================================================

@@ -11,7 +11,6 @@ from rest_framework_api_key.permissions import HasAPIKey
 
 from request_logging.models import RequestLog
 from shorts.models import ShortPosition, Stock, LargeShortSelling, ShortPositionChart, ShortSeller, Announcement
-from users.models import AppUser
 from shorts.serializers import ShortPositionSerializer, ShortSellerSerializerOld, ShortPositionDetailSerializer, \
     ShortSellerListSerializer, ShortSellerDetailSerializer
 
@@ -28,7 +27,7 @@ class ShortPositionView(ReadOnlyModelViewSet):
         if cached:
             return Response(cached)
 
-        stocks_with_latest_timestamp = Stock.objects.filter(active=True)\
+        stocks_with_latest_timestamp = Stock.objects.filter(active=True) \
             .annotate(latest_timestamp=Max('shortposition__timestamp'))
 
         most_recent_short_positions = ShortPosition.objects.select_related('stock').filter(
@@ -45,7 +44,7 @@ class ShortPositionView(ReadOnlyModelViewSet):
         return Response(serializer.data)
 
     def retrieve(self, request, code=None, *args, **kwargs):
-        short_positions_for_code = self.get_queryset().select_related('stock')\
+        short_positions_for_code = self.get_queryset().select_related('stock') \
             .filter(stock__code=code).order_by('-timestamp')
 
         serializer = self.serializer_class(short_positions_for_code, many=True)
@@ -112,28 +111,8 @@ def _compute_derived_metrics(chart_values, historic):
 
     return percentile, velocity_7d, velocity_30d
 
+
 FIRST_ENTRY_DATE = date(2023, 11, 6)
-
-# Versioned cache for per-stock detail responses. We can't delete by pattern
-# on DatabaseCache, so we bump this version to invalidate every detail key
-# at once (old keys become unreachable and expire on TTL).
-DETAIL_CACHE_VERSION_KEY = 'detail_cache_version'
-
-
-def _detail_cache_key(code):
-    version = cache.get(DETAIL_CACHE_VERSION_KEY, 0)
-    return f'detail_v{version}_{code}'
-
-
-def invalidate_detail_caches():
-    """Bump the detail cache version so every existing detail_v{n}_<code>
-    key becomes unreachable on the next read.
-    """
-    try:
-        cache.incr(DETAIL_CACHE_VERSION_KEY)
-    except ValueError:
-        # Key didn't exist yet (or backend can't incr a missing key).
-        cache.set(DETAIL_CACHE_VERSION_KEY, 1, timeout=None)
 
 
 class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
@@ -143,6 +122,11 @@ class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
     lookup_field = 'code'
 
     def retrieve(self, request, code=None, *args, **kwargs):
+        cache_key = f'detail_{code}'
+        cached = cache.get(cache_key)
+        if cached is not None:
+            return Response(cached)
+
         try:
             stock = Stock.objects.prefetch_related(
                 'shortposition_set',
@@ -186,6 +170,7 @@ class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
                                                    percentile, velocity_7d, velocity_30d)
 
             data = self.get_serializer(response).data
+            cache.set(cache_key, data, timeout=300)
             return Response(data)
         except Stock.DoesNotExist:
             return Response(self.get_serializer(

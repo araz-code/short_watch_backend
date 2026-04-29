@@ -20,7 +20,6 @@ from request_logging.service import delete_old_logs, process_visits
 from short_watch_backend.settings import FCM_SERVICE_ACCOUNT_FILE, DEBUG
 from shorts.models import ShortPosition, RunStatus, LargeShortSelling, ShortPositionChart, Stock
 from shorts.utils import parse_headline, parse_publication_date, get_stock_for_issuer, get_or_create_seller
-from shorts.views import invalidate_detail_caches
 from users.models import AppUser
 
 import firebase_admin
@@ -90,21 +89,12 @@ class Command(BaseCommand):
 
         self.remove_duplicate_positions()
 
-        # Only invalidate caches whose underlying data actually changed. A
-        # successful fetch with zero new/changed rows leaves the cache alone —
-        # recomputing would just rebuild identical data from the same DB rows.
-        keys_to_invalidate = []
-        if short_positions_data_changed:
-            keys_to_invalidate.extend(['short_positions_list', 'homepage_stats', 'top_lists'])
-        if large_sellers_data_changed:
-            keys_to_invalidate.append('short_sellers_list')
-        if keys_to_invalidate:
-            cache.delete_many(keys_to_invalidate)
-
-        # Detail view depends on both data sources (chart + sellers) — bump
-        # its cache version if either underlying source changed.
+        # If either underlying data source actually changed, wipe the whole
+        # cache so every view-level cache (lists, stats, per-stock detail)
+        # rebuilds on the next request. A successful fetch with zero new
+        # rows leaves the cache alone.
         if short_positions_data_changed or large_sellers_data_changed:
-            invalidate_detail_caches()
+            cache.clear()
 
         RunStatus.objects.filter(executed_at__lt=timezone.now() - timedelta(days=3)).delete()
 
