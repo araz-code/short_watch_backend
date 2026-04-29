@@ -136,7 +136,7 @@ def get_static_pages_table(_: HttpRequest) -> JsonResponse:
 def _history_table(prefix: str) -> JsonResponse:
     rows = service.history_by_symbol(prefix)
     return JsonResponse({
-        'caption': f'{prefix.capitalize()} history by stock',
+        'caption': f'{prefix.capitalize()} history by stock today',
         'headers': ['Stock', 'Count', 'Most recent lookup'],
         'data': [
             {

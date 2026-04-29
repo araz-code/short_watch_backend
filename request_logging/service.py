@@ -198,6 +198,7 @@ def _symbol_for(url: str, code_to_symbol: dict) -> str:
 def history_by_symbol(prefix: str) -> list:
     """Aggregate /pick/<n> or /watch/<n> hits by stock symbol."""
     queryset = RequestLog.objects.filter(
+        Q(timestamp__date=timezone.localdate()) &
         Q(requested_url__icontains=f"{prefix}/") &
         ~Q(requested_url__icontains=f"{prefix}/sellers/") &
         Q(requested_url__iregex=r'[0-9]+$')
