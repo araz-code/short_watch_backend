@@ -14,6 +14,11 @@ from shorts.models import ShortPosition, Stock, LargeShortSelling, ShortPosition
 from shorts.serializers import ShortPositionSerializer, ShortSellerSerializerOld, ShortPositionDetailSerializer, \
     ShortSellerListSerializer, ShortSellerDetailSerializer
 
+# Max age for cached responses when fetch_shorts has not run cache.clear().
+# fetch_shorts clears the cache whenever data actually changes; this timeout
+# is the upper bound that keeps stale entries from sticking around forever.
+CACHE_TIMEOUT_SECONDS = 16 * 60
+
 
 class ShortPositionView(ReadOnlyModelViewSet):
     permission_classes = [HasAPIKey]
@@ -40,7 +45,7 @@ class ShortPositionView(ReadOnlyModelViewSet):
         sorted_data = [p for p in sorted_data if p.stock_id not in seen and not seen.add(p.stock_id)]
 
         serializer = self.serializer_class(sorted_data, many=True)
-        cache.set(cache_key, serializer.data, timeout=300)
+        cache.set(cache_key, serializer.data, timeout=CACHE_TIMEOUT_SECONDS)
         return Response(serializer.data)
 
     def retrieve(self, request, code=None, *args, **kwargs):
@@ -170,7 +175,7 @@ class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
                                                    percentile, velocity_7d, velocity_30d)
 
             data = self.get_serializer(response).data
-            cache.set(cache_key, data, timeout=300)
+            cache.set(cache_key, data, timeout=CACHE_TIMEOUT_SECONDS)
             return Response(data)
         except Stock.DoesNotExist:
             return Response(self.get_serializer(
@@ -196,7 +201,7 @@ class ShortSellerView(ReadOnlyModelViewSet):
             return Response(cached)
 
         response = super().list(request, *args, **kwargs)
-        cache.set(cache_key, response.data, timeout=300)
+        cache.set(cache_key, response.data, timeout=CACHE_TIMEOUT_SECONDS)
         return response
 
     def get_serializer_class(self):
@@ -318,7 +323,7 @@ def stats_view(request):
             } if most_followed and most_followed.follower_count > 0 else None,
             'updatedAt': latest_update.isoformat() if latest_update else None,
         }
-        cache.set('homepage_stats', data, timeout=300)
+        cache.set('homepage_stats', data, timeout=CACHE_TIMEOUT_SECONDS)
         return Response(data)
     except Exception:
         return Response({
@@ -410,7 +415,7 @@ def top_lists_view(request):
             'mostShorted': most_shorted,
             'mostActive': most_active,
         }
-        cache.set('top_lists', data, timeout=300)
+        cache.set('top_lists', data, timeout=CACHE_TIMEOUT_SECONDS)
         return Response(data)
     except Exception:
         return Response({
