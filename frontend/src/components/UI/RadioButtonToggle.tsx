@@ -10,7 +10,7 @@ const RadioButtonToggle: React.FC<{
   return (
     <div
       role="radiogroup"
-      className="inline-flex items-center gap-4 text-[11px] font-medium tracking-wide uppercase"
+      className="inline-flex items-center gap-4 text-[11px] sm:text-sm font-medium tracking-wide uppercase"
     >
       {options.map((option, index) => {
         const isSelected = selectedOption === option;

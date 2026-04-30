@@ -18,7 +18,7 @@ const Card: React.FC<{
           </h3>
         </div>
         <div className="flex flex-col justify-between grow">
-          <p className="leading-relaxed text-md text-gray-600 dark:text-gray-400">
+          <p className="leading-relaxed text-base text-gray-600 dark:text-gray-400">
             {content}
           </p>
         </div>

@@ -194,7 +194,7 @@ const ShortPositionDetailsPage: React.FC = () => {
           </h1>
           {data.historic.length > 0 && (
             <div className="flex items-center justify-center gap-2 mt-1">
-              <span className="text-2xl sm:text-3xl font-bold tabular-nums leading-none">
+              <span className="text-2xl sm:text-4xl font-bold tabular-nums leading-none">
                 {data.historic[0].value.toFixed(2)}%
               </span>
               {data.historic.length > 1 && (
@@ -206,7 +206,7 @@ const ShortPositionDetailsPage: React.FC = () => {
             </div>
           )}
           {(data.percentileAllTime != null || data.velocity7d != null) && (
-            <p className="text-[11px] sm:text-xs text-gray-500 dark:text-gray-400 mt-0.5 tabular-nums">
+            <p className="text-[11px] sm:text-sm text-gray-500 dark:text-gray-400 mt-0.5 tabular-nums">
               {data.percentileAllTime != null && (
                 <span className="text-yellow-500 dark:text-yellow-400 font-semibold">
                   {Math.round(data.percentileAllTime)}{t("th percentile")}
@@ -220,7 +220,7 @@ const ShortPositionDetailsPage: React.FC = () => {
               )}
             </p>
           )}
-          <p className="text-[11px] sm:text-xs text-gray-400 dark:text-gray-500 mt-0.5 tabular-nums">
+          <p className="text-[11px] sm:text-sm text-gray-400 dark:text-gray-500 mt-0.5 tabular-nums">
             {data.sellers ? data.sellers.length : 0} {(data.sellers?.length ?? 0) === 1 ? t("large seller") : t("large sellers")}
             {(data.sellers?.length ?? 0) > 0 && (
               <>

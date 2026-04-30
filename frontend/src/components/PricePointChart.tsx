@@ -175,7 +175,7 @@ const PricePointChart: React.FC<{
         {periodControl}
       </div>
       {periodChange !== null && (
-        <p className="text-center text-[11px] sm:text-xs mb-1 sm:mb-2">
+        <p className="text-center text-[11px] sm:text-sm mb-1 sm:mb-2">
           <span
             className={
               periodChange > 0

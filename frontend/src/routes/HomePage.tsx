@@ -182,12 +182,12 @@ const HomePage: React.FC = () => {
                     <p className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white tabular-nums">
                       {stats.shortedCount}
                     </p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                    <p className="text-base text-gray-500 dark:text-gray-400 mt-1">
                       {t("Stocks shorted")}
                     </p>
                     {stats.shortedCountDelta != null && stats.shortedCountDelta !== 0 && (
                       <p
-                        className={`text-[11px] mt-1 tabular-nums ${
+                        className={`text-sm mt-1 tabular-nums ${
                           stats.shortedCountDelta > 0
                             ? "text-red-500"
                             : "text-emerald-500"
@@ -204,7 +204,7 @@ const HomePage: React.FC = () => {
                     <p className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white tabular-nums">
                       {stats.mostShorted.value.toFixed(2)}%
                     </p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                    <p className="text-base text-gray-500 dark:text-gray-400 mt-1">
                       {t("Most shorted")} · {stats.mostShorted.symbol}
                     </p>
                     {stats.mostShorted.prevValue != null && (() => {
@@ -212,7 +212,7 @@ const HomePage: React.FC = () => {
                       if (Math.abs(diff) < 0.01) return null;
                       return (
                         <p
-                          className={`text-[11px] mt-1 tabular-nums ${
+                          className={`text-sm mt-1 tabular-nums ${
                             diff > 0 ? "text-red-500" : "text-emerald-500"
                           }`}
                         >
@@ -228,14 +228,14 @@ const HomePage: React.FC = () => {
                     <p className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
                       {stats.mostViewed.symbol}
                     </p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                    <p className="text-base text-gray-500 dark:text-gray-400 mt-1">
                       {t("Most viewed")}
                     </p>
                   </div>
                 )}
               </div>
               {stats.updatedAt && (
-                <p className="text-center text-xs text-gray-400 dark:text-gray-500 mt-6">
+                <p className="text-center text-sm text-gray-400 dark:text-gray-500 mt-6">
                   {t("Updated")} {formatTimestamp(stats.updatedAt, "dateAndTime")}
                 </p>
               )}
