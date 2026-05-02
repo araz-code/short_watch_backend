@@ -37,7 +37,7 @@ const DetailsHelpDialog: React.FC<{ onClose: () => void; sharesOutstanding: numb
 
         <section>
           <h2 className="text-sm font-semibold uppercase tracking-wider text-blue-500 dark:text-blue-400 mb-2">
-            {t("Shorters avg. price")}
+            {t("Avg. short price")}
           </h2>
           <p>
             {t(
