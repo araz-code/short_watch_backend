@@ -229,7 +229,12 @@ def get_visits_by_platform_table(_: HttpRequest) -> JsonResponse:
 
 @staff_member_required
 def get_visits_by_section_table(_: HttpRequest) -> JsonResponse:
+    from shorts.models import Stock
     b = service.today_visit_buckets()
+    code_to_symbol = {
+        s.code: s.symbol
+        for s in Stock.objects.filter(code__in=b['price_flow_by_stock'].keys()).only('code', 'symbol')
+    }
     return JsonResponse({
         'caption': "Today's unique visitors by section",
         'headers': ['Section', 'Visitors'],
@@ -241,7 +246,7 @@ def get_visits_by_section_table(_: HttpRequest) -> JsonResponse:
             {'section': 'Top lists', 'count': len(b['top_lists'])},
             {'section': 'FAQ', 'count': len(b['faq'])},
             *[
-                {'section': f'Web — price flow: {code}', 'count': len(ips)}
+                {'section': f'Web — price flow: {code_to_symbol.get(code, code)}', 'count': len(ips)}
                 for code, ips in sorted(b['price_flow_by_stock'].items(), key=lambda x: -len(x[1]))
             ],
         ],
