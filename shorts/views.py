@@ -228,16 +228,17 @@ class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
             announcements = stock.announcement_set.filter(published_date__gte=one_month_ago).order_by(
                 '-published_date')
 
-            days_difference = (date.today() - FIRST_ENTRY_DATE).days
+            effective_start = CHART_START_OVERRIDES.get(stock.code, FIRST_ENTRY_DATE)
+            days_difference = (date.today() - effective_start).days
 
             missing_count = days_difference + 1 - len(chart_values)
 
             if missing_count > 0:
-                earliest_date = chart_values[-1].date
+                earliest_date = chart_values[-1].date if chart_values else effective_start
 
                 for i in range(missing_count):
                     missing_date = earliest_date - timedelta(days=i + 1)
-                    if missing_date < FIRST_ENTRY_DATE:
+                    if missing_date < effective_start:
                         break
                     missing_datetime = datetime.combine(missing_date, datetime.min.time(), tzinfo=timezone.utc)
                     chart_values.append(
