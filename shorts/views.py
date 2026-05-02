@@ -105,20 +105,25 @@ def _compute_price_flow(stock, chart_values):
         cv for cv in chart_values
         if cv.value is not None and cv.close is not None and cv.close > 0
     ]
+    def typical_price(cv):
+        if cv.high is not None and cv.low is not None:
+            return (cv.high + cv.low + cv.close) / 3
+        return cv.close
     if len(rows) < 2:
         return []
 
     rows.sort(key=lambda cv: cv.date)
 
     log_step = math.log(1 + PRICE_FLOW_BUCKET_WIDTH)
-    min_price = min(cv.close for cv in rows)
+    min_price = min(typical_price(cv) for cv in rows)
 
     buckets = {}
     prev = rows[0]
     for cur in rows[1:]:
         delta_pct = cur.value - prev.value
         delta_shares = delta_pct / 100.0 * shares_out
-        idx = int(math.log(prev.close / min_price) / log_step)
+        price = typical_price(prev)
+        idx = int(math.log(price / min_price) / log_step)
         b = buckets.setdefault(idx, {'shorted': 0.0, 'covered': 0.0})
         if delta_shares > 0:
             b['shorted'] += delta_shares
@@ -129,7 +134,7 @@ def _compute_price_flow(stock, chart_values):
     result = []
     for idx in sorted(buckets):
         low = min_price * (1 + PRICE_FLOW_BUCKET_WIDTH) ** idx
-        high = low * (1 + PRICE_FLOW_BUCKET_WIDTH)
+        high = low * (1 + PRICE_FLOW_BUCKET_WIDTH)  # noqa: F841 (shadows outer high)
         result.append({
             'priceLow': round(low, 2),
             'priceHigh': round(high, 2),

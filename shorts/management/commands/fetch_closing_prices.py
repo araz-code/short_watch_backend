@@ -104,7 +104,7 @@ class Command(BaseCommand):
         try:
             last = data.iloc[-1]
             ShortPositionChart.objects.filter(stock=stock, date=data.index[-1].date()) \
-                .update(close=round(last.Close, 2), volume=last.Volume)
+                .update(close=round(last.Close, 2), high=round(last.High, 2), low=round(last.Low, 2), volume=last.Volume)
         except Exception as e:
             Error.objects.create(
                 message=f'update_today_price_volume {stock.symbol}: {str(e)[:400]}'
@@ -146,8 +146,9 @@ class Command(BaseCommand):
     @staticmethod
     def fill_initial_missing_data(stock, data):
         count = ShortPositionChart.objects.filter(stock=stock, close=None).count()
+        count_missing_high = ShortPositionChart.objects.filter(stock=stock, high=None).count()
 
-        if count > 10:
+        if count > 10 or count_missing_high > 10:
             Error.objects.create(message=f'fill_initial_missing_data {stock.symbol}: '
                                          f'Filling out empty values.')
 
@@ -158,6 +159,8 @@ class Command(BaseCommand):
                         date=row.Index.date(),
                         defaults={
                             'close': round(row.Close, 2),
+                            'high': round(row.High, 2),
+                            'low': round(row.Low, 2),
                             'volume': row.Volume,
                         }
                     )
@@ -206,10 +209,12 @@ class Command(BaseCommand):
         for chart_value in chart_values:
             if prev and chart_value.close is None:
                 chart_value.close = prev.close
+                chart_value.high = prev.high
+                chart_value.low = prev.low
                 chart_value.volume = prev.volume
                 to_update.append(chart_value)
             else:
                 prev = chart_value
 
         if to_update:
-            ShortPositionChart.objects.bulk_update(to_update, ['close', 'volume'])
+            ShortPositionChart.objects.bulk_update(to_update, ['close', 'high', 'low', 'volume'])
