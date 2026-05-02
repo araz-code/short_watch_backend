@@ -214,11 +214,15 @@ class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
                          queryset=Announcement.objects.select_related('stock')),
             ).get(code=code)
 
-            historic = stock.shortposition_set.all().order_by('-timestamp')[:100]
-
             CHART_START_OVERRIDES = {
                 'DK0010311471': date(2025, 12, 3),  # Sydbank merged
             }
+
+            historic_qs = stock.shortposition_set.all().order_by('-timestamp')
+            if stock.code in CHART_START_OVERRIDES:
+                historic_qs = historic_qs.filter(timestamp__date__gte=CHART_START_OVERRIDES[stock.code])
+            historic = historic_qs[:100]
+
             chart_qs = stock.shortpositionchart_set.all()
             if stock.code in CHART_START_OVERRIDES:
                 chart_qs = chart_qs.filter(date__gte=CHART_START_OVERRIDES[stock.code])
