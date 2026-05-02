@@ -223,6 +223,7 @@ def get_visits_by_platform_table(_: HttpRequest) -> JsonResponse:
             {'platform': 'Apple Watch', 'count': len(b['iwatch'])},
             {'platform': 'Web', 'count': len(b['web'])},
             {'platform': 'Total (any platform)', 'count': len(total)},
+            {'platform': 'Bots (excluded above)', 'count': len(b['bots'])},
         ],
     })
 

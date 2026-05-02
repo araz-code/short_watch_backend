@@ -3,6 +3,8 @@ import json
 import re
 from collections import OrderedDict, defaultdict
 from datetime import timedelta, datetime
+from functools import reduce
+from operator import or_
 from typing import List, Optional
 from urllib.parse import urlparse, parse_qs
 
@@ -15,6 +17,26 @@ from request_logging.models import VisitorLock, RequestLog, Visitor
 from shorts.models import Stock
 
 LOCAL_TIME_FORMAT = "%Y-%m-%d, %H:%M"
+
+_BOT_UA_FRAGMENTS = (
+    'googlebot', 'bingbot', 'msnbot', 'slurp',
+    'duckduckbot', 'baiduspider', 'yandexbot',
+    'ahrefsbot', 'semrushbot', 'mj12bot', 'dotbot', 'petalbot',
+    'gptbot', 'chatgpt-user', 'claudebot', 'claude-web', 'anthropic-ai',
+    'applebot', 'facebookexternalhit', 'twitterbot', 'linkedinbot',
+    'ia_archiver', 'archive.org_bot', 'scrapy', 'python-requests',
+    'crawler', 'spider',
+)
+
+
+def is_bot(user_agent: str) -> bool:
+    ua = user_agent.lower()
+    return any(fragment in ua for fragment in _BOT_UA_FRAGMENTS)
+
+
+def _no_bots_q() -> Q:
+    """Q filter that excludes known bot user agents."""
+    return ~reduce(or_, (Q(user_agent__icontains=f) for f in _BOT_UA_FRAGMENTS))
 
 WEEK_DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
@@ -147,12 +169,12 @@ def count_total_requests() -> int:
 
 
 def count_total_requests_today() -> int:
-    return RequestLog.objects.filter(timestamp__date=timezone.localdate()).count()
+    return RequestLog.objects.filter(timestamp__date=timezone.localdate()).filter(_no_bots_q()).count()
 
 
 def count_unique_ips_today() -> int:
     queryset = RequestLog.objects.filter(timestamp__date=timezone.localdate()) \
-        .values_list('client_ip', flat=True)
+        .filter(_no_bots_q()).values_list('client_ip', flat=True)
     public = {ip for ip in queryset if not ipaddress.ip_address(ip).is_private}
     return len(public)
 
@@ -175,7 +197,7 @@ _STATIC_PAGE_FILTERS = (
 
 def static_page_hits() -> list:
     """Per-URL count and most recent lookup for static-page hits."""
-    queryset = RequestLog.objects.filter(_STATIC_PAGE_FILTERS) \
+    queryset = RequestLog.objects.filter(_STATIC_PAGE_FILTERS).filter(_no_bots_q()) \
         .values('requested_url') \
         .annotate(count=Count('id')) \
         .annotate(max_timestamp=Max('timestamp')) \
@@ -201,7 +223,8 @@ def history_by_symbol(prefix: str) -> list:
         Q(timestamp__date=timezone.localdate()) &
         Q(requested_url__icontains=f"{prefix}/") &
         ~Q(requested_url__icontains=f"{prefix}/sellers/") &
-        Q(requested_url__iregex=r'[0-9]+$')
+        Q(requested_url__iregex=r'[0-9]+$') &
+        _no_bots_q()
     ).values('requested_url') \
         .annotate(count=Count('id')) \
         .annotate(max_timestamp=Max('timestamp')) \
@@ -228,7 +251,7 @@ def history_by_symbol(prefix: str) -> list:
 
 
 def _hourly_counts(date, suffix: Optional[str] = None) -> List[int]:
-    queryset = RequestLog.objects.filter(timestamp__date=date)
+    queryset = RequestLog.objects.filter(timestamp__date=date).filter(_no_bots_q())
     if suffix:
         queryset = queryset.filter(requested_url__iendswith=suffix)
     queryset = queryset.values('timestamp__hour').annotate(count=Count('id')) \
@@ -245,7 +268,7 @@ def requests_per_hour_today_vs_week_ago(suffix: Optional[str] = None):
 
 
 def _weekday_counts(start, end) -> List[int]:
-    queryset = RequestLog.objects.filter(timestamp__gte=start, timestamp__lte=end) \
+    queryset = RequestLog.objects.filter(timestamp__gte=start, timestamp__lte=end).filter(_no_bots_q()) \
         .annotate(week_day=ExtractWeekDay('timestamp')) \
         .values('week_day').annotate(count=Count('id'))
     data = [0] * 7
@@ -265,7 +288,7 @@ def requests_per_weekday_this_vs_last_week():
 
 def unique_ips_per_day(days: int = 10) -> list:
     start_date = timezone.localdate() - timedelta(days=days)
-    queryset = RequestLog.objects.filter(timestamp__date__gt=start_date) \
+    queryset = RequestLog.objects.filter(timestamp__date__gt=start_date).filter(_no_bots_q()) \
         .annotate(date=TruncDate('timestamp')) \
         .exclude(Q(client_ip__istartswith='192.168.') |
                  Q(client_ip__istartswith='10.') |
@@ -282,7 +305,7 @@ def versions_called() -> list:
     queryset = RequestLog.objects.filter(
         requested_url__iregex=r'/v\d+/(shorts|users|sellers)/',
         timestamp__date=timezone.localdate(),
-    ) \
+    ).filter(_no_bots_q()) \
         .values('requested_url', 'client_ip') \
         .annotate(count=Count('id')) \
         .annotate(max_timestamp=Max('timestamp'))
@@ -355,7 +378,7 @@ def referers_called() -> list:
     recent hit, and the pages visitors landed on. Internal hosts
     (zirium.dk / localhost) are excluded."""
     queryset = RequestLog.objects.exclude(referer='') \
-        .filter(timestamp__date=timezone.localdate()) \
+        .filter(timestamp__date=timezone.localdate()).filter(_no_bots_q()) \
         .values('referer', 'requested_url', 'client_ip') \
         .annotate(count=Count('id')) \
         .annotate(max_timestamp=Max('timestamp'))
@@ -400,19 +423,24 @@ def referers_called() -> list:
 def today_visit_buckets() -> dict:
     """Public client IPs for today, bucketed by URL pattern (platform/section)."""
     queryset = RequestLog.objects.filter(timestamp__date=timezone.localdate()) \
-        .values('requested_url', 'client_ip')
+        .values('requested_url', 'client_ip', 'user_agent')
 
     iphone, ipad, iwatch, web = set(), set(), set(), set()
     sellers_iphone, sellers_iphone_detail = set(), set()
     sellers_web, sellers_web_detail = set(), set()
     top_lists, faq = set(), set()
     price_flow_by_stock = {}  # code -> set of IPs
+    bots = set()
 
     for entry in queryset:
         ip = entry['client_ip']
         if ipaddress.ip_address(ip).is_private:
             continue
         url = entry['requested_url']
+
+        if is_bot(entry['user_agent']):
+            bots.add(ip)
+            continue
 
         if "/iwatch/" in url:
             iwatch.add(ip)
@@ -445,4 +473,5 @@ def today_visit_buckets() -> dict:
         'sellers_iphone': sellers_iphone, 'sellers_iphone_detail': sellers_iphone_detail,
         'sellers_web': sellers_web, 'sellers_web_detail': sellers_web_detail,
         'top_lists': top_lists, 'faq': faq, 'price_flow_by_stock': price_flow_by_stock,
+        'bots': bots,
     }
