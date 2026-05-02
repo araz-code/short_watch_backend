@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { fetchShortPositionDetails } from "../apis/ShortPositionAPI";
+import { fetchShortPositionDetails, HOST } from "../apis/ShortPositionAPI";
 import PricePointChart from "../components/PricePointChart";
 import ToggleSwitch from "../components/UI/RadioButtonToggle";
 import { useEffect, useState } from "react";
@@ -167,7 +167,7 @@ const ShortPositionDetailsPage: React.FC = () => {
     }
     if (selectedDetailOption === "Price flow") {
       trackEvent("price_flow_view", { position_code: code ?? "" });
-      fetch(`/stats/visit/price-flow/${code ?? ""}/`).catch(() => {});
+      fetch(`${HOST}/stats/visit/price-flow/${code ?? ""}/`).catch(() => {});
     }
   }, [selectedDetailOption, code]);
 

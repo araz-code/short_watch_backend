@@ -3,8 +3,8 @@ import { logException } from "../analytics";
 
 export const queryClient = new QueryClient();
 
-const isLocal = true;
-const HOST = isLocal ? "http://localhost:8000" : "https://www.zirium.dk";
+const isLocal = false;
+export const HOST = isLocal ? "http://localhost:8000" : "https://www.zirium.dk";
 const VERSION = "v16";
 
 class FetchError extends Error {

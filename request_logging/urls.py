@@ -26,5 +26,5 @@ urlpatterns = [
 
     # Tracking
     path('clicked/<str:code>', views.clicked),
-    path('visit/<str:page>/', views.track_visit),
+    path('visit/<path:page>/', views.track_visit),
 ]

@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import PageTemplate from "../components/PageTemplate";
 import FAQItem from "../components/FAQItem";
 import { trackEvent, trackPageView } from "../analytics";
+import { HOST } from "../apis/ShortPositionAPI";
 
 const linkClass =
   "text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 underline decoration-blue-500/30 underline-offset-2 transition-colors";
@@ -24,7 +25,7 @@ const FAQPage: React.FC = () => {
 
   useEffect(() => {
     trackPageView("/faq", "faq");
-    fetch("/stats/visit/faq/").catch(() => {});
+    fetch(`${HOST}/stats/visit/faq/`).catch(() => {});
   }, []);
 
   const items: { id: string; q: string; a: React.ReactNode }[] = [
