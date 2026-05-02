@@ -214,6 +214,10 @@ class Command(BaseCommand):
                 chart_value.volume = prev.volume
                 to_update.append(chart_value)
             else:
+                if prev and chart_value.high is None and prev.high is not None:
+                    chart_value.high = prev.high
+                    chart_value.low = prev.low
+                    to_update.append(chart_value)
                 prev = chart_value
 
         if to_update:
