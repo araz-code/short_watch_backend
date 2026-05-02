@@ -1,0 +1,120 @@
+import { useTranslation } from "react-i18next";
+
+export interface PriceFlowBucket {
+  priceLow: number;
+  priceHigh: number;
+  sharesShorted: number;
+  sharesCovered: number;
+}
+
+const formatShares = (n: number) => {
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(2)}M`;
+  if (n >= 1_000) return `${(n / 1_000).toFixed(1)}k`;
+  return n.toLocaleString();
+};
+
+const PriceFlowList: React.FC<{ buckets: PriceFlowBucket[] }> = ({
+  buckets,
+}) => {
+  const { t } = useTranslation();
+
+  if (!buckets || buckets.length === 0) {
+    return (
+      <div className="text-center text-sm text-gray-500 dark:text-gray-400 py-6">
+        {t("Not enough data to compute price flow.")}
+      </div>
+    );
+  }
+
+  const sorted = [...buckets].sort((a, b) => b.priceLow - a.priceLow);
+  const maxFlow = Math.max(
+    ...sorted.map((b) => Math.max(b.sharesShorted, b.sharesCovered))
+  );
+  const maxNet = Math.max(
+    ...sorted.map((b) => Math.abs(b.sharesShorted - b.sharesCovered))
+  );
+
+  return (
+    <div className="flex-1 min-h-0 [@media(max-height:900px)_and_(orientation:landscape)]:flex-none">
+      <div className="overflow-y-auto h-full [@media(max-height:900px)_and_(orientation:landscape)]:overflow-visible [@media(max-height:900px)_and_(orientation:landscape)]:h-auto">
+        <div className="mx-4">
+          <div className="grid grid-cols-[1fr_1fr_1fr_1fr] gap-2 px-2 py-2 text-[11px] sm:text-xs font-semibold text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-10 bg-white dark:bg-[#121212]">
+            <span>{t("Price")}</span>
+            <span className="text-right">{t("Shorted")}</span>
+            <span className="text-right">{t("Covered")}</span>
+            <span className="text-right">{t("Net")}</span>
+          </div>
+          <ul>
+            {sorted.map((b) => {
+              const net = b.sharesShorted - b.sharesCovered;
+              const shortedPct = maxFlow > 0 ? (b.sharesShorted / maxFlow) * 100 : 0;
+              const coveredPct = maxFlow > 0 ? (b.sharesCovered / maxFlow) * 100 : 0;
+              const netPct = maxNet > 0 ? (Math.abs(net) / maxNet) * 100 : 0;
+              const netColor =
+                net > 0
+                  ? "text-red-600 dark:text-red-400"
+                  : net < 0
+                    ? "text-green-600 dark:text-green-400"
+                    : "text-gray-500 dark:text-gray-400";
+              const netBg =
+                net > 0
+                  ? "bg-red-500/15 dark:bg-red-500/25"
+                  : net < 0
+                    ? "bg-green-500/15 dark:bg-green-500/25"
+                    : "";
+              return (
+                <li
+                  key={`${b.priceLow}-${b.priceHigh}`}
+                  className="grid grid-cols-[1fr_1fr_1fr_1fr] gap-2 px-2 py-1.5 text-xs sm:text-sm tabular-nums border-b border-gray-100 dark:border-gray-800"
+                >
+                  <span className="flex flex-col leading-tight">
+                    <span className="text-gray-800 dark:text-gray-200 font-medium">
+                      {Math.round((b.priceLow + b.priceHigh) / 2)}
+                    </span>
+                    <span className="text-[10px] sm:text-[11px] text-gray-400 dark:text-gray-500">
+                      {Math.round(b.priceLow)}–{Math.round(b.priceHigh)}
+                    </span>
+                  </span>
+                  <span className="text-right relative">
+                    <span
+                      className="absolute inset-y-0 right-0 bg-red-500/15 dark:bg-red-500/25 rounded"
+                      style={{ width: `${shortedPct}%` }}
+                      aria-hidden="true"
+                    />
+                    <span className="relative text-red-600 dark:text-red-400">
+                      {formatShares(b.sharesShorted)}
+                    </span>
+                  </span>
+                  <span className="text-right relative">
+                    <span
+                      className="absolute inset-y-0 right-0 bg-green-500/15 dark:bg-green-500/25 rounded"
+                      style={{ width: `${coveredPct}%` }}
+                      aria-hidden="true"
+                    />
+                    <span className="relative text-green-600 dark:text-green-400">
+                      {formatShares(b.sharesCovered)}
+                    </span>
+                  </span>
+                  <span className="text-right relative">
+                    <span
+                      className={`absolute inset-y-0 right-0 rounded ${netBg}`}
+                      style={{ width: `${netPct}%` }}
+                      aria-hidden="true"
+                    />
+                    <span className={`relative ${netColor}`}>
+                      {net > 0 ? "+" : net < 0 ? "−" : ""}
+                      {formatShares(Math.abs(net))}
+                    </span>
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+          <div className="h-6"></div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default PriceFlowList;

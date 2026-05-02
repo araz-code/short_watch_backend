@@ -60,7 +60,7 @@ class RunStatusAdmin(admin.ModelAdmin):
 
 @admin.register(Stock)
 class StockAdmin(admin.ModelAdmin):
-    list_display = ('name', 'code', 'symbol', 'active')
+    list_display = ('name', 'code', 'symbol', 'active', 'shares_outstanding')
     list_filter = ('active',)
     ordering = ('name',)
 

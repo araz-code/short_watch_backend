@@ -11,6 +11,7 @@ const HelpDialog: React.FC<{ onClose: () => void }> = ({ onClose }) => {
       closeButtonTitle="Close"
       onClose={onClose}
       enableXClose={true}
+      centerOnMobile={true}
     >
       <div className="space-y-6">
         <section>

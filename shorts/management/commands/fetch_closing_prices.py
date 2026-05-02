@@ -54,6 +54,7 @@ class Command(BaseCommand):
                 self.fill_initial_missing_data(stock, data)
                 self.update_today_price_volume(data, stock)
                 self.fill_holes_in_chart_values(stock)
+                self.update_shares_outstanding(stock)
             except Exception as e:
                 Error.objects.create(message=str(e)[:500])
 
@@ -78,6 +79,25 @@ class Command(BaseCommand):
             df = bulk_data
         df = df.dropna(how='all')
         return df if not df.empty else None
+
+    @staticmethod
+    def update_shares_outstanding(stock):
+        try:
+            ticker = yf.Ticker(f'{stock.symbol}.CO')
+            shares = None
+            try:
+                shares = ticker.fast_info.get('shares')
+            except Exception:
+                shares = None
+            if not shares:
+                shares = ticker.info.get('sharesOutstanding')
+            if shares:
+                stock.shares_outstanding = int(shares)
+                stock.save(update_fields=['shares_outstanding'])
+        except Exception as e:
+            Error.objects.create(
+                message=f'update_shares_outstanding {stock.symbol}: {str(e)[:400]}'
+            )
 
     @staticmethod
     def update_today_price_volume(data, stock):

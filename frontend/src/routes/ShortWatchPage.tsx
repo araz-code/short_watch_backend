@@ -204,7 +204,7 @@ const ShortWatchPage: React.FC = () => {
                       onSelectMenuItemChange={setSelectedSorting}
                     />
                     <button
-                      className="font-medium text-blue-500 bg-transparent border-none ml-3 px-2.5 py-1.5 rounded-md hover:bg-blue-50 dark:hover:bg-blue-500/10 transition-colors focus:ring-2 focus:ring-blue-300"
+                      className="text-sm font-medium text-blue-500 border border-blue-300 dark:border-blue-700 ml-3 px-3 py-1.5 rounded-md hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors focus:ring-2 focus:ring-blue-300"
                       onClick={() => {
                         trackEvent("filter_change", {
                           page: "short_watch",
@@ -219,7 +219,7 @@ const ShortWatchPage: React.FC = () => {
                     </button>
                   </div>
                   <button
-                    className="font-medium text-blue-500 bg-transparent border-none px-2.5 py-1.5 rounded-md hover:bg-blue-50 dark:hover:bg-blue-500/10 transition-colors focus:ring-2 focus:ring-blue-300"
+                    className="text-sm font-medium text-blue-500 border border-blue-300 dark:border-blue-700 px-3 py-1.5 rounded-md hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors focus:ring-2 focus:ring-blue-300"
                     onClick={handleHelp}
                   >
                     {t("Help")}

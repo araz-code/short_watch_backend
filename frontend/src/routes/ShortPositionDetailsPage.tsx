@@ -14,8 +14,11 @@ import PricePointList from "../components/PricePointList";
 import LargeShortSellingList from "../components/LargeShortSellingList";
 import FavoriteToggleButton from "../components/UI/FavoriteToggleButton";
 import ChangeIndicator from "../components/UI/ChangeIndicator";
+import PriceFlowList from "../components/PriceFlowList";
+import DetailsHelpDialog from "../components/DetailsHelpDialog";
+import Modal from "../components/UI/Modal";
 
-const detailOptions = ["Historic data", "Largest sellers"];
+const detailOptions = ["Historic data", "Largest sellers", "Price flow"];
 const periodOptions = ["1W", "1M", "3M", "6M", "YTD", "Max"];
 
 const processChartValues = (
@@ -90,13 +93,23 @@ const processChartValues = (
   }
 };
 
+const TAB_PARAM_MAP: Record<string, string> = {
+  "historic": "Historic data",
+  "sellers": "Largest sellers",
+  "flow": "Price flow",
+};
+const TAB_REVERSE_MAP: Record<string, string> = Object.fromEntries(
+  Object.entries(TAB_PARAM_MAP).map(([k, v]) => [v, k])
+);
+
 const ShortPositionDetailsPage: React.FC = () => {
   const { t } = useTranslation();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
-  const [selectedDetailOption, setSelectedDetailOption] = useState(
-    detailOptions[0]
-  );
+  const [selectedDetailOption, setSelectedDetailOption] = useState(() => {
+    const tab = searchParams.get("tab");
+    return (tab && TAB_PARAM_MAP[tab]) || detailOptions[0];
+  });
   const [selectedPeriod, setSelectedPeriod] = useState<string>(() => {
     const savedSelectedPeriod = localStorage.getItem("selectedPeriod");
     return savedSelectedPeriod && periodOptions.includes(savedSelectedPeriod)
@@ -107,6 +120,10 @@ const ShortPositionDetailsPage: React.FC = () => {
     const savedMyList = localStorage.getItem("myList");
     return savedMyList ? JSON.parse(savedMyList) : [];
   });
+  const [showHelp, setShowHelp] = useState(false);
+  const [showPriceFlowAnnouncement, setShowPriceFlowAnnouncement] = useState(
+    () => localStorage.getItem("priceFlowAnnouncementDismissed") !== "1"
+  );
 
   const code = searchParams.get("code");
   const isFavorite = code ? myList.includes(code) : false;
@@ -132,8 +149,25 @@ const ShortPositionDetailsPage: React.FC = () => {
   }, [selectedPeriod, myList]);
 
   useEffect(() => {
+    const tabKey = TAB_REVERSE_MAP[selectedDetailOption];
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      if (tabKey && tabKey !== "historic") {
+        next.set("tab", tabKey);
+      } else {
+        next.delete("tab");
+      }
+      return next;
+    }, { replace: true });
+  }, [selectedDetailOption, setSearchParams]);
+
+  useEffect(() => {
     if (selectedDetailOption === "Largest sellers") {
       trackEvent("largest_sellers_view", { position_code: code ?? "" });
+    }
+    if (selectedDetailOption === "Price flow") {
+      trackEvent("price_flow_view", { position_code: code ?? "" });
+      fetch(`/stats/visit/price-flow/${code ?? ""}/`).catch(() => {});
     }
   }, [selectedDetailOption, code]);
 
@@ -220,6 +254,12 @@ const ShortPositionDetailsPage: React.FC = () => {
               )}
             </p>
           )}
+          {data.avgShortPrice != null && (
+            <p className="text-[11px] sm:text-sm mt-1.5 tabular-nums">
+              <span className="text-gray-700 dark:text-gray-200">{t("Avg. short price")}{": "}</span>
+              <span className="font-bold text-sm sm:text-base text-gray-700 dark:text-gray-200">{data.avgShortPrice.toFixed(0)} DKK</span>
+            </p>
+          )}
           <p className="text-[11px] sm:text-sm text-gray-400 dark:text-gray-500 mt-0.5 tabular-nums">
             {data.sellers ? data.sellers.length : 0} {(data.sellers?.length ?? 0) === 1 ? t("large seller") : t("large sellers")}
             {(data.sellers?.length ?? 0) > 0 && (
@@ -235,6 +275,7 @@ const ShortPositionDetailsPage: React.FC = () => {
           <div className="mb-3 shrink-0">
             <PricePointChart
               data={processChartValues(data.chartValues, selectedPeriod)}
+              priceFlow={data.priceFlow ?? []}
               symbol={data.historic.length > 0 && data.historic[0].symbol}
               periodControl={
                 <ToggleSwitch
@@ -267,6 +308,10 @@ const ShortPositionDetailsPage: React.FC = () => {
 
           {selectedDetailOption === "Largest sellers" && (
             <LargeShortSellingList sellings={data.sellers} />
+          )}
+
+          {selectedDetailOption === "Price flow" && (
+            <PriceFlowList buckets={data.priceFlow ?? []} />
           )}
 
         </div>
@@ -302,11 +347,24 @@ const ShortPositionDetailsPage: React.FC = () => {
                 <span aria-hidden="true">←</span>
                 {t("Back")}
               </button>
-              <FavoriteToggleButton
-                isFavorite={isFavorite}
-                addToMyList={addToMyList}
-                removeFromMyList={removeFromMyList}
-              />
+              <div className="flex items-center gap-1 sm:gap-3 pr-2 pt-4">
+                <FavoriteToggleButton
+                  isFavorite={isFavorite}
+                  addToMyList={addToMyList}
+                  removeFromMyList={removeFromMyList}
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    trackEvent("help_dialog_open", { page: "position_details" });
+                    setShowHelp(true);
+                  }}
+                  aria-label={t("Help")}
+                  className="text-sm font-medium text-blue-500 border border-blue-300 dark:border-blue-700 rounded-md px-3 py-1.5 hover:bg-blue-50 dark:hover:bg-blue-900/30 focus:ring-2 focus:ring-blue-300 transition-colors"
+                >
+                  {t("Help")}
+                </button>
+              </div>
             </div>
             {content}
           </div>
@@ -314,6 +372,52 @@ const ShortPositionDetailsPage: React.FC = () => {
           <div className="w-1/3 justify-end items-center hidden"></div>
         </div>
       </PageTemplate>
+      {showHelp && (
+        <div className="w-screen lg:w-[900px] m-auto">
+          <DetailsHelpDialog onClose={() => setShowHelp(false)} sharesOutstanding={data?.sharesOutstanding ?? null} />
+        </div>
+      )}
+      {showPriceFlowAnnouncement && (
+        <Modal
+          title=""
+          closeButtonTitle={t("Got it")}
+          onClose={() => {
+            setShowPriceFlowAnnouncement(false);
+            localStorage.setItem("priceFlowAnnouncementDismissed", "1");
+          }}
+          enableXClose={true}
+          centerOnMobile={true}
+        >
+          <div className="space-y-4">
+            <div className="text-center pt-1 pb-2">
+              <span className="inline-block text-xs font-semibold uppercase tracking-widest text-blue-500 bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-full mb-3">
+                {t("New feature")}
+              </span>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white leading-tight">
+                {t("Price flow & avg. price")}
+              </h2>
+              <p className="text-gray-700 dark:text-gray-200 text-base font-medium mt-1">
+                {t("Know where shorts are trapped")}
+              </p>
+            </div>
+            <div className="space-y-3 text-[15px]">
+              <div className="flex gap-3">
+                <span className="text-lg mt-0.5">📊</span>
+                <p>{t("The Price flow tab breaks down all disclosed short changes into 2%-wide price bands, so you can spot at what price the pressure is concentrated.")}</p>
+              </div>
+              <div className="flex gap-3">
+                <span className="text-lg mt-0.5">🎯</span>
+                <p>{t("The average entry price shown just below the short interest number gives you a quick read on whether shorts are currently sitting at a profit or a loss.")}</p>
+              </div>
+              <div className="flex gap-3">
+                <span className="text-lg mt-0.5">📈</span>
+                <p>{t("When closing prices are enabled on the chart, the same distribution is shown as a bar profile on the left edge of the chart.")}</p>
+              </div>
+            </div>
+            <p className="text-sm pt-1">{t("Tap the Help button for a full explanation.")}</p>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 };

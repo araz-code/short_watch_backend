@@ -18,6 +18,7 @@ export type AnalyticsEvent =
   | "seller_details_view"
   | "position_details_view"
   | "largest_sellers_view"
+  | "price_flow_view"
   | "seller_to_position_click"
   | "seller_link_click"
   | "announcement_open"

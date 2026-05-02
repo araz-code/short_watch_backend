@@ -1,3 +1,4 @@
+import math
 from collections import namedtuple
 from datetime import timedelta, datetime, date
 
@@ -73,7 +74,78 @@ ShortedStockDetailsResponse = namedtuple('ShortedStockDetailsResponse', ['chartV
                                                                          'announcements',
                                                                          'percentileAllTime',
                                                                          'velocity7d',
-                                                                         'velocity30d'])
+                                                                         'velocity30d',
+                                                                         'priceFlow',
+                                                                         'sharesOutstanding',
+                                                                         'avgShortPrice'])
+
+
+PRICE_FLOW_BUCKET_WIDTH = 0.02  # 2% wide log-spaced buckets
+
+
+def _compute_price_flow(stock, chart_values):
+    """Bucket the daily change in aggregate short interest by close-price.
+
+    For each pair of consecutive non-null observations, compute the delta in
+    shares short (delta_pct / 100 * shares_outstanding) and attribute it to
+    the bucket containing the *previous* row's close. Rationale: under DFSA
+    rules a position change must be disclosed by 15:30 the trading day after
+    the trade, so a delta first visible on day N reflects trading executed
+    on (approximately) day N-1, i.e. prev's close is closer to the actual
+    fill price than cur's close. Positive deltas count as sharesShorted,
+    negative deltas as sharesCovered.
+
+    Returns [] if shares_outstanding is unknown or fewer than 2 usable rows.
+    """
+    shares_out = stock.shares_outstanding
+    if not shares_out:
+        return []
+
+    rows = [
+        cv for cv in chart_values
+        if cv.value is not None and cv.close is not None and cv.close > 0
+    ]
+    if len(rows) < 2:
+        return []
+
+    rows.sort(key=lambda cv: cv.date)
+
+    log_step = math.log(1 + PRICE_FLOW_BUCKET_WIDTH)
+    min_price = min(cv.close for cv in rows)
+
+    buckets = {}
+    prev = rows[0]
+    for cur in rows[1:]:
+        delta_pct = cur.value - prev.value
+        delta_shares = delta_pct / 100.0 * shares_out
+        idx = int(math.log(prev.close / min_price) / log_step)
+        b = buckets.setdefault(idx, {'shorted': 0.0, 'covered': 0.0})
+        if delta_shares > 0:
+            b['shorted'] += delta_shares
+        elif delta_shares < 0:
+            b['covered'] += -delta_shares
+        prev = cur
+
+    result = []
+    for idx in sorted(buckets):
+        low = min_price * (1 + PRICE_FLOW_BUCKET_WIDTH) ** idx
+        high = low * (1 + PRICE_FLOW_BUCKET_WIDTH)
+        result.append({
+            'priceLow': round(low, 2),
+            'priceHigh': round(high, 2),
+            'sharesShorted': int(round(buckets[idx]['shorted'])),
+            'sharesCovered': int(round(buckets[idx]['covered'])),
+        })
+    return result
+
+
+def _compute_avg_short_price(price_flow):
+    """Weighted average opening price across all price-flow buckets."""
+    total_shorted = sum(b['sharesShorted'] for b in price_flow)
+    if total_shorted == 0:
+        return None
+    weighted = sum((b['priceLow'] + b['priceHigh']) / 2 * b['sharesShorted'] for b in price_flow)
+    return round(weighted / total_shorted, 2)
 
 
 def _compute_derived_metrics(chart_values, historic):
@@ -171,15 +243,19 @@ class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
 
             percentile, velocity_7d, velocity_30d = _compute_derived_metrics(chart_values, historic)
 
+            price_flow = _compute_price_flow(stock, chart_values)
+            avg_short_price = _compute_avg_short_price(price_flow)
+
             response = ShortedStockDetailsResponse(chart_values, historic, sellers, announcements,
-                                                   percentile, velocity_7d, velocity_30d)
+                                                   percentile, velocity_7d, velocity_30d, price_flow,
+                                                   stock.shares_outstanding, avg_short_price)
 
             data = self.get_serializer(response).data
             cache.set(cache_key, data, timeout=CACHE_TIMEOUT_SECONDS)
             return Response(data)
         except Stock.DoesNotExist:
             return Response(self.get_serializer(
-                ShortedStockDetailsResponse([], [], [], [], None, None, None)).data)
+                ShortedStockDetailsResponse([], [], [], [], None, None, None, [], None, None)).data)
 
 
 class ShortSellerView(ReadOnlyModelViewSet):

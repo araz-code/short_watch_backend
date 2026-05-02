@@ -10,10 +10,13 @@ import {
   ComposedChart,
   Line,
   ReferenceLine,
+  useYAxisScale,
+  usePlotArea,
 } from "recharts";
 import { useTranslation } from "react-i18next";
 import { formatTimestamp } from "../utils/dates";
 import ChartPricePoint from "../models/ChartPricePoint";
+import { PriceFlowBucket } from "./PriceFlowList";
 import { TooltipContentProps } from "recharts/types/component/Tooltip";
 import {
   NameType,
@@ -52,12 +55,59 @@ const CustomTooltip: React.FC<TooltipContentProps<ValueType, NameType>> = ({
   return null;
 };
 
+const VolumeProfileOverlay: React.FC<{ priceFlow: PriceFlowBucket[] }> = ({
+  priceFlow,
+}) => {
+  const yScale = useYAxisScale("2");
+  const plot = usePlotArea();
+  if (!priceFlow || priceFlow.length === 0 || !yScale || !plot) return null;
+
+  const maxFlow = Math.max(
+    ...priceFlow.map((b) => Math.max(b.sharesShorted, b.sharesCovered)),
+    1
+  );
+  const sidebarMaxWidth = 50;
+  const left = plot.x;
+  const top = plot.y;
+  const bottom = plot.y + plot.height;
+
+  return (
+    <g pointerEvents="none">
+      {priceFlow.map((b, i) => {
+        const yHi = yScale(b.priceHigh);
+        const yLo = yScale(b.priceLow);
+        if (yHi == null || yLo == null || !isFinite(yHi) || !isFinite(yLo))
+          return null;
+        const yMin = Math.min(yHi, yLo);
+        const yMax = Math.max(yHi, yLo);
+        const yClipped = Math.max(yMin, top);
+        const yEnd = Math.min(yMax, bottom);
+        if (yEnd <= yClipped) return null;
+        const height = Math.max(1, yEnd - yClipped - 1);
+        const wShorted = (b.sharesShorted / maxFlow) * sidebarMaxWidth;
+        const wCovered = (b.sharesCovered / maxFlow) * sidebarMaxWidth;
+        return (
+          <g key={i}>
+            {wShorted >= 0.5 && (
+              <rect x={left} y={yClipped} width={wShorted} height={height} fill="#dc2626" opacity={0.45} />
+            )}
+            {wCovered >= 0.5 && (
+              <rect x={left + wShorted} y={yClipped} width={wCovered} height={height} fill="#10b981" opacity={0.45} />
+            )}
+          </g>
+        );
+      })}
+    </g>
+  );
+};
+
 const PricePointChart: React.FC<{
   data: ChartPricePoint[];
+  priceFlow?: PriceFlowBucket[];
   symbol: string;
   periodControl?: React.ReactNode;
 }> = (props) => {
-  const { data: pricePoints, periodControl } = props;
+  const { data: pricePoints, priceFlow, periodControl } = props;
   const { t } = useTranslation();
 
   const periodChange =
@@ -260,6 +310,9 @@ const PricePointChart: React.FC<{
               strokeOpacity: 0.3,
             }}
           />
+          {showClosingPrices && priceFlow && priceFlow.length > 0 && (
+            <VolumeProfileOverlay priceFlow={priceFlow} />
+          )}
           <Area
             type="step"
             dataKey="value"
@@ -355,6 +408,15 @@ const PricePointChart: React.FC<{
                 <span className="w-3 h-2 rounded-xs bg-gray-300 dark:bg-gray-600 inline-block" />
                 {t("Volume")}
               </span>
+              {priceFlow && priceFlow.length > 0 && (
+                <span className="flex items-center gap-1.5">
+                  <span className="inline-flex items-center gap-[1px]">
+                    <span className="w-2 h-2 bg-red-500/45 inline-block" />
+                    <span className="w-2 h-2 bg-green-500/45 inline-block" />
+                  </span>
+                  {t("Flow")}
+                </span>
+              )}
             </>
           )}
         </div>

@@ -74,6 +74,13 @@ class AnnouncementSerializer(serializers.ModelSerializer):
                   'isHistoric', 'stockSymbol', 'stockCode')
 
 
+class PriceFlowBucketSerializer(serializers.Serializer):
+    priceLow = serializers.FloatField()
+    priceHigh = serializers.FloatField()
+    sharesShorted = serializers.IntegerField()
+    sharesCovered = serializers.IntegerField()
+
+
 class ShortPositionDetailSerializer(serializers.Serializer):
     chartValues = ShortPositionChartSerializer(many=True)
     historic = ShortPositionSerializer(many=True)
@@ -82,6 +89,9 @@ class ShortPositionDetailSerializer(serializers.Serializer):
     percentileAllTime = serializers.FloatField(allow_null=True, required=False)
     velocity7d = serializers.FloatField(allow_null=True, required=False)
     velocity30d = serializers.FloatField(allow_null=True, required=False)
+    priceFlow = PriceFlowBucketSerializer(many=True, required=False)
+    sharesOutstanding = serializers.IntegerField(allow_null=True, required=False)
+    avgShortPrice = serializers.FloatField(allow_null=True, required=False)
 
 
 class LargeShortSellingForShortSellerSerializer(serializers.ModelSerializer):
