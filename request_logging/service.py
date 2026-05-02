@@ -431,6 +431,7 @@ def today_visit_buckets() -> dict:
     top_lists, faq = set(), set()
     price_flow_by_stock = {}  # code -> set of IPs
     bots = set()
+    bots_by_name = {}  # fragment -> set of IPs
 
     for entry in queryset:
         ip = entry['client_ip']
@@ -440,6 +441,11 @@ def today_visit_buckets() -> dict:
 
         if is_bot(entry['user_agent']):
             bots.add(ip)
+            ua = entry['user_agent'].lower()
+            for fragment in _BOT_UA_FRAGMENTS:
+                if fragment in ua:
+                    bots_by_name.setdefault(fragment, set()).add(ip)
+                    break
             continue
 
         if "/iwatch/" in url:
@@ -473,5 +479,5 @@ def today_visit_buckets() -> dict:
         'sellers_iphone': sellers_iphone, 'sellers_iphone_detail': sellers_iphone_detail,
         'sellers_web': sellers_web, 'sellers_web_detail': sellers_web_detail,
         'top_lists': top_lists, 'faq': faq, 'price_flow_by_stock': price_flow_by_stock,
-        'bots': bots,
+        'bots': bots, 'bots_by_name': bots_by_name,
     }

@@ -224,6 +224,10 @@ def get_visits_by_platform_table(_: HttpRequest) -> JsonResponse:
             {'platform': 'Web', 'count': len(b['web'])},
             {'platform': 'Total (any platform)', 'count': len(total)},
             {'platform': 'Bots (excluded above)', 'count': len(b['bots'])},
+            *[
+                {'platform': f'  Bot: {name}', 'count': len(ips)}
+                for name, ips in sorted(b['bots_by_name'].items(), key=lambda x: -len(x[1]))
+            ],
         ],
     })
 
