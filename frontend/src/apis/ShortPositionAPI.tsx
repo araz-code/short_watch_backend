@@ -5,7 +5,7 @@ export const queryClient = new QueryClient();
 
 const isLocal = false;
 export const HOST = isLocal ? "http://localhost:8000" : "https://www.zirium.dk";
-const VERSION = "v16";
+const VERSION = "v18";
 
 class FetchError extends Error {
   code: number;
