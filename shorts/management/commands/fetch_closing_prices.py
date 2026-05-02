@@ -89,11 +89,19 @@ class Command(BaseCommand):
                 shares = ticker.fast_info.get('shares')
             except Exception:
                 shares = None
+            info = ticker.info
             if not shares:
-                shares = ticker.info.get('sharesOutstanding')
+                shares = info.get('sharesOutstanding')
+            float_shares = info.get('floatShares')
+            update_fields = []
             if shares:
                 stock.shares_outstanding = int(shares)
-                stock.save(update_fields=['shares_outstanding'])
+                update_fields.append('shares_outstanding')
+            if float_shares:
+                stock.float_shares = int(float_shares)
+                update_fields.append('float_shares')
+            if update_fields:
+                stock.save(update_fields=update_fields)
         except Exception as e:
             Error.objects.create(
                 message=f'update_shares_outstanding {stock.symbol}: {str(e)[:400]}'
