@@ -261,7 +261,7 @@ const ShortPositionDetailsPage: React.FC = () => {
           {data.avgShortPrice != null && (
             <p className="text-xs sm:text-sm mt-1.5 tabular-nums text-gray-700 dark:text-gray-200 flex items-center justify-center gap-1">
               <span>{t("Avg. short price")}{": "}</span>
-              <span className="font-bold text-sm sm:text-base">{data.avgShortPrice.toFixed(0)} DKK</span>
+              <span className="font-bold text-sm sm:text-base">~{data.avgShortPrice.toFixed(0)} DKK</span>
               <span className="relative group">
                 <button
                   type="button"
