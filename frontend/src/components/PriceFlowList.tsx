@@ -45,7 +45,7 @@ const PriceFlowList: React.FC<{ buckets: PriceFlowBucket[] }> = ({
           <p className="text-xs text-gray-600 dark:text-gray-300 italic px-2 py-1.5">
             {t("price_flow_date_note")}
           </p>
-          <div className="sticky top-0 z-10 bg-white dark:bg-[#121212]">
+          <div className="lg:sticky lg:top-0 lg:z-10 bg-white dark:bg-[#121212]">
             <div className="grid grid-cols-[1fr_1fr_1fr_1fr] gap-2 px-2 py-2 text-[11px] sm:text-xs font-semibold text-gray-600 dark:text-gray-300 border-b border-gray-200 dark:border-gray-700">
               <span>{t("Price")}</span>
               <span className="text-right">{t("Shorted")}</span>
