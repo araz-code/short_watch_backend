@@ -153,12 +153,49 @@ def _compute_price_flow(stock, chart_values):
 
 
 def _compute_avg_short_price(price_flow):
-    """Weighted average opening price across all price-flow buckets (shorted only)."""
-    total_shorted = sum(b['sharesShorted'] for b in price_flow)
-    if total_shorted == 0:
+    """Weighted average entry price of remaining open short positions.
+
+    Coverage is applied LIFO by price: excess coverage at any price level
+    reduces the highest-priced shorted lots first. Rationale: when prices
+    drop and shorts cover, they are most likely closing their most profitable
+    (highest-priced) positions first.
+
+    Example: short 100 at 100, cover 90 at 90, short 10 at 110.
+    Old approach (wrong): (100*100 + 10*110) / 110 = 100.9
+    This approach (correct): 10 remain at 100 + 10 at 110 = avg 105
+    """
+    if not price_flow:
         return None
-    weighted = sum((b['priceLow'] + b['priceHigh']) / 2 * b['sharesShorted'] for b in price_flow)
-    return round(weighted / total_shorted, 2)
+
+    buckets = sorted(price_flow, key=lambda b: b['priceLow'])
+
+    shorted_lots = []   # [midprice, remaining_shares], mutable
+    orphan_coverage = 0
+
+    for b in buckets:
+        mid = (b['priceLow'] + b['priceHigh']) / 2
+        net = b['sharesShorted'] - b['sharesCovered']
+        if net > 0:
+            shorted_lots.append([mid, net])
+        elif net < 0:
+            orphan_coverage += -net
+
+    if not shorted_lots:
+        return None
+
+    for lot in reversed(shorted_lots):
+        if orphan_coverage <= 0:
+            break
+        reduction = min(orphan_coverage, lot[1])
+        lot[1] -= reduction
+        orphan_coverage -= reduction
+
+    total = sum(lot[1] for lot in shorted_lots if lot[1] > 0)
+    if total == 0:
+        return None
+
+    weighted = sum(lot[0] * lot[1] for lot in shorted_lots if lot[1] > 0)
+    return round(weighted / total, 2)
 
 
 def _compute_avg_net_price(price_flow):
