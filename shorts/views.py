@@ -77,7 +77,8 @@ ShortedStockDetailsResponse = namedtuple('ShortedStockDetailsResponse', ['chartV
                                                                          'velocity30d',
                                                                          'priceFlow',
                                                                          'sharesOutstanding',
-                                                                         'avgShortPrice'])
+                                                                         'avgShortPrice',
+                                                                         'avgNetPrice'])
 
 
 PRICE_FLOW_BUCKET_WIDTH = 0.02  # 2% wide log-spaced buckets
@@ -145,12 +146,23 @@ def _compute_price_flow(stock, chart_values):
 
 
 def _compute_avg_short_price(price_flow):
-    """Weighted average opening price across all price-flow buckets."""
+    """Weighted average opening price across all price-flow buckets (shorted only)."""
     total_shorted = sum(b['sharesShorted'] for b in price_flow)
     if total_shorted == 0:
         return None
     weighted = sum((b['priceLow'] + b['priceHigh']) / 2 * b['sharesShorted'] for b in price_flow)
     return round(weighted / total_shorted, 2)
+
+
+def _compute_avg_net_price(price_flow):
+    """Weighted average price for remaining open shorts (net > 0 buckets only)."""
+    net_buckets = [(b, b['sharesShorted'] - b['sharesCovered']) for b in price_flow]
+    net_buckets = [(b, net) for b, net in net_buckets if net > 0]
+    total_net = sum(net for _, net in net_buckets)
+    if total_net == 0:
+        return None
+    weighted = sum((b['priceLow'] + b['priceHigh']) / 2 * net for b, net in net_buckets)
+    return round(weighted / total_net, 2)
 
 
 def _compute_derived_metrics(chart_values, historic):
@@ -261,17 +273,18 @@ class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
 
             price_flow = _compute_price_flow(stock, chart_values)
             avg_short_price = _compute_avg_short_price(price_flow)
+            avg_net_price = _compute_avg_net_price(price_flow)
 
             response = ShortedStockDetailsResponse(chart_values, historic, sellers, announcements,
                                                    percentile, velocity_7d, velocity_30d, price_flow,
-                                                   stock.shares_outstanding, avg_short_price)
+                                                   stock.shares_outstanding, avg_short_price, avg_net_price)
 
             data = self.get_serializer(response).data
             cache.set(cache_key, data, timeout=CACHE_TIMEOUT_SECONDS)
             return Response(data)
         except Stock.DoesNotExist:
             return Response(self.get_serializer(
-                ShortedStockDetailsResponse([], [], [], [], None, None, None, [], None, None)).data)
+                ShortedStockDetailsResponse([], [], [], [], None, None, None, [], None, None, None)).data)
 
 
 class ShortSellerView(ReadOnlyModelViewSet):

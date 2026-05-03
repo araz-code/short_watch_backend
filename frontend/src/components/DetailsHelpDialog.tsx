@@ -39,9 +39,14 @@ const DetailsHelpDialog: React.FC<{ onClose: () => void; sharesOutstanding: numb
           <h2 className="text-sm font-semibold uppercase tracking-wider text-blue-500 dark:text-blue-400 mb-2">
             {t("Avg. short price")}
           </h2>
-          <p>
+          <p className="mb-2">
             {t(
               "The average price at which all short positions were opened, weighted by the number of shares shorted at each price level. A stock trading well above this number means shorts are currently sitting at a loss."
+            )}
+          </p>
+          <p>
+            {t(
+              "The net avg. price refines this further: It only includes price levels where more shares were shorted than covered, meaning it reflects where the still-open shorts are concentrated. If a price level has already been fully covered, it no longer influences this number."
             )}
           </p>
         </section>
