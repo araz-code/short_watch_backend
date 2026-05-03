@@ -78,7 +78,7 @@ const PriceFlowList: React.FC<{ buckets: PriceFlowBucket[] }> = ({
               return (
                 <li
                   key={`${b.priceLow}-${b.priceHigh}`}
-                  className={`grid grid-cols-[1fr_1fr_1fr_1fr] gap-2 mx-2 my-1 px-4 py-1 rounded-lg text-xs sm:text-sm tabular-nums border border-gray-100 dark:border-gray-800 shadow-xs ${rowBg}`}
+                  className={`grid grid-cols-[1fr_1fr_1fr_1fr] gap-2 mx-2 my-1 px-4 py-1 rounded-lg text-xs sm:text-sm tabular-nums border border-gray-100 dark:border-gray-800 shadow-xs hover:shadow-md hover:-translate-y-px transition-all duration-200 ${rowBg}`}
                 >
                   <span className="flex flex-col leading-tight">
                     <span className="text-gray-800 dark:text-gray-200 font-medium">
