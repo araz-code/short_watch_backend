@@ -44,10 +44,8 @@ const DetailsHelpDialog: React.FC<{ onClose: () => void; sharesOutstanding: numb
               "The average price at which all short positions were opened, weighted by the number of shares shorted at each price level. A stock trading well above this number means shorts are currently sitting at a loss."
             )}
           </p>
-          <p>
-            {t(
-              "The net avg. price refines this further: It only includes price levels where more shares were shorted than covered, meaning it reflects where the still-open shorts are concentrated. If a price level has already been fully covered, it no longer influences this number."
-            )}
+          <p className="text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 rounded-md px-3 py-2 font-medium">
+            {t("All prices are estimates. The actual execution price is never publicly disclosed.")}
           </p>
         </section>
 
@@ -111,6 +109,9 @@ const DetailsHelpDialog: React.FC<{ onClose: () => void; sharesOutstanding: numb
               </span>
             </p>
           )}
+          <p className="mt-3 text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 rounded-md px-3 py-2 font-medium">
+            {t("All prices are estimates. The actual execution price is never publicly disclosed.")}
+          </p>
         </section>
 
         <section>

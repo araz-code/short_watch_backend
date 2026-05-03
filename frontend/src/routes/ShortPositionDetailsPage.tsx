@@ -258,23 +258,10 @@ const ShortPositionDetailsPage: React.FC = () => {
               </div>
             </div>
           )}
-          {(data.avgShortPrice != null || data.avgNetPrice != null) && (
+          {data.avgShortPrice != null && (
             <p className="text-[11px] sm:text-sm mt-1.5 tabular-nums text-gray-700 dark:text-gray-200">
-              {data.avgShortPrice != null && (
-                <>
-                  <span>{t("Avg. short price")}{": "}</span>
-                  <span className="font-bold text-sm sm:text-base">{data.avgShortPrice.toFixed(0)} DKK</span>
-                </>
-              )}
-              {data.avgShortPrice != null && data.avgNetPrice != null && (
-                <span className="mx-2 text-gray-300 dark:text-gray-600">·</span>
-              )}
-              {data.avgNetPrice != null && (
-                <>
-                  <span>{t("Avg. net price")}{": "}</span>
-                  <span className="font-bold text-sm sm:text-base">{data.avgNetPrice.toFixed(0)} DKK</span>
-                </>
-              )}
+              <span>{t("Avg. short price")}{": "}</span>
+              <span className="font-bold text-sm sm:text-base">{data.avgShortPrice.toFixed(0)} DKK</span>
             </p>
           )}
           <p className="text-[11px] sm:text-sm text-gray-400 dark:text-gray-500 mt-0.5 tabular-nums">

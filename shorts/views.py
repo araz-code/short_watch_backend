@@ -155,14 +155,13 @@ def _compute_avg_short_price(price_flow):
 
 
 def _compute_avg_net_price(price_flow):
-    """Weighted average price for remaining open shorts (net > 0 buckets only)."""
-    net_buckets = [(b, b['sharesShorted'] - b['sharesCovered']) for b in price_flow]
-    net_buckets = [(b, net) for b, net in net_buckets if net > 0]
-    total_net = sum(net for _, net in net_buckets)
-    if total_net == 0:
+    """Price level where the most shares were shorted (peak of the shorted distribution)."""
+    if not price_flow:
         return None
-    weighted = sum((b['priceLow'] + b['priceHigh']) / 2 * net for b, net in net_buckets)
-    return round(weighted / total_net, 2)
+    peak = max(price_flow, key=lambda b: b['sharesShorted'])
+    if peak['sharesShorted'] == 0:
+        return None
+    return round((peak['priceLow'] + peak['priceHigh']) / 2, 2)
 
 
 def _compute_derived_metrics(chart_values, historic):
