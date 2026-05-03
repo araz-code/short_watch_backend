@@ -373,6 +373,7 @@ const ShortPositionDetailsPage: React.FC = () => {
                   type="button"
                   onClick={() => {
                     trackEvent("help_dialog_open", { page: "position_details" });
+                    fetch(`${HOST}/stats/visit/help-details/`).catch(() => {});
                     setShowHelp(true);
                   }}
                   aria-label={t("Help")}

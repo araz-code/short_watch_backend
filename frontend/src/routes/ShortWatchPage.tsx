@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchShortPositions } from "../apis/ShortPositionAPI";
+import { fetchShortPositions, HOST } from "../apis/ShortPositionAPI";
 import PageTemplate from "../components/PageTemplate";
 import ShortPositionRow from "../components/ShortPositionRow";
 import PricePoint from "../models/PricePoint";
@@ -65,6 +65,7 @@ const ShortWatchPage: React.FC = () => {
 
   const handleHelp = () => {
     trackEvent("help_dialog_open", { page: "short_watch" });
+    fetch(`${HOST}/stats/visit/help-short-watch/`).catch(() => {});
     setShowHelp(true);
   };
 
