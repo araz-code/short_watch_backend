@@ -197,7 +197,7 @@ _STATIC_PAGE_FILTERS = (
 
 def static_page_hits() -> list:
     """Per-URL count and most recent lookup for static-page hits."""
-    queryset = RequestLog.objects.filter(_STATIC_PAGE_FILTERS).filter(_no_bots_q()) \
+    queryset = RequestLog.objects.filter(_STATIC_PAGE_FILTERS, timestamp__date=timezone.localdate()).filter(_no_bots_q()) \
         .values('requested_url') \
         .annotate(count=Count('id')) \
         .annotate(max_timestamp=Max('timestamp')) \
