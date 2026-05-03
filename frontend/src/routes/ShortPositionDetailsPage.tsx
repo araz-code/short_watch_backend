@@ -227,36 +227,48 @@ const ShortPositionDetailsPage: React.FC = () => {
             {data.historic.length > 0 && data.historic[0].name}
           </h1>
           {data.historic.length > 0 && (
-            <div className="flex items-center justify-center gap-2 mt-1">
-              <span className="text-5xl sm:text-6xl font-bold tabular-nums leading-none">
-                {data.historic[0].value.toFixed(2)}%
-              </span>
-              <div className="flex flex-col gap-1">
-                {data.historic.length > 1 && (
-                  <ChangeIndicator
-                    value={data.historic[0].value}
-                    prevValue={data.historic[1].value}
-                    small
-                  />
-                )}
-                {data.velocity7d != null && (
-                  <span className={`text-[11px] rounded px-1 py-px font-medium tabular-nums w-full text-center ${
-                    data.velocity7d > 0
-                      ? "bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400"
-                      : data.velocity7d < 0
-                      ? "bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400"
-                      : "bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400"
-                  }`}>
-                    {data.velocity7d >= 0 ? "+" : ""}{data.velocity7d.toFixed(2)}% 7d
-                  </span>
-                )}
-                {data.percentileAllTime != null && (
-                  <span className="text-[11px] rounded px-1 py-px font-medium tabular-nums w-full text-center bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400">
-                    {Math.round(data.percentileAllTime)}. {t("percentile")}
-                  </span>
-                )}
+            <>
+              <div className="flex items-center justify-center gap-2 mt-1">
+                <span className="text-5xl sm:text-6xl font-bold tabular-nums leading-none">
+                  {data.historic[0].value.toFixed(2)}%
+                </span>
+                <div className="flex flex-col gap-1">
+                  {data.historic.length > 1 && (
+                    <ChangeIndicator
+                      value={data.historic[0].value}
+                      prevValue={data.historic[1].value}
+                      small
+                    />
+                  )}
+                  {data.velocity7d != null && (
+                    <span className={`text-[11px] rounded px-1 py-px font-medium tabular-nums w-full text-center ${
+                      data.velocity7d > 0
+                        ? "bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400"
+                        : data.velocity7d < 0
+                        ? "bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400"
+                        : "bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400"
+                    }`}>
+                      {data.velocity7d >= 0 ? "+" : ""}{data.velocity7d.toFixed(2)}% 7d
+                    </span>
+                  )}
+                </div>
               </div>
-            </div>
+              {(data.percentileAllTime != null || data.daysToCover != null) && (
+                <div className="flex items-center justify-center gap-2 mt-1.5 flex-wrap text-xs sm:text-sm tabular-nums text-gray-600 dark:text-gray-300">
+                  {data.percentileAllTime != null && (
+                    <span className="rounded px-1.5 py-px font-medium bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400">
+                      {Math.round(data.percentileAllTime)}. {t("percentile")}
+                    </span>
+                  )}
+                  {data.percentileAllTime != null && data.daysToCover != null && (
+                    <span aria-hidden="true">·</span>
+                  )}
+                  {data.daysToCover != null && (
+                    <span>{data.daysToCover.toFixed(1)} {t("days to cover")}</span>
+                  )}
+                </div>
+              )}
+            </>
           )}
           <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mt-0.5 tabular-nums">
             {data.sellers ? data.sellers.length : 0} {(data.sellers?.length ?? 0) === 1 ? t("large seller") : t("large sellers")}

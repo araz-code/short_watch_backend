@@ -76,7 +76,8 @@ ShortedStockDetailsResponse = namedtuple('ShortedStockDetailsResponse', ['chartV
                                                                          'velocity7d',
                                                                          'velocity30d',
                                                                          'priceFlow',
-                                                                         'sharesOutstanding'])
+                                                                         'sharesOutstanding',
+                                                                         'daysToCover'])
 
 
 PRICE_FLOW_BUCKET_WIDTH = 0.02  # 2% wide log-spaced buckets
@@ -148,6 +149,22 @@ def _compute_price_flow(stock, chart_values):
             'lastCoveredDate': buckets[idx]['last_covered_date'],
         })
     return result
+
+
+def _compute_days_to_cover(historic, chart_values, shares_outstanding):
+    """Days it would take all shorts to cover at the 30-day average daily volume.
+
+    days_to_cover = shares_shorted / avg_daily_volume
+    """
+    if not historic or not chart_values or not shares_outstanding:
+        return None
+    shares_shorted = historic[0].value / 100 * shares_outstanding
+    recent = sorted(chart_values, key=lambda c: c.date, reverse=True)[:30]
+    volumes = [c.volume for c in recent if c.volume and c.volume > 0]
+    if not volumes:
+        return None
+    avg_volume = sum(volumes) / len(volumes)
+    return round(shares_shorted / avg_volume, 1)
 
 
 def _compute_derived_metrics(chart_values, historic):
@@ -257,17 +274,18 @@ class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
             percentile, velocity_7d, velocity_30d = _compute_derived_metrics(chart_values, historic)
 
             price_flow = _compute_price_flow(stock, chart_values)
+            days_to_cover = _compute_days_to_cover(historic, chart_values, stock.shares_outstanding)
 
             response = ShortedStockDetailsResponse(chart_values, historic, sellers, announcements,
                                                    percentile, velocity_7d, velocity_30d, price_flow,
-                                                   stock.shares_outstanding)
+                                                   stock.shares_outstanding, days_to_cover)
 
             data = self.get_serializer(response).data
             cache.set(cache_key, data, timeout=CACHE_TIMEOUT_SECONDS)
             return Response(data)
         except Stock.DoesNotExist:
             return Response(self.get_serializer(
-                ShortedStockDetailsResponse([], [], [], [], None, None, None, [], None)).data)
+                ShortedStockDetailsResponse([], [], [], [], None, None, None, [], None, None)).data)
 
 
 class ShortSellerView(ReadOnlyModelViewSet):

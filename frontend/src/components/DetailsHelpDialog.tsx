@@ -37,6 +37,17 @@ const DetailsHelpDialog: React.FC<{ onClose: () => void; sharesOutstanding: numb
 
         <section>
           <h2 className="text-sm font-semibold uppercase tracking-wider text-blue-500 dark:text-blue-400 mb-2">
+            {t("Days to cover")}
+          </h2>
+          <p>
+            {t(
+              "Days to cover shows how many trading days it would take all short sellers to exit their positions if they traded at the 30-day average daily volume. A higher number means shorts are more trapped: covering quickly would move the market against them."
+            )}
+          </p>
+        </section>
+
+        <section>
+          <h2 className="text-sm font-semibold uppercase tracking-wider text-blue-500 dark:text-blue-400 mb-2">
             {t("The chart")}
           </h2>
           <p className="mb-3">
