@@ -5,13 +5,14 @@ import {
   faArrowsLeftRight,
 } from "@fortawesome/free-solid-svg-icons";
 
-const ChangeIndicator: React.FC<{ value: number; prevValue: number }> = ({
+const ChangeIndicator: React.FC<{ value: number; prevValue: number; small?: boolean }> = ({
   value,
   prevValue,
+  small,
 }) => {
   if (prevValue == undefined) {
     return (
-      <IndicatorWrapper bgColor="bg-amber-50 dark:bg-amber-900/20" textColor="text-amber-600 dark:text-amber-400">
+      <IndicatorWrapper bgColor="bg-amber-50 dark:bg-amber-900/20" textColor="text-amber-600 dark:text-amber-400" small={small}>
         <FontAwesomeIcon
           icon={faArrowsLeftRight}
           className="text-[14px]"
@@ -28,6 +29,7 @@ const ChangeIndicator: React.FC<{ value: number; prevValue: number }> = ({
     <IndicatorWrapper
       bgColor={isNegative ? "bg-red-50 dark:bg-red-900/20" : "bg-emerald-50 dark:bg-emerald-900/20"}
       textColor={isNegative ? "text-red-600 dark:text-red-400" : "text-emerald-600 dark:text-emerald-400"}
+      small={small}
     >
       <FontAwesomeIcon
         icon={isNegative ? faArrowTrendUp : faArrowTrendDown}
@@ -41,10 +43,11 @@ const ChangeIndicator: React.FC<{ value: number; prevValue: number }> = ({
 const IndicatorWrapper: React.FC<{
   bgColor: string;
   textColor: string;
+  small?: boolean;
   children: React.ReactNode;
-}> = ({ bgColor, textColor, children }) => (
+}> = ({ bgColor, textColor, small, children }) => (
   <div
-    className={`text-xs ${bgColor} ${textColor} rounded-md px-1.5 py-0.5 font-medium flex items-center space-x-1`}
+    className={`${small ? "text-[11px] rounded px-1 py-px w-full justify-center" : "text-xs rounded-md px-1.5 py-0.5"} ${bgColor} ${textColor} font-medium flex items-center space-x-1`}
   >
     {children}
   </div>

@@ -228,31 +228,35 @@ const ShortPositionDetailsPage: React.FC = () => {
           </h1>
           {data.historic.length > 0 && (
             <div className="flex items-center justify-center gap-2 mt-1">
-              <span className="text-2xl sm:text-4xl font-bold tabular-nums leading-none">
+              <span className="text-5xl sm:text-6xl font-bold tabular-nums leading-none">
                 {data.historic[0].value.toFixed(2)}%
               </span>
-              {data.historic.length > 1 && (
-                <ChangeIndicator
-                  value={data.historic[0].value}
-                  prevValue={data.historic[1].value}
-                />
-              )}
+              <div className="flex flex-col gap-1">
+                {data.historic.length > 1 && (
+                  <ChangeIndicator
+                    value={data.historic[0].value}
+                    prevValue={data.historic[1].value}
+                    small
+                  />
+                )}
+                {data.velocity7d != null && (
+                  <span className={`text-[11px] rounded px-1 py-px font-medium tabular-nums w-full text-center ${
+                    data.velocity7d > 0
+                      ? "bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400"
+                      : data.velocity7d < 0
+                      ? "bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400"
+                      : "bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400"
+                  }`}>
+                    {data.velocity7d >= 0 ? "+" : ""}{data.velocity7d.toFixed(2)}% 7d
+                  </span>
+                )}
+                {data.percentileAllTime != null && (
+                  <span className="text-[11px] rounded px-1 py-px font-medium tabular-nums w-full text-center bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400">
+                    {Math.round(data.percentileAllTime)}. {t("percentile")}
+                  </span>
+                )}
+              </div>
             </div>
-          )}
-          {(data.percentileAllTime != null || data.velocity7d != null) && (
-            <p className="text-[11px] sm:text-sm text-gray-500 dark:text-gray-400 mt-0.5 tabular-nums">
-              {data.percentileAllTime != null && (
-                <span className="text-yellow-500 dark:text-yellow-400 font-semibold">
-                  {Math.round(data.percentileAllTime)}{t("th percentile")}
-                </span>
-              )}
-              {data.percentileAllTime != null && data.velocity7d != null && (
-                <span className="inline-block w-px h-3 mx-2 bg-gray-300 dark:bg-gray-600 align-middle" />
-              )}
-              {data.velocity7d != null && (
-                <>{data.velocity7d >= 0 ? "+" : ""}{data.velocity7d.toFixed(2)}% 7d</>
-              )}
-            </p>
           )}
           {data.avgShortPrice != null && (
             <p className="text-[11px] sm:text-sm mt-1.5 tabular-nums">
@@ -264,12 +268,11 @@ const ShortPositionDetailsPage: React.FC = () => {
             {data.sellers ? data.sellers.length : 0} {(data.sellers?.length ?? 0) === 1 ? t("large seller") : t("large sellers")}
             {(data.sellers?.length ?? 0) > 0 && (
               <>
-                <span className="inline-block w-px h-3 mx-2 bg-gray-300 dark:bg-gray-600 align-middle" />
+                {" · "}
                 {(data.sellers as { value: number }[]).reduce((sum, s) => sum + (s.value ?? 0), 0).toFixed(2)}% {t("combined")}
               </>
             )}
           </p>
-          <div className="mt-2 sm:mt-3 mx-auto w-12 h-0.5 rounded-full bg-blue-500/40" />
         </div>
         <div className="flex flex-col flex-1 min-h-0">
           <div className="mb-3 shrink-0">
