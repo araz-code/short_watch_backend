@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import PageTemplate from "../components/PageTemplate";
-import image from "../static/mail-bird.webp";
+import image from "../static/mail-bird-2.webp";
 import { useEffect } from "react";
 import { trackPageView } from "../analytics";
 

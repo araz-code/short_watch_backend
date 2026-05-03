@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 440" width="440" height="440" role="img" aria-label="Bird delivering an envelope to a mailbox">
+  <defs>
+    <linearGradient id="bird-body" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6e9bff"></stop>
+      <stop offset="100%" stop-color="#2f6dff"></stop>
+    </linearGradient>
+    <linearGradient id="bird-belly" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#cdd9f7"></stop>
+      <stop offset="100%" stop-color="#9bb6f0"></stop>
+    </linearGradient>
+    <clipPath id="frame"><rect x="0" y="0" width="440" height="440" rx="20"></rect></clipPath>
+  </defs>
+
+  <g clip-path="url(#frame)">
+    
+    <rect width="440" height="440" fill="#f5f1e8"></rect>
+
+    
+    <circle cx="148" cy="218" r="110" fill="#2f6dff" fill-opacity="0.10"></circle>
+
+    
+    <ellipse cx="320" cy="380" rx="70" ry="6" fill="#0e1a40" fill-opacity="0.20"></ellipse>
+    <ellipse cx="150" cy="390" rx="42" ry="5" fill="#0e1a40" fill-opacity="0.14"></ellipse>
+
+    
+    <g transform="translate(266 222)" fill="none" stroke="#0e1a40" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="42" y="60" width="12" height="118" rx="2" fill="#0e1a40"></rect>
+      <rect x="20" y="170" width="56" height="8" rx="2" fill="#0e1a40"></rect>
+      <path d="M 0 22 Q 0 0 22 0 L 100 0 Q 122 0 122 22 L 122 76 L 0 76 Z" fill="#2f6dff"></path>
+      <path d="M 12 76 L 12 22 Q 12 12 22 12 L 22 76"></path>
+      <line x1="40" y1="38" x2="100" y2="38" stroke-width="4"></line>
+      <line x1="120" y1="20" x2="120" y2="48"></line>
+      <path d="M 122 20 L 144 20 L 138 30 L 144 40 L 122 40 Z" fill="#0e1a40"></path>
+    </g>
+
+    
+    <g transform="translate(240 154) rotate(-9)" fill="#f5f1e8" stroke="#0e1a40" stroke-width="3" stroke-linejoin="round">
+      <rect width="62" height="42" rx="4"></rect>
+      <path d="M 0 0 L 31 24 L 62 0" fill="none"></path>
+    </g>
+
+    
+    <g transform="translate(70 165)">
+      
+      <path d="M 4 64 L -32 46 L -22 76 Z" fill="#16245a"></path>
+      
+      <ellipse cx="58" cy="66" rx="56" ry="50" fill="url(#bird-body)"></ellipse>
+      
+      <ellipse cx="64" cy="80" rx="36" ry="28" fill="url(#bird-belly)"></ellipse>
+      
+      <circle cx="108" cy="32" r="32" fill="url(#bird-body)"></circle>
+      
+      <ellipse cx="98" cy="40" rx="10" ry="6" fill="#cdd9f7" fill-opacity="0.6"></ellipse>
+      
+      <path d="M 134 26 Q 156 32 134 40 Z" fill="#0e1a40"></path>
+      
+      <circle cx="116" cy="26" r="5" fill="#0e1a40"></circle>
+      <circle cx="118" cy="24" r="1.6" fill="#ffffff"></circle>
+      
+      <path d="M 38 46 Q 60 -10 90 22 Q 80 50 50 56 Z" fill="#16245a"></path>
+      <path d="M 52 36 Q 70 8 84 24" stroke="#2f6dff" stroke-width="2" fill="none" stroke-opacity="0.6"></path>
+      
+      <path d="M 60 114 L 60 130 M 76 114 L 76 130" stroke="#0e1a40" stroke-width="3.5" stroke-linecap="round"></path>
+    </g>
+
+    
+    <g stroke="#0e1a40" stroke-width="2.5" stroke-linecap="round" stroke-opacity="0.55">
+      <line x1="200" y1="120" x2="208" y2="116"></line>
+      <line x1="222" y1="108" x2="230" y2="106"></line>
+      <line x1="244" y1="104" x2="252" y2="106"></line>
+    </g>
+  </g>
+</svg>
