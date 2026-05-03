@@ -110,13 +110,6 @@ const ShortPositionDetailsPage: React.FC = () => {
     const tab = searchParams.get("tab");
     return (tab && TAB_PARAM_MAP[tab]) || detailOptions[0];
   });
-  const [priceTooltipOpen, setPriceTooltipOpen] = useState(false);
-  useEffect(() => {
-    if (!priceTooltipOpen) return;
-    const close = () => setPriceTooltipOpen(false);
-    document.addEventListener("click", close, { capture: true, once: true });
-    return () => document.removeEventListener("click", close, { capture: true });
-  }, [priceTooltipOpen]);
   const [selectedPeriod, setSelectedPeriod] = useState<string>(() => {
     const savedSelectedPeriod = localStorage.getItem("selectedPeriod");
     return savedSelectedPeriod && periodOptions.includes(savedSelectedPeriod)
@@ -265,34 +258,6 @@ const ShortPositionDetailsPage: React.FC = () => {
               </div>
             </div>
           )}
-          {data.avgShortPrice != null && (
-            <p className="text-xs sm:text-sm mt-1.5 tabular-nums text-gray-700 dark:text-gray-200 flex items-center justify-center gap-1">
-              <span>{t("Avg. short price")}{": "}</span>
-              <span className="font-bold text-sm sm:text-base">~{data.avgShortPrice.toFixed(0)} DKK</span>
-              <span className="relative">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setPriceTooltipOpen(o => !o);
-                    trackEvent("avg_price_info_click", { page: "position_details" });
-                    fetch(`${HOST}/stats/visit/avg-price-info/`).catch(() => {});
-                  }}
-                  className="p-3 -m-3 text-gray-500 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
-                  aria-label={t("Help")}
-                  aria-expanded={priceTooltipOpen}
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5">
-                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM8.94 6.94a.75.75 0 11-1.061-1.061 3 3 0 112.871 5.026v.345a.75.75 0 01-1.5 0v-.5c0-.72.57-1.172 1.081-1.287A1.5 1.5 0 108.94 6.94zM10 15a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
-                  </svg>
-                </button>
-                {priceTooltipOpen && (
-                  <span className="absolute bottom-full right-0 mb-2 w-64 max-w-[calc(100vw-2rem)] rounded-lg bg-amber-50 dark:bg-amber-950 text-amber-800 dark:text-amber-200 border border-amber-200 dark:border-amber-700 text-sm px-3 py-2 text-left z-50 shadow-lg">
-                    {t("avg_price_tooltip")}
-                  </span>
-                )}
-              </span>
-            </p>
-          )}
           <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mt-0.5 tabular-nums">
             {data.sellers ? data.sellers.length : 0} {(data.sellers?.length ?? 0) === 1 ? t("large seller") : t("large sellers")}
             {(data.sellers?.length ?? 0) > 0 && (
@@ -427,7 +392,7 @@ const ShortPositionDetailsPage: React.FC = () => {
                 {t("New feature")}
               </span>
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white leading-tight">
-                {t("Price flow & avg. price")}
+                {t("Price flow")}
               </h2>
               <p className="text-gray-700 dark:text-gray-200 text-base font-medium mt-1">
                 {t("Know where shorts are trapped")}
@@ -437,10 +402,6 @@ const ShortPositionDetailsPage: React.FC = () => {
               <div className="flex gap-3">
                 <span className="text-lg mt-0.5">📊</span>
                 <p>{t("The Price flow tab breaks down all disclosed short changes into 2%-wide price bands, so you can spot at what price the pressure is concentrated.")}</p>
-              </div>
-              <div className="flex gap-3">
-                <span className="text-lg mt-0.5">🎯</span>
-                <p>{t("The average entry price shown just below the short interest number gives you a quick read on whether shorts are currently sitting at a profit or a loss.")}</p>
               </div>
               <div className="flex gap-3">
                 <span className="text-lg mt-0.5">📈</span>

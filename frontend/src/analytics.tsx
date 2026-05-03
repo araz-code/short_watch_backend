@@ -30,8 +30,7 @@ export type AnalyticsEvent =
   | "cookie_consent_open"
   | "faq_question_open"
   | "faq_expand_all"
-  | "faq_collapse_all"
-  | "avg_price_info_click";
+  | "faq_collapse_all";
 
 type EventParams = Record<string, string | number | boolean | undefined>;
 

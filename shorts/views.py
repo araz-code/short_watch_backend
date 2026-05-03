@@ -76,9 +76,7 @@ ShortedStockDetailsResponse = namedtuple('ShortedStockDetailsResponse', ['chartV
                                                                          'velocity7d',
                                                                          'velocity30d',
                                                                          'priceFlow',
-                                                                         'sharesOutstanding',
-                                                                         'avgShortPrice',
-                                                                         'avgNetPrice'])
+                                                                         'sharesOutstanding'])
 
 
 PRICE_FLOW_BUCKET_WIDTH = 0.02  # 2% wide log-spaced buckets
@@ -150,62 +148,6 @@ def _compute_price_flow(stock, chart_values):
             'lastCoveredDate': buckets[idx]['last_covered_date'],
         })
     return result
-
-
-def _compute_avg_short_price(price_flow):
-    """Weighted average entry price of remaining open short positions.
-
-    Coverage is applied LIFO by price: excess coverage at any price level
-    reduces the highest-priced shorted lots first. Rationale: when prices
-    drop and shorts cover, they are most likely closing their most profitable
-    (highest-priced) positions first.
-
-    Example: short 100 at 100, cover 90 at 90, short 10 at 110.
-    Old approach (wrong): (100*100 + 10*110) / 110 = 100.9
-    This approach (correct): 10 remain at 100 + 10 at 110 = avg 105
-    """
-    if not price_flow:
-        return None
-
-    buckets = sorted(price_flow, key=lambda b: b['priceLow'])
-
-    shorted_lots = []   # [midprice, remaining_shares], mutable
-    orphan_coverage = 0
-
-    for b in buckets:
-        mid = (b['priceLow'] + b['priceHigh']) / 2
-        net = b['sharesShorted'] - b['sharesCovered']
-        if net > 0:
-            shorted_lots.append([mid, net])
-        elif net < 0:
-            orphan_coverage += -net
-
-    if not shorted_lots:
-        return None
-
-    for lot in reversed(shorted_lots):
-        if orphan_coverage <= 0:
-            break
-        reduction = min(orphan_coverage, lot[1])
-        lot[1] -= reduction
-        orphan_coverage -= reduction
-
-    total = sum(lot[1] for lot in shorted_lots if lot[1] > 0)
-    if total == 0:
-        return None
-
-    weighted = sum(lot[0] * lot[1] for lot in shorted_lots if lot[1] > 0)
-    return round(weighted / total, 2)
-
-
-def _compute_avg_net_price(price_flow):
-    """Price level where the most shares were shorted (peak of the shorted distribution)."""
-    if not price_flow:
-        return None
-    peak = max(price_flow, key=lambda b: b['sharesShorted'])
-    if peak['sharesShorted'] == 0:
-        return None
-    return round((peak['priceLow'] + peak['priceHigh']) / 2, 2)
 
 
 def _compute_derived_metrics(chart_values, historic):
@@ -315,19 +257,17 @@ class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
             percentile, velocity_7d, velocity_30d = _compute_derived_metrics(chart_values, historic)
 
             price_flow = _compute_price_flow(stock, chart_values)
-            avg_short_price = _compute_avg_short_price(price_flow)
-            avg_net_price = _compute_avg_net_price(price_flow)
 
             response = ShortedStockDetailsResponse(chart_values, historic, sellers, announcements,
                                                    percentile, velocity_7d, velocity_30d, price_flow,
-                                                   stock.shares_outstanding, avg_short_price, avg_net_price)
+                                                   stock.shares_outstanding)
 
             data = self.get_serializer(response).data
             cache.set(cache_key, data, timeout=CACHE_TIMEOUT_SECONDS)
             return Response(data)
         except Stock.DoesNotExist:
             return Response(self.get_serializer(
-                ShortedStockDetailsResponse([], [], [], [], None, None, None, [], None, None, None)).data)
+                ShortedStockDetailsResponse([], [], [], [], None, None, None, [], None)).data)
 
 
 class ShortSellerView(ReadOnlyModelViewSet):
