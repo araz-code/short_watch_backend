@@ -124,12 +124,12 @@ const ShortWatchPage: React.FC = () => {
           </p>
         )}
         {filteredData.length > 0 &&
-          sort(filteredData, selectedSorting).map((short: PricePoint) => {
+          sort(filteredData, selectedSorting).map((short: PricePoint, index: number) => {
             const showCheckmark = myList.includes(short.code) && !showMyList;
             return (
               <li key={`${short.code}-${short.timestamp}`}>
                 <Link to={`/short-watch-details?code=${short.code}`}>
-                  <ShortPositionRow {...short} showCheckmark={showCheckmark} />
+                  <ShortPositionRow {...short} showCheckmark={showCheckmark} isEven={index % 2 === 0} />
                 </Link>
               </li>
             );
@@ -179,7 +179,7 @@ const ShortWatchPage: React.FC = () => {
                   ref={searchElement}
                   value={searchTerm}
                   onChange={(event) => setSearchTerm(event.target.value)}
-                  className="w-full bg-gray-50 dark:bg-gray-800/50 border border-transparent focus:border-blue-400 dark:focus:border-blue-400 focus:bg-white dark:focus:bg-[#1e1e1e] pl-11 pr-10 py-2.5 rounded-xl text-base sm:text-sm text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-hidden focus:ring-2 focus:ring-blue-400/30 transition-colors"
+                  className="w-full bg-gray-50 dark:bg-gray-800/50 border border-transparent focus:border-blue-400 dark:focus:border-blue-400 focus:bg-white dark:focus:bg-[#1e1e1e] pl-11 pr-10 py-2.5 rounded-xl text-base sm:text-sm text-gray-900 dark:text-white placeholder:text-gray-600 dark:placeholder:text-gray-400 focus:outline-hidden focus:ring-2 focus:ring-blue-400/30 transition-colors"
                 />
                 {searchTerm && (
                   <button
@@ -205,7 +205,7 @@ const ShortWatchPage: React.FC = () => {
                       onSelectMenuItemChange={setSelectedSorting}
                     />
                     <button
-                      className="text-sm font-medium text-blue-500 border border-blue-300 dark:border-blue-700 ml-3 px-3 py-1.5 rounded-md hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors focus:ring-2 focus:ring-blue-300"
+                      className="text-sm font-medium text-blue-600 dark:text-blue-400 border border-blue-500 dark:border-blue-700 ml-3 px-3 py-1.5 rounded-md hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors focus:ring-2 focus:ring-blue-300"
                       onClick={() => {
                         trackEvent("filter_change", {
                           page: "short_watch",
@@ -220,7 +220,7 @@ const ShortWatchPage: React.FC = () => {
                     </button>
                   </div>
                   <button
-                    className="text-sm font-medium text-blue-500 border border-blue-300 dark:border-blue-700 px-3 py-1.5 rounded-md hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors focus:ring-2 focus:ring-blue-300"
+                    className="text-sm font-medium text-blue-600 dark:text-blue-400 border border-blue-500 dark:border-blue-700 px-3 py-1.5 rounded-md hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors focus:ring-2 focus:ring-blue-300"
                     onClick={handleHelp}
                   >
                     {t("Help")}

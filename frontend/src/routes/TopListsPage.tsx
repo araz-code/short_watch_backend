@@ -7,6 +7,7 @@ import ErrorBlock from "../components/UI/ErrorBlock";
 import LoadingIndicator from "../components/UI/LoadingIndicator";
 import { useTranslation } from "react-i18next";
 import { trackPageView } from "../analytics";
+import { formatNum } from "../utils/format";
 
 const medals = ["🥇", "🥈", "🥉"];
 
@@ -23,7 +24,7 @@ const RankList: React.FC<{
       <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
         {title}
       </h2>
-      <p className="text-xs text-gray-400 dark:text-gray-500 mb-4">
+      <p className="text-xs text-gray-600 dark:text-gray-400 mb-4">
         {subtitle}
       </p>
       <div className="space-y-2">
@@ -32,7 +33,7 @@ const RankList: React.FC<{
             key={stock.code}
             to={`/short-watch-details?code=${stock.code}`}
           >
-            <div className="flex items-center gap-4 px-4 py-3 rounded-lg bg-white dark:bg-[#1e1e1e] border border-gray-100 dark:border-gray-800 shadow-xs hover:shadow-md hover:-translate-y-px transition-all duration-200 mb-2">
+            <div className={`flex items-center gap-4 px-4 py-2 rounded-lg border border-gray-100 dark:border-gray-800 shadow-xs hover:shadow-md hover:-translate-y-px transition-all duration-200 mb-2 ${index % 2 === 0 ? "bg-white dark:bg-[#1e1e1e]" : "bg-gray-50 dark:bg-[#181818]"}`}>
               <span className="text-xl w-8 text-center shrink-0">
                 {index < 3 ? medals[index] : (
                   <span className="text-sm font-bold text-gray-400 dark:text-gray-500">
@@ -44,17 +45,18 @@ const RankList: React.FC<{
                 <p className="font-semibold text-gray-900 dark:text-white text-sm">
                   {stock.symbol}
                 </p>
-                <p className="text-xs text-gray-400 dark:text-gray-500 truncate">
+                <p className="text-xs text-gray-600 dark:text-gray-400 truncate">
                   {stock.name}
                 </p>
               </div>
               {renderExtra && renderExtra(stock, index)}
               <svg
-                className="w-4 h-4 text-gray-300 dark:text-gray-600 shrink-0"
+                className="w-4 h-4 text-gray-400 dark:text-gray-500 shrink-0"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
                 strokeWidth="2"
+                aria-hidden="true"
               >
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
               </svg>
@@ -103,8 +105,8 @@ const TopListsPage: React.FC = () => {
           subtitle={t("Top 10 highest short positions right now")}
           items={data.mostShorted}
           renderExtra={(stock) => (
-            <span className="text-sm font-semibold text-red-500 tabular-nums shrink-0">
-              {(stock as TopListShortedStock).value.toFixed(2)}%
+            <span className="text-sm font-semibold text-red-600 dark:text-red-400 tabular-nums shrink-0">
+              {formatNum((stock as TopListShortedStock).value, 2)}%
             </span>
           )}
         />
@@ -113,7 +115,7 @@ const TopListsPage: React.FC = () => {
           subtitle={t("Top 10 stocks with most position changes in the last 30 days")}
           items={data.mostActive}
           renderExtra={(stock) => (
-            <span className="text-xs text-gray-400 dark:text-gray-500 tabular-nums shrink-0">
+            <span className="text-xs text-gray-600 dark:text-gray-400 tabular-nums shrink-0">
               {(stock as TopListActiveStock).updates} {t("updates")}
             </span>
           )}
@@ -143,7 +145,7 @@ const TopListsPage: React.FC = () => {
               <h1 className="text-2xl lg:text-3xl dark:text-white">
                 {t("Top Lists")}
               </h1>
-              <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
+              <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">
                 {t("Based on activity from the last 30 days")}
               </p>
               <div className="mt-3 mx-auto w-12 h-0.5 rounded-full bg-blue-500/40" />

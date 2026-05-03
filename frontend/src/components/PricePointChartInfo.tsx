@@ -5,6 +5,7 @@ import ChartPricePoint from "../models/ChartPricePoint";
 import { formatTimestamp } from "../utils/dates";
 import { useTranslation } from "react-i18next";
 import { trackEvent } from "../analytics";
+import { formatNum } from "../utils/format";
 
 const Row: React.FC<{ label: string; value: string; sub?: string }> = ({
   label,
@@ -148,10 +149,10 @@ const PricePointChartInfo: React.FC<{
     changeLabel = t("No change");
     changeTone = "neutral";
   } else if (change > 0) {
-    changeLabel = `${t("Decreased by")} ${Math.abs(change).toFixed(2)}%`;
+    changeLabel = `${t("Decreased by")} ${formatNum(Math.abs(change), 2)}%`;
     changeTone = "down";
   } else {
-    changeLabel = `${t("Increased by")} ${Math.abs(change).toFixed(2)}%`;
+    changeLabel = `${t("Increased by")} ${formatNum(Math.abs(change), 2)}%`;
     changeTone = "up";
   }
 
@@ -246,35 +247,35 @@ const PricePointChartInfo: React.FC<{
             <div className="px-5 py-3">
               <Row
                 label={t("Period start")}
-                value={`${startValue.toFixed(2)}%`}
+                value={`${formatNum(startValue, 2)}%`}
               />
               <Row
                 label={t("Current")}
-                value={`${currentValue.toFixed(2)}%`}
+                value={`${formatNum(currentValue, 2)}%`}
                 sub={
                   currentVsAvg === 0
                     ? t("at average")
                     : currentVsAvg > 0
-                    ? `+${currentVsAvg.toFixed(2)}% ${t("above average")}`
-                    : `${currentVsAvg.toFixed(2)}% ${t("below average")}`
+                    ? `+${formatNum(currentVsAvg, 2)}% ${t("above average")}`
+                    : `${formatNum(currentVsAvg, 2)}% ${t("below average")}`
                 }
               />
               <Row
                 label={t("Lowest")}
-                value={`${lowestPoint.value.toFixed(2)}%`}
+                value={`${formatNum(lowestPoint.value, 2)}%`}
                 sub={formatTimestamp(lowestPoint.timestamp, "dateOnly")}
               />
               <Row
                 label={t("Highest")}
-                value={`${highestPoint.value.toFixed(2)}%`}
+                value={`${formatNum(highestPoint.value, 2)}%`}
                 sub={formatTimestamp(highestPoint.timestamp, "dateOnly")}
               />
-              <Row label={t("Range")} value={`${range.toFixed(2)}%`} />
-              <Row label={t("Average")} value={`${average.toFixed(2)}%`} />
-              <Row label={t("Median")} value={`${median.toFixed(2)}%`} />
+              <Row label={t("Range")} value={`${formatNum(range, 2)}%`} />
+              <Row label={t("Average")} value={`${formatNum(average, 2)}%`} />
+              <Row label={t("Median")} value={`${formatNum(median, 2)}%`} />
               <Row
                 label={t("Volatility")}
-                value={`±${volatility.toFixed(2)}%`}
+                value={`±${formatNum(volatility, 2)}%`}
               />
               <Row
                 label={t("Last change")}

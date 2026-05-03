@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { formatNum } from "../utils/format";
 
 export interface PriceFlowBucket {
   priceLow: number;
@@ -15,8 +16,8 @@ const formatDate = (iso: string): string => {
 };
 
 const formatShares = (n: number) => {
-  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(2)}M`;
-  if (n >= 1_000) return `${(n / 1_000).toFixed(1)}k`;
+  if (n >= 1_000_000) return `${formatNum(n / 1_000_000, 2)}M`;
+  if (n >= 1_000) return `${formatNum(n / 1_000, 1)}k`;
   return n.toLocaleString();
 };
 
@@ -72,12 +73,12 @@ const PriceFlowList: React.FC<{ buckets: PriceFlowBucket[] }> = ({
                     ? "bg-green-500/15 dark:bg-green-500/25"
                     : "";
               const rowBg = i % 2 === 0
-                ? "bg-white dark:bg-[#1a1a1a]"
-                : "bg-gray-50/60 dark:bg-[#161616]";
+                ? "bg-white dark:bg-[#1e1e1e]"
+                : "bg-gray-50 dark:bg-[#181818]";
               return (
                 <li
                   key={`${b.priceLow}-${b.priceHigh}`}
-                  className={`grid grid-cols-[1fr_1fr_1fr_1fr] gap-2 px-2 py-1.5 text-xs sm:text-sm tabular-nums ${rowBg}`}
+                  className={`grid grid-cols-[1fr_1fr_1fr_1fr] gap-2 mx-2 my-1 px-4 py-1 rounded-lg text-xs sm:text-sm tabular-nums border border-gray-100 dark:border-gray-800 shadow-xs ${rowBg}`}
                 >
                   <span className="flex flex-col leading-tight">
                     <span className="text-gray-800 dark:text-gray-200 font-medium">

@@ -94,7 +94,7 @@ const ShortSellerDetailsPage: React.FC = () => {
       <>
         <div className="text-center pb-4 dark:text-white shrink-0">
           <h1 className="text-xl">{data.name}</h1>
-          <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
+          <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">
             {t("Data on this page comes from announcements.")}{" "}
             {t("Danish FSA updates only positions above 0.5%.")}
           </p>
@@ -128,6 +128,7 @@ const ShortSellerDetailsPage: React.FC = () => {
                         <ShortSellerAnnouncementRow
                           {...announcement}
                           first={index === 0}
+                          isEven={index % 2 === 0}
                         />
                       </li>
                     ))}
@@ -154,7 +155,7 @@ const ShortSellerDetailsPage: React.FC = () => {
 
           <div className="lg:w-[900px] flex flex-col flex-1 min-h-0 lg:flex-initial">
             <button
-              className="text-blue-500 hover:text-blue-700 bg-transparent border-none text-base pl-4 pt-4 inline-flex items-center gap-1.5 focus:ring-2 focus:ring-blue-300 rounded-sm shrink-0 self-start"
+              className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 bg-transparent border-none text-base pl-4 pt-4 inline-flex items-center gap-1.5 focus:ring-2 focus:ring-blue-300 rounded-sm shrink-0 self-start"
               onClick={() => {
                 if (window.history.length > 1 && window.history.state.idx > 0) {
                   navigate(-1);

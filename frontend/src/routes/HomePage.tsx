@@ -15,6 +15,7 @@ import { trackEvent, trackPageView } from "../analytics";
 import { useQuery } from "@tanstack/react-query";
 import { fetchStats, ShortStats } from "../apis/ShortPositionAPI";
 import { formatTimestamp } from "../utils/dates";
+import { formatNum } from "../utils/format";
 
 const cards = [
   {
@@ -202,7 +203,7 @@ const HomePage: React.FC = () => {
                 {stats.mostShorted && (
                   <div className="text-center">
                     <p className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white tabular-nums">
-                      {stats.mostShorted.value.toFixed(2)}%
+                      {formatNum(stats.mostShorted.value, 2)}%
                     </p>
                     <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 mt-1">
                       {t("Most shorted")} · {stats.mostShorted.symbol}
@@ -217,7 +218,7 @@ const HomePage: React.FC = () => {
                           }`}
                         >
                           {diff > 0 ? "+" : ""}
-                          {diff.toFixed(2)}% {t("vs. 7d")}
+                          {formatNum(diff, 2)}% {t("vs. 7d")}
                         </p>
                       );
                     })()}

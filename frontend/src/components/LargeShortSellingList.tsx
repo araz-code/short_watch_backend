@@ -26,9 +26,9 @@ const LargeShortSellingList: React.FC<{ sellings: LargestShortSelling[] }> = ({
             </div>
           )}
           {sellings.length > 0 &&
-            sellings.map((seller: LargestShortSelling) => (
+            sellings.map((seller: LargestShortSelling, index: number) => (
               <li key={`${seller.name}-${seller.date}`}>
-                <LargeShortSellingRow {...seller} />
+                <LargeShortSellingRow {...seller} isEven={index % 2 === 0} />
               </li>
             ))}
         </ul>

@@ -102,11 +102,11 @@ const ShortSellersPage: React.FC = () => {
           </p>
         )}
         {filteredData.length > 0 &&
-          sort(filteredData, selectedSorting).map((seller: ShortSeller) => {
+          sort(filteredData, selectedSorting).map((seller: ShortSeller, index: number) => {
             return (
               <li key={`${seller.id}`}>
                 <Link to={`/short-seller-details?seller=${seller.id}`}>
-                  <ShortSellerRow {...seller} />
+                  <ShortSellerRow {...seller} isEven={index % 2 === 0} />
                 </Link>
               </li>
             );
@@ -127,7 +127,7 @@ const ShortSellersPage: React.FC = () => {
               <h1 className="text-2xl lg:text-3xl dark:text-white text-center">
                 {t("Short sellers")}
               </h1>
-              <p className="text-xs text-gray-400 dark:text-gray-500 text-center mt-2">
+              <p className="text-xs text-gray-600 dark:text-gray-400 text-center mt-2">
                 {t("The Danish FSA only publishes the names of short")}{" "}
                 {t("sellers with a position of 0.5% or greater.")}
               </p>
@@ -160,7 +160,7 @@ const ShortSellersPage: React.FC = () => {
                   ref={searchElement}
                   value={searchTerm}
                   onChange={(event) => setSearchTerm(event.target.value)}
-                  className="w-full bg-gray-50 dark:bg-gray-800/50 border border-transparent focus:border-blue-400 dark:focus:border-blue-400 focus:bg-white dark:focus:bg-[#1e1e1e] pl-11 pr-10 py-2.5 rounded-xl text-base sm:text-sm text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-hidden focus:ring-2 focus:ring-blue-400/30 transition-colors"
+                  className="w-full bg-gray-50 dark:bg-gray-800/50 border border-transparent focus:border-blue-400 dark:focus:border-blue-400 focus:bg-white dark:focus:bg-[#1e1e1e] pl-11 pr-10 py-2.5 rounded-xl text-base sm:text-sm text-gray-900 dark:text-white placeholder:text-gray-600 dark:placeholder:text-gray-400 focus:outline-hidden focus:ring-2 focus:ring-blue-400/30 transition-colors"
                 />
                 {searchTerm && (
                   <button
@@ -186,7 +186,7 @@ const ShortSellersPage: React.FC = () => {
                       onSelectMenuItemChange={setSelectedSorting}
                     />
                     <button
-                      className="text-sm font-medium text-blue-500 border border-blue-300 dark:border-blue-700 ml-3 px-3 py-1.5 rounded-md hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors focus:ring-2 focus:ring-blue-300"
+                      className="text-sm font-medium text-blue-600 dark:text-blue-400 border border-blue-500 dark:border-blue-700 ml-3 px-3 py-1.5 rounded-md hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors focus:ring-2 focus:ring-blue-300"
                       onClick={() => {
                         trackEvent("filter_change", {
                           page: "short_sellers",

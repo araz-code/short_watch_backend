@@ -17,9 +17,20 @@ import ChangeIndicator from "../components/UI/ChangeIndicator";
 import PriceFlowList from "../components/PriceFlowList";
 import DetailsHelpDialog from "../components/DetailsHelpDialog";
 import Modal from "../components/UI/Modal";
+import { formatNum } from "../utils/format";
 
 const detailOptions = ["Historic data", "Largest sellers", "Price flow"];
 const periodOptions = ["1W", "1M", "3M", "6M", "YTD", "Max"];
+
+const enOrdinalSuffixes: Record<string, string> = { one: "st", two: "nd", few: "rd", other: "th" };
+
+function formatOrdinal(n: number, locale: string): string {
+  const rules = new Intl.PluralRules(locale, { type: "ordinal" });
+  if (locale.startsWith("en")) {
+    return `${n}${enOrdinalSuffixes[rules.select(n)] ?? "th"}`;
+  }
+  return `${n}.`;
+}
 
 const processChartValues = (
   pricePoints: ChartPricePoint[],
@@ -103,7 +114,7 @@ const TAB_REVERSE_MAP: Record<string, string> = Object.fromEntries(
 );
 
 const ShortPositionDetailsPage: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const [selectedDetailOption, setSelectedDetailOption] = useState(() => {
@@ -228,9 +239,9 @@ const ShortPositionDetailsPage: React.FC = () => {
           </h1>
           {data.historic.length > 0 && (
             <>
-              <div className="flex items-center justify-center gap-2 mt-1">
-                <span className="text-5xl sm:text-6xl font-bold tabular-nums leading-none">
-                  {data.historic[0].value.toFixed(2)}%
+              <div className="flex items-center justify-center gap-4 mt-1">
+                <span className="text-4xl sm:text-5xl font-bold tabular-nums leading-none">
+                  {formatNum(data.historic[0].value, 2)}%
                 </span>
                 <div className="flex flex-col gap-1">
                   {data.historic.length > 1 && (
@@ -243,12 +254,12 @@ const ShortPositionDetailsPage: React.FC = () => {
                   {data.velocity7d != null && (
                     <span className={`text-[11px] rounded px-1 py-px font-medium tabular-nums w-full text-center ${
                       data.velocity7d > 0
-                        ? "bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400"
+                        ? "bg-red-500/10 dark:bg-red-500/25 text-red-600 dark:text-red-400"
                         : data.velocity7d < 0
-                        ? "bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400"
+                        ? "bg-emerald-500/10 dark:bg-emerald-500/25 text-emerald-600 dark:text-emerald-400"
                         : "bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400"
                     }`}>
-                      {data.velocity7d >= 0 ? "+" : ""}{data.velocity7d.toFixed(2)}% 7d
+                      {data.velocity7d >= 0 ? "+" : ""}{formatNum(data.velocity7d, 2)}% 7d
                     </span>
                   )}
                 </div>
@@ -256,15 +267,15 @@ const ShortPositionDetailsPage: React.FC = () => {
               {(data.percentileAllTime != null || data.daysToCover != null) && (
                 <div className="flex items-center justify-center gap-2 mt-1.5 flex-wrap text-xs sm:text-sm tabular-nums text-gray-600 dark:text-gray-300">
                   {data.percentileAllTime != null && (
-                    <span className="rounded px-1.5 py-px font-medium bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400">
-                      {Math.round(data.percentileAllTime)}. {t("percentile")}
+                    <span className="rounded px-1.5 py-px font-medium bg-amber-500/10 dark:bg-amber-500/25 text-amber-600 dark:text-amber-400">
+                      {formatOrdinal(Math.round(data.percentileAllTime), i18n.language)} {t("percentile")}
                     </span>
                   )}
                   {data.percentileAllTime != null && data.daysToCover != null && (
                     <span aria-hidden="true">·</span>
                   )}
                   {data.daysToCover != null && (
-                    <span>{data.daysToCover.toFixed(1)} {t("days to cover")}</span>
+                    <span>{formatNum(data.daysToCover, 1)} {t("days to cover")}</span>
                   )}
                 </div>
               )}
@@ -275,7 +286,7 @@ const ShortPositionDetailsPage: React.FC = () => {
             {(data.sellers?.length ?? 0) > 0 && (
               <>
                 {" · "}
-                {(data.sellers as { value: number }[]).reduce((sum, s) => sum + (s.value ?? 0), 0).toFixed(2)}% {t("combined")}
+                {formatNum((data.sellers as { value: number }[]).reduce((sum, s) => sum + (s.value ?? 0), 0), 2)}% {t("combined")}
               </>
             )}
           </p>

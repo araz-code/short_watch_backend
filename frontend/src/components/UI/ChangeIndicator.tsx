@@ -4,6 +4,7 @@ import {
   faArrowTrendDown,
   faArrowsLeftRight,
 } from "@fortawesome/free-solid-svg-icons";
+import { formatNum } from "../../utils/format";
 
 const ChangeIndicator: React.FC<{ value: number; prevValue: number; small?: boolean }> = ({
   value,
@@ -12,7 +13,7 @@ const ChangeIndicator: React.FC<{ value: number; prevValue: number; small?: bool
 }) => {
   if (prevValue == undefined) {
     return (
-      <IndicatorWrapper bgColor="bg-amber-50 dark:bg-amber-900/20" textColor="text-amber-600 dark:text-amber-400" small={small} ariaLabel="Initial value">
+      <IndicatorWrapper bgColor="bg-amber-500/10 dark:bg-amber-500/25" textColor="text-amber-600 dark:text-amber-400" small={small} ariaLabel="Initial value">
         <FontAwesomeIcon
           icon={faArrowsLeftRight}
           className="text-[14px]"
@@ -25,11 +26,11 @@ const ChangeIndicator: React.FC<{ value: number; prevValue: number; small?: bool
 
   const change = prevValue - value;
   const isNegative = change < 0;
-  const absChange = Math.abs(change).toFixed(2);
+  const absChange = formatNum(Math.abs(change), 2);
 
   return (
     <IndicatorWrapper
-      bgColor={isNegative ? "bg-red-50 dark:bg-red-900/20" : "bg-emerald-50 dark:bg-emerald-900/20"}
+      bgColor={isNegative ? "bg-red-500/10 dark:bg-red-500/25" : "bg-emerald-500/10 dark:bg-emerald-500/25"}
       textColor={isNegative ? "text-red-600 dark:text-red-400" : "text-emerald-600 dark:text-emerald-400"}
       small={small}
       ariaLabel={`${isNegative ? "Increased" : "Decreased"} by ${absChange}%`}

@@ -23,6 +23,7 @@ import {
   ValueType,
 } from "recharts/types/component/DefaultTooltipContent";
 import { trackEvent } from "../analytics";
+import { formatNum } from "../utils/format";
 
 const CustomTooltip: React.FC<TooltipContentProps<ValueType, NameType>> = ({
   active,
@@ -35,12 +36,10 @@ const CustomTooltip: React.FC<TooltipContentProps<ValueType, NameType>> = ({
         <p className="text-[11px] text-gray-400 dark:text-gray-500 text-center mb-1">
           {`${formatTimestamp(String(label), "dateOnly")}`}
         </p>
-        <p className="text-center font-bold text-lg tabular-nums">{`${(+(
-          payload[0].value ?? 0
-        )).toFixed(2)}%`}</p>
+        <p className="text-center font-bold text-lg tabular-nums">{`${formatNum(+(payload[0].value ?? 0), 2)}%`}</p>
         {payload[1] && payload[1].value != null && (
           <p className="text-center text-sm text-purple-500 dark:text-purple-400 mt-0.5 tabular-nums">
-            {`${(+(payload[1].value ?? 0)).toFixed(2)} DKK`}
+            {`${formatNum(+(payload[1].value ?? 0), 2)} DKK`}
           </p>
         )}
         {payload[2] && payload[2].value != null && (
@@ -236,7 +235,7 @@ const PricePointChart: React.FC<{
             }
           >
             {periodChange > 0 ? "+" : ""}
-            {periodChange.toFixed(2)}%
+            {formatNum(periodChange, 2)}%
           </span>
           <span className="text-gray-600 dark:text-gray-300">
             {" "}
@@ -280,7 +279,7 @@ const PricePointChart: React.FC<{
             type="number"
             unit="%"
             tick={{ fontSize: 11, fill: "#bbb", dx: -5 }}
-            tickFormatter={(value) => value.toFixed(1)}
+            tickFormatter={(value) => formatNum(value, 1)}
             allowDecimals={true}
             orientation="right"
             domain={[minY, maxY]}
@@ -294,7 +293,7 @@ const PricePointChart: React.FC<{
               dataKey="close"
               unit="DKK"
               tick={{ fontSize: 11, fill: "#bbb" }}
-              tickFormatter={(value) => value.toFixed(0)}
+              tickFormatter={(value) => formatNum(value, 0)}
               orientation="left"
               type="number"
               yAxisId="2"
@@ -374,8 +373,8 @@ const PricePointChart: React.FC<{
               <Bar
                 dataKey="volume"
                 yAxisId="3"
-                fill={isDarkMode ? "#d1d5db" : "#9ca3af"}
-                opacity={isDarkMode ? 0.5 : 0.3}
+                fill={isDarkMode ? "#d1d5db" : "#6b7280"}
+                opacity={isDarkMode ? 0.6 : 0.5}
                 isAnimationActive={false}
                 name={t("Volume")}
               />
@@ -405,14 +404,14 @@ const PricePointChart: React.FC<{
                 {t("Price")}
               </span>
               <span className="flex items-center gap-1.5">
-                <span className="w-3 h-2 rounded-xs bg-gray-300 dark:bg-gray-600 inline-block" />
+                <span className="w-3 h-3 rounded-sm bg-gray-400 dark:bg-gray-500 inline-block" />
                 {t("Volume")}
               </span>
               {priceFlow && priceFlow.length > 0 && (
                 <span className="flex items-center gap-1.5">
                   <span className="inline-flex items-center gap-[1px]">
-                    <span className="w-2 h-2 bg-red-500/45 inline-block" />
-                    <span className="w-2 h-2 bg-green-500/45 inline-block" />
+                    <span className="w-2 h-3 bg-red-500/70 inline-block" />
+                    <span className="w-2 h-3 bg-green-500/70 inline-block" />
                   </span>
                   {t("Flow")}
                 </span>

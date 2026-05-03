@@ -10,7 +10,7 @@ const PricePointList: React.FC<{ pricePoints: [PricePoint] }> = ({
         <ul className="mx-4">
           {pricePoints.map((short: PricePoint, index: number) => (
             <li key={short.timestamp}>
-              <PricePointRow {...short} isFirst={index === 0} />
+              <PricePointRow {...short} isFirst={index === 0} isEven={index % 2 === 0} />
             </li>
           ))}
         </ul>

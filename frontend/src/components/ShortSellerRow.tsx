@@ -1,16 +1,17 @@
 import ShortSeller from "../models/ShortSeller";
 import ChangeIndicator from "./UI/ChangeIndicator";
 import { formatTimestamp } from "../utils/dates";
+import { formatNum } from "../utils/format";
 
-const ShortSellerRow: React.FC<ShortSeller> = (props) => {
-  const { name, current, previous, lastUpdated } = props;
+const ShortSellerRow: React.FC<ShortSeller & { isEven: boolean }> = (props) => {
+  const { name, current, previous, lastUpdated, isEven } = props;
 
   return (
-    <div className="mx-2 my-1.5 px-4 py-4 rounded-lg bg-white dark:bg-[#1e1e1e] shadow-xs hover:shadow-md hover:-translate-y-px transition-all duration-200 dark:text-white border border-gray-100 dark:border-gray-800">
+    <div className={`mx-2 my-1 px-4 py-3 rounded-lg shadow-xs hover:shadow-md hover:-translate-y-px transition-all duration-200 dark:text-white border border-gray-100 dark:border-gray-800 ${isEven ? "bg-white dark:bg-[#1e1e1e]" : "bg-gray-50 dark:bg-[#181818]"}`}>
       {/* Header: name + date */}
       <div className="flex items-center justify-between mb-3">
         <div className="font-semibold text-base">{name}</div>
-        <div className="text-xs text-gray-400 dark:text-gray-500 shrink-0 ml-4">
+        <div className="text-xs text-gray-600 dark:text-gray-400 shrink-0 ml-4">
           {formatTimestamp(lastUpdated, "dateOnly")}
         </div>
       </div>
@@ -25,7 +26,7 @@ const ShortSellerRow: React.FC<ShortSeller> = (props) => {
             >
               <span className="font-medium">{item.stockSymbol}</span>
               <span className="tabular-nums text-gray-600 dark:text-gray-300">
-                {`${Math.abs(item.value).toFixed(2)}%`}
+                {`${formatNum(Math.abs(item.value), 2)}%`}
               </span>
               <ChangeIndicator value={item.value} prevValue={item.prevValue} />
             </div>
@@ -39,7 +40,7 @@ const ShortSellerRow: React.FC<ShortSeller> = (props) => {
           {previous.map((item, index) => (
             <span
               key={index}
-              className="text-xs text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-[#282828] rounded-sm px-2 py-0.5"
+              className="text-xs text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-[#282828] rounded-sm px-2 py-0.5"
             >
               {item}
             </span>
