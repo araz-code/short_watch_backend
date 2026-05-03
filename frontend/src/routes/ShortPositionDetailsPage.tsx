@@ -286,7 +286,7 @@ const ShortPositionDetailsPage: React.FC = () => {
                   </svg>
                 </button>
                 {priceTooltipOpen && (
-                  <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 rounded-lg bg-amber-50 dark:bg-amber-950 text-amber-800 dark:text-amber-200 border border-amber-200 dark:border-amber-700 text-sm px-3 py-2 text-left z-50 shadow-lg">
+                  <span className="absolute bottom-full right-0 mb-2 w-64 max-w-[calc(100vw-2rem)] rounded-lg bg-amber-50 dark:bg-amber-950 text-amber-800 dark:text-amber-200 border border-amber-200 dark:border-amber-700 text-sm px-3 py-2 text-left z-50 shadow-lg">
                     {t("avg_price_tooltip")}
                   </span>
                 )}
