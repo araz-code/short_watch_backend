@@ -58,6 +58,7 @@
     "Tap the Help button for a full explanation.": "Tap the Help button for a full explanation.",
     "Got it": "Got it",
     "Avg. short price": "Shorters est. avg.",
+    "avg_price_tooltip": "Estimated average price at which shorts opened their positions, weighted by shares shorted at each price level. This is an estimate because the actual execution price is never publicly disclosed.",
     "Avg. net price": "Concentrated at",
     "The net avg. price refines this further: It only includes price levels where more shares were shorted than covered, meaning it reflects where the still-open shorts are concentrated. If a price level has already been fully covered, it no longer influences this number.": "\"Concentrated at\" shows the price level where the most shares were shorted, regardless of covering. It is the peak of the shorted distribution and indicates where short interest is densest.",
     "All prices are estimates. The actual execution price is never publicly disclosed.": "All prices are estimates. The actual execution price is never publicly disclosed.",

@@ -58,6 +58,7 @@
     "Tap the Help button for a full explanation.": "Tryk på Hjælp-knappen for en fuld forklaring.",
     "Got it": "Forstået",
     "Avg. short price": "Shorternes est. gns.",
+    "avg_price_tooltip": "Estimeret gennemsnitskurs, som shorts åbnede deres positioner til, vægtet efter antal shortede aktier på hvert kursniveau. Dette er et estimat, da den faktiske handelskurs aldrig offentliggøres.",
     "Avg. net price": "Koncentreret ved",
     "The net avg. price refines this further: It only includes price levels where more shares were shorted than covered, meaning it reflects where the still-open shorts are concentrated. If a price level has already been fully covered, it no longer influences this number.": "\"Koncentreret ved\" viser det kursniveau, hvor flest aktier er blevet shortet, uanset dækning. Det er toppen af shortfordelingen og angiver, hvor shortinteressen er størst.",
     "All prices are estimates. The actual execution price is never publicly disclosed.": "Alle kurser er estimater. Den faktiske handelskurs offentliggøres aldrig.",
