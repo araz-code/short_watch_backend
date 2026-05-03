@@ -125,11 +125,16 @@ def _compute_price_flow(stock, chart_values):
         delta_shares = delta_pct / 100.0 * shares_out
         price = typical_price(prev)
         idx = int(math.log(price / min_price) / log_step)
-        b = buckets.setdefault(idx, {'shorted': 0.0, 'covered': 0.0})
+        b = buckets.setdefault(idx, {'shorted': 0.0, 'covered': 0.0,
+                                      'last_shorted_date': None, 'last_covered_date': None})
         if delta_shares > 0:
             b['shorted'] += delta_shares
+            if b['last_shorted_date'] is None or cur.date > b['last_shorted_date']:
+                b['last_shorted_date'] = cur.date
         elif delta_shares < 0:
             b['covered'] += -delta_shares
+            if b['last_covered_date'] is None or cur.date > b['last_covered_date']:
+                b['last_covered_date'] = cur.date
         prev = cur
 
     result = []
@@ -141,6 +146,8 @@ def _compute_price_flow(stock, chart_values):
             'priceHigh': round(high, 2),
             'sharesShorted': int(round(buckets[idx]['shorted'])),
             'sharesCovered': int(round(buckets[idx]['covered'])),
+            'lastShortedDate': buckets[idx]['last_shorted_date'],
+            'lastCoveredDate': buckets[idx]['last_covered_date'],
         })
     return result
 

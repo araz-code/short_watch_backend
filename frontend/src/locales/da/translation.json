@@ -87,6 +87,7 @@
     "For each day where the aggregate short percentage changes, the change is converted into a number of shares (delta % × total shares outstanding). Because Danish disclosures must be filed by 15:30 the trading day after the trade, the trade itself is attributed to the previous trading day's closing price. Each delta is then placed in a 2%-wide price band.": "For hver dag hvor den samlede shortprocent ændres, omregnes ændringen til et antal aktier (delta % × samlet antal udstedte aktier). Da danske indberetninger skal være indsendt senest kl. 15:30 handelsdagen efter handlen, henføres selve handlen til den foregående handelsdags typiske kurs (gennemsnit af høj, lav og lukkekurs), som er en bedre tilnærmelse af den gennemsnitlige handelskurs end lukkekursen alene. Hver ændring placeres derefter i et kursinterval på 2%.",
     "Star to follow": "Stjernemarkér for at følge",
     "Tap the yellow star in the top right to add this stock to your personal list. From the main page you can then filter to only the stocks you starred.": "Tryk på den gule stjerne øverst til højre for at tilføje aktien til din personlige liste. På forsiden kan du derefter filtrere, så kun dine stjernemarkerede aktier vises.",
+    "price_flow_date_note": "Datoer viser hvornår hvert kursniveau sidst var aktivt",
     "Not enough data to compute price flow.": "Ikke nok data til at beregne prisstrøm.",
     "Explore short positions over time, tables and charts included.": "Udforsk shortpositioner over tid, både i tabeller og grafer.",
     "Short sellers": "Shortsælgere",

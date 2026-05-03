@@ -79,6 +79,8 @@ class PriceFlowBucketSerializer(serializers.Serializer):
     priceHigh = serializers.FloatField()
     sharesShorted = serializers.IntegerField()
     sharesCovered = serializers.IntegerField()
+    lastShortedDate = serializers.DateField(allow_null=True, required=False)
+    lastCoveredDate = serializers.DateField(allow_null=True, required=False)
 
 
 class ShortPositionDetailSerializer(serializers.Serializer):

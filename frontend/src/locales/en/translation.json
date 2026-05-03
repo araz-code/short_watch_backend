@@ -87,6 +87,7 @@
     "For each day where the aggregate short percentage changes, the change is converted into a number of shares (delta % × total shares outstanding). Because Danish disclosures must be filed by 15:30 the trading day after the trade, the trade itself is attributed to the previous trading day's closing price. Each delta is then placed in a 2%-wide price band.": "For each day where the aggregate short percentage changes, the change is converted into a number of shares (delta % × total shares outstanding). Because Danish disclosures must be filed by 15:30 the trading day after the trade, the trade itself is attributed to the previous trading day's typical price (average of high, low, and closing price), which is a closer approximation of the average traded price than closing price alone. Each delta is then placed in a 2%-wide price band.",
     "Star to follow": "Star to follow",
     "Tap the yellow star in the top right to add this stock to your personal list. From the main page you can then filter to only the stocks you starred.": "Tap the yellow star in the top right to add this stock to your personal list. From the main page you can then filter to only the stocks you starred.",
+    "price_flow_date_note": "Dates show when each price level was last active",
     "Not enough data to compute price flow.": "Not enough data to compute price flow.",
     "Explore short positions over time, tables and charts included.": "Explore short positions over time, tables and charts included.",
     "Short sellers": "Short sellers",
