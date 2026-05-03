@@ -306,7 +306,7 @@ const ShortPositionDetailsPage: React.FC = () => {
               }
             />
           </div>
-          <div className="mb-4 flex justify-center gap-6 border-b border-gray-200 dark:border-gray-700 shrink-0">
+          <div className="mb-1 flex justify-center gap-6 border-b border-gray-200 dark:border-gray-700 shrink-0">
             {detailOptions.map((option) => (
               <button
                 key={option}

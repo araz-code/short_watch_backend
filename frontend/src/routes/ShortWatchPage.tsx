@@ -228,7 +228,7 @@ const ShortWatchPage: React.FC = () => {
                 </div>
               </div>
               <div className="flex-1 min-h-0 overflow-y-auto [@media(max-height:900px)_and_(orientation:landscape)]:flex-none [@media(max-height:900px)_and_(orientation:landscape)]:overflow-visible">
-                <p className="text-xs pl-2 dark:text-white">
+                <p className="text-xs pl-2 italic text-gray-600 dark:text-gray-300">
                   {t("You can get more details by clicking on a row")}
                 </p>
                 {content}

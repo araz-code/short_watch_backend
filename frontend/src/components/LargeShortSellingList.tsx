@@ -11,7 +11,7 @@ const LargeShortSellingList: React.FC<{ sellings: LargestShortSelling[] }> = ({
     <div className="flex-1 min-h-0 [@media(max-height:900px)_and_(orientation:landscape)]:flex-none">
       <div className="overflow-y-auto h-full [@media(max-height:900px)_and_(orientation:landscape)]:overflow-visible [@media(max-height:900px)_and_(orientation:landscape)]:h-auto">
         {sellings.length !== 0 && (
-          <p className="text-xs pl-6 dark:text-white">
+          <p className="text-xs pl-6 italic text-gray-600 dark:text-gray-300">
             {t("You can get more details by clicking on a row")}
           </p>
         )}

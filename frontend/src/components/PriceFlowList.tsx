@@ -43,11 +43,11 @@ const PriceFlowList: React.FC<{ buckets: PriceFlowBucket[] }> = ({
     <div className="flex-1 min-h-0 [@media(max-height:900px)_and_(orientation:landscape)]:flex-none">
       <div className="overflow-y-auto h-full [@media(max-height:900px)_and_(orientation:landscape)]:overflow-visible [@media(max-height:900px)_and_(orientation:landscape)]:h-auto">
         <div className="mx-4">
-          <p className="text-xs text-gray-600 dark:text-gray-300 italic px-2 py-1.5">
+          <p className="text-xs text-gray-600 dark:text-gray-300 italic px-2 pt-0.5 pb-1.5">
             {t("price_flow_date_note")}
           </p>
           <div className="lg:sticky lg:top-0 lg:z-10 bg-white dark:bg-[#121212]">
-            <div className="grid grid-cols-[1fr_1fr_1fr_1fr] gap-2 px-2 py-2 text-[11px] sm:text-xs font-semibold text-gray-600 dark:text-gray-300 border-b border-gray-200 dark:border-gray-700">
+            <div className="grid grid-cols-[1fr_1fr_1fr_1fr] gap-2 mx-2 px-4 py-2 text-[11px] sm:text-xs font-semibold text-gray-600 dark:text-gray-300 border-b border-gray-200 dark:border-gray-700">
               <span>{t("Price")}</span>
               <span className="text-right">{t("Shorted")}</span>
               <span className="text-right">{t("Covered")}</span>
