@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /stats/
+
+Sitemap: https://www.zirium.dk/sitemap.xml

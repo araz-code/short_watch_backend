@@ -259,7 +259,7 @@ const ShortPositionDetailsPage: React.FC = () => {
             </div>
           )}
           {data.avgShortPrice != null && (
-            <p className="text-[11px] sm:text-sm mt-1.5 tabular-nums text-gray-700 dark:text-gray-200 flex items-center justify-center gap-1">
+            <p className="text-xs sm:text-sm mt-1.5 tabular-nums text-gray-700 dark:text-gray-200 flex items-center justify-center gap-1">
               <span>{t("Avg. short price")}{": "}</span>
               <span className="font-bold text-sm sm:text-base">{data.avgShortPrice.toFixed(0)} DKK</span>
               <span className="relative group">
@@ -269,7 +269,7 @@ const ShortPositionDetailsPage: React.FC = () => {
                     trackEvent("avg_price_info_click", { page: "position_details" });
                     fetch(`${HOST}/stats/visit/avg-price-info/`).catch(() => {});
                   }}
-                  className="text-gray-400 dark:text-gray-500 hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
+                  className="p-3 -m-3 text-gray-500 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
                   aria-label={t("Help")}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5">
@@ -282,7 +282,7 @@ const ShortPositionDetailsPage: React.FC = () => {
               </span>
             </p>
           )}
-          <p className="text-[11px] sm:text-sm text-gray-400 dark:text-gray-500 mt-0.5 tabular-nums">
+          <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mt-0.5 tabular-nums">
             {data.sellers ? data.sellers.length : 0} {(data.sellers?.length ?? 0) === 1 ? t("large seller") : t("large sellers")}
             {(data.sellers?.length ?? 0) > 0 && (
               <>
@@ -312,10 +312,10 @@ const ShortPositionDetailsPage: React.FC = () => {
               <button
                 key={option}
                 onClick={() => setSelectedDetailOption(option)}
-                className={`pb-2 text-xs sm:text-sm font-medium transition-colors duration-200 border-b-2 -mb-px ${
+                className={`pt-2 pb-3 text-xs sm:text-sm font-medium transition-colors duration-200 border-b-2 -mb-px ${
                   selectedDetailOption === option
                     ? "border-blue-500 text-blue-600 dark:text-blue-400"
-                    : "border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                    : "border-transparent text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100"
                 }`}
               >
                 {t(option)}
@@ -353,7 +353,7 @@ const ShortPositionDetailsPage: React.FC = () => {
           <div className="lg:w-[900px] flex flex-col flex-1 min-h-0 lg:flex-initial">
             <div className="flex place-content-between shrink-0">
               <button
-                className="text-blue-500 hover:text-blue-700 bg-transparent border-none text-base pl-4 pt-4 inline-flex items-center gap-1.5 focus:ring-2 focus:ring-blue-300 rounded-sm"
+                className="text-blue-500 hover:text-blue-700 bg-transparent border-none text-base p-4 inline-flex items-center gap-1.5 focus:ring-2 focus:ring-blue-300 rounded-sm min-h-[44px] min-w-[44px]"
                 onClick={() => {
                   if (
                     window.history.length > 1 &&
@@ -412,7 +412,7 @@ const ShortPositionDetailsPage: React.FC = () => {
         >
           <div className="space-y-4">
             <div className="text-center pt-1 pb-2">
-              <span className="inline-block text-xs font-semibold uppercase tracking-widest text-blue-500 bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-full mb-3">
+              <span className="inline-block text-xs font-semibold uppercase tracking-widest text-blue-700 bg-blue-50 dark:text-blue-200 dark:bg-blue-900/30 px-3 py-1 rounded-full mb-3">
                 {t("New feature")}
               </span>
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white leading-tight">

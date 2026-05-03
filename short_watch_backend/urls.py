@@ -75,15 +75,7 @@ urlpatterns = [
          {'path': 'images/apple-touch-icon-152x152.png', 'document_root': settings.STATIC_ROOT}),
     path('apple-touch-icon-180x180.png', serve,
          {'path': 'images/apple-touch-icon-180x180.png', 'document_root': settings.STATIC_ROOT}),
-    path('robots.txt', lambda r: HttpResponse(
-        "User-agent: *\n"
-        "Allow: /\n"
-        "Disallow: /admin/\n"
-        "Disallow: /stats/\n"
-        "Disallow: /v*/\n"
-        "\n",
-        content_type="text/plain"
-    )),
+    path('robots.txt', serve, {'path': 'robots.txt', 'document_root': FRONTEND_DIST}),
     path('sitemap.xml', lambda r: HttpResponse(
         '<?xml version="1.0" encoding="UTF-8"?>\n'
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'

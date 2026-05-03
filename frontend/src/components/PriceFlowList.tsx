@@ -46,7 +46,7 @@ const PriceFlowList: React.FC<{ buckets: PriceFlowBucket[] }> = ({
             {t("price_flow_date_note")}
           </p>
           <div className="sticky top-0 z-10 bg-white dark:bg-[#121212]">
-            <div className="grid grid-cols-[1fr_1fr_1fr_1fr] gap-2 px-2 py-2 text-[11px] sm:text-xs font-semibold text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
+            <div className="grid grid-cols-[1fr_1fr_1fr_1fr] gap-2 px-2 py-2 text-[11px] sm:text-xs font-semibold text-gray-600 dark:text-gray-300 border-b border-gray-200 dark:border-gray-700">
               <span>{t("Price")}</span>
               <span className="text-right">{t("Shorted")}</span>
               <span className="text-right">{t("Covered")}</span>
@@ -83,7 +83,7 @@ const PriceFlowList: React.FC<{ buckets: PriceFlowBucket[] }> = ({
                     <span className="text-gray-800 dark:text-gray-200 font-medium">
                       {Math.round((b.priceLow + b.priceHigh) / 2)}
                     </span>
-                    <span className="text-[10px] sm:text-[11px] text-gray-600 dark:text-gray-300">
+                    <span className="text-[11px] sm:text-xs text-gray-600 dark:text-gray-300">
                       {Math.round(b.priceLow)}–{Math.round(b.priceHigh)}
                     </span>
                   </span>
@@ -96,7 +96,7 @@ const PriceFlowList: React.FC<{ buckets: PriceFlowBucket[] }> = ({
                     <span className="relative flex flex-col items-end leading-tight">
                       <span className="text-red-600 dark:text-red-400">{formatShares(b.sharesShorted)}</span>
                       {b.lastShortedDate && (
-                        <span className="text-[11px] text-gray-600 dark:text-gray-300">{formatDate(b.lastShortedDate)}</span>
+                        <span className="text-[11px] text-gray-600 dark:text-gray-200">{formatDate(b.lastShortedDate)}</span>
                       )}
                     </span>
                   </div>
@@ -109,7 +109,7 @@ const PriceFlowList: React.FC<{ buckets: PriceFlowBucket[] }> = ({
                     <span className="relative flex flex-col items-end leading-tight">
                       <span className="text-green-600 dark:text-green-400">{formatShares(b.sharesCovered)}</span>
                       {b.lastCoveredDate && (
-                        <span className="text-[11px] text-gray-600 dark:text-gray-300">{formatDate(b.lastCoveredDate)}</span>
+                        <span className="text-[11px] text-gray-600 dark:text-gray-200">{formatDate(b.lastCoveredDate)}</span>
                       )}
                     </span>
                   </div>

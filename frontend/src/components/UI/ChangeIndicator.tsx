@@ -12,10 +12,11 @@ const ChangeIndicator: React.FC<{ value: number; prevValue: number; small?: bool
 }) => {
   if (prevValue == undefined) {
     return (
-      <IndicatorWrapper bgColor="bg-amber-50 dark:bg-amber-900/20" textColor="text-amber-600 dark:text-amber-400" small={small}>
+      <IndicatorWrapper bgColor="bg-amber-50 dark:bg-amber-900/20" textColor="text-amber-600 dark:text-amber-400" small={small} ariaLabel="Initial value">
         <FontAwesomeIcon
           icon={faArrowsLeftRight}
           className="text-[14px]"
+          aria-hidden="true"
         />
         <div>Initial</div>
       </IndicatorWrapper>
@@ -24,18 +25,21 @@ const ChangeIndicator: React.FC<{ value: number; prevValue: number; small?: bool
 
   const change = prevValue - value;
   const isNegative = change < 0;
+  const absChange = Math.abs(change).toFixed(2);
 
   return (
     <IndicatorWrapper
       bgColor={isNegative ? "bg-red-50 dark:bg-red-900/20" : "bg-emerald-50 dark:bg-emerald-900/20"}
       textColor={isNegative ? "text-red-600 dark:text-red-400" : "text-emerald-600 dark:text-emerald-400"}
       small={small}
+      ariaLabel={`${isNegative ? "Increased" : "Decreased"} by ${absChange}%`}
     >
       <FontAwesomeIcon
         icon={isNegative ? faArrowTrendUp : faArrowTrendDown}
         className="text-[14px]"
+        aria-hidden="true"
       />
-      <div className="tabular-nums">{`${Math.abs(change).toFixed(2)}%`}</div>
+      <div className="tabular-nums">{`${absChange}%`}</div>
     </IndicatorWrapper>
   );
 };
@@ -44,10 +48,13 @@ const IndicatorWrapper: React.FC<{
   bgColor: string;
   textColor: string;
   small?: boolean;
+  ariaLabel: string;
   children: React.ReactNode;
-}> = ({ bgColor, textColor, small, children }) => (
+}> = ({ bgColor, textColor, small, ariaLabel, children }) => (
   <div
-    className={`${small ? "text-[11px] rounded px-1 py-px w-full justify-center" : "text-xs rounded-md px-1.5 py-0.5"} ${bgColor} ${textColor} font-medium flex items-center space-x-1`}
+    role="img"
+    aria-label={ariaLabel}
+    className={`${small ? "text-xs rounded px-1 py-px w-full justify-center" : "text-xs rounded-md px-1.5 py-0.5"} ${bgColor} ${textColor} font-medium flex items-center space-x-1`}
   >
     {children}
   </div>

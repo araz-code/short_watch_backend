@@ -21,7 +21,7 @@ const RadioButtonToggle: React.FC<{
             className={`cursor-pointer select-none border-b-2 pb-0.5 transition-colors duration-150 ${
               isSelected
                 ? "text-blue-500 border-blue-500"
-                : "text-gray-400 dark:text-gray-500 border-transparent hover:text-gray-600 dark:hover:text-gray-300"
+                : "text-gray-600 dark:text-gray-300 border-transparent hover:text-gray-800 dark:hover:text-gray-100"
             }`}
           >
             <input

@@ -238,7 +238,7 @@ const PricePointChart: React.FC<{
             {periodChange > 0 ? "+" : ""}
             {periodChange.toFixed(2)}%
           </span>
-          <span className="text-gray-400 dark:text-gray-500">
+          <span className="text-gray-600 dark:text-gray-300">
             {" "}
             {t("in period")}
           </span>
@@ -386,7 +386,7 @@ const PricePointChart: React.FC<{
 
       {/* Legend */}
       <div className="flex items-center px-5 mt-2">
-        <div className="flex items-center gap-3 text-xs text-gray-400 dark:text-gray-500">
+        <div className="flex items-center gap-3 text-xs text-gray-600 dark:text-gray-300">
           <span className="flex items-center gap-1.5">
             <span className="w-3 h-[3px] rounded-full bg-[#007AFF] inline-block" />
             Short
