@@ -30,9 +30,6 @@ const PriceFlowList: React.FC<{ buckets: PriceFlowBucket[] }> = ({
   const maxFlow = Math.max(
     ...sorted.map((b) => Math.max(b.sharesShorted, b.sharesCovered))
   );
-  const maxNet = Math.max(
-    ...sorted.map((b) => Math.abs(b.sharesShorted - b.sharesCovered))
-  );
 
   return (
     <div className="flex-1 min-h-0 [@media(max-height:900px)_and_(orientation:landscape)]:flex-none">
@@ -45,27 +42,30 @@ const PriceFlowList: React.FC<{ buckets: PriceFlowBucket[] }> = ({
             <span className="text-right">{t("Net")}</span>
           </div>
           <ul>
-            {sorted.map((b) => {
+            {sorted.map((b, i) => {
               const net = b.sharesShorted - b.sharesCovered;
               const shortedPct = maxFlow > 0 ? (b.sharesShorted / maxFlow) * 100 : 0;
               const coveredPct = maxFlow > 0 ? (b.sharesCovered / maxFlow) * 100 : 0;
-              const netPct = maxNet > 0 ? (Math.abs(net) / maxNet) * 100 : 0;
+              const netPct = maxFlow > 0 ? (Math.abs(net) / maxFlow) * 100 : 0;
               const netColor =
                 net > 0
                   ? "text-red-600 dark:text-red-400"
                   : net < 0
                     ? "text-green-600 dark:text-green-400"
                     : "text-gray-500 dark:text-gray-400";
-              const netBg =
+              const netBarColor =
                 net > 0
                   ? "bg-red-500/15 dark:bg-red-500/25"
                   : net < 0
                     ? "bg-green-500/15 dark:bg-green-500/25"
                     : "";
+              const rowBg = i % 2 === 0
+                ? "bg-white dark:bg-[#1a1a1a]"
+                : "bg-gray-50/60 dark:bg-[#161616]";
               return (
                 <li
                   key={`${b.priceLow}-${b.priceHigh}`}
-                  className="grid grid-cols-[1fr_1fr_1fr_1fr] gap-2 px-2 py-1.5 text-xs sm:text-sm tabular-nums border-b border-gray-100 dark:border-gray-800"
+                  className={`grid grid-cols-[1fr_1fr_1fr_1fr] gap-2 px-2 py-1.5 text-xs sm:text-sm tabular-nums ${rowBg}`}
                 >
                   <span className="flex flex-col leading-tight">
                     <span className="text-gray-800 dark:text-gray-200 font-medium">
@@ -75,8 +75,8 @@ const PriceFlowList: React.FC<{ buckets: PriceFlowBucket[] }> = ({
                       {Math.round(b.priceLow)}–{Math.round(b.priceHigh)}
                     </span>
                   </span>
-                  <span className="text-right relative">
-                    <span
+                  <div className="relative w-full flex items-center justify-end">
+                    <div
                       className="absolute inset-y-0 right-0 bg-red-500/15 dark:bg-red-500/25 rounded"
                       style={{ width: `${shortedPct}%` }}
                       aria-hidden="true"
@@ -84,9 +84,9 @@ const PriceFlowList: React.FC<{ buckets: PriceFlowBucket[] }> = ({
                     <span className="relative text-red-600 dark:text-red-400">
                       {formatShares(b.sharesShorted)}
                     </span>
-                  </span>
-                  <span className="text-right relative">
-                    <span
+                  </div>
+                  <div className="relative w-full flex items-center justify-end">
+                    <div
                       className="absolute inset-y-0 right-0 bg-green-500/15 dark:bg-green-500/25 rounded"
                       style={{ width: `${coveredPct}%` }}
                       aria-hidden="true"
@@ -94,18 +94,18 @@ const PriceFlowList: React.FC<{ buckets: PriceFlowBucket[] }> = ({
                     <span className="relative text-green-600 dark:text-green-400">
                       {formatShares(b.sharesCovered)}
                     </span>
-                  </span>
-                  <span className="text-right relative">
-                    <span
-                      className={`absolute inset-y-0 right-0 rounded ${netBg}`}
+                  </div>
+                  <div className="relative w-full flex items-center justify-end">
+                    <div
+                      className={`absolute inset-y-0 right-0 rounded ${netBarColor}`}
                       style={{ width: `${netPct}%` }}
                       aria-hidden="true"
                     />
-                    <span className={`relative ${netColor}`}>
+                    <span className={`relative font-medium ${netColor}`}>
                       {net > 0 ? "+" : net < 0 ? "−" : ""}
                       {formatShares(Math.abs(net))}
                     </span>
-                  </span>
+                  </div>
                 </li>
               );
             })}
