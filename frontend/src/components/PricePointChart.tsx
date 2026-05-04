@@ -146,6 +146,11 @@ const PricePointChart: React.FC<{
     return savedShowClosingPrices ? JSON.parse(savedShowClosingPrices) : true;
   });
 
+  const [showPriceFlow, setShowPriceFlow] = useState<boolean>(() => {
+    const saved = localStorage.getItem("showPriceFlow");
+    return saved ? JSON.parse(saved) : true;
+  });
+
   const maxY: number =
     pricePoints.reduce((max, point) => Math.max(max, point.value), -Infinity) +
     0.3;
@@ -178,12 +183,24 @@ const PricePointChart: React.FC<{
     });
   };
 
+  const togglePriceFlow = () => {
+    setShowPriceFlow((prevValue) => {
+      const newValue = !prevValue;
+      trackEvent("chart_toggle_price_flow", { enabled: newValue });
+      return newValue;
+    });
+  };
+
   useEffect(() => {
     localStorage.setItem(
       "showClosingPrices",
       JSON.stringify(showClosingPrices)
     );
   }, [showClosingPrices]);
+
+  useEffect(() => {
+    localStorage.setItem("showPriceFlow", JSON.stringify(showPriceFlow));
+  }, [showPriceFlow]);
 
   return (
     <div>
@@ -220,6 +237,34 @@ const PricePointChart: React.FC<{
               <line x1="20" y1="18" x2="20" y2="8" />
             </svg>
           </button>
+          {priceFlow && priceFlow.length > 0 && (
+            <button
+              onClick={togglePriceFlow}
+              className={`w-8 h-8 rounded-lg border flex justify-center items-center cursor-pointer transition-all duration-200 focus:ring-2 focus:ring-cyan-300 ${
+                showPriceFlow
+                  ? "bg-cyan-50 dark:bg-cyan-900/20 border-cyan-200 dark:border-cyan-800 text-cyan-500 dark:text-cyan-400"
+                  : "bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-400 dark:text-gray-500"
+              }`}
+              aria-label={showPriceFlow ? t("Hide flow") : t("Show flow")}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="15"
+                height="15"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                viewBox="0 0 24 24"
+              >
+                <line x1="6" y1="6" x2="18" y2="6" />
+                <line x1="6" y1="10" x2="13" y2="10" />
+                <line x1="6" y1="14" x2="16" y2="14" />
+                <line x1="6" y1="18" x2="11" y2="18" />
+              </svg>
+            </button>
+          )}
         </div>
         {periodControl}
       </div>
@@ -248,7 +293,7 @@ const PricePointChart: React.FC<{
           data={pricePoints}
           margin={{
             top: 5,
-            right: 0,
+            right: 20,
             left: 20,
             bottom: 5,
           }}
@@ -278,7 +323,8 @@ const PricePointChart: React.FC<{
             dataKey="value"
             type="number"
             unit="%"
-            tick={{ fontSize: 11, fill: "#bbb", dx: -5 }}
+            width={38}
+            tick={{ fontSize: 11, fill: "#bbb" }}
             tickFormatter={(value) => formatNum(value, 1)}
             allowDecimals={true}
             orientation="right"
@@ -288,17 +334,19 @@ const PricePointChart: React.FC<{
             tickLine={false}
             axisLine={false}
           />
-          {showClosingPrices && (
+          {(showClosingPrices || showPriceFlow) && (
             <YAxis
               dataKey="close"
-              unit="DKK"
+              width={showClosingPrices || showPriceFlow ? 38 : 0}
               tick={{ fontSize: 11, fill: "#bbb" }}
               tickFormatter={(value) => formatNum(value, 0)}
               orientation="left"
               type="number"
               yAxisId="2"
               domain={[minPriceY, maxPriceY]}
-              hide
+              hide={!showClosingPrices && !showPriceFlow}
+              tickLine={false}
+              axisLine={false}
             />
           )}
           <Tooltip
@@ -309,7 +357,7 @@ const PricePointChart: React.FC<{
               strokeOpacity: 0.3,
             }}
           />
-          {showClosingPrices && priceFlow && priceFlow.length > 0 && (
+          {showPriceFlow && priceFlow && priceFlow.length > 0 && (
             <VolumeProfileOverlay priceFlow={priceFlow} />
           )}
           <Area
@@ -407,16 +455,16 @@ const PricePointChart: React.FC<{
                 <span className="w-3 h-3 rounded-sm bg-gray-400 dark:bg-gray-500 inline-block" />
                 {t("Volume")}
               </span>
-              {priceFlow && priceFlow.length > 0 && (
-                <span className="flex items-center gap-1.5">
-                  <span className="inline-flex items-center gap-[1px]">
-                    <span className="w-2 h-3 bg-red-500/70 inline-block" />
-                    <span className="w-2 h-3 bg-green-500/70 inline-block" />
-                  </span>
-                  {t("Flow")}
-                </span>
-              )}
             </>
+          )}
+          {showPriceFlow && priceFlow && priceFlow.length > 0 && (
+            <span className="flex items-center gap-1.5">
+              <span className="inline-flex items-center gap-[1px]">
+                <span className="w-2 h-3 bg-red-500/70 inline-block" />
+                <span className="w-2 h-3 bg-green-500/70 inline-block" />
+              </span>
+              {t("Flow")}
+            </span>
           )}
         </div>
       </div>
