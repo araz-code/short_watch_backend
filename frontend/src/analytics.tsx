@@ -25,6 +25,7 @@ export type AnalyticsEvent =
   | "help_dialog_open"
   | "chart_info_open"
   | "chart_toggle_closing_prices"
+  | "chart_toggle_price_flow"
   | "banner_click"
   | "outbound_click"
   | "cookie_consent_open"
