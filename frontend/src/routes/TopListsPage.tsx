@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchTopLists, TopLists, TopListStock, TopListShortedStock, TopListActiveStock } from "../apis/ShortPositionAPI";
+import { fetchTopLists, TopLists, TopListStock, TopListShortedStock, TopListActiveStock, TopListDeltaStock, TopListDaysToCoverStock, TopListShortSellersStock } from "../apis/ShortPositionAPI";
 import PageTemplate from "../components/PageTemplate";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
@@ -130,6 +130,46 @@ const TopListsPage: React.FC = () => {
           subtitle={t("Top 10 most followed stocks by app users")}
           items={data.mostFollowed}
         />
+        <RankList
+          title={t("Longest days to cover")}
+          subtitle={t("Top 10 stocks with the most days needed to cover short positions based on 30-day avg volume")}
+          items={data.mostDaysToCover}
+          renderExtra={(stock) => (
+            <span className="text-sm font-semibold text-gray-700 dark:text-gray-300 tabular-nums shrink-0">
+              {formatNum((stock as TopListDaysToCoverStock).days, 1)}d
+            </span>
+          )}
+        />
+        <RankList
+          title={t("Most short sellers")}
+          subtitle={t("Top 10 stocks with the most unique active short sellers")}
+          items={data.mostShortSellers}
+          renderExtra={(stock) => (
+            <span className="text-sm font-semibold text-gray-700 dark:text-gray-300 tabular-nums shrink-0">
+              {(stock as TopListShortSellersStock).sellers} {t("sellers")}
+            </span>
+          )}
+        />
+        <RankList
+          title={t("Biggest risers")}
+          subtitle={t("Top 10 biggest increases in short position over the last 30 days")}
+          items={data.mostRising}
+          renderExtra={(stock) => (
+            <span className="text-sm font-semibold text-red-600 dark:text-red-400 tabular-nums shrink-0">
+              +{formatNum((stock as TopListDeltaStock).delta, 2)}%
+            </span>
+          )}
+        />
+        <RankList
+          title={t("Biggest fallers")}
+          subtitle={t("Top 10 biggest decreases in short position over the last 30 days")}
+          items={data.mostFalling}
+          renderExtra={(stock) => (
+            <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400 tabular-nums shrink-0">
+              {formatNum((stock as TopListDeltaStock).delta, 2)}%
+            </span>
+          )}
+        />
       </div>
     );
   }
@@ -145,9 +185,6 @@ const TopListsPage: React.FC = () => {
               <h1 className="text-2xl lg:text-3xl dark:text-white">
                 {t("Top Lists")}
               </h1>
-              <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">
-                {t("Based on activity from the last 30 days")}
-              </p>
               <div className="mt-3 mx-auto w-12 h-0.5 rounded-full bg-blue-500/40" />
             </div>
             {content}

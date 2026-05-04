@@ -3,7 +3,7 @@ import { logException } from "../analytics";
 
 export const queryClient = new QueryClient();
 
-const isLocal = false;
+const isLocal = true;
 export const HOST = isLocal ? "http://localhost:8000" : "https://www.zirium.dk";
 const VERSION = "v18";
 
@@ -224,11 +224,28 @@ export interface TopListActiveStock extends TopListStock {
   updates: number;
 }
 
+export interface TopListDeltaStock extends TopListStock {
+  delta: number;
+  value: number;
+}
+
+export interface TopListDaysToCoverStock extends TopListStock {
+  days: number;
+}
+
+export interface TopListShortSellersStock extends TopListStock {
+  sellers: number;
+}
+
 export interface TopLists {
   mostViewed: TopListStock[];
   mostFollowed: TopListStock[];
   mostShorted: TopListShortedStock[];
   mostActive: TopListActiveStock[];
+  mostRising: TopListDeltaStock[];
+  mostFalling: TopListDeltaStock[];
+  mostDaysToCover: TopListDaysToCoverStock[];
+  mostShortSellers: TopListShortSellersStock[];
 }
 
 export async function fetchTopLists({ signal }: { signal?: AbortSignal }): Promise<TopLists> {

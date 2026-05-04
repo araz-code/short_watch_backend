@@ -3,7 +3,7 @@ from collections import namedtuple
 from datetime import timedelta, datetime, date
 
 from django.core.cache import cache
-from django.db.models import Max, Prefetch, Count
+from django.db.models import Max, Prefetch, Count, Subquery, OuterRef, F, ExpressionWrapper, FloatField, Avg, Q
 from django.utils import timezone
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.response import Response
@@ -442,6 +442,155 @@ def stats_view(request):
         })
 
 
+def _compute_most_viewed(one_month_ago):
+    code_pattern = re.compile(r'/details/(\S+)')
+    detail_logs = list(RequestLog.objects.filter(
+        requested_url__icontains='/details/',
+        timestamp__gte=one_month_ago,
+    ).values_list('requested_url', flat=True))
+    view_counts = {}
+    for url in detail_logs:
+        match = code_pattern.search(url)
+        if match:
+            code = match.group(1).strip('/')
+            view_counts[code] = view_counts.get(code, 0) + 1
+    sorted_views = sorted(view_counts.items(), key=lambda x: x[1], reverse=True)[:10]
+    result = []
+    for code, _ in sorted_views:
+        try:
+            stock = Stock.objects.get(code=code)
+            result.append({'symbol': stock.symbol, 'name': stock.name, 'code': stock.code})
+        except Stock.DoesNotExist:
+            pass
+    return result
+
+
+def _compute_most_followed():
+    return list(
+        Stock.objects.annotate(follower_count=Count('app_users'))
+        .filter(follower_count__gt=0)
+        .order_by('-follower_count')[:10]
+        .values('symbol', 'name', 'code')
+    )
+
+
+def _compute_most_shorted():
+    latest_positions = ShortPosition.objects.filter(
+        stock__active=True
+    ).values('stock').annotate(latest=Max('timestamp'))
+    shorted_list = []
+    for entry in latest_positions:
+        pos = ShortPosition.objects.select_related('stock').filter(
+            stock_id=entry['stock'], timestamp=entry['latest']
+        ).first()
+        if pos and pos.value > 0:
+            shorted_list.append({
+                'symbol': pos.stock.symbol,
+                'name': pos.stock.name,
+                'code': pos.stock.code,
+                'value': pos.value,
+            })
+    return sorted(shorted_list, key=lambda x: x['value'], reverse=True)[:10]
+
+
+def _compute_most_active(one_month_ago):
+    most_updated = list(
+        ShortPosition.objects.filter(timestamp__gte=one_month_ago)
+        .values('stock__symbol', 'stock__name', 'stock__code')
+        .annotate(update_count=Count('id'))
+        .order_by('-update_count')[:10]
+    )
+    return [
+        {'symbol': e['stock__symbol'], 'name': e['stock__name'], 'code': e['stock__code'],
+         'updates': e['update_count']}
+        for e in most_updated
+    ]
+
+
+def _compute_risers_fallers():
+    one_month_ago_date = timezone.now().date() - timedelta(days=30)
+    latest_value_subq = ShortPositionChart.objects.filter(
+        stock=OuterRef('pk'),
+    ).order_by('-date').values('value')[:1]
+    oldest_value_subq = ShortPositionChart.objects.filter(
+        stock=OuterRef('pk'),
+        date__gte=one_month_ago_date,
+    ).order_by('date').values('value')[:1]
+    stocks_with_delta = (
+        Stock.objects.filter(active=True)
+        .annotate(
+            latest_value=Subquery(latest_value_subq),
+            oldest_value=Subquery(oldest_value_subq),
+        )
+        .filter(latest_value__isnull=False, oldest_value__isnull=False)
+        .annotate(
+            delta=ExpressionWrapper(
+                F('latest_value') - F('oldest_value'),
+                output_field=FloatField(),
+            )
+        )
+    )
+    most_rising = [
+        {'symbol': s.symbol, 'name': s.name, 'code': s.code,
+         'delta': round(s.delta, 2), 'value': round(s.latest_value, 2)}
+        for s in stocks_with_delta.order_by('-delta')[:10]
+        if s.delta > 0
+    ]
+    most_falling = [
+        {'symbol': s.symbol, 'name': s.name, 'code': s.code,
+         'delta': round(s.delta, 2), 'value': round(s.latest_value, 2)}
+        for s in stocks_with_delta.order_by('delta')[:10]
+        if s.delta < 0
+    ]
+    return most_rising, most_falling
+
+
+def _compute_top_days_to_cover():
+    volume_cutoff = timezone.now().date() - timedelta(days=30)
+    latest_pos_subq = ShortPosition.objects.filter(
+        stock=OuterRef('pk')
+    ).order_by('-timestamp').values('value')[:1]
+    active_stocks = (
+        Stock.objects.filter(active=True, shares_outstanding__isnull=False)
+        .annotate(latest_short=Subquery(latest_pos_subq, output_field=FloatField()))
+        .filter(latest_short__gt=0)
+    )
+    days_to_cover_list = []
+    for s in active_stocks:
+        volumes = list(
+            ShortPositionChart.objects.filter(
+                stock=s, date__gte=volume_cutoff, volume__isnull=False
+            ).values_list('volume', flat=True)
+        )
+        if not volumes:
+            continue
+        avg_volume = sum(volumes) / len(volumes)
+        if avg_volume <= 0:
+            continue
+        dtc = (s.latest_short / 100.0 * s.shares_outstanding) / avg_volume
+        days_to_cover_list.append({
+            'symbol': s.symbol, 'name': s.name, 'code': s.code,
+            'days': round(dtc, 1),
+        })
+    return sorted(days_to_cover_list, key=lambda x: x['days'], reverse=True)[:10]
+
+
+def _compute_most_short_sellers():
+    lss_model_name = LargeShortSelling._meta.model_name
+    lss_not_deleted = Q(**{f'{lss_model_name}__delete': False})
+    rows = list(
+        Stock.objects.filter(active=True)
+        .annotate(seller_count=Count(f'{lss_model_name}__short_seller', distinct=True, filter=lss_not_deleted))
+        .filter(seller_count__gt=0)
+        .order_by('-seller_count')[:10]
+        .values('symbol', 'name', 'code', 'seller_count')
+    )
+    return [
+        {'symbol': e['symbol'], 'name': e['name'], 'code': e['code'], 'sellers': e['seller_count']}
+        for e in rows
+    ]
+
+
 @api_view(['GET'])
 @perm([HasAPIKey])
 def top_lists_view(request):
@@ -449,84 +598,25 @@ def top_lists_view(request):
     if cached:
         return Response(cached)
 
-    try:
-        # Top 10 most viewed detail pages in last 30 days
-        one_month_ago = timezone.now() - timedelta(days=30)
-        code_pattern = re.compile(r'/details/(\S+)')
-        detail_logs = list(RequestLog.objects.filter(
-            requested_url__icontains='/details/',
-            timestamp__gte=one_month_ago,
-        ).values_list('requested_url', flat=True))
+    one_month_ago = timezone.now() - timedelta(days=30)
 
-        view_counts = {}
-        for url in detail_logs:
-            match = code_pattern.search(url)
-            if match:
-                code = match.group(1).strip('/')
-                view_counts[code] = view_counts.get(code, 0) + 1
+    def safe(fn, *args):
+        try:
+            return fn(*args)
+        except Exception:
+            return []
 
-        sorted_views = sorted(view_counts.items(), key=lambda x: x[1], reverse=True)[:10]
-        most_viewed = []
-        for code, _ in sorted_views:
-            try:
-                stock = Stock.objects.get(code=code)
-                most_viewed.append({'symbol': stock.symbol, 'name': stock.name, 'code': stock.code})
-            except Stock.DoesNotExist:
-                pass
+    most_rising, most_falling = safe(_compute_risers_fallers) or ([], [])
 
-        # Top 10 most followed stocks
-        most_followed = list(
-            Stock.objects.annotate(follower_count=Count('app_users'))
-            .filter(follower_count__gt=0)
-            .order_by('-follower_count')[:10]
-            .values('symbol', 'name', 'code')
-        )
-
-        # Top 10 most shorted stocks (highest current value)
-        latest_positions = ShortPosition.objects.filter(
-            stock__active=True
-        ).values('stock').annotate(latest=Max('timestamp'))
-
-        shorted_list = []
-        for entry in latest_positions:
-            pos = ShortPosition.objects.select_related('stock').filter(
-                stock_id=entry['stock'], timestamp=entry['latest']
-            ).first()
-            if pos and pos.value > 0:
-                shorted_list.append({
-                    'symbol': pos.stock.symbol,
-                    'name': pos.stock.name,
-                    'code': pos.stock.code,
-                    'value': pos.value,
-                })
-
-        most_shorted = sorted(shorted_list, key=lambda x: x['value'], reverse=True)[:10]
-
-        # Top 10 most frequently updated stocks (most ShortPosition entries in last 30 days)
-        most_updated = list(
-            ShortPosition.objects.filter(timestamp__gte=one_month_ago)
-            .values('stock__symbol', 'stock__name', 'stock__code')
-            .annotate(update_count=Count('id'))
-            .order_by('-update_count')[:10]
-        )
-        most_active = [
-            {'symbol': e['stock__symbol'], 'name': e['stock__name'], 'code': e['stock__code'],
-             'updates': e['update_count']}
-            for e in most_updated
-        ]
-
-        data = {
-            'mostViewed': most_viewed,
-            'mostFollowed': most_followed,
-            'mostShorted': most_shorted,
-            'mostActive': most_active,
-        }
-        cache.set('top_lists', data, timeout=CACHE_TIMEOUT_SECONDS)
-        return Response(data)
-    except Exception:
-        return Response({
-            'mostViewed': [],
-            'mostFollowed': [],
-            'mostShorted': [],
-            'mostActive': [],
-        })
+    data = {
+        'mostViewed': safe(_compute_most_viewed, one_month_ago),
+        'mostFollowed': safe(_compute_most_followed),
+        'mostShorted': safe(_compute_most_shorted),
+        'mostActive': safe(_compute_most_active, one_month_ago),
+        'mostRising': most_rising,
+        'mostFalling': most_falling,
+        'mostDaysToCover': safe(_compute_top_days_to_cover),
+        'mostShortSellers': safe(_compute_most_short_sellers),
+    }
+    cache.set('top_lists', data, timeout=CACHE_TIMEOUT_SECONDS)
+    return Response(data)
