@@ -38,6 +38,16 @@ def _no_bots_q() -> Q:
     """Q filter that excludes known bot user agents."""
     return ~reduce(or_, (Q(user_agent__icontains=f) for f in _BOT_UA_FRAGMENTS))
 
+
+def _platform_urls_q() -> Q:
+    """Q filter that restricts to real platform traffic (iPhone/iPad/Watch/Web)."""
+    return (
+        Q(requested_url__contains='/iphone/') |
+        Q(requested_url__contains='/ipad/') |
+        Q(requested_url__contains='/iwatch/') |
+        Q(requested_url__contains='/web/')
+    )
+
 WEEK_DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
 device_pattern = re.compile(r'/shorts/(web|iphone|ipad|iwatch)')
@@ -174,7 +184,7 @@ def count_total_requests_today() -> int:
 
 def count_unique_ips_today() -> int:
     queryset = RequestLog.objects.filter(timestamp__date=timezone.localdate()) \
-        .filter(_no_bots_q()).values_list('client_ip', flat=True)
+        .filter(_no_bots_q()).filter(_platform_urls_q()).values_list('client_ip', flat=True)
     public = {ip for ip in queryset if not ipaddress.ip_address(ip).is_private}
     return len(public)
 
@@ -289,6 +299,7 @@ def requests_per_weekday_this_vs_last_week():
 def unique_ips_per_day(days: int = 10) -> list:
     start_date = timezone.localdate() - timedelta(days=days)
     queryset = RequestLog.objects.filter(timestamp__date__gt=start_date).filter(_no_bots_q()) \
+        .filter(_platform_urls_q()) \
         .annotate(date=TruncDate('timestamp')) \
         .exclude(Q(client_ip__istartswith='192.168.') |
                  Q(client_ip__istartswith='10.') |
