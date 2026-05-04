@@ -45,7 +45,18 @@ def _platform_urls_q() -> Q:
         Q(requested_url__contains='/iphone/') |
         Q(requested_url__contains='/ipad/') |
         Q(requested_url__contains='/iwatch/') |
-        Q(requested_url__contains='/web/')
+        Q(requested_url__contains='/web/') |
+        # Web SPA pages and web-only API calls
+        Q(requested_url__contains='/short-watch') |
+        Q(requested_url__contains='/users/web-consent') |
+        Q(requested_url__contains='/shorts/homepage-stats') |
+        # App user/account endpoints (device not determinable from URL)
+        Q(requested_url__contains='/users/register-token') |
+        Q(requested_url__contains='/users/update-notification-status') |
+        Q(requested_url__contains='/users/app-consent') |
+        Q(requested_url__contains='/users/add-stock') |
+        Q(requested_url__contains='/users/remove-stock') |
+        Q(requested_url__contains='/users/status-check')
     )
 
 WEEK_DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
@@ -436,7 +447,7 @@ def today_visit_buckets() -> dict:
     queryset = RequestLog.objects.filter(timestamp__date=timezone.localdate()) \
         .values('requested_url', 'client_ip', 'user_agent')
 
-    iphone, ipad, iwatch, web = set(), set(), set(), set()
+    iphone, ipad, iwatch, web, app = set(), set(), set(), set(), set()
     sellers_iphone, sellers_iphone_detail = set(), set()
     sellers_web, sellers_web_detail = set(), set()
     top_lists, faq = set(), set()
@@ -476,6 +487,10 @@ def today_visit_buckets() -> dict:
                 sellers_web_detail.add(ip)
             elif "/short-sellers" in url:
                 sellers_web.add(ip)
+        elif "/short-watch" in url or "/users/web-consent" in url or "/shorts/homepage-stats" in url:
+            web.add(ip)
+        elif "/users/" in url:
+            app.add(ip)
 
         if "/top-lists" in url:
             top_lists.add(ip)
@@ -493,7 +508,7 @@ def today_visit_buckets() -> dict:
             price_flow_by_stock.setdefault(code, set()).add(ip)
 
     return {
-        'iphone': iphone, 'ipad': ipad, 'iwatch': iwatch, 'web': web,
+        'iphone': iphone, 'ipad': ipad, 'iwatch': iwatch, 'web': web, 'app': app,
         'sellers_iphone': sellers_iphone, 'sellers_iphone_detail': sellers_iphone_detail,
         'sellers_web': sellers_web, 'sellers_web_detail': sellers_web_detail,
         'top_lists': top_lists, 'faq': faq,

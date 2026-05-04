@@ -213,7 +213,7 @@ def get_referers_table(_: HttpRequest) -> JsonResponse:
 @staff_member_required
 def get_visits_by_platform_table(_: HttpRequest) -> JsonResponse:
     b = service.today_visit_buckets()
-    total = b['iphone'] | b['ipad'] | b['iwatch'] | b['web']
+    total = b['iphone'] | b['ipad'] | b['iwatch'] | b['web'] | b['app']
     return JsonResponse({
         'caption': "Today's unique visitors by platform",
         'headers': ['Platform', 'Visitors'],
@@ -222,6 +222,7 @@ def get_visits_by_platform_table(_: HttpRequest) -> JsonResponse:
             {'platform': 'iPad', 'count': len(b['ipad'])},
             {'platform': 'Apple Watch', 'count': len(b['iwatch'])},
             {'platform': 'Web', 'count': len(b['web'])},
+            {'platform': 'App (device unknown)', 'count': len(b['app'])},
             {'platform': 'Total (any platform)', 'count': len(total)},
             {'platform': 'Bots (excluded above)', 'count': len(b['bots'])},
             *[
