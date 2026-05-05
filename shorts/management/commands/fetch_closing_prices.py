@@ -169,6 +169,13 @@ class Command(BaseCommand):
                             'high': round(row.High, 2),
                             'low': round(row.Low, 2),
                             'volume': row.Volume,
+                        },
+                        create_defaults={
+                            'value': 0,
+                            'close': round(row.Close, 2),
+                            'high': round(row.High, 2),
+                            'low': round(row.Low, 2),
+                            'volume': row.Volume,
                         }
                     )
                 except Exception as e:
