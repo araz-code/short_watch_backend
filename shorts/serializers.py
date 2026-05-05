@@ -57,7 +57,7 @@ class ShortPositionChartSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ShortPositionChart
-        fields = ('timestamp', 'value', 'close', 'volume')
+        fields = ('timestamp', 'value', 'close', 'high', 'low', 'volume')
 
 
 class AnnouncementSerializer(serializers.ModelSerializer):
@@ -74,11 +74,19 @@ class AnnouncementSerializer(serializers.ModelSerializer):
                   'isHistoric', 'stockSymbol', 'stockCode')
 
 
+class PriceFlowByAgeSerializer(serializers.Serializer):
+    recent = serializers.IntegerField()
+    mid = serializers.IntegerField()
+    old = serializers.IntegerField()
+
+
 class PriceFlowBucketSerializer(serializers.Serializer):
     priceLow = serializers.FloatField()
     priceHigh = serializers.FloatField()
     sharesShorted = serializers.IntegerField()
     sharesCovered = serializers.IntegerField()
+    shortedByAge = PriceFlowByAgeSerializer(required=False)
+    coveredByAge = PriceFlowByAgeSerializer(required=False)
     lastShortedDate = serializers.DateField(allow_null=True, required=False)
     lastCoveredDate = serializers.DateField(allow_null=True, required=False)
 

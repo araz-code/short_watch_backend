@@ -84,7 +84,7 @@ const DetailsHelpDialog: React.FC<{ onClose: () => void; sharesOutstanding: numb
             <strong>{t("Price flow")}</strong>
             {": "}
             {t(
-              "shares opened (red) and covered (green) bucketed by the price at which the trade most likely happened. The Net column shows the direction in each band. Bars on the left of the chart visualize the same data."
+              "shares opened (red) and covered (green) bucketed by the price at which the trade most likely happened. The Net column shows the direction in each band. Bars on the left of the chart visualize the same data. Both the table and the chart overlay respect the selected period: Changing the period buttons updates the flow to show only activity within that window."
             )}
           </p>
         </section>

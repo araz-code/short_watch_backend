@@ -18,6 +18,7 @@ import PriceFlowList from "../components/PriceFlowList";
 import DetailsHelpDialog from "../components/DetailsHelpDialog";
 import Modal from "../components/UI/Modal";
 import { formatNum } from "../utils/format";
+import { computePriceFlow } from "../utils/computePriceFlow";
 
 const detailOptions = ["Historic data", "Largest sellers", "Price flow"];
 const periodOptions = ["1W", "1M", "3M", "6M", "YTD", "Max"];
@@ -231,6 +232,9 @@ const ShortPositionDetailsPage: React.FC = () => {
       />
     );
   } else if (data) {
+    const filteredChartValues = processChartValues(data.chartValues, selectedPeriod);
+    const filteredPriceFlow = computePriceFlow(filteredChartValues, data.sharesOutstanding ?? null);
+
     content = (
       <>
         <div className="text-center pb-1 sm:pb-2 dark:text-white shrink-0">
@@ -294,8 +298,8 @@ const ShortPositionDetailsPage: React.FC = () => {
         <div className="flex flex-col flex-1 min-h-0">
           <div className="mb-3 shrink-0">
             <PricePointChart
-              data={processChartValues(data.chartValues, selectedPeriod)}
-              priceFlow={data.priceFlow ?? []}
+              data={filteredChartValues}
+              priceFlow={filteredPriceFlow}
               symbol={data.historic.length > 0 && data.historic[0].symbol}
               periodControl={
                 <ToggleSwitch
@@ -331,7 +335,7 @@ const ShortPositionDetailsPage: React.FC = () => {
           )}
 
           {selectedDetailOption === "Price flow" && (
-            <PriceFlowList buckets={data.priceFlow ?? []} />
+            <PriceFlowList buckets={filteredPriceFlow} />
           )}
 
         </div>

@@ -237,6 +237,8 @@
     "Most short sellers": "Flest store sælgere",
     "Top 10 stocks with the most unique active short sellers": "Top 10 aktier med flest unikke aktive shortsælgere",
     "sellers": "sælgere",
+    "Tip: The period buttons also filter the flow.": "Tip: Periodeknapperne filtrerer også strømmen.",
+    "shares opened (red) and covered (green) bucketed by the price at which the trade most likely happened. The Net column shows the direction in each band. Bars on the left of the chart visualize the same data. Both the table and the chart overlay respect the selected period: changing the period buttons updates the flow to show only activity within that window.": "åbnede shorts (rød) og dækkede shorts (grøn) fordelt på kursniveau for den sandsynlige handelspris. Netto-kolonnen viser retningen i hvert bånd. Søjlerne til venstre i grafen visualiserer de samme data. Både tabellen og grafoversigten følger den valgte periode: Ændrer du periodeknapperne, opdateres strømmen til kun at vise aktivitet i det vindue.",
     "Most followed": "Mest fulgte",
     "Failed to fetch data.": "Kunne ikke hente data.",
     "Most position changes": "Flest positionsændringer",
