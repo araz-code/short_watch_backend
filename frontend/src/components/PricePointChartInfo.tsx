@@ -191,7 +191,7 @@ const PricePointChartInfo: React.FC<{
             role="dialog"
             aria-modal="true"
             aria-label={t("Summary for the period:")}
-            className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] max-w-[calc(100vw-2rem)] max-h-[calc(100dvh-2rem)] overflow-y-auto bg-white dark:bg-[#1e1e1e] border border-gray-100 dark:border-white/10 shadow-2xl rounded-2xl z-50"
+            className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] max-w-[calc(100vw-2rem)] max-h-[calc(100dvh-2rem)] overflow-y-auto bg-white dark:bg-[#19191f] border border-gray-100 dark:border-white/10 shadow-2xl rounded-2xl z-50"
           >
             {/* Header */}
             <div className="flex items-start justify-between gap-3 px-5 pt-4 pb-3 border-b border-gray-100 dark:border-white/5">

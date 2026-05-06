@@ -57,7 +57,7 @@ const PriceFlowList: React.FC<{ buckets: PriceFlowBucket[] }> = ({
           <p className="text-xs text-blue-500 dark:text-blue-400 px-2 pb-2">
             {t("Tip: The period buttons also filter the flow.")}
           </p>
-          <div className="lg:sticky lg:top-0 lg:z-10 bg-white dark:bg-[#121212]">
+          <div className="lg:sticky lg:top-0 lg:z-10 bg-white dark:bg-[#0d0d12]">
             <div className="grid grid-cols-[1fr_1fr_1fr_1fr] gap-2 mx-2 px-4 py-2 text-[11px] sm:text-xs font-semibold text-gray-600 dark:text-gray-300 border-b border-gray-200 dark:border-gray-700">
               <span>{t("Price")}</span>
               <span className="text-right">{t("Shorted")}</span>
@@ -84,8 +84,8 @@ const PriceFlowList: React.FC<{ buckets: PriceFlowBucket[] }> = ({
                     ? "bg-green-500/15 dark:bg-green-500/25"
                     : "";
               const rowBg = i % 2 === 0
-                ? "bg-white dark:bg-[#1e1e1e]"
-                : "bg-gray-50 dark:bg-[#181818]";
+                ? "bg-white dark:bg-[#19191f]"
+                : "bg-gray-50 dark:bg-[#131318]";
               return (
                 <li
                   key={`${b.priceLow}-${b.priceHigh}`}

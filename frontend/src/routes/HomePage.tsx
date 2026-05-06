@@ -63,7 +63,7 @@ const HomePage: React.FC = () => {
   }, []);
 
   return (
-    <div className="bg-white dark:bg-[#121212]">
+    <div className="bg-white dark:bg-[#0d0d12]">
       <title>Zirium | Homepage</title>
       <meta name="description" content="Track short selling positions in Danish stocks in real-time. View historical data, largest short sellers, and trending stocks. Free app for iPhone, iPad, and Apple Watch." />
       <div className="flex flex-col sm:min-h-[650px]">

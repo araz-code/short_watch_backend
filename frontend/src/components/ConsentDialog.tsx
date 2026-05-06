@@ -67,7 +67,7 @@ const ConsentDialog: React.FC<{
         aria-label={t("Cookie policy")}
         className="fixed z-50 inset-x-0 bottom-0 sm:inset-x-auto sm:bottom-6 sm:left-6 sm:max-w-[420px]"
       >
-        <div className="mx-3 mb-3 sm:mx-0 sm:mb-0 rounded-2xl bg-white dark:bg-[#1e1e1e] shadow-2xl border border-gray-100 dark:border-gray-800 overflow-hidden">
+        <div className="mx-3 mb-3 sm:mx-0 sm:mb-0 rounded-2xl bg-white dark:bg-[#19191f] shadow-2xl border border-gray-100 dark:border-gray-800 overflow-hidden">
           <div className="px-5 pt-5 pb-4">
             <div className="flex items-start gap-3 mb-3">
               <div className="shrink-0 w-9 h-9 rounded-full bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center text-lg" aria-hidden="true">

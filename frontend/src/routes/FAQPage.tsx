@@ -245,7 +245,7 @@ const FAQPage: React.FC = () => {
           </button>
         </div>
 
-        <div className="rounded-2xl bg-white dark:bg-[#1e1e1e] border border-gray-100 dark:border-gray-800 px-5 sm:px-6">
+        <div className="rounded-2xl bg-white dark:bg-[#19191f] border border-gray-100 dark:border-gray-800 px-5 sm:px-6">
           {items.map((item) => (
             <FAQItem
               key={item.id}

@@ -50,7 +50,7 @@ const Modal: React.FC<
         aria-label={title}
         className={`fixed inset-0 z-50 flex ${centerOnMobile ? "items-center" : "items-end"} sm:items-center justify-center ${centerOnMobile ? "p-4" : "p-0"} sm:p-4 pointer-events-none`}
       >
-        <div className={`pointer-events-auto relative w-full sm:w-auto sm:max-w-xl bg-white dark:bg-[#1e1e1e] ${centerOnMobile ? "rounded-2xl" : "rounded-t-2xl sm:rounded-2xl"} shadow-2xl border border-gray-100 dark:border-gray-800 flex flex-col max-h-[90vh]`}>
+        <div className={`pointer-events-auto relative w-full sm:w-auto sm:max-w-xl bg-white dark:bg-[#19191f] ${centerOnMobile ? "rounded-2xl" : "rounded-t-2xl sm:rounded-2xl"} shadow-2xl border border-gray-100 dark:border-gray-800 flex flex-col max-h-[90vh]`}>
           <div className="flex items-center justify-between px-6 pt-5 pb-3">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white tracking-tight">
               {title}

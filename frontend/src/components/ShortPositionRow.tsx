@@ -12,7 +12,7 @@ const ShortPositionRow: React.FC<ShortPositionRowProps> = (props) => {
   const { name, symbol, value, prevValue, timestamp, showCheckmark, isEven } = props;
 
   return (
-    <div className={`mx-2 my-1 px-4 py-2 rounded-lg flex items-center justify-between shadow-xs hover:shadow-md hover:-translate-y-px transition-all duration-200 dark:text-white border border-gray-100 dark:border-gray-800 ${isEven ? "bg-white dark:bg-[#1e1e1e]" : "bg-gray-50 dark:bg-[#181818]"}`}>
+    <div className={`mx-2 my-1 px-4 py-2 rounded-lg flex items-center justify-between shadow-xs hover:shadow-md hover:-translate-y-px transition-all duration-200 dark:text-white border border-gray-100 dark:border-gray-800 ${isEven ? "bg-white dark:bg-[#19191f]" : "bg-gray-50 dark:bg-[#131318]"}`}>
       {/* Left: symbol + name stacked */}
       <div className="min-w-0">
         <div className="flex items-center gap-1.5">

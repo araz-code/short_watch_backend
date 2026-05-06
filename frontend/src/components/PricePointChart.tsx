@@ -32,7 +32,7 @@ const CustomTooltip: React.FC<TooltipContentProps<ValueType, NameType>> = ({
 }) => {
   if (active && payload && payload.length) {
     return (
-      <div className="rounded-xl shadow-lg px-4 py-3 bg-white/95 dark:bg-[#1e1e1e]/95 dark:text-white backdrop-blur-xs border border-gray-100 dark:border-gray-700">
+      <div className="rounded-xl shadow-lg px-4 py-3 bg-white/95 dark:bg-[#19191f]/95 dark:text-white backdrop-blur-xs border border-gray-100 dark:border-gray-700">
         <p className="text-[11px] text-gray-400 dark:text-gray-500 text-center mb-1">
           {`${formatTimestamp(String(label), "dateOnly")}`}
         </p>

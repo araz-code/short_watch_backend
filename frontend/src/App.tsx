@@ -141,7 +141,7 @@ function App() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <Suspense fallback={<div className="grid place-items-center h-screen dark:bg-[#121212]"><LoadingIndicator /></div>}>
+        <Suspense fallback={<div className="grid place-items-center h-screen dark:bg-[#0d0d12]"><LoadingIndicator /></div>}>
           <RouterProvider router={router} />
         </Suspense>
         {showConsentDialog && (

@@ -109,7 +109,7 @@ const Navigation: React.FC = () => {
                 className={`flex flex-col gap-1 text-sm p-3 md:p-0 rounded-xl md:flex-row md:items-center md:gap-1 md:rounded-none ${
                   collapseMenu.mainMenu
                     ? ""
-                    : "bg-white/95 dark:bg-[#1e1e1e]/95 backdrop-blur-lg border border-gray-200 dark:border-gray-700 shadow-xl text-gray-700 dark:text-gray-200 md:bg-transparent md:dark:bg-transparent md:backdrop-blur-none md:border-0 md:shadow-none md:text-white"
+                    : "bg-white/95 dark:bg-[#19191f]/95 backdrop-blur-lg border border-gray-200 dark:border-gray-700 shadow-xl text-gray-700 dark:text-gray-200 md:bg-transparent md:dark:bg-transparent md:backdrop-blur-none md:border-0 md:shadow-none md:text-white"
                 }`}
               >
                 <li>
@@ -196,7 +196,7 @@ const Navigation: React.FC = () => {
                     </svg>
                   </button>
                   <div
-                    className={`md:absolute md:z-10 md:right-0 md:mt-2 md:w-48 md:rounded-xl md:shadow-xl bg-white dark:bg-[#1e1e1e] md:border md:border-gray-200 dark:md:border-gray-700 text-gray-800 dark:text-white overflow-hidden ${
+                    className={`md:absolute md:z-10 md:right-0 md:mt-2 md:w-48 md:rounded-xl md:shadow-xl bg-white dark:bg-[#19191f] md:border md:border-gray-200 dark:md:border-gray-700 text-gray-800 dark:text-white overflow-hidden ${
                       collapseMenu.legalMenu ? "hidden" : ""
                     }`}
                   >

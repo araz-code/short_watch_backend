@@ -33,7 +33,7 @@ const RankList: React.FC<{
             key={stock.code}
             to={`/short-watch-details?code=${stock.code}`}
           >
-            <div className={`flex items-center gap-4 px-4 py-2 rounded-lg border border-gray-100 dark:border-gray-800 shadow-xs hover:shadow-md hover:-translate-y-px transition-all duration-200 mb-2 ${index % 2 === 0 ? "bg-white dark:bg-[#1e1e1e]" : "bg-gray-50 dark:bg-[#181818]"}`}>
+            <div className={`flex items-center gap-4 px-4 py-2 rounded-lg border border-gray-100 dark:border-gray-800 shadow-xs hover:shadow-md hover:-translate-y-px transition-all duration-200 mb-2 ${index % 2 === 0 ? "bg-white dark:bg-[#19191f]" : "bg-gray-50 dark:bg-[#131318]"}`}>
               <span className="text-xl w-8 text-center shrink-0">
                 {index < 3 ? medals[index] : (
                   <span className="text-sm font-bold text-gray-400 dark:text-gray-500">
@@ -175,7 +175,7 @@ const TopListsPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen dark:bg-[#121212] overflow-auto">
+    <div className="min-h-screen dark:bg-[#0d0d12] overflow-auto">
       <title>Zirium | Top Lists</title>
       <meta name="description" content="Discover the top 10 most shorted, most viewed, and most followed Danish stocks. Updated daily." />
       <PageTemplate>

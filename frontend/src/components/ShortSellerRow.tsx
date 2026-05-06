@@ -7,7 +7,7 @@ const ShortSellerRow: React.FC<ShortSeller & { isEven: boolean }> = (props) => {
   const { name, current, previous, lastUpdated, isEven } = props;
 
   return (
-    <div className={`mx-2 my-1 px-4 py-3 rounded-lg shadow-xs hover:shadow-md hover:-translate-y-px transition-all duration-200 dark:text-white border border-gray-100 dark:border-gray-800 ${isEven ? "bg-white dark:bg-[#1e1e1e]" : "bg-gray-50 dark:bg-[#181818]"}`}>
+    <div className={`mx-2 my-1 px-4 py-3 rounded-lg shadow-xs hover:shadow-md hover:-translate-y-px transition-all duration-200 dark:text-white border border-gray-100 dark:border-gray-800 ${isEven ? "bg-white dark:bg-[#19191f]" : "bg-gray-50 dark:bg-[#131318]"}`}>
       {/* Header: name + date */}
       <div className="flex items-center justify-between mb-3">
         <div className="font-semibold text-base">{name}</div>
