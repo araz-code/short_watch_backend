@@ -137,11 +137,12 @@ def _history_table(prefix: str) -> JsonResponse:
     rows = service.history_by_symbol(prefix)
     return JsonResponse({
         'caption': f'{prefix.capitalize()} history by stock today',
-        'headers': ['Stock', 'Count', 'Most recent lookup'],
+        'headers': ['Stock', 'Count', 'Unique IPs', 'Most recent lookup'],
         'data': [
             {
                 'symbol': r['symbol'],
                 'count': r['count'],
+                'unique_ips': r['unique_ips'],
                 'max_timestamp': r['max_timestamp'].strftime(service.LOCAL_TIME_FORMAT),
             }
             for r in rows

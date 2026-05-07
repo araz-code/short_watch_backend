@@ -246,7 +246,7 @@ def history_by_symbol(prefix: str) -> list:
         ~Q(requested_url__icontains=f"{prefix}/sellers/") &
         Q(requested_url__iregex=r'[0-9]+$') &
         _no_bots_q()
-    ).values('requested_url') \
+    ).values('requested_url', 'client_ip') \
         .annotate(count=Count('id')) \
         .annotate(max_timestamp=Max('timestamp')) \
         .order_by('-max_timestamp')
@@ -254,7 +254,7 @@ def history_by_symbol(prefix: str) -> list:
     code_to_symbol = {entry['code']: entry['name']
                       for entry in Stock.objects.all().values('code', 'name')}
 
-    aggregated = defaultdict(lambda: {'count': 0, 'max_timestamp': None})
+    aggregated = defaultdict(lambda: {'count': 0, 'ips': set(), 'max_timestamp': None})
     for entry in queryset:
         symbol = _symbol_for(entry['requested_url'], code_to_symbol)
         local_ts = timezone.localtime(entry['max_timestamp'])
@@ -262,9 +262,10 @@ def history_by_symbol(prefix: str) -> list:
         if bucket['max_timestamp'] is None or local_ts > bucket['max_timestamp']:
             bucket['max_timestamp'] = local_ts
         bucket['count'] += entry['count']
+        bucket['ips'].add(entry['client_ip'])
 
     rows = [
-        {'symbol': symbol, 'count': data['count'], 'max_timestamp': data['max_timestamp']}
+        {'symbol': symbol, 'count': data['count'], 'unique_ips': len(data['ips']), 'max_timestamp': data['max_timestamp']}
         for symbol, data in aggregated.items()
     ]
     rows.sort(key=lambda x: x['max_timestamp'], reverse=True)
