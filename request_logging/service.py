@@ -451,7 +451,7 @@ def today_visit_buckets() -> dict:
     sellers_iphone, sellers_iphone_detail = set(), set()
     sellers_web, sellers_web_detail = set(), set()
     top_lists, faq = set(), set()
-    help_short_watch, help_details, avg_price_info = set(), set(), set()
+    help_short_watch, help_details = set(), set()
     price_flow_by_stock = {}  # code -> set of IPs
     bots = set()
     bots_by_name = {}  # fragment -> set of IPs
@@ -500,8 +500,6 @@ def today_visit_buckets() -> dict:
             help_short_watch.add(ip)
         if "/stats/visit/help-details" in url:
             help_details.add(ip)
-        if "/stats/visit/avg-price-info" in url:
-            avg_price_info.add(ip)
         if "/stats/visit/price-flow/" in url:
             parts = url.rstrip('/').split('/')
             code = parts[-1] if parts else 'unknown'
@@ -512,7 +510,7 @@ def today_visit_buckets() -> dict:
         'sellers_iphone': sellers_iphone, 'sellers_iphone_detail': sellers_iphone_detail,
         'sellers_web': sellers_web, 'sellers_web_detail': sellers_web_detail,
         'top_lists': top_lists, 'faq': faq,
-        'help_short_watch': help_short_watch, 'help_details': help_details, 'avg_price_info': avg_price_info,
+        'help_short_watch': help_short_watch, 'help_details': help_details,
         'price_flow_by_stock': price_flow_by_stock,
         'bots': bots, 'bots_by_name': bots_by_name,
     }

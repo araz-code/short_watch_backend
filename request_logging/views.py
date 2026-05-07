@@ -253,7 +253,6 @@ def get_visits_by_section_table(_: HttpRequest) -> JsonResponse:
             {'section': 'FAQ', 'count': len(b['faq'])},
             {'section': 'Help - short watch', 'count': len(b['help_short_watch'])},
             {'section': 'Help - detail page', 'count': len(b['help_details'])},
-            {'section': 'Avg. price info click', 'count': len(b['avg_price_info'])},
             *[
                 {'section': f'Web — price flow: {code_to_symbol.get(code, code)}', 'count': len(ips)}
                 for code, ips in sorted(b['price_flow_by_stock'].items(), key=lambda x: -len(x[1]))

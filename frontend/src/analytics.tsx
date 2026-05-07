@@ -23,7 +23,6 @@ export type AnalyticsEvent =
   | "seller_link_click"
   | "announcement_open"
   | "help_dialog_open"
-  | "chart_info_open"
   | "chart_toggle_closing_prices"
   | "chart_toggle_price_flow"
   | "banner_click"
