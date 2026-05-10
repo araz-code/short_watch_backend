@@ -16,7 +16,6 @@ import FavoriteToggleButton from "../components/UI/FavoriteToggleButton";
 import ChangeIndicator from "../components/UI/ChangeIndicator";
 import PriceFlowList from "../components/PriceFlowList";
 import DetailsHelpDialog from "../components/DetailsHelpDialog";
-import Modal from "../components/UI/Modal";
 import { formatNum } from "../utils/format";
 import { computePriceFlow } from "../utils/computePriceFlow";
 
@@ -133,10 +132,6 @@ const ShortPositionDetailsPage: React.FC = () => {
     return savedMyList ? JSON.parse(savedMyList) : [];
   });
   const [showHelp, setShowHelp] = useState(false);
-  const [showPriceFlowAnnouncement, setShowPriceFlowAnnouncement] = useState(
-    () => localStorage.getItem("priceFlowAnnouncementDismissed") !== "1"
-  );
-
   const code = searchParams.get("code");
   const isFavorite = code ? myList.includes(code) : false;
 
@@ -401,43 +396,6 @@ const ShortPositionDetailsPage: React.FC = () => {
         <div className="w-screen lg:w-[900px] m-auto">
           <DetailsHelpDialog onClose={() => setShowHelp(false)} sharesOutstanding={data?.sharesOutstanding ?? null} />
         </div>
-      )}
-      {showPriceFlowAnnouncement && (
-        <Modal
-          title=""
-          closeButtonTitle={t("Got it")}
-          onClose={() => {
-            setShowPriceFlowAnnouncement(false);
-            localStorage.setItem("priceFlowAnnouncementDismissed", "1");
-          }}
-          enableXClose={true}
-          centerOnMobile={true}
-        >
-          <div className="space-y-4">
-            <div className="text-center pt-1 pb-2">
-              <span className="inline-block text-xs font-semibold uppercase tracking-widest text-blue-700 bg-blue-50 dark:text-blue-200 dark:bg-blue-900/30 px-3 py-1 rounded-full mb-3">
-                {t("New feature")}
-              </span>
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white leading-tight">
-                {t("Price flow")}
-              </h2>
-              <p className="text-gray-700 dark:text-gray-200 text-base font-medium mt-1">
-                {t("Know where shorts are trapped")}
-              </p>
-            </div>
-            <div className="space-y-3 text-[15px]">
-              <div className="flex gap-3">
-                <span className="text-lg mt-0.5">📊</span>
-                <p>{t("The Price flow tab breaks down all disclosed short changes into 2%-wide price bands, so you can spot at what price the pressure is concentrated.")}</p>
-              </div>
-              <div className="flex gap-3">
-                <span className="text-lg mt-0.5">📈</span>
-                <p>{t("When closing prices are enabled on the chart, the same distribution is shown as a bar profile on the left edge of the chart.")}</p>
-              </div>
-            </div>
-            <p className="text-sm pt-1">{t("Tap the Help button for a full explanation.")}</p>
-          </div>
-        </Modal>
       )}
     </div>
   );

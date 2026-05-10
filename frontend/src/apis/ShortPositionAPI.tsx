@@ -5,7 +5,7 @@ export const queryClient = new QueryClient();
 
 const isLocal = false;
 export const HOST = isLocal ? "http://localhost:8000" : "https://www.zirium.dk";
-const VERSION = "v18";
+export const VERSION = "v18";
 
 class FetchError extends Error {
   code: number;
@@ -262,6 +262,76 @@ export async function fetchTopLists({ signal }: { signal?: AbortSignal }): Promi
     throw new Error("Failed to fetch top lists");
   }
 
+  return response.json();
+}
+
+export interface InsiderIssuer {
+  cvr: string;
+  name: string;
+  lei: string;
+  symbol: string;
+  transaction_count: number;
+  latest_date: string | null;
+  earliest_date: string | null;
+  updated_at: string;
+}
+
+export interface InsiderTransaction {
+  id: number;
+  announcement_id: string;
+  published_date: string;
+  person_name: string;
+  person_role: string;
+  person_role_da: string;
+  closely_associated_to: string;
+  transaction_type: string;
+  transaction_category: "buy" | "sell" | "grant" | "other";
+  instrument_type: string;
+  instrument_name: string;
+  isin: string;
+  transaction_date: string | null;
+  volume: number | null;
+  unit_price: number | null;
+  currency: string;
+  total_amount: number | null;
+  venue: string;
+  source_url: string;
+  extraction_notes: string;
+  extraction_notes_da: string;
+}
+
+export interface InsiderSignal {
+  signal: "bullish" | "bearish" | "neutral";
+  buy_amount_90d: number;
+  sell_amount_90d: number;
+}
+
+export interface InsiderIssuerDetail extends InsiderIssuer {
+  transactions: InsiderTransaction[];
+  signal: InsiderSignal;
+}
+
+export async function fetchInsiderIssuers({ signal }: { signal?: AbortSignal }): Promise<InsiderIssuer[]> {
+  const url = `${HOST}/${VERSION}/insider/issuers`;
+  const response = await fetch(url, {
+    signal,
+    headers: {
+      Authorization: `API-Key ${"CK1OkkoF.2t0M6oZMc186nNJFlZdNOMxWC0u3YCQ5"}`,
+    },
+  });
+  if (!response.ok) throw new Error("Failed to fetch insider issuers");
+  return response.json();
+}
+
+export async function fetchInsiderIssuerDetail({ signal, cvr }: { signal?: AbortSignal; cvr: string }): Promise<InsiderIssuerDetail> {
+  const url = `${HOST}/${VERSION}/insider/issuers/${cvr}`;
+  const response = await fetch(url, {
+    signal,
+    headers: {
+      Authorization: `API-Key ${"CK1OkkoF.2t0M6oZMc186nNJFlZdNOMxWC0u3YCQ5"}`,
+    },
+  });
+  if (!response.ok) throw new Error("Failed to fetch insider issuer detail");
   return response.json();
 }
 

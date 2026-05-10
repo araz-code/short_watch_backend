@@ -26,6 +26,8 @@ const PrivacyPolicyPage = lazy(() => import("./routes/PrivacyPolicyPage.tsx"));
 const TermsOfAgreementPage = lazy(() => import("./routes/TermsOfAgreementPage.tsx"));
 const CookiePolicyPage = lazy(() => import("./routes/CookiePolicyPage.tsx"));
 const FAQPage = lazy(() => import("./routes/FAQPage.tsx"));
+const InsiderTransactionsPage = lazy(() => import("./routes/InsiderTransactionsPage.tsx"));
+const InsiderTransactionDetailsPage = lazy(() => import("./routes/InsiderTransactionDetailsPage.tsx"));
 
 type ConsentButtonProps = {
   onClick: () => void;
@@ -102,6 +104,14 @@ const router = createBrowserRouter([
   {
     path: "faq",
     element: <ErrorBoundary><FAQPage /></ErrorBoundary>,
+  },
+  {
+    path: "insider-transactions",
+    element: <ErrorBoundary><InsiderTransactionsPage /></ErrorBoundary>,
+  },
+  {
+    path: "insider-details",
+    element: <ErrorBoundary><InsiderTransactionDetailsPage /></ErrorBoundary>,
   },
 ]);
 

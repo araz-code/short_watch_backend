@@ -36,6 +36,8 @@ SECRET_KEY = env('SECRET_KEY')
 
 ANNOUNCEMENT_API_KEY = env('ANNOUNCEMENT_API_KEY')
 
+ANTHROPIC_API_KEY = env('ANTHROPIC_API_KEY', default='')
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
@@ -64,6 +66,7 @@ INSTALLED_APPS = [
     'errors',
     'request_logging',
     'home_page',
+    'insider_transactions',
 ]
 
 MIDDLEWARE = [

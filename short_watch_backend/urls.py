@@ -58,6 +58,7 @@ urlpatterns = [
     path('v17/users/', include('users.urls')),
     path('v18/shorts/', include('shorts.urls')),
     path('v18/users/', include('users.urls')),
+    path('v18/insider/', include('insider_transactions.urls')),
     path('stats/', include('request_logging.urls')),
     path('favicon.png', serve, {'path': 'favicon.png', 'document_root': FRONTEND_DIST}),
     path('manifest.json', serve, {'path': 'manifest.json', 'document_root': FRONTEND_DIST}),

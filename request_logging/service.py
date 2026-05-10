@@ -454,6 +454,9 @@ def today_visit_buckets() -> dict:
     top_lists, faq = set(), set()
     help_short_watch, help_details = set(), set()
     price_flow_by_stock = {}  # code -> set of IPs
+    insider_list = set()
+    insider_detail_by_cvr = {}  # cvr -> set of IPs
+    help_insider_list, help_insider_detail = set(), set()
     bots = set()
     bots_by_name = {}  # fragment -> set of IPs
 
@@ -505,6 +508,16 @@ def today_visit_buckets() -> dict:
             parts = url.rstrip('/').split('/')
             code = parts[-1] if parts else 'unknown'
             price_flow_by_stock.setdefault(code, set()).add(ip)
+        if "/stats/visit/insider-list" in url:
+            insider_list.add(ip)
+        if "/stats/visit/insider-detail/" in url:
+            parts = url.rstrip('/').split('/')
+            cvr = parts[-1] if parts else 'unknown'
+            insider_detail_by_cvr.setdefault(cvr, set()).add(ip)
+        if "/stats/visit/help-insider-list" in url:
+            help_insider_list.add(ip)
+        if "/stats/visit/help-insider-detail" in url:
+            help_insider_detail.add(ip)
 
     return {
         'iphone': iphone, 'ipad': ipad, 'iwatch': iwatch, 'web': web, 'app': app,
@@ -513,5 +526,9 @@ def today_visit_buckets() -> dict:
         'top_lists': top_lists, 'faq': faq,
         'help_short_watch': help_short_watch, 'help_details': help_details,
         'price_flow_by_stock': price_flow_by_stock,
+        'insider_list': insider_list,
+        'insider_detail_by_cvr': insider_detail_by_cvr,
+        'help_insider_list': help_insider_list,
+        'help_insider_detail': help_insider_detail,
         'bots': bots, 'bots_by_name': bots_by_name,
     }
