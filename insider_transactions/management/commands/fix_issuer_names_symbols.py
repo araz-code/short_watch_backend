@@ -13,6 +13,7 @@ from insider_transactions.models import InsiderIssuer
 
 # (cvr, correct_name, correct_symbol, notes)
 CORRECTIONS = [
+    # Previously corrected (non-Stock issuers)
     ("27652913", "Better Collective A/S",                           "BETCO",    ""),
     ("31180503", "Cadeler A/S",                                     "CADLR",    "Primary listing: Euronext Oslo"),
     ("24932818", "Cemat A/S",                                       "CEMAT",    ""),
@@ -37,7 +38,7 @@ CORRECTIONS = [
     ("66590119", "North Media A/S",                                 "NORTHM",   ""),
     ("12546106", "NTG Nordic Transport Group A/S",                  "NTG",      ""),
     ("62670215", "NTR Holding A/S",                                 "NTR",      ""),
-    ("12719280", "Nykredit Realkredit A/S",                         "",         "Bond issuer only — no equity listing"),
+    ("12719280", "Nykredit Realkredit A/S",                         "",         "Bond issuer only, no equity listing"),
     ("32266355", "Strategic Partners A/S",                          "STRAP",    "Formerly Orphazyme A/S, renamed Oct 2024"),
     ("19614409", "Q-Interline A/S",                                 "QINTER",   "Nasdaq First North"),
     ("37536814", "Ringkjøbing Landbobank A/S",                      "RILBA",    ""),
@@ -47,6 +48,30 @@ CORRECTIONS = [
     ("45801012", "Skjern Bank A/S",                                 "SKJE",     ""),
     ("42741116", "Swiss Properties Invest A/S",                     "SWISS",    "Nasdaq First North"),
     ("37291269", "TCM Group A/S",                                   "TCM",      ""),
+    # Newly researched
+    ("83839910", "AGF A/S",                                         "AGF-B",    "Only B shares listed"),
+    ("63965812", "Aktieselskabet Schouw & Co.",                     "SCHO",     ""),
+    ("37037974", "Alefarm Brewing A/S",                             "ALEFRM",   "Nasdaq First North"),
+    ("28315694", "Aquaporin A/S",                                   "AQP",      "Declared bankrupt Feb 2026, delisted"),
+    ("83933410", "Brøndbyernes I.F. Fodbold A/S",                  "BIF",      ""),
+    ("30731735", "Copenhagen Capital A/S",                          "CPHCAP-ST","Primary listed share class"),
+    ("35249389", "Curasight A/S",                                   "CURAS",    "Listed on Spotlight Stock Market (Stockholm)"),
+    ("26041716", "Det Østasiatiske Kompagni A/S",                   "OKEAC",    "Formerly EAC Invest A/S, renamed Jun 2024"),
+    ("34715726", "FOM Technologies A/S",                            "FOM",      "Nasdaq First North"),
+    ("24257843", "GN Store Nord A/S",                               "GN",       ""),
+    ("36972963", "HusCompagniet A/S",                               "HUSCO",    ""),
+    ("36078383", "Konsolidator A/S",                                "KONSOL",   "Nasdaq First North"),
+    ("12958050", "Noble Corporation plc",                           "NE",       "Delisted from Nasdaq Copenhagen Dec 2024, NYSE only"),
+    ("35633766", "Penneo A/S",                                      "PENNEO",   ""),
+    ("32769713", "Risma Systems A/S",                               "RISMA",    "Delisted Aug 2025, taken private by Triple PE"),
+    ("16139084", "Rovsing A/S",                                     "ROV",      ""),
+    ("38322656", "Shape Robotics A/S",                              "SHAPE",    ""),
+    ("70854910", "Papirfabrikken Invest A/S",                       "PFINV",    "Formerly Silkeborg IF Invest A/S, renamed Jan 2024"),
+    ("15908416", "Solar A/S",                                       "SOLAR-B",  "Only B shares listed"),
+    ("71064719", "Strategic Investments A/S",                       "STRINV",   ""),
+    ("44791447", "Svitzer Group A/S",                               "SVITZR",   "Listed Apr 2024 via demerger from A.P. Moller Maersk"),
+    ("10404916", "Tivoli A/S",                                      "TIV",      ""),
+    ("34472742", "Unlimit Group A/S",                               "UNLGRP",   "Nasdaq First North"),
 ]
 
 
