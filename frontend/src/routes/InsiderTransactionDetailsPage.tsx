@@ -87,6 +87,13 @@ const InsiderTransactionDetailsPage: React.FC = () => {
   const [showHelp, setShowHelp] = useState(false);
   const [personFilter, setPersonFilter] = useState<string>("");
   const [selectedPeriod, setSelectedPeriod] = useState<Period>("Max");
+  const [isDark, setIsDark] = useState(() => window.matchMedia("(prefers-color-scheme: dark)").matches);
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    const handler = (e: MediaQueryListEvent) => setIsDark(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["insiderIssuer", cvr],
@@ -115,15 +122,16 @@ const InsiderTransactionDetailsPage: React.FC = () => {
   }, [data, selectedPeriod]);
 
   const activityChartData = useMemo(() => {
-    const months: Record<string, { month: string; buy: number; sell: number }> = {};
+    const months: Record<string, { month: string; buy: number; grant: number; sell: number }> = {};
     for (const tx of periodFilteredTxs) {
       const d = tx.transaction_date || tx.published_date;
       if (!d) continue;
       const key = d.slice(0, 7); // "YYYY-MM"
-      if (!months[key]) months[key] = { month: key, buy: 0, sell: 0 };
+      if (!months[key]) months[key] = { month: key, buy: 0, grant: 0, sell: 0 };
       const vol = parseFloat(String(tx.volume ?? 0)) || 0;
       const cat = tx.transaction_category;
-      if (cat === "buy" || cat === "grant") months[key].buy += vol;
+      if (cat === "buy") months[key].buy += vol;
+      else if (cat === "grant") months[key].grant += vol;
       else if (cat === "sell") months[key].sell += vol;
     }
     return Object.values(months).sort((a, b) => a.month.localeCompare(b.month));
@@ -240,8 +248,9 @@ const InsiderTransactionDetailsPage: React.FC = () => {
                         <span className="text-base font-semibold text-blue-600 dark:text-blue-400">{t("Insider activity")}</span>
                         <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
                         <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
-                          <span className="flex items-center gap-1"><span className="inline-block w-2.5 h-2.5 rounded-sm bg-green-500 dark:bg-green-400" />{t("Buys")}</span>
-                          <span className="flex items-center gap-1"><span className="inline-block w-2.5 h-2.5 rounded-sm bg-red-500 dark:bg-red-400" />{t("Sells")}</span>
+                          <span className="flex items-center gap-1"><span className="inline-block w-2.5 h-2.5 rounded-sm bg-green-500" />{t("Buys")}</span>
+                          <span className="flex items-center gap-1"><span className="inline-block w-2.5 h-2.5 rounded-sm bg-blue-500" />{t("Granted")}</span>
+                          <span className="flex items-center gap-1"><span className="inline-block w-2.5 h-2.5 rounded-sm bg-red-500" />{t("Sells")}</span>
                         </div>
                       </div>
                       <div className="[&_svg]:outline-none [&_*:focus]:outline-none">
@@ -250,7 +259,7 @@ const InsiderTransactionDetailsPage: React.FC = () => {
                           <XAxis
                             dataKey="month"
                             tickFormatter={(v: string) => { const d = new Date(v + "-01"); return d.toLocaleDateString(locale, { month: "short", year: "2-digit" }); }}
-                            tick={{ fontSize: 11, fill: "currentColor", dy: 4 }}
+                            tick={{ fontSize: 11, fill: isDark ? "#9ca3af" : "#6b7280", dy: 4 }}
                             tickLine={false}
                             axisLine={false}
                             angle={-45}
@@ -260,11 +269,40 @@ const InsiderTransactionDetailsPage: React.FC = () => {
                           />
                           <YAxis hide />
                           <Tooltip
-                            formatter={(value, name) => [(Number(value) || 0).toLocaleString(locale, { maximumFractionDigits: 0 }), name === "buy" ? t("Buys") : t("Sells")]}
-                            labelFormatter={(label) => new Date(String(label) + "-01").toLocaleDateString(locale, { month: "long", year: "numeric" })}
-                            contentStyle={{ fontSize: 12 }}
+                            cursor={{ fill: isDark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)" }}
+                            content={({ active, payload, label }) => {
+                              if (!active || !payload?.length) return null;
+                              const month = new Date(String(label) + "-01").toLocaleDateString(locale, { month: "long", year: "numeric" });
+                              const rows = [
+                                { key: "buy",   color: "#22c55e", label: t("Buys") },
+                                { key: "grant", color: "#3b82f6", label: t("Granted") },
+                                { key: "sell",  color: "#ef4444", label: t("Sells") },
+                              ];
+                              return (
+                                <div className={`rounded-xl px-3 py-2.5 shadow-lg text-xs ${isDark ? "bg-[#1e1e28] border border-gray-700" : "bg-white border border-gray-100"}`}>
+                                  <p className={`font-semibold mb-2 ${isDark ? "text-gray-100" : "text-gray-800"}`}>{month}</p>
+                                  {rows.map(({ key, color, label: rowLabel }) => {
+                                    const entry = payload.find(p => p.dataKey === key);
+                                    const val = Number(entry?.value) || 0;
+                                    if (!val) return null;
+                                    return (
+                                      <div key={key} className="flex items-center justify-between gap-4">
+                                        <span className="flex items-center gap-1.5" style={{ color: isDark ? "#9ca3af" : "#6b7280" }}>
+                                          <span className="inline-block w-2 h-2 rounded-sm" style={{ backgroundColor: color }} />
+                                          {rowLabel}
+                                        </span>
+                                        <span className="font-medium tabular-nums" style={{ color: isDark ? "#f3f4f6" : "#111827" }}>
+                                          {val.toLocaleString(locale, { maximumFractionDigits: 0 })}
+                                        </span>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              );
+                            }}
                           />
                           <Bar dataKey="buy" fill="#22c55e" radius={[3, 3, 0, 0]} />
+                          <Bar dataKey="grant" fill="#3b82f6" radius={[3, 3, 0, 0]} />
                           <Bar dataKey="sell" fill="#ef4444" radius={[3, 3, 0, 0]} />
                         </BarChart>
                       </ResponsiveContainer>
