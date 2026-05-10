@@ -146,7 +146,20 @@ const Navigation: React.FC = () => {
                     {t("Short Sellers")}
                   </NavLink>
                 </li>
-                {/* Insider Trades nav link hidden until production setup is complete */}
+                <li>
+                  <NavLink
+                    to="/insider-transactions"
+                    className={({ isActive }) =>
+                      `${isActive ? activeLinkClasses : linkClasses} inline-flex items-center gap-1.5`
+                    }
+                    onClick={() => setCollapseMenu(defaultCollapseMenu)}
+                  >
+                    {t("Insider Trades")}
+                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-amber-400 text-[#0d1b4c] leading-none">
+                      {t("New")}
+                    </span>
+                  </NavLink>
+                </li>
                 <li>
                   <NavLink
                     to="/top-lists"
