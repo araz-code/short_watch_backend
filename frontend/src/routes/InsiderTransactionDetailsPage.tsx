@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { fetchInsiderIssuerDetail, InsiderTransaction, InsiderSignal, HOST, VERSION } from "../apis/ShortPositionAPI";
+import { fetchInsiderIssuerDetail, InsiderTransaction, HOST, VERSION } from "../apis/ShortPositionAPI";
 import { trackEvent } from "../analytics";
 import ErrorBlock from "../components/UI/ErrorBlock";
 import LoadingIndicator from "../components/UI/LoadingIndicator";
@@ -17,45 +17,6 @@ function typeBadgeCls(category: string): string {
   return "bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300";
 }
 
-function SignalBadge({ signal, locale, t }: { signal: InsiderSignal; locale: string; t: (key: string) => string }) {
-  const cfg = {
-    bullish: {
-      label: t("Bullish"),
-      bg: "bg-green-100 dark:bg-green-500/15",
-      text: "text-green-700 dark:text-green-400",
-      icon: <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M18 15l-6-6-6 6" /></svg>,
-    },
-    bearish: {
-      label: t("Bearish"),
-      bg: "bg-red-100 dark:bg-red-500/15",
-      text: "text-red-700 dark:text-red-400",
-      icon: <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6" /></svg>,
-    },
-    neutral: {
-      label: t("Neutral"),
-      bg: "bg-gray-100 dark:bg-gray-800",
-      text: "text-gray-700 dark:text-gray-300",
-      icon: <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /></svg>,
-    },
-  } as const;
-
-  const { label, bg, text, icon } = cfg[signal.signal];
-  const fmt = (n: number) => n.toLocaleString(locale, { maximumFractionDigits: 0 });
-
-  return (
-    <div className="flex items-center justify-center gap-2 flex-wrap mt-1">
-      <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold ${bg} ${text}`}>
-        {icon}{label}
-      </span>
-      <span className="text-xs text-gray-600 dark:text-gray-400">{t("Insider sentiment (90d)")}</span>
-      {(signal.buy_amount_90d > 0 || signal.sell_amount_90d > 0) && (
-        <span className="text-xs text-gray-600 dark:text-gray-400">
-          · {t("Buys")}: {fmt(signal.buy_amount_90d)} / {t("Sells")}: {fmt(signal.sell_amount_90d)}
-        </span>
-      )}
-    </div>
-  );
-}
 
 function PdfModal({ url, onClose, label }: { url: string; onClose: () => void; label: string }) {
   useEffect(() => {
