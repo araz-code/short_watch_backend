@@ -9,6 +9,7 @@ import LoadingIndicator from "../components/UI/LoadingIndicator";
 import PageTemplate from "../components/PageTemplate";
 import ToggleSwitch from "../components/UI/RadioButtonToggle";
 import InsiderHelpDialog from "../components/InsiderHelpDialog";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 
 function typeBadgeCls(category: string): string {
   if (category === "buy") return "bg-green-100 text-green-700 dark:bg-green-500/15 dark:text-green-400";
@@ -113,6 +114,21 @@ const InsiderTransactionDetailsPage: React.FC = () => {
     });
   }, [data, selectedPeriod]);
 
+  const activityChartData = useMemo(() => {
+    const months: Record<string, { month: string; buy: number; sell: number }> = {};
+    for (const tx of periodFilteredTxs) {
+      const d = tx.transaction_date || tx.published_date;
+      if (!d) continue;
+      const key = d.slice(0, 7); // "YYYY-MM"
+      if (!months[key]) months[key] = { month: key, buy: 0, sell: 0 };
+      const vol = parseFloat(String(tx.volume ?? 0)) || 0;
+      const cat = tx.transaction_category;
+      if (cat === "buy" || cat === "grant") months[key].buy += vol;
+      else if (cat === "sell") months[key].sell += vol;
+    }
+    return Object.values(months).sort((a, b) => a.month.localeCompare(b.month));
+  }, [periodFilteredTxs]);
+
   const personTotals = useMemo(() => {
     const totals: Record<string, { role_en: string; role_da: string; buyAmount: number; sellAmount: number; buyVolume: number; sellVolume: number; grantVolume: number }> = {};
     for (const tx of periodFilteredTxs) {
@@ -216,6 +232,45 @@ const InsiderTransactionDetailsPage: React.FC = () => {
                       onSelectChange={(v) => { setSelectedPeriod(v as Period); setPersonFilter(""); }}
                     />
                   </div>
+
+                  {/* ── Activity chart ── */}
+                  {activityChartData.length > 0 && (
+                    <div className="mb-4">
+                      <div className="flex items-center gap-3 mb-2 px-1">
+                        <span className="text-base font-semibold text-blue-600 dark:text-blue-400">{t("Insider activity")}</span>
+                        <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
+                        <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
+                          <span className="flex items-center gap-1"><span className="inline-block w-2.5 h-2.5 rounded-sm bg-green-500 dark:bg-green-400" />{t("Buys")}</span>
+                          <span className="flex items-center gap-1"><span className="inline-block w-2.5 h-2.5 rounded-sm bg-red-500 dark:bg-red-400" />{t("Sells")}</span>
+                        </div>
+                      </div>
+                      <div className="[&_svg]:outline-none [&_*:focus]:outline-none">
+                      <ResponsiveContainer width="100%" height={155}>
+                        <BarChart data={activityChartData} barCategoryGap="30%" barGap={2} margin={{ top: 4, right: 4, left: 12, bottom: 30 }}>
+                          <XAxis
+                            dataKey="month"
+                            tickFormatter={(v: string) => { const d = new Date(v + "-01"); return d.toLocaleDateString(locale, { month: "short", year: "2-digit" }); }}
+                            tick={{ fontSize: 11, fill: "currentColor", dy: 4 }}
+                            tickLine={false}
+                            axisLine={false}
+                            angle={-45}
+                            textAnchor="end"
+                            interval={activityChartData.length > 5 ? Math.ceil(activityChartData.length / 5) - 1 : 0}
+                            className="text-gray-500 dark:text-gray-400"
+                          />
+                          <YAxis hide />
+                          <Tooltip
+                            formatter={(value, name) => [(Number(value) || 0).toLocaleString(locale, { maximumFractionDigits: 0 }), name === "buy" ? t("Buys") : t("Sells")]}
+                            labelFormatter={(label) => new Date(String(label) + "-01").toLocaleDateString(locale, { month: "long", year: "numeric" })}
+                            contentStyle={{ fontSize: 12 }}
+                          />
+                          <Bar dataKey="buy" fill="#22c55e" radius={[3, 3, 0, 0]} />
+                          <Bar dataKey="sell" fill="#ef4444" radius={[3, 3, 0, 0]} />
+                        </BarChart>
+                      </ResponsiveContainer>
+                      </div>
+                    </div>
+                  )}
 
                   {/* ── Insiders summary ── */}
                   {allPersons.length > 0 && (
