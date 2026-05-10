@@ -102,17 +102,20 @@ const InsiderTransactionDetailsPage: React.FC = () => {
     }
   }, [data, t, cvr]);
 
-  const allPersons = useMemo(() => {
-    if (!data) return [];
-    return [...new Set(data.transactions.map(tx => tx.person_name))].filter(Boolean).sort();
-  }, [data]);
-
   const getRole = (tx: { person_role: string; person_role_da: string }) =>
     locale === "da-DK" ? (tx.person_role_da || tx.person_role) : tx.person_role;
 
+  const periodFilteredTxs = useMemo(() => {
+    const cutoff = periodCutoff(selectedPeriod);
+    return (data?.transactions ?? []).filter(tx => {
+      if (cutoff && tx.transaction_date && tx.transaction_date < cutoff) return false;
+      return true;
+    });
+  }, [data, selectedPeriod]);
+
   const personTotals = useMemo(() => {
     const totals: Record<string, { role_en: string; role_da: string; buyAmount: number; sellAmount: number; buyVolume: number; sellVolume: number; grantVolume: number }> = {};
-    for (const tx of data?.transactions ?? []) {
+    for (const tx of periodFilteredTxs) {
       if (!tx.person_name) continue;
       if (!totals[tx.person_name]) {
         totals[tx.person_name] = { role_en: tx.person_role || "", role_da: tx.person_role_da || "", buyAmount: 0, sellAmount: 0, buyVolume: 0, sellVolume: 0, grantVolume: 0 };
@@ -125,16 +128,18 @@ const InsiderTransactionDetailsPage: React.FC = () => {
       else if (cat === "sell") { totals[tx.person_name].sellAmount += amount; totals[tx.person_name].sellVolume += volume; }
     }
     return totals;
-  }, [data]);
+  }, [periodFilteredTxs]);
+
+  const allPersons = useMemo(() => {
+    return [...new Set(periodFilteredTxs.map(tx => tx.person_name))].filter(Boolean).sort();
+  }, [periodFilteredTxs]);
 
   const filteredTxs = useMemo(() => {
-    const cutoff = periodCutoff(selectedPeriod);
-    return (data?.transactions ?? []).filter(tx => {
+    return periodFilteredTxs.filter(tx => {
       if (personFilter && tx.person_name !== personFilter) return false;
-      if (cutoff && tx.transaction_date && tx.transaction_date < cutoff) return false;
       return true;
     });
-  }, [data, personFilter, selectedPeriod]);
+  }, [periodFilteredTxs, personFilter]);
 
   const grouped: GroupedTransactions = {};
   for (const tx of filteredTxs) {
@@ -203,9 +208,18 @@ const InsiderTransactionDetailsPage: React.FC = () => {
                 {/* Scrollable content */}
                 <div className="flex-1 min-h-0 overflow-y-auto px-2 pb-8 [@media(max-height:900px)_and_(orientation:landscape)]:flex-none [@media(max-height:900px)_and_(orientation:landscape)]:overflow-visible">
 
+                  {/* ── Period toggle ── */}
+                  <div className="mt-3 mb-3 flex justify-end">
+                    <ToggleSwitch
+                      options={[...PERIOD_OPTIONS]}
+                      selectedOption={selectedPeriod}
+                      onSelectChange={(v) => { setSelectedPeriod(v as Period); setPersonFilter(""); }}
+                    />
+                  </div>
+
                   {/* ── Insiders summary ── */}
                   {allPersons.length > 0 && (
-                    <div className="mt-3 mb-4">
+                    <div className="mb-4">
                       <p className="text-xs font-semibold tracking-wide text-gray-500 dark:text-gray-400 mb-2 px-1">{t("Insiders")}</p>
                       {/* Mobile: card per person */}
                       <div className="sm:hidden flex flex-col gap-2">
@@ -303,8 +317,6 @@ const InsiderTransactionDetailsPage: React.FC = () => {
                   <div className="border-t border-gray-100 dark:border-gray-800 pt-4">
                     <div className="mb-3 flex items-center justify-between gap-2 flex-wrap">
                       <p className="text-xs font-semibold tracking-wide text-gray-500 dark:text-gray-400 px-1">{t("Transactions")}</p>
-                    {/* Period toggle + person chip */}
-                    <div className="flex items-center justify-end gap-2 flex-wrap">
                       {hasActiveFilter && (
                         <button
                           onClick={() => setPersonFilter("")}
@@ -314,12 +326,6 @@ const InsiderTransactionDetailsPage: React.FC = () => {
                           <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M1 1L9 9M9 1L1 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
                         </button>
                       )}
-                      <ToggleSwitch
-                        options={[...PERIOD_OPTIONS]}
-                        selectedOption={selectedPeriod}
-                        onSelectChange={(v) => setSelectedPeriod(v as Period)}
-                      />
-                    </div>
                     </div>
 
                     {filteredTxs.length === 0 && (
