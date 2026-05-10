@@ -161,6 +161,10 @@ class Command(BaseCommand):
 
             for row in data.itertuples(index=True):
                 try:
+                    ts = timezone.make_aware(
+                        datetime.combine(row.Index.date(), time(23, 45)),
+                        timezone.get_current_timezone(),
+                    )
                     ShortPositionChart.objects.update_or_create(
                         stock=stock,
                         date=row.Index.date(),
@@ -172,6 +176,7 @@ class Command(BaseCommand):
                         },
                         create_defaults={
                             'value': 0,
+                            'timestamp': ts,
                             'close': round(row.Close, 2),
                             'high': round(row.High, 2),
                             'low': round(row.Low, 2),
