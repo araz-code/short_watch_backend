@@ -220,7 +220,10 @@ const InsiderTransactionDetailsPage: React.FC = () => {
                   {/* ── Insiders summary ── */}
                   {allPersons.length > 0 && (
                     <div className="mb-4">
-                      <p className="text-xs font-semibold tracking-wide text-gray-500 dark:text-gray-400 mb-2 px-1">{t("Insiders")}</p>
+                      <div className="flex items-center gap-3 mb-3 px-1">
+                        <span className="text-base font-semibold text-blue-600 dark:text-blue-400">{t("Insiders")}</span>
+                        <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
+                      </div>
                       {/* Mobile: card per person */}
                       <div className="sm:hidden flex flex-col gap-2">
                         {allPersons.map((name, idx) => {
@@ -314,9 +317,12 @@ const InsiderTransactionDetailsPage: React.FC = () => {
                   )}
 
                   {/* ── Transactions ── */}
-                  <div className="border-t border-gray-100 dark:border-gray-800 pt-4">
-                    <div className="mb-3 flex items-center justify-between gap-2 flex-wrap">
-                      <p className="text-xs font-semibold tracking-wide text-gray-500 dark:text-gray-400 px-1">{t("Transactions")}</p>
+                  <div className="pt-2">
+                    <div className="flex items-center gap-3 mb-2 px-1">
+                      <span className="text-base font-semibold text-blue-600 dark:text-blue-400">{t("Transactions")}</span>
+                      <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
+                    </div>
+                    <div className="mb-3 flex items-center justify-end gap-2 flex-wrap">
                       {hasActiveFilter && (
                         <button
                           onClick={() => setPersonFilter("")}
