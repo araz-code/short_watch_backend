@@ -153,7 +153,10 @@ class Command(BaseCommand):
 
     @staticmethod
     def fill_initial_missing_data(stock, data):
-        count = ShortPositionChart.objects.filter(stock=stock, close=None).count()
+        if data.empty:
+            return
+        earliest = data.index[0].date()
+        count = ShortPositionChart.objects.filter(stock=stock, close=None, date__gte=earliest).count()
 
         if count > 10:
             Error.objects.create(message=f'fill_initial_missing_data {stock.symbol}: '
