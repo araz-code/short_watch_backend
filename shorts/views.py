@@ -33,12 +33,13 @@ class ShortPositionView(ReadOnlyModelViewSet):
         if cached:
             return Response(cached)
 
-        stocks_with_latest_timestamp = Stock.objects.filter(active=True) \
-            .annotate(latest_timestamp=Max('shortposition__timestamp'))
-
         most_recent_short_positions = ShortPosition.objects.select_related('stock').filter(
-            stock__in=stocks_with_latest_timestamp,
-            timestamp__in=stocks_with_latest_timestamp.values('latest_timestamp')
+            stock__active=True,
+            timestamp=Subquery(
+                ShortPosition.objects.filter(
+                    stock_id=OuterRef('stock_id')
+                ).order_by('-timestamp').values('timestamp')[:1]
+            )
         )
 
         sorted_data = sorted(most_recent_short_positions, key=lambda x: x.stock.symbol)
