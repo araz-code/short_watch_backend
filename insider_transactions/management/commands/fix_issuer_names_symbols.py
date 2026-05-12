@@ -112,7 +112,7 @@ class Command(BaseCommand):
                     if symbol:
                         issuer.symbol = symbol
                     issuer.save(update_fields=["name", "symbol"])
-                    # cache.delete(f"insider_issuer_{cvr}")
+                    cache.delete(f"insider_issuer_{cvr}")
                     updated += 1
             else:
                 self.stdout.write(self.style.SUCCESS(f"{name} ({cvr}): already correct"))
@@ -122,7 +122,7 @@ class Command(BaseCommand):
             for msg in not_found:
                 self.stdout.write(msg)
 
-        # cache.delete("insider_issuers_list")
+        cache.delete("insider_issuers_list")
 
         if dry_run:
             self.stdout.write(self.style.WARNING("\nDry run — no changes saved."))

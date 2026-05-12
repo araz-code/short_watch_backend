@@ -28,10 +28,10 @@ class ShortPositionView(ReadOnlyModelViewSet):
     lookup_field = 'code'
 
     def list(self, request, *args, **kwargs):
-        # cache_key = 'short_positions_list'
-        # cached = cache.get(cache_key)
-        # if cached:
-        #     return Response(cached)
+        cache_key = 'short_positions_list'
+        cached = cache.get(cache_key)
+        if cached:
+            return Response(cached)
 
         most_recent_short_positions = ShortPosition.objects.select_related('stock').filter(
             stock__active=True,
@@ -47,7 +47,7 @@ class ShortPositionView(ReadOnlyModelViewSet):
         sorted_data = [p for p in sorted_data if p.stock_id not in seen and not seen.add(p.stock_id)]
 
         serializer = self.serializer_class(sorted_data, many=True)
-        # cache.set(cache_key, serializer.data, timeout=CACHE_TIMEOUT_SECONDS)
+        cache.set(cache_key, serializer.data, timeout=CACHE_TIMEOUT_SECONDS)
         return Response(serializer.data)
 
     def retrieve(self, request, code=None, *args, **kwargs):
@@ -219,10 +219,10 @@ class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
     lookup_field = 'code'
 
     def retrieve(self, request, code=None, *args, **kwargs):
-        # cache_key = f'detail_{code}'
-        # cached = cache.get(cache_key)
-        # if cached is not None:
-        #     return Response(cached)
+        cache_key = f'detail_{code}'
+        cached = cache.get(cache_key)
+        if cached is not None:
+            return Response(cached)
 
         try:
             stock = Stock.objects.prefetch_related(
@@ -282,7 +282,7 @@ class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
                                                    stock.shares_outstanding, days_to_cover)
 
             data = self.get_serializer(response).data
-            # cache.set(cache_key, data, timeout=CACHE_TIMEOUT_SECONDS)
+            cache.set(cache_key, data, timeout=CACHE_TIMEOUT_SECONDS)
             return Response(data)
         except Stock.DoesNotExist:
             return Response(self.get_serializer(
@@ -302,13 +302,13 @@ class ShortSellerView(ReadOnlyModelViewSet):
     detail_serializer_class = ShortSellerDetailSerializer
 
     def list(self, request, *args, **kwargs):
-        # cache_key = 'short_sellers_list'
-        # cached = cache.get(cache_key)
-        # if cached:
-        #     return Response(cached)
+        cache_key = 'short_sellers_list'
+        cached = cache.get(cache_key)
+        if cached:
+            return Response(cached)
 
         response = super().list(request, *args, **kwargs)
-        # cache.set(cache_key, response.data, timeout=CACHE_TIMEOUT_SECONDS)
+        cache.set(cache_key, response.data, timeout=CACHE_TIMEOUT_SECONDS)
         return response
 
     def get_serializer_class(self):
@@ -326,9 +326,9 @@ from rest_framework.decorators import api_view, permission_classes as perm
 @api_view(['GET'])
 @perm([HasAPIKey])
 def stats_view(request):
-    # cached = cache.get('homepage_stats')
-    # if cached:
-    #     return Response(cached)
+    cached = cache.get('homepage_stats')
+    if cached:
+        return Response(cached)
 
     try:
         # 1. How many stocks are currently shorted (active stocks with position > 0)
@@ -430,7 +430,7 @@ def stats_view(request):
             } if most_followed and most_followed.follower_count > 0 else None,
             'updatedAt': latest_update.isoformat() if latest_update else None,
         }
-        # cache.set('homepage_stats', data, timeout=CACHE_TIMEOUT_SECONDS)
+        cache.set('homepage_stats', data, timeout=CACHE_TIMEOUT_SECONDS)
         return Response(data)
     except Exception:
         return Response({
@@ -595,9 +595,9 @@ def _compute_most_short_sellers():
 @api_view(['GET'])
 @perm([HasAPIKey])
 def top_lists_view(request):
-    # cached = cache.get('top_lists')
-    # if cached:
-    #     return Response(cached)
+    cached = cache.get('top_lists')
+    if cached:
+        return Response(cached)
 
     one_month_ago = timezone.now() - timedelta(days=30)
 
@@ -619,7 +619,7 @@ def top_lists_view(request):
         'mostDaysToCover': safe(_compute_top_days_to_cover),
         'mostShortSellers': safe(_compute_most_short_sellers),
     }
-    # cache.set('top_lists', data, timeout=CACHE_TIMEOUT_SECONDS)
+    cache.set('top_lists', data, timeout=CACHE_TIMEOUT_SECONDS)
     return Response(data)
 
 

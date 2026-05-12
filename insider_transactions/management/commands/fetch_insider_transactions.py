@@ -117,7 +117,7 @@ class Command(BaseCommand):
                 count = self._process_announcement(announcement_id)
                 new_count += count
 
-        # cache.delete("insider_issuers_list")
+        cache.delete("insider_issuers_list")
         self.stdout.write(
             self.style.SUCCESS(
                 f"Done. New transactions: {new_count}, skipped (already stored): {skip_count}"
@@ -306,7 +306,7 @@ class Command(BaseCommand):
         self._mark_processed(announcement_id)
         self.stdout.write(f"  {announcement_id}: saved {saved} transactions for {issuer.name}")
         self._normalize_person_names(issuer)
-        # cache.delete(f"insider_issuer_{issuer.cvr}")
+        cache.delete(f"insider_issuer_{issuer.cvr}")
         return saved
 
     def _mark_processed(self, announcement_id: str, skip_reason: str = "") -> None:
