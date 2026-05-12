@@ -15,9 +15,9 @@ from shorts.models import ShortPosition, Stock, LargeShortSelling, ShortPosition
 from shorts.serializers import ShortPositionSerializer, ShortSellerSerializerOld, ShortPositionDetailSerializer, \
     ShortSellerListSerializer, ShortSellerDetailSerializer
 
-# Max age for cached responses when fetch_shorts has not run cache.clear().
-# fetch_shorts clears the cache whenever data actually changes; this timeout
-# is the upper bound that keeps stale entries from sticking around forever.
+# Max age for cached responses. fetch_shorts invalidates these keys after
+# each run; this timeout is the upper bound that keeps stale entries from
+# sticking around forever.
 CACHE_TIMEOUT_SECONDS = 15 * 60
 
 
