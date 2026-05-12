@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { fetchRecentFeed, RecentFeedItem } from "../apis/ShortPositionAPI";
 
-function formatAmount(amount: number | null | undefined, currency: string | undefined): string {
+function formatAmount(amount: number | null | undefined): string {
   if (!amount) return "";
   if (amount >= 1_000_000) return `${(amount / 1_000_000).toFixed(1)}M`;
   if (amount >= 1_000) return `${Math.round(amount / 1_000)}K`;
