@@ -3,6 +3,9 @@ from collections import namedtuple
 from datetime import timedelta, datetime, date
 
 from django.core.cache import cache
+from functools import reduce
+from operator import or_
+
 from django.db.models import Max, Prefetch, Count, Subquery, OuterRef, F, ExpressionWrapper, FloatField, Avg, Q
 from django.utils import timezone
 from rest_framework.generics import RetrieveAPIView
@@ -33,14 +36,18 @@ class ShortPositionView(ReadOnlyModelViewSet):
         if cached:
             return Response(cached)
 
-        most_recent_short_positions = ShortPosition.objects.select_related('stock').filter(
-            stock__active=True,
-            timestamp=Subquery(
-                ShortPosition.objects.filter(
-                    stock_id=OuterRef('stock_id')
-                ).order_by('-timestamp').values('timestamp')[:1]
-            )
+        latest_per_stock = dict(
+            ShortPosition.objects
+            .filter(stock__active=True)
+            .values('stock_id')
+            .annotate(max_ts=Max('timestamp'))
+            .values_list('stock_id', 'max_ts')
         )
+        most_recent_short_positions = (
+            ShortPosition.objects.select_related('stock')
+            .filter(reduce(or_, (Q(stock_id=sid, timestamp=ts)
+                                 for sid, ts in latest_per_stock.items())))
+        ) if latest_per_stock else ShortPosition.objects.none()
 
         sorted_data = sorted(most_recent_short_positions, key=lambda x: x.stock.symbol)
         seen = set()
