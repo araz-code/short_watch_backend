@@ -9,6 +9,7 @@ import LoadingIndicator from "../components/UI/LoadingIndicator";
 import PageTemplate from "../components/PageTemplate";
 import ToggleSwitch from "../components/UI/RadioButtonToggle";
 import InsiderHelpDialog from "../components/InsiderHelpDialog";
+import FavoriteToggleButton from "../components/UI/FavoriteToggleButton";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 
 function typeBadgeCls(category: string): string {
@@ -86,6 +87,29 @@ const InsiderTransactionDetailsPage: React.FC = () => {
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const [showHelp, setShowHelp] = useState(false);
   const [personFilter, setPersonFilter] = useState<string>("");
+  const [myInsiderList, setMyInsiderList] = useState<string[]>(() => {
+    const saved = localStorage.getItem("myInsiderList");
+    return saved ? JSON.parse(saved) : [];
+  });
+  const isFavorite = cvr ? myInsiderList.includes(cvr) : false;
+
+  useEffect(() => {
+    localStorage.setItem("myInsiderList", JSON.stringify(myInsiderList));
+  }, [myInsiderList]);
+
+  const addToMyList = () => {
+    if (cvr) {
+      setMyInsiderList((prev) => [...prev, cvr]);
+      trackEvent("insider_watchlist_add", { cvr });
+    }
+  };
+
+  const removeFromMyList = () => {
+    if (cvr) {
+      setMyInsiderList((prev) => prev.filter((item) => item !== cvr));
+      trackEvent("insider_watchlist_remove", { cvr });
+    }
+  };
   const [selectedPeriod, setSelectedPeriod] = useState<Period>("Max");
   const [isDark, setIsDark] = useState(() => window.matchMedia("(prefers-color-scheme: dark)").matches);
   useEffect(() => {
@@ -201,17 +225,24 @@ const InsiderTransactionDetailsPage: React.FC = () => {
                 <span aria-hidden="true">←</span>
                 {t("Back")}
               </button>
-              <button
-                onClick={() => {
-                  trackEvent("help_dialog_open", { page: "insider_detail" });
-                  fetch(`${HOST}/stats/visit/help-insider-detail/`).catch(() => {});
-                  setShowHelp(true);
-                }}
-                aria-label={t("Help")}
-                className="text-sm font-medium text-blue-500 border border-blue-300 dark:border-blue-700 rounded-md px-3 py-1.5 mr-4 hover:bg-blue-50 dark:hover:bg-blue-900/30 focus:ring-2 focus:ring-blue-300 transition-colors"
-              >
-                {t("Help")}
-              </button>
+              <div className="flex items-center gap-1 sm:gap-3 pr-2 pt-4">
+                <FavoriteToggleButton
+                  isFavorite={isFavorite}
+                  addToMyList={addToMyList}
+                  removeFromMyList={removeFromMyList}
+                />
+                <button
+                  onClick={() => {
+                    trackEvent("help_dialog_open", { page: "insider_detail" });
+                    fetch(`${HOST}/stats/visit/help-insider-detail/`).catch(() => {});
+                    setShowHelp(true);
+                  }}
+                  aria-label={t("Help")}
+                  className="text-sm font-medium text-blue-500 border border-blue-300 dark:border-blue-700 rounded-md px-3 py-1.5 hover:bg-blue-50 dark:hover:bg-blue-900/30 focus:ring-2 focus:ring-blue-300 transition-colors"
+                >
+                  {t("Help")}
+                </button>
+              </div>
             </div>
 
             {isLoading && <div className="grid place-items-center h-64"><LoadingIndicator /></div>}

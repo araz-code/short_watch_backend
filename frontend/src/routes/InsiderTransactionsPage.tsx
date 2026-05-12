@@ -16,7 +16,7 @@ function formatDate(dateStr: string | null, locale: string): string {
   return d.toLocaleDateString(locale, { day: "numeric", month: "short", year: "numeric" });
 }
 
-const SORT_OPTIONS = ["Name", "Symbol", "Last updated"] as const;
+const SORT_OPTIONS = ["Name", "Symbol", "Date"] as const;
 type SortOption = typeof SORT_OPTIONS[number];
 
 function sortIssuers(list: InsiderIssuer[], by: SortOption): InsiderIssuer[] {
@@ -24,7 +24,7 @@ function sortIssuers(list: InsiderIssuer[], by: SortOption): InsiderIssuer[] {
     switch (by) {
       case "Symbol":
         return (a.symbol || "").localeCompare(b.symbol || "");
-      case "Last updated":
+      case "Date":
         return (b.latest_date ?? "").localeCompare(a.latest_date ?? "");
       case "Name":
       default:
@@ -41,12 +41,21 @@ const InsiderTransactionsPage: React.FC = () => {
   const [showHelp, setShowHelp] = useState(false);
   const [selectedSorting, setSelectedSorting] = useState<SortOption>(() => {
     const saved = localStorage.getItem("insiderSorting");
-    return (SORT_OPTIONS as readonly string[]).includes(saved ?? "") ? (saved as SortOption) : "Last updated";
+    return (SORT_OPTIONS as readonly string[]).includes(saved ?? "") ? (saved as SortOption) : "Date";
+  });
+  const [showMyList, setShowMyList] = useState<boolean>(() => {
+    const saved = localStorage.getItem("showMyInsiderList");
+    return saved ? JSON.parse(saved) : false;
+  });
+  const [myInsiderList] = useState<string[]>(() => {
+    const saved = localStorage.getItem("myInsiderList");
+    return saved ? JSON.parse(saved) : [];
   });
 
   useEffect(() => {
     localStorage.setItem("insiderSorting", selectedSorting);
-  }, [selectedSorting]);
+    localStorage.setItem("showMyInsiderList", JSON.stringify(showMyList));
+  }, [selectedSorting, showMyList]);
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["insiderIssuers"],
@@ -68,12 +77,16 @@ const InsiderTransactionsPage: React.FC = () => {
       }, null)
     : null;
 
-  const filtered = data
+  let filtered = data
     ? data.filter((item: InsiderIssuer) =>
         item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.symbol.toLowerCase().includes(searchTerm.toLowerCase())
       )
     : [];
+
+  filtered = showMyList
+    ? filtered.filter((item: InsiderIssuer) => myInsiderList.includes(item.cvr))
+    : filtered;
 
   const sorted = sortIssuers(filtered, selectedSorting);
 
@@ -90,9 +103,15 @@ const InsiderTransactionsPage: React.FC = () => {
     content = (
       <ul>
         {sorted.length === 0 && (
-          <p className="text-center font-medium m-10 dark:text-white">{t("No results found")}</p>
+          <p className="text-center font-medium m-10 dark:text-white">
+            {showMyList && searchTerm.length === 0
+              ? t('Select companies to "My list" by clicking the yellow star on the details page (top right corner).')
+              : t("No results found")}
+          </p>
         )}
-        {sorted.map((issuer: InsiderIssuer, index: number) => (
+        {sorted.map((issuer: InsiderIssuer, index: number) => {
+          const showCheckmark = myInsiderList.includes(issuer.cvr) && !showMyList;
+          return (
           <li key={issuer.cvr}>
             <Link to={`/insider-details?cvr=${issuer.cvr}`}>
               <div
@@ -101,12 +120,21 @@ const InsiderTransactionsPage: React.FC = () => {
                 }`}
               >
                 <div className="min-w-0">
-                  {issuer.symbol && (
-                    <div className="font-semibold">{issuer.symbol}</div>
-                  )}
-                  <div className={`truncate ${issuer.symbol ? "text-sm text-gray-600 dark:text-gray-400" : "font-semibold"}`}>
-                    {issuer.name}
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-semibold">{issuer.symbol || issuer.name}</span>
+                    {showCheckmark && (
+                      <span className="text-amber-500">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                          <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.27L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </span>
+                    )}
                   </div>
+                  {issuer.symbol && (
+                    <div className="text-sm text-gray-600 dark:text-gray-400 truncate">
+                      {issuer.name}
+                    </div>
+                  )}
                 </div>
                 <div className="shrink-0 ml-4 text-right">
                   <div className="text-sm font-medium dark:text-white tabular-nums">
@@ -119,7 +147,8 @@ const InsiderTransactionsPage: React.FC = () => {
               </div>
             </Link>
           </li>
-        ))}
+          );
+        })}
       </ul>
     );
   }
@@ -190,11 +219,26 @@ const InsiderTransactionsPage: React.FC = () => {
               </div>
 
               <div className="px-2 pt-2 pb-1 shrink-0 flex items-center justify-between">
-                <DropDownMenu
-                  options={[...SORT_OPTIONS]}
-                  selectedMenuItem={selectedSorting}
-                  onSelectMenuItemChange={(v) => setSelectedSorting(v as SortOption)}
-                />
+                <div className="flex items-center">
+                  <DropDownMenu
+                    options={[...SORT_OPTIONS]}
+                    selectedMenuItem={selectedSorting}
+                    onSelectMenuItemChange={(v) => setSelectedSorting(v as SortOption)}
+                  />
+                  <button
+                    className="text-sm font-medium text-blue-600 dark:text-blue-400 border border-blue-500 dark:border-blue-700 ml-3 px-3 py-1.5 rounded-md hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors focus:ring-2 focus:ring-blue-300"
+                    onClick={() => {
+                      trackEvent("filter_change", {
+                        page: "insider_list",
+                        filter: "my_list",
+                        enabled: !showMyList,
+                      });
+                      setShowMyList(!showMyList);
+                    }}
+                  >
+                    {showMyList ? t("All") : t("My list")}
+                  </button>
+                </div>
                 <button
                   onClick={() => {
                     trackEvent("help_dialog_open", { page: "insider_list" });

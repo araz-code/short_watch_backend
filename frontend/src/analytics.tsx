@@ -32,7 +32,9 @@ export type AnalyticsEvent =
   | "faq_expand_all"
   | "faq_collapse_all"
   | "insider_list_view"
-  | "insider_detail_view";
+  | "insider_detail_view"
+  | "insider_watchlist_add"
+  | "insider_watchlist_remove";
 
 type EventParams = Record<string, string | number | boolean | undefined>;
 
