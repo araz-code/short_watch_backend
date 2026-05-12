@@ -26,9 +26,9 @@ class InsiderIssuerView(ReadOnlyModelViewSet):
 
     def list(self, request, *args, **kwargs):
         cache_key = "insider_issuers_list"
-        cached = cache.get(cache_key)
-        if cached:
-            return Response(cached)
+        # cached = cache.get(cache_key)
+        # if cached:
+        #     return Response(cached)
 
         qs = (
             InsiderIssuer.objects.filter(active=True)
@@ -43,20 +43,20 @@ class InsiderIssuerView(ReadOnlyModelViewSet):
 
         serializer = InsiderIssuerListSerializer(qs, many=True)
         data = serializer.data
-        cache.set(cache_key, data, CACHE_TIMEOUT_SECONDS)
+        # cache.set(cache_key, data, CACHE_TIMEOUT_SECONDS)
         return Response(data)
 
     def retrieve(self, request, *args, **kwargs):
         cvr = kwargs.get("cvr")
         cache_key = f"insider_issuer_{cvr}"
-        cached = cache.get(cache_key)
-        if cached:
-            return Response(cached)
+        # cached = cache.get(cache_key)
+        # if cached:
+        #     return Response(cached)
 
         instance = self.get_object()
         serializer = InsiderIssuerDetailSerializer(instance)
         data = serializer.data
-        cache.set(cache_key, data, CACHE_TIMEOUT_SECONDS)
+        # cache.set(cache_key, data, CACHE_TIMEOUT_SECONDS)
         return Response(data)
 
 

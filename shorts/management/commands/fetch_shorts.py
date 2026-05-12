@@ -89,21 +89,15 @@ class Command(BaseCommand):
 
         self.remove_duplicate_positions()
 
-        # Invalidate all view-level caches so they rebuild on the next
-        # request.  Uses delete_many() instead of cache.clear() because the
-        # DatabaseCache backend implements clear() as a bare
-        # DELETE FROM django_cache which acquires a table-level lock on
-        # MySQL/InnoDB, blocking every concurrent cache.get() from the API
-        # views.  delete_many() uses DELETE ... WHERE cache_key IN (...)
-        # which only row-locks the matched entries.
-        detail_keys = [f'detail_{code}' for code in
-                       Stock.objects.values_list('code', flat=True)]
-        cache.delete_many([
-            'short_positions_list',
-            'short_sellers_list',
-            'homepage_stats',
-            'top_lists',
-        ] + detail_keys)
+        # Cache invalidation disabled while investigating DB locking issues.
+        # detail_keys = [f'detail_{code}' for code in
+        #                Stock.objects.values_list('code', flat=True)]
+        # cache.delete_many([
+        #     'short_positions_list',
+        #     'short_sellers_list',
+        #     'homepage_stats',
+        #     'top_lists',
+        # ] + detail_keys)
 
         RunStatus.objects.filter(executed_at__lt=timezone.now() - timedelta(days=3)).delete()
 
