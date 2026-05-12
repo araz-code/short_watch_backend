@@ -69,6 +69,11 @@ class LargeShortSelling(models.Model):
     delete = models.BooleanField(default=False)
     prev_value = models.FloatField(null=True, blank=True)
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['stock', '-date']),
+        ]
+
 
 class ShortPositionChart(models.Model):
     stock = models.ForeignKey(Stock, on_delete=models.PROTECT)
@@ -79,6 +84,11 @@ class ShortPositionChart(models.Model):
     high = models.FloatField(null=True, blank=True)
     low = models.FloatField(null=True, blank=True)
     volume = models.PositiveIntegerField(null=True, blank=True)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['stock', '-date']),
+        ]
 
 
 class Announcement(models.Model):
@@ -95,6 +105,11 @@ class Announcement(models.Model):
     is_cancellation = models.BooleanField(default=False)
     dfsa_id = models.CharField(max_length=100, unique=True)
     value = models.FloatField(null=True, blank=True)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['stock', '-published_date']),
+        ]
 
     def __str__(self):
         return self.dfsa_id

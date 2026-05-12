@@ -55,6 +55,9 @@ class InsiderTransaction(models.Model):
 
     class Meta:
         ordering = ["-published_date", "-created_at"]
+        indexes = [
+            models.Index(fields=['issuer', '-published_date']),
+        ]
 
     def __str__(self):
         return f"{self.issuer.name} - {self.person_name} - {self.transaction_date}"
