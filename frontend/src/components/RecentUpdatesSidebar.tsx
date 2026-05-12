@@ -171,7 +171,7 @@ export default function RecentUpdatesSidebar({ code, codes, types, days }: Props
                             {isDa
                               ? dotLabel[dot]?.da
                               : dotLabel[dot]?.en}
-                            {item.totalAmount != null ? ` · ${formatAmount(item.totalAmount, item.currency)}${item.currency ? " " + item.currency : ""}` : ""}
+                            {item.totalAmount != null ? ` · ${formatAmount(item.totalAmount)}${item.currency ? " " + item.currency : ""}` : ""}
                           </p>
                         </>
                       )}
