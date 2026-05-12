@@ -93,8 +93,8 @@ class Command(BaseCommand):
         # cache so every view-level cache (lists, stats, per-stock detail)
         # rebuilds on the next request. A successful fetch with zero new
         # rows leaves the cache alone.
-        if short_positions_data_changed or large_sellers_data_changed:
-            cache.clear()
+        # if short_positions_data_changed or large_sellers_data_changed:
+        cache.clear()
 
         RunStatus.objects.filter(executed_at__lt=timezone.now() - timedelta(days=3)).delete()
 
