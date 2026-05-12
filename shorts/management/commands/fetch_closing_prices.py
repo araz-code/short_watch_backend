@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta, time
 import pandas as pd
 import pytz
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from django.utils import timezone
 
 from errors.models import Error

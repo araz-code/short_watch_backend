@@ -275,6 +275,8 @@
     "No transactions match the selected filters.": "No transactions match the selected filters.",
     "Insiders": "Insiders",
     "Transactions": "Transactions",
-    "Last updated": "Last updated"
+    "Last updated": "Last updated",
+    "Recent updates": "Recent updates",
+    "No recent updates": "No recent updates"
   }
 }

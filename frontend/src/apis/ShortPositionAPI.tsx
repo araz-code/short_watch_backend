@@ -335,6 +335,52 @@ export async function fetchInsiderIssuerDetail({ signal, cvr }: { signal?: Abort
   return response.json();
 }
 
+export interface RecentFeedItem {
+  type: 'large_seller' | 'insider';
+  date: string;
+  stockSymbol: string;
+  stockCode?: string;
+  stockName?: string;
+  value?: number | null;
+  prevValue?: number | null;
+  sellerName?: string;
+  sellerId?: string;
+  issuerName?: string;
+  issuerCvr?: string;
+  personName?: string;
+  transactionCategory?: 'buy' | 'sell' | 'grant' | 'other';
+  totalAmount?: number | null;
+  currency?: string;
+}
+
+export async function fetchRecentFeed({
+  signal,
+  code,
+  codes,
+  types,
+  days,
+}: {
+  signal?: AbortSignal;
+  code?: string;
+  codes?: string[];
+  types?: 'all' | 'insider';
+  days?: number;
+}): Promise<RecentFeedItem[]> {
+  const params = new URLSearchParams();
+  if (code) params.set('code', code);
+  else if (codes && codes.length > 0) params.set('codes', codes.join(','));
+  if (types && types !== 'all') params.set('types', types);
+  if (days) params.set('days', String(days));
+  const query = params.toString();
+  const url = `${HOST}/${VERSION}/shorts/recent-feed${query ? '?' + query : ''}`;
+  const response = await fetch(url, {
+    signal,
+    headers: { Authorization: `API-Key ${"CK1OkkoF.2t0M6oZMc186nNJFlZdNOMxWC0u3YCQ5"}` },
+  });
+  if (!response.ok) throw new Error('Failed to fetch recent feed');
+  return response.json();
+}
+
 export async function fetchStats({ signal }: { signal?: AbortSignal }): Promise<ShortStats> {
   const url = `${HOST}/${VERSION}/shorts/homepage-stats`;
 

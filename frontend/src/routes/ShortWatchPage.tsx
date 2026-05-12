@@ -9,6 +9,7 @@ import DropDownMenu from "../components/UI/DropDownMenu";
 import ErrorBlock from "../components/UI/ErrorBlock";
 import LoadingIndicator from "../components/UI/LoadingIndicator";
 import HelpDialog from "../components/HelpDialog";
+import RecentUpdatesSidebar from "../components/RecentUpdatesSidebar";
 import { useTranslation } from "react-i18next";
 import { trackEvent, trackPageView } from "../analytics";
 
@@ -144,7 +145,11 @@ const ShortWatchPage: React.FC = () => {
       <meta name="description" content="View all current short selling positions in Danish stocks with real-time data from the Danish Financial Supervisory Authority." />
       <PageTemplate>
         <div className="w-screen lg:justify-center lg:gap-4 m-auto flex flex-col flex-1 min-h-0 lg:flex-row">
-          <div className="w-1/3 justify-start items-center hidden"></div>
+          <div className="hidden xl:block xl:flex-1 relative">
+            <div className="absolute inset-0 flex justify-center items-start pt-[88px] px-4 overflow-hidden">
+              <RecentUpdatesSidebar codes={showMyList ? myList : undefined} types="insider" days={30} />
+            </div>
+          </div>
           <div className="lg:w-[900px] flex flex-col flex-1 min-h-0 lg:flex-initial">
             <h1 className="text-2xl lg:text-3xl text-center py-6 dark:text-white shrink-0">
               Danish Short Watch
@@ -236,7 +241,7 @@ const ShortWatchPage: React.FC = () => {
               </div>
             </section>
           </div>
-          <div className="w-1/3 justify-end items-center hidden"></div>
+          <div className="hidden xl:block xl:flex-1" aria-hidden="true"></div>
         </div>
       </PageTemplate>
 

@@ -621,3 +621,82 @@ def top_lists_view(request):
     }
     cache.set('top_lists', data, timeout=CACHE_TIMEOUT_SECONDS)
     return Response(data)
+
+
+@api_view(['GET'])
+@perm([HasAPIKey])
+def recent_feed_view(request):
+    from insider_transactions.models import InsiderTransaction
+    from insider_transactions.utils import categorize_transaction_type
+
+    code = request.query_params.get('code')
+    codes_param = request.query_params.get('codes')
+    is_global = not code and not codes_param
+    types_param = request.query_params.get('types', 'all')
+    include_sellers = types_param != 'insider'
+
+    try:
+        days = int(request.query_params.get('days', 60))
+    except ValueError:
+        days = 60
+    cutoff = (datetime.now() - timedelta(days=days)).date()
+
+    ann_items = []
+    if include_sellers:
+        lss_qs = LargeShortSelling.objects.select_related('stock', 'short_seller').filter(
+            delete=False,
+            stock__active=True,
+            date__gte=cutoff,
+        )
+        if code:
+            lss_qs = lss_qs.filter(stock__code=code)
+        elif codes_param:
+            codes_list = [c.strip() for c in codes_param.split(',') if c.strip()]
+            lss_qs = lss_qs.filter(stock__code__in=codes_list)
+        for lss in lss_qs.order_by('-date')[:30]:
+            ann_items.append({
+                'type': 'large_seller',
+                'date': lss.date.isoformat(),
+                'stockSymbol': lss.stock.symbol,
+                'stockCode': lss.stock.code,
+                'stockName': lss.stock.name,
+                'value': lss.value,
+                'prevValue': lss.prev_value,
+                'sellerName': lss.name,
+                'sellerId': str(lss.short_seller_id),
+            })
+
+    ins_qs = InsiderTransaction.objects.select_related('issuer').filter(
+        published_date__gte=cutoff,
+        issuer__active=True,
+    )
+    if code:
+        try:
+            stock = Stock.objects.get(code=code)
+            ins_qs = ins_qs.filter(issuer__symbol=stock.symbol)
+        except Stock.DoesNotExist:
+            ins_qs = InsiderTransaction.objects.none()
+    elif codes_param:
+        codes_list = [c.strip() for c in codes_param.split(',') if c.strip()]
+        symbols = list(Stock.objects.filter(code__in=codes_list, active=True).values_list('symbol', flat=True))
+        ins_qs = ins_qs.filter(issuer__symbol__in=symbols)
+    ins_qs = ins_qs.order_by('-published_date', '-created_at')[:100]
+
+    ins_items = []
+    for tx in ins_qs:
+        ins_items.append({
+            'type': 'insider',
+            'date': tx.published_date.isoformat(),
+            'stockSymbol': tx.issuer.symbol,
+            'issuerName': tx.issuer.name,
+            'issuerCvr': tx.issuer.cvr,
+            'personName': tx.person_name,
+            'transactionCategory': categorize_transaction_type(tx.transaction_type),
+            'totalAmount': float(tx.total_amount) if tx.total_amount else None,
+            'currency': tx.currency,
+        })
+
+    all_items = ann_items + ins_items
+    all_items.sort(key=lambda x: x['date'], reverse=True)
+
+    return Response(all_items)

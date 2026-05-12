@@ -378,6 +378,8 @@
     "No transactions match the selected filters.": "Ingen transaktioner matcher de valgte filtre.",
     "Insiders": "Insidere",
     "Transactions": "Handler",
-    "Last updated": "Senest opdateret"
+    "Last updated": "Senest opdateret",
+    "Recent updates": "Seneste opdateringer",
+    "No recent updates": "Ingen seneste opdateringer"
   }
 }

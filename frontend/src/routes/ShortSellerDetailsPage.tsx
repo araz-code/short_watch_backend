@@ -29,12 +29,6 @@ const ShortSellerDetailsPage: React.FC = () => {
 
   const seller = searchParams.get("seller");
 
-  if (location.hash) {
-    const elem = document.getElementById(location.hash.slice(1));
-    if (elem) {
-      elem.scrollIntoView({ behavior: "smooth" });
-    }
-  }
 
   const { data, isLoading, isError, error } = useQuery<ShortSellerDetails>({
     queryKey: [searchParams.get("seller")],
@@ -51,6 +45,15 @@ const ShortSellerDetailsPage: React.FC = () => {
     trackEvent("seller_details_view", { seller: seller ?? "" });
     trackPageView(`/short-seller-details`, "short seller details");
   }, [seller]);
+
+  useEffect(() => {
+    if (!data || !location.hash) return;
+    const id = location.hash.slice(1);
+    const elem = document.getElementById(id);
+    if (elem) {
+      elem.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [data, location.hash]);
 
   let content;
 
