@@ -18,7 +18,7 @@ from shorts.serializers import ShortPositionSerializer, ShortSellerSerializerOld
 # Max age for cached responses. fetch_shorts invalidates these keys after
 # each run; this timeout is the upper bound that keeps stale entries from
 # sticking around forever.
-CACHE_TIMEOUT_SECONDS = 15 * 60
+CACHE_TIMEOUT_SECONDS = 20 * 60
 
 
 class ShortPositionView(ReadOnlyModelViewSet):
