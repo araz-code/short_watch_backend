@@ -21,6 +21,11 @@ class ShortPosition(models.Model):
     prev_value = models.FloatField(default=0)
     timestamp = models.DateTimeField()
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['stock', '-timestamp']),
+        ]
+
     def __str__(self):
         return f'{self.stock.code} - {self.stock.name}'
 
