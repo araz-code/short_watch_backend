@@ -90,6 +90,7 @@ const CookiePolicyPage = lazy(() => import("./routes/CookiePolicyPage.tsx"));
 const FAQPage = lazy(() => import("./routes/FAQPage.tsx"));
 const InsiderTransactionsPage = lazy(() => import("./routes/InsiderTransactionsPage.tsx"));
 const InsiderTransactionDetailsPage = lazy(() => import("./routes/InsiderTransactionDetailsPage.tsx"));
+const ZealAnalysisPage = lazy(() => import("./routes/ZealAnalysisPage.tsx"));
 
 type ConsentButtonProps = {
   onClick: () => void;
@@ -174,6 +175,10 @@ const router = createBrowserRouter([
   {
     path: "insider-details",
     element: <ErrorBoundary><InsiderTransactionDetailsPage /></ErrorBoundary>,
+  },
+  {
+    path: "analyse/zeal",
+    element: <ErrorBoundary><ZealAnalysisPage /></ErrorBoundary>,
   },
 ]);
 

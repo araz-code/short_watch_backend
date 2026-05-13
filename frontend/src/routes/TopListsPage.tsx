@@ -185,7 +185,6 @@ const TopListsPage: React.FC = () => {
               <h1 className="text-2xl lg:text-3xl dark:text-white">
                 {t("Top Lists")}
               </h1>
-              <div className="mt-3 mx-auto w-12 h-0.5 rounded-full bg-blue-500/40" />
             </div>
             {content}
             <div className="h-8"></div>
