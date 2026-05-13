@@ -18,7 +18,7 @@ from errors.models import Error
 from errors.service import delete_old_errors
 from request_logging.service import delete_old_logs, process_visits
 from short_watch_backend.settings import FCM_SERVICE_ACCOUNT_FILE, DEBUG
-from shorts.models import ShortPosition, RunStatus, LargeShortSelling, ShortPositionChart, Stock
+from shorts.models import ShortPosition, RunStatus, LargeShortSelling, ShortPositionChart, Stock, Announcement
 from shorts.utils import parse_headline, parse_publication_date, get_stock_for_issuer, get_or_create_seller
 from users.models import AppUser
 
@@ -86,6 +86,11 @@ class Command(BaseCommand):
             # selenium block above) so we can still invalidate caches for any
             # source that DID succeed.
             Error.objects.create(message=f'Large sellers fetch failed: {str(e)}'[:500])
+
+        try:
+            self.fetch_announcements()
+        except Exception as e:
+            Error.objects.create(message=f'Announcements fetch failed: {str(e)}'[:500])
 
         self.remove_duplicate_positions()
 
@@ -214,6 +219,77 @@ class Command(BaseCommand):
         except Exception as e:
             Error.objects.create(message=str(e)[:500])
             raise CommandError(f'Error occurred: {str(e)}')
+
+    def fetch_announcements(self):
+        """Fetch announcements from the past month, creating any missing ones."""
+        cutoff = (datetime.now() - timedelta(days=30)).date()
+        page = 1
+
+        while True:
+            body = {
+                'query': '',
+                'filters': [
+                    {'type': 'dropdown', 'key': 'CategoryFilter', 'options': ['ShortSelling']},
+                    {'type': 'dropdown', 'key': 'HistoricalFilter', 'options': ['true']},
+                ],
+                'page': page,
+                'pageSize': 100,
+            }
+            response = requests.post(SEARCH_URL, json=body, headers=SEARCH_HEADERS)
+
+            if response.status_code != 200:
+                Error.objects.create(message=f'Failed to fetch announcements. Status: {response.status_code}')
+                break
+
+            data = response.json()
+            rows = data['data']['rows']
+            if not rows:
+                break
+
+            reached_cutoff = False
+            for row in rows:
+                published_date = parse_publication_date(row['PublicationDateColumn'])
+                if published_date.date() < cutoff:
+                    reached_cutoff = True
+                    break
+
+                dfsa_id = row['id']
+                if Announcement.objects.filter(dfsa_id=dfsa_id).exists():
+                    continue
+
+                headline = row['HeadlineColumn']
+                issuer_name = row['IssuerColumn']
+
+                parsed = parse_headline(headline)
+                if not parsed:
+                    Error.objects.create(message=f'Could not parse headline: {headline[:450]}')
+                    continue
+
+                stock = get_stock_for_issuer(issuer_name)
+                if not stock:
+                    continue
+
+                seller = get_or_create_seller(parsed['seller_name'])
+                registration_date = parse_publication_date(row['RegistrationDateColumn'])
+
+                Announcement.objects.create(
+                    dfsa_id=dfsa_id,
+                    stock=stock,
+                    short_seller=seller,
+                    issuer_name=issuer_name,
+                    headline=headline,
+                    headline_danish='',
+                    type='Shortselling',
+                    value=parsed['value'],
+                    published_date=published_date,
+                    registration_date=registration_date,
+                    is_historic=parsed['is_historic'],
+                    is_cancellation=parsed['is_cancellation'],
+                )
+
+            if reached_cutoff or page >= data['paging']['totalPages']:
+                break
+            page += 1
 
     @staticmethod
     def fetch_short_positions(short_data):
