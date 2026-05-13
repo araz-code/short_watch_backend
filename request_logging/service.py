@@ -453,6 +453,7 @@ def today_visit_buckets() -> dict:
     sellers_web, sellers_web_detail = set(), set()
     top_lists, faq = set(), set()
     help_short_watch, help_details = set(), set()
+    help_sellers_list, help_sellers_detail = set(), set()
     price_flow_by_stock = {}  # code -> set of IPs
     insider_list = set()
     insider_detail_by_cvr = {}  # cvr -> set of IPs
@@ -504,6 +505,10 @@ def today_visit_buckets() -> dict:
             help_short_watch.add(ip)
         if "/stats/visit/help-details" in url:
             help_details.add(ip)
+        if "/stats/visit/help-short-sellers" in url:
+            help_sellers_list.add(ip)
+        if "/stats/visit/help-seller-details" in url:
+            help_sellers_detail.add(ip)
         if "/stats/visit/price-flow/" in url:
             parts = url.rstrip('/').split('/')
             code = parts[-1] if parts else 'unknown'
@@ -525,6 +530,7 @@ def today_visit_buckets() -> dict:
         'sellers_web': sellers_web, 'sellers_web_detail': sellers_web_detail,
         'top_lists': top_lists, 'faq': faq,
         'help_short_watch': help_short_watch, 'help_details': help_details,
+        'help_sellers_list': help_sellers_list, 'help_sellers_detail': help_sellers_detail,
         'price_flow_by_stock': price_flow_by_stock,
         'insider_list': insider_list,
         'insider_detail_by_cvr': insider_detail_by_cvr,

@@ -260,6 +260,8 @@ def get_visits_by_section_table(_: HttpRequest) -> JsonResponse:
             {'section': 'FAQ', 'count': len(b['faq'])},
             {'section': 'Help - short watch', 'count': len(b['help_short_watch'])},
             {'section': 'Help - detail page', 'count': len(b['help_details'])},
+            {'section': 'Help - sellers list', 'count': len(b['help_sellers_list'])},
+            {'section': 'Help - seller detail', 'count': len(b['help_sellers_detail'])},
             {'section': 'Help - insider list', 'count': len(b['help_insider_list'])},
             {'section': 'Help - insider detail', 'count': len(b['help_insider_detail'])},
             *[
