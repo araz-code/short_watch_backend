@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchLargestShortSellers } from "../apis/ShortPositionAPI";
+import { fetchLargestShortSellers, HOST } from "../apis/ShortPositionAPI";
 import PageTemplate from "../components/PageTemplate";
 import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
@@ -10,6 +10,7 @@ import { trackEvent, trackPageView } from "../analytics";
 import ShortSeller from "../models/ShortSeller";
 import ShortSellerRow from "../components/ShortSellerRow";
 import DropDownMenu from "../components/UI/DropDownMenu";
+import ShortSellersHelpDialog from "../components/ShortSellersHelpDialog";
 
 const options = ["Name", "Date"];
 
@@ -32,6 +33,7 @@ const ShortSellersPage: React.FC = () => {
   const { t } = useTranslation();
   const searchElement = useRef<HTMLInputElement>(null);
 
+  const [showHelp, setShowHelp] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedSorting, setSelectedSorting] = useState<string>(() => {
     const savedSorting = localStorage.getItem("selectedSellersSorting");
@@ -199,6 +201,16 @@ const ShortSellersPage: React.FC = () => {
                       {showCurrent ? t("All") : t("Current")}
                     </button>
                   </div>
+                  <button
+                    className="text-sm font-medium text-blue-600 dark:text-blue-400 border border-blue-500 dark:border-blue-700 px-3 py-1.5 rounded-md hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors focus:ring-2 focus:ring-blue-300"
+                    onClick={() => {
+                      trackEvent("help_dialog_open", { page: "short_sellers" });
+                      fetch(`${HOST}/stats/visit/help-short-sellers/`).catch(() => {});
+                      setShowHelp(true);
+                    }}
+                  >
+                    {t("Help")}
+                  </button>
                 </div>
               </div>
 
@@ -214,6 +226,12 @@ const ShortSellersPage: React.FC = () => {
           <div className="w-1/3 justify-end items-center hidden"></div>
         </div>
       </PageTemplate>
+
+      {showHelp && (
+        <div className="w-screen lg:w-[900px] m-auto">
+          <ShortSellersHelpDialog onClose={() => setShowHelp(false)} />
+        </div>
+      )}
     </div>
   );
 };

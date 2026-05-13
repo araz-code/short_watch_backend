@@ -277,6 +277,20 @@
     "Transactions": "Transactions",
     "Last updated": "Last updated",
     "Recent updates": "Recent updates",
-    "No recent updates": "No recent updates"
+    "No recent updates": "No recent updates",
+    "How to use Short Sellers": "How to use Short Sellers",
+    "What you see here": "What you see here",
+    "This page shows every short position announcement filed by this seller, grouped by stock. Each entry comes directly from the Danish FSA's public register.": "This page shows every short position announcement filed by this seller, grouped by stock. Each entry comes directly from the Danish FSA's public register.",
+    "This list shows every named short seller that has disclosed a position of 0.5% or more in a Danish stock. The Danish FSA only publishes names above this threshold, so smaller positions are not shown.": "This list shows every named short seller that has disclosed a position of 0.5% or more in a Danish stock. The Danish FSA only publishes names above this threshold, so smaller positions are not shown.",
+    "Search and sort": "Search and sort",
+    "Use the search field to find a specific fund or institution by name. Use the sort menu to order the list by name or by the date of the most recent position change.": "Use the search field to find a specific fund or institution by name. Use the sort menu to order the list by name or by the date of the most recent position change.",
+    "Current filter": "Current filter",
+    "Tap \"Current\" to show only sellers that hold at least one active position right now. Tap \"All\" to include sellers whose last known position has since been closed or fallen below the reporting threshold.": "Tap \"Current\" to show only sellers that hold at least one active position right now. Tap \"All\" to include sellers whose last known position has since been closed or fallen below the reporting threshold.",
+    "Click any row to open the detail page for that seller. There you can see every position they have ever disclosed, grouped by stock, along with the date and size of each announcement.": "Click any row to open the detail page for that seller. There you can see every position they have ever disclosed, grouped by stock, along with the date and size of each announcement.",
+    "Reading the rows": "Reading the rows",
+    "Each row shows the publication date and the disclosed short position as a percentage of the company's issued capital.": "Each row shows the publication date and the disclosed short position as a percentage of the company's issued capital.",
+    "A green \"Current\" badge means this is the most recently reported position for that stock and it is still above the 0.5% threshold. A red badge means this was the last known announcement and the position has since fallen below the reporting level or been closed entirely.": "A green \"Current\" badge means this is the most recently reported position for that stock and it is still above the 0.5% threshold. A red badge means this was the last known announcement and the position has since fallen below the reporting level or been closed entirely.",
+    "Navigate to the stock": "Navigate to the stock",
+    "Tap the ticker symbol link above each group to go to the full details page for that stock, where you can see the aggregate short interest chart, all other short sellers, and historic data.": "Tap the ticker symbol link above each group to go to the full details page for that stock, where you can see the aggregate short interest chart, all other short sellers, and historic data."
   }
 }

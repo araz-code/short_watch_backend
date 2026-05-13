@@ -5,8 +5,8 @@ import {
   Link,
   useLocation,
 } from "react-router-dom";
-import { fetchLargeShortSellerDetails } from "../apis/ShortPositionAPI";
-import { useEffect } from "react";
+import { fetchLargeShortSellerDetails, HOST } from "../apis/ShortPositionAPI";
+import { useEffect, useState } from "react";
 import PageTemplate from "../components/PageTemplate";
 import ErrorBlock from "../components/UI/ErrorBlock";
 import LoadingIndicator from "../components/UI/LoadingIndicator";
@@ -16,6 +16,7 @@ import { trackEvent, trackPageView } from "../analytics";
 import Announcement from "../models/Announcement";
 import ShortSellerDetails from "../models/ShortSellerDetails";
 import ShortSellerAnnouncementRow from "../components/ShortSellerAnnouncementRow";
+import ShortSellerDetailsHelpDialog from "../components/ShortSellerDetailsHelpDialog";
 
 interface GroupedAnnouncements {
   [key: string]: Announcement[];
@@ -28,6 +29,7 @@ const ShortSellerDetailsPage: React.FC = () => {
   const location = useLocation();
 
   const seller = searchParams.get("seller");
+  const [showHelp, setShowHelp] = useState(false);
 
 
   const { data, isLoading, isError, error } = useQuery<ShortSellerDetails>({
@@ -157,26 +159,45 @@ const ShortSellerDetailsPage: React.FC = () => {
           <div className="w-1/3 justify-end items-center hidden"></div>
 
           <div className="lg:w-[900px] flex flex-col flex-1 min-h-0 lg:flex-initial">
-            <button
-              className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 bg-transparent border-none text-base pl-4 pt-4 inline-flex items-center gap-1.5 focus:ring-2 focus:ring-blue-300 rounded-sm shrink-0 self-start"
-              onClick={() => {
-                if (window.history.length > 1 && window.history.state.idx > 0) {
-                  navigate(-1);
-                } else {
-                  navigate("/short-sellers");
-                }
-              }}
-            >
-              <span aria-hidden="true">←</span>
-              {t("Back")}
-            </button>
-            <div></div>
+            <div className="flex items-center justify-between pr-2 shrink-0">
+              <button
+                className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 bg-transparent border-none text-base pl-4 pt-4 inline-flex items-center gap-1.5 focus:ring-2 focus:ring-blue-300 rounded-sm self-start"
+                onClick={() => {
+                  if (window.history.length > 1 && window.history.state.idx > 0) {
+                    navigate(-1);
+                  } else {
+                    navigate("/short-sellers");
+                  }
+                }}
+              >
+                <span aria-hidden="true">←</span>
+                {t("Back")}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  trackEvent("help_dialog_open", { page: "seller_details" });
+                  fetch(`${HOST}/stats/visit/help-seller-details/`).catch(() => {});
+                  setShowHelp(true);
+                }}
+                aria-label={t("Help")}
+                className="text-sm font-medium text-blue-500 border border-blue-300 dark:border-blue-700 rounded-md px-3 py-1.5 mt-4 hover:bg-blue-50 dark:hover:bg-blue-900/30 focus:ring-2 focus:ring-blue-300 transition-colors"
+              >
+                {t("Help")}
+              </button>
+            </div>
             {content}
           </div>
 
           <div className="w-1/3 justify-end items-center hidden"></div>
         </div>
       </PageTemplate>
+
+      {showHelp && (
+        <div className="w-screen lg:w-[900px] m-auto">
+          <ShortSellerDetailsHelpDialog onClose={() => setShowHelp(false)} />
+        </div>
+      )}
     </div>
   );
 };

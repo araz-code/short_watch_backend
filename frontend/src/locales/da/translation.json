@@ -380,6 +380,20 @@
     "Transactions": "Handler",
     "Last updated": "Senest opdateret",
     "Recent updates": "Seneste opdateringer",
-    "No recent updates": "Ingen seneste opdateringer"
+    "No recent updates": "Ingen seneste opdateringer",
+    "How to use Short Sellers": "Sådan bruger du Shortsælgere",
+    "What you see here": "Hvad du ser her",
+    "This page shows every short position announcement filed by this seller, grouped by stock. Each entry comes directly from the Danish FSA's public register.": "Denne side viser alle indberetninger om shortpositioner fra denne sælger, grupperet efter aktie. Hver post stammer direkte fra Finanstilsynets offentlige register.",
+    "This list shows every named short seller that has disclosed a position of 0.5% or more in a Danish stock. The Danish FSA only publishes names above this threshold, so smaller positions are not shown.": "Denne liste viser alle navngivne shortsælgere, der har indberettet en position på 0,5% eller mere i en dansk aktie. Finanstilsynet offentliggør kun navne over denne grænse, så mindre positioner vises ikke.",
+    "Search and sort": "Søg og sorter",
+    "Use the search field to find a specific fund or institution by name. Use the sort menu to order the list by name or by the date of the most recent position change.": "Brug søgefeltet til at finde en bestemt fond eller institution ved navn. Brug sorteringsmenuen til at sortere listen efter navn eller dato for den seneste positionsændring.",
+    "Current filter": "Aktuelt filter",
+    "Tap \"Current\" to show only sellers that hold at least one active position right now. Tap \"All\" to include sellers whose last known position has since been closed or fallen below the reporting threshold.": "Tryk på \"Nuværende\" for kun at se sælgere, der aktuelt har mindst én aktiv position. Tryk på \"Alle\" for også at inkludere sælgere, hvis senest kendte position siden er lukket eller faldet under indberetningsgrænsen.",
+    "Click any row to open the detail page for that seller. There you can see every position they have ever disclosed, grouped by stock, along with the date and size of each announcement.": "Klik på en vilkårlig række for at åbne detailsiden for den pågældende sælger. Her kan du se alle positioner, de nogensinde har indberettet, grupperet efter aktie, sammen med dato og størrelse for hver indberetning.",
+    "Reading the rows": "Sådan læser du rækkerne",
+    "Each row shows the publication date and the disclosed short position as a percentage of the company's issued capital.": "Hver række viser offentliggørelsesdatoen og den indberettede shortposition som en procentdel af selskabets udstedte aktiekapital.",
+    "A green \"Current\" badge means this is the most recently reported position for that stock and it is still above the 0.5% threshold. A red badge means this was the last known announcement and the position has since fallen below the reporting level or been closed entirely.": "Et grønt \"Nuværende\"-mærke betyder, at dette er den senest indberettede position for den pågældende aktie, og at den stadig er over 0,5%-grænsen. Et rødt mærke betyder, at dette var den seneste kendte indberetning, og at positionen siden er faldet under indberetningsgrænsen eller er lukket helt.",
+    "Navigate to the stock": "Gå til aktien",
+    "Tap the ticker symbol link above each group to go to the full details page for that stock, where you can see the aggregate short interest chart, all other short sellers, and historic data.": "Tryk på ticker-symbollinket over hver gruppe for at åbne den fulde detaljeside for aktien, hvor du kan se den samlede shortinteresse-graf, alle øvrige shortsælgere og historisk data."
   }
 }
