@@ -22,13 +22,13 @@ const analyses: AnalysisEntry[] = [
   {
     slug: "gn/2026-05-14",
     title: "GN Store Nord (GN)",
-    subtitle: "Shortanalyse og markedsvurdering",
+    subtitle: "Shortanalyse: Shorterne holder fast trods Amplifon-salget",
     date: "14. maj 2026",
   },
   {
     slug: "zeal/2026-05-13",
     title: "Zealand Pharma (ZEAL)",
-    subtitle: "Shortanalyse og markedsvurdering",
+    subtitle: "Shortanalyse: Hvem vædder imod Zealand Pharma?",
     date: "13. maj 2026",
   },
 ];
