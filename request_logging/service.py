@@ -443,9 +443,11 @@ def referers_called() -> list:
     return rows
 
 
-def today_visit_buckets() -> dict:
-    """Public client IPs for today, bucketed by URL pattern (platform/section)."""
-    queryset = RequestLog.objects.filter(timestamp__date=timezone.localdate()) \
+def today_visit_buckets(for_date=None) -> dict:
+    """Public client IPs for a given date, bucketed by URL pattern (platform/section)."""
+    if for_date is None:
+        for_date = timezone.localdate()
+    queryset = RequestLog.objects.filter(timestamp__date=for_date) \
         .values('requested_url', 'client_ip', 'user_agent')
 
     iphone, ipad, iwatch, web, app = set(), set(), set(), set(), set()

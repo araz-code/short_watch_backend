@@ -213,22 +213,32 @@ def get_referers_table(_: HttpRequest) -> JsonResponse:
 
 @staff_member_required
 def get_visits_by_platform_table(_: HttpRequest) -> JsonResponse:
+    from datetime import timedelta
+    from django.utils import timezone
     b = service.today_visit_buckets()
+    y = service.today_visit_buckets(for_date=timezone.localdate() - timedelta(days=1))
     total = b['iphone'] | b['ipad'] | b['iwatch'] | b['web'] | b['app']
+    total_y = y['iphone'] | y['ipad'] | y['iwatch'] | y['web'] | y['app']
+
+    def fmt(today_set, yesterday_set):
+        return f"{len(today_set)} ({len(yesterday_set)})"
+
+    all_bot_names = set(b['bots_by_name'].keys()) | set(y['bots_by_name'].keys())
+
     return JsonResponse({
-        'caption': "Today's unique visitors by platform",
+        'caption': "Today's unique visitors by platform (yesterday)",
         'headers': ['Platform', 'Visitors'],
         'data': [
-            {'platform': 'iPhone', 'count': len(b['iphone'])},
-            {'platform': 'iPad', 'count': len(b['ipad'])},
-            {'platform': 'Apple Watch', 'count': len(b['iwatch'])},
-            {'platform': 'Web', 'count': len(b['web'])},
-            {'platform': 'App (device unknown)', 'count': len(b['app'])},
-            {'platform': 'Total (any platform)', 'count': len(total)},
-            {'platform': 'Bots (excluded above)', 'count': len(b['bots'])},
+            {'platform': 'iPhone', 'count': fmt(b['iphone'], y['iphone'])},
+            {'platform': 'iPad', 'count': fmt(b['ipad'], y['ipad'])},
+            {'platform': 'Apple Watch', 'count': fmt(b['iwatch'], y['iwatch'])},
+            {'platform': 'Web', 'count': fmt(b['web'], y['web'])},
+            {'platform': 'App (device unknown)', 'count': fmt(b['app'], y['app'])},
+            {'platform': 'Total (any platform)', 'count': fmt(total, total_y)},
+            {'platform': 'Bots (excluded above)', 'count': fmt(b['bots'], y['bots'])},
             *[
-                {'platform': f'  Bot: {name}', 'count': len(ips)}
-                for name, ips in sorted(b['bots_by_name'].items(), key=lambda x: -len(x[1]))
+                {'platform': f'  Bot: {name}', 'count': fmt(b['bots_by_name'].get(name, set()), y['bots_by_name'].get(name, set()))}
+                for name in sorted(all_bot_names, key=lambda n: -len(b['bots_by_name'].get(n, set())))
             ],
         ],
     })
@@ -236,42 +246,55 @@ def get_visits_by_platform_table(_: HttpRequest) -> JsonResponse:
 
 @staff_member_required
 def get_visits_by_section_table(_: HttpRequest) -> JsonResponse:
+    from datetime import timedelta
+    from django.utils import timezone
     from shorts.models import Stock
     from insider_transactions.models import InsiderIssuer
     b = service.today_visit_buckets()
+    y = service.today_visit_buckets(for_date=timezone.localdate() - timedelta(days=1))
+    all_pf_codes = set(b['price_flow_by_stock'].keys()) | set(y['price_flow_by_stock'].keys())
+    all_cvrs = set(b['insider_detail_by_cvr'].keys()) | set(y['insider_detail_by_cvr'].keys())
     code_to_symbol = {
         s.code: s.symbol
-        for s in Stock.objects.filter(code__in=b['price_flow_by_stock'].keys()).only('code', 'symbol')
+        for s in Stock.objects.filter(code__in=all_pf_codes).only('code', 'symbol')
     }
     cvr_to_name = {
         i.cvr: i.name
-        for i in InsiderIssuer.objects.filter(cvr__in=b['insider_detail_by_cvr'].keys()).only('cvr', 'name')
+        for i in InsiderIssuer.objects.filter(cvr__in=all_cvrs).only('cvr', 'name')
     }
+
+    def fmt(today_set, yesterday_set):
+        return f"{len(today_set)} ({len(yesterday_set)})"
+
+    # Collect all price flow codes from both days
+    all_pf = sorted(all_pf_codes, key=lambda c: -len(b['price_flow_by_stock'].get(c, set())))
+    all_insider = sorted(all_cvrs, key=lambda c: -len(b['insider_detail_by_cvr'].get(c, set())))
+
     return JsonResponse({
-        'caption': "Today's unique visitors by section",
+        'caption': "Today's unique visitors by section (yesterday)",
         'headers': ['Section', 'Visitors'],
         'data': [
-            {'section': 'iPhone — short sellers list', 'count': len(b['sellers_iphone'])},
-            {'section': 'iPhone — short seller detail', 'count': len(b['sellers_iphone_detail'])},
-            {'section': 'Web — short sellers list', 'count': len(b['sellers_web'])},
-            {'section': 'Web — short seller detail', 'count': len(b['sellers_web_detail'])},
-            {'section': 'Top lists', 'count': len(b['top_lists'])},
-            {'section': 'Insider list', 'count': len(b['insider_list'])},
-            {'section': 'FAQ', 'count': len(b['faq'])},
-            {'section': 'ZEAL analysis', 'count': len(b['zeal_analysis'])},
-            {'section': 'Help - short watch', 'count': len(b['help_short_watch'])},
-            {'section': 'Help - detail page', 'count': len(b['help_details'])},
-            {'section': 'Help - sellers list', 'count': len(b['help_sellers_list'])},
-            {'section': 'Help - seller detail', 'count': len(b['help_sellers_detail'])},
-            {'section': 'Help - insider list', 'count': len(b['help_insider_list'])},
-            {'section': 'Help - insider detail', 'count': len(b['help_insider_detail'])},
+            {'section': 'iPhone \u2014 short sellers list', 'count': fmt(b['sellers_iphone'], y['sellers_iphone'])},
+            {'section': 'iPhone \u2014 short seller detail', 'count': fmt(b['sellers_iphone_detail'], y['sellers_iphone_detail'])},
+            {'section': 'Web \u2014 short sellers list', 'count': fmt(b['sellers_web'], y['sellers_web'])},
+            {'section': 'Web \u2014 short seller detail', 'count': fmt(b['sellers_web_detail'], y['sellers_web_detail'])},
+            {'section': 'Top lists', 'count': fmt(b['top_lists'], y['top_lists'])},
+            {'section': 'Insider list', 'count': fmt(b['insider_list'], y['insider_list'])},
+            {'section': 'FAQ', 'count': fmt(b['faq'], y['faq'])},
+            {'section': 'ZEAL analysis', 'count': fmt(b['zeal_analysis'], y['zeal_analysis'])},
+            {'section': 'Help - short watch', 'count': fmt(b['help_short_watch'], y['help_short_watch'])},
+            {'section': 'Help - detail page', 'count': fmt(b['help_details'], y['help_details'])},
+            {'section': 'Help - sellers list', 'count': fmt(b['help_sellers_list'], y['help_sellers_list'])},
+            {'section': 'Help - seller detail', 'count': fmt(b['help_sellers_detail'], y['help_sellers_detail'])},
+            {'section': 'Help - insider list', 'count': fmt(b['help_insider_list'], y['help_insider_list'])},
+            {'section': 'Help - insider detail', 'count': fmt(b['help_insider_detail'], y['help_insider_detail'])},
             *[
-                {'section': f'Web — price flow: {code_to_symbol.get(code, code)}', 'count': len(ips)}
-                for code, ips in sorted(b['price_flow_by_stock'].items(), key=lambda x: -len(x[1]))
+                {'section': f'Web \u2014 price flow: {code_to_symbol.get(code, code)}', 'count': fmt(b['price_flow_by_stock'].get(code, set()), y['price_flow_by_stock'].get(code, set()))}
+                for code in all_pf
             ],
             *[
-                {'section': f'Insider detail: {cvr_to_name.get(cvr, cvr)}', 'count': len(ips)}
-                for cvr, ips in sorted(b['insider_detail_by_cvr'].items(), key=lambda x: -len(x[1]))
+                {'section': f'Insider detail: {cvr_to_name.get(cvr, cvr)}', 'count': fmt(b['insider_detail_by_cvr'].get(cvr, set()), y['insider_detail_by_cvr'].get(cvr, set()))}
+                for cvr in all_insider
             ],
         ],
     })
