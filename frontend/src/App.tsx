@@ -28,6 +28,7 @@ const FAQPage = lazy(() => import("./routes/FAQPage.tsx"));
 const InsiderTransactionsPage = lazy(() => import("./routes/InsiderTransactionsPage.tsx"));
 const InsiderTransactionDetailsPage = lazy(() => import("./routes/InsiderTransactionDetailsPage.tsx"));
 const ZealAnalysisPage = lazy(() => import("./routes/ZealAnalysisPage.tsx"));
+const AnalysisPage = lazy(() => import("./routes/AnalysisPage.tsx"));
 
 type ConsentButtonProps = {
   onClick: () => void;
@@ -112,6 +113,10 @@ const router = createBrowserRouter([
   {
     path: "insider-details",
     element: <ErrorBoundary><InsiderTransactionDetailsPage /></ErrorBoundary>,
+  },
+  {
+    path: "analyse",
+    element: <ErrorBoundary><AnalysisPage /></ErrorBoundary>,
   },
   {
     path: "analyse/zeal",

@@ -1,6 +1,8 @@
 {
   "translation": {
     "My list": "Min liste",
+    "See all": "Se alle",
+    "In-depth analysis of short positions in Danish stocks.": "Dybdegående analyser af short-positioner i danske aktier.",
     "Symbol": "Symbol",
     "Name": "Navn",
     "Date": "Dato",
@@ -99,6 +101,8 @@
     "NEWS 31-08-2024: ": "NYHED 31-08-2024: ",
     "A new service (Short Sellers) where you can get insight into hedge funds with significant short positions in Danish stocks (over 0.5%). You can see which positions they currently hold and which they have held historically.": "En ny service (Short Sellers), hvor man kan få indblik i de hedgefonde, der har større shortpositioner i danske aktier (over 0,5%). Man kan se, hvilke positioner de har nu, og hvilke de har haft historisk.",
     "Home": "Hjem",
+    "Analysis": "Analyser",
+    "About": "Om",
     "Legal": "Juridisk",
     "Products": "Produkter",
     "Do you have any questions, feedback, or need assistance? We are always ready to help you. Please feel free to contact us via email, and we will do our best to respond to your inquiry as quickly as possible.": "Har du spørgsmål, feedback eller brug for assistance? Vi står altid klar til at hjælpe dig. Du er meget velkommen til at kontakte os via e-mail, og vi vil gøre vores bedste for at besvare din henvendelse så hurtigt som muligt.",

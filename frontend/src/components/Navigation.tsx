@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 const defaultCollapseMenu = {
   mainMenu: true,
-  legalMenu: true,
+  moreMenu: true,
 };
 
 const Navigation: React.FC = () => {
@@ -16,18 +16,22 @@ const Navigation: React.FC = () => {
   const toggleMainMenu = () => {
     setCollapseMenu((prev) => ({
       mainMenu: !prev.mainMenu,
-      legalMenu: true,
+      moreMenu: true,
     }));
   };
 
-  const toggleLegalMenu = () => {
+  const toggleMoreMenu = () => {
     setCollapseMenu((prev) => ({
       ...prev,
-      legalMenu: !prev.legalMenu,
+      moreMenu: !prev.moreMenu,
     }));
   };
 
-  const isLegalActive = [
+  const isAnalysisActive = location.pathname.startsWith("/analyse");
+
+  const isMoreActive = [
+    "/faq",
+    "/contact",
     "/privacy-policy",
     "/cookie-policy",
     "/terms-of-agreement",
@@ -173,27 +177,30 @@ const Navigation: React.FC = () => {
                 </li>
                 <li>
                   <NavLink
-                    to="/faq"
+                    to="/analyse"
                     className={({ isActive }) =>
-                      isActive ? activeLinkClasses : linkClasses
+                      `${isActive || isAnalysisActive ? activeLinkClasses : linkClasses} inline-flex items-center gap-1.5`
                     }
                     onClick={() => setCollapseMenu(defaultCollapseMenu)}
                   >
-                    {t("FAQ")}
+                    {t("Analysis")}
+                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-amber-400 text-[#0d1b4c] leading-none">
+                      {t("New")}
+                    </span>
                   </NavLink>
                 </li>
                 <li className="relative">
                   <button
-                    aria-expanded={!collapseMenu.legalMenu}
+                    aria-expanded={!collapseMenu.moreMenu}
                     className={`flex items-center gap-1.5 w-full md:w-auto ${
-                      isLegalActive ? activeLinkClasses : linkClasses
+                      isMoreActive ? activeLinkClasses : linkClasses
                     }`}
-                    onClick={toggleLegalMenu}
+                    onClick={toggleMoreMenu}
                   >
-                    {t("Legal")}
+                    {t("About")}
                     <svg
                       className={`w-2 h-2 transition-transform ${
-                        collapseMenu.legalMenu ? "" : "rotate-180"
+                        collapseMenu.moreMenu ? "" : "rotate-180"
                       }`}
                       aria-hidden="true"
                       xmlns="http://www.w3.org/2000/svg"
@@ -211,11 +218,37 @@ const Navigation: React.FC = () => {
                   </button>
                   <div
                     className={`md:absolute md:z-10 md:right-0 md:mt-2 md:w-48 md:rounded-xl md:shadow-xl bg-white dark:bg-[#19191f] md:border md:border-gray-200 dark:md:border-gray-700 text-gray-800 dark:text-white overflow-hidden ${
-                      collapseMenu.legalMenu ? "hidden" : ""
+                      collapseMenu.moreMenu ? "hidden" : ""
                     }`}
                   >
                     <ul className="text-sm py-1">
                       <li>
+                        <NavLink
+                          to="/faq"
+                          className={({ isActive }) =>
+                            `block px-4 py-2.5 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors ${
+                              isActive ? "text-blue-500 font-medium" : ""
+                            }`
+                          }
+                          onClick={() => setCollapseMenu(defaultCollapseMenu)}
+                        >
+                          {t("FAQ")}
+                        </NavLink>
+                      </li>
+                      <li>
+                        <NavLink
+                          to="/contact"
+                          className={({ isActive }) =>
+                            `block px-4 py-2.5 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors ${
+                              isActive ? "text-blue-500 font-medium" : ""
+                            }`
+                          }
+                          onClick={() => setCollapseMenu(defaultCollapseMenu)}
+                        >
+                          {t("Contact")}
+                        </NavLink>
+                      </li>
+                      <li className="border-t border-gray-100 dark:border-gray-700">
                         <NavLink
                           to="/privacy-policy"
                           className={({ isActive }) =>
@@ -257,23 +290,12 @@ const Navigation: React.FC = () => {
                     </ul>
                   </div>
                 </li>
-                <li>
-                  <NavLink
-                    to="/contact"
-                    className={({ isActive }) =>
-                      isActive ? activeLinkClasses : linkClasses
-                    }
-                    onClick={() => setCollapseMenu(defaultCollapseMenu)}
-                  >
-                    {t("Contact")}
-                  </NavLink>
-                </li>
               </ul>
             </div>
           </div>
         </nav>
       </div>
-      {(!collapseMenu.mainMenu || !collapseMenu.legalMenu) && (
+      {(!collapseMenu.mainMenu || !collapseMenu.moreMenu) && (
         <div
           role="button"
           aria-label="Close menu"

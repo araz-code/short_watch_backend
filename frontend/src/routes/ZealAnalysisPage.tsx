@@ -1,4 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import PageTemplate from "../components/PageTemplate";
 import { trackPageView } from "../analytics";
 import { HOST } from "../apis/ShortPositionAPI";
@@ -271,6 +273,9 @@ function SellerRow({ name, position, date, desc, i }: { name: string; position: 
 
 // ─── main component ──────────────────────────────────────────────────────────
 const ZealAnalysisPage: React.FC = () => {
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+
   useEffect(() => {
     trackPageView("/analyse/zeal", "zeal_analysis");
     fetch(`${HOST}/stats/visit/zeal-analysis/`).catch(() => {});
@@ -313,10 +318,26 @@ const ZealAnalysisPage: React.FC = () => {
       <title>Zirium | Zealand Pharma (ZEAL) - Shortanalyse</title>
       <meta name="description" content="Dybdegående analyse af short-positioner i Zealand Pharma (ZEAL). Hvem shorter, hvor meget, og hvorfor?" />
 
-      <article className="w-full max-w-[900px] mx-auto px-5 sm:px-8 py-10 sm:py-16">
+      <article className="w-full max-w-[900px] mx-auto px-5 sm:px-8 pb-10 sm:pb-16">
+        <button
+          className="text-blue-500 hover:text-blue-700 bg-transparent border-none text-base inline-flex items-center gap-1.5 focus:ring-2 focus:ring-blue-300 rounded-sm min-h-[44px] min-w-[44px]"
+          onClick={() => {
+            if (
+              window.history.length > 1 &&
+              window.history.state.idx > 0
+            ) {
+              navigate(-1);
+            } else {
+              navigate("/analyse");
+            }
+          }}
+        >
+          <span aria-hidden="true">←</span>
+          {t("Back")}
+        </button>
 
         {/* ── Header ── */}
-        <header className="mb-10">
+        <header className="mb-10 mt-4">
           <p className="text-sm text-gray-400 dark:text-gray-500 mb-4">Analyse lavet af Araz Bayat Makoo (Zirium) - 13. maj 2026</p>
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-white mb-3 leading-tight">
             Zealand Pharma (ZEAL)
