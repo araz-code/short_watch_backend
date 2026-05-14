@@ -281,6 +281,7 @@ def get_visits_by_section_table(_: HttpRequest) -> JsonResponse:
             {'section': 'Top lists', 'count': fmt(b['top_lists'], y['top_lists'])},
             {'section': 'Insider list', 'count': fmt(b['insider_list'], y['insider_list'])},
             {'section': 'FAQ', 'count': fmt(b['faq'], y['faq'])},
+            {'section': 'Analysis overview', 'count': fmt(b['analysis_overview'], y['analysis_overview'])},
             {'section': 'ZEAL analysis', 'count': fmt(b['zeal_analysis'], y['zeal_analysis'])},
             {'section': 'Help - short watch', 'count': fmt(b['help_short_watch'], y['help_short_watch'])},
             {'section': 'Help - detail page', 'count': fmt(b['help_details'], y['help_details'])},

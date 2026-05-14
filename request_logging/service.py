@@ -461,6 +461,7 @@ def today_visit_buckets(for_date=None) -> dict:
     insider_detail_by_cvr = {}  # cvr -> set of IPs
     help_insider_list, help_insider_detail = set(), set()
     zeal_analysis = set()
+    analysis_overview = set()
     bots = set()
     bots_by_name = {}  # fragment -> set of IPs
 
@@ -528,6 +529,8 @@ def today_visit_buckets(for_date=None) -> dict:
             help_insider_detail.add(ip)
         if "/stats/visit/zeal-analysis" in url:
             zeal_analysis.add(ip)
+        if "/stats/visit/analysis/" in url:
+            analysis_overview.add(ip)
 
     return {
         'iphone': iphone, 'ipad': ipad, 'iwatch': iwatch, 'web': web, 'app': app,
@@ -542,5 +545,6 @@ def today_visit_buckets(for_date=None) -> dict:
         'help_insider_list': help_insider_list,
         'help_insider_detail': help_insider_detail,
         'zeal_analysis': zeal_analysis,
+        'analysis_overview': analysis_overview,
         'bots': bots, 'bots_by_name': bots_by_name,
     }

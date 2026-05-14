@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import PageTemplate from "../components/PageTemplate";
 import { trackPageView } from "../analytics";
+import { HOST } from "../apis/ShortPositionAPI";
 
 interface AnalysisEntry {
   slug: string;
@@ -25,6 +26,7 @@ const AnalysisPage: React.FC = () => {
 
   useEffect(() => {
     trackPageView("/analyse", "analysis_overview");
+    fetch(`${HOST}/stats/visit/analysis/`).catch(() => {});
   }, []);
 
   return (
