@@ -585,7 +585,7 @@ const GNAnalysisPage: React.FC = () => {
               <p>Organisk vækst på 1% for hele gruppen. Enterprise faldt 3%, mens Gaming voksede 16% i Q4. Frit cashflow på 1,1 mia. DKK. Markedet var positivt overrasket over cashflow, men aktien steg kun kortvarigt.</p>
             </TimelineEvent>
             <TimelineEvent date="April 2025" title="3-års lavpunkt: 82,60 DKK" color="#e63946">
-              <p>Aktien ramte bunden den 9. april 2025 ved 82,60 DKK, et fald på 63% fra 3-års toppen i juni 2024. Shortinteressen var omkring 9,6%. CFO Søren Jelert havde købt aktier for 738.000 DKK i maj 2025 til kurs ~90 DKK.</p>
+              <p>Aktien ramte bunden den 9. april 2025 ved 82,60 DKK, et fald på 63% fra 3-års toppen i juni 2024. Shortinteressen var omkring 9,6%. I de efterfølgende uger købte seks insidere aktier for samlet ca. 4,9 mio. DKK, anført af CEO Peter Karlstromer (2,4 mio. DKK) og CFO Søren Jelert (738.000 DKK).</p>
             </TimelineEvent>
             <TimelineEvent date="16. marts 2026" title="Hearing solgt til Amplifon: +36% på en dag" color="#2a9d8f">
               <p>GN annoncerede salget af Hearing-divisionen (ReSound, Beltone, ca. 5.500 medarbejdere) til Amplifon for 17 mia. DKK (12,6 mia. kontant + 56 mio. Amplifon-aktier). Aktien steg 36% til 118 DKK med massiv volumen. Shortinteressen faldt fra 13,12% til 10,85% på to dage.</p>
@@ -600,15 +600,79 @@ const GNAnalysisPage: React.FC = () => {
         <section className="mb-12">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">10. Insider-transaktioner</h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            CFO Søren Jelert købte 8.200 aktier den 2. maj 2025 til gennemsnitskurs 90,05 DKK for i alt
-            738.410 DKK. Det er et positivt insider-signal, da købet blev foretaget for egne midler i det
-            åbne marked snarere end som en kompensationstildeling.
+            I perioden marts til maj 2025 har seks insidere købt GN-aktier i det åbne marked for egne midler.
+            Det samlede beløb er ca. 4,9 mio. DKK, fordelt over syv separate køb. Der er ikke registreret
+            insider-salg i den tilgængelige periode.
+          </p>
+
+          <div className="overflow-x-auto rounded-2xl border border-gray-100 dark:border-gray-800 mb-6">
+            <table className="w-full text-left">
+              <thead>
+                <tr className="bg-blue-500 text-white">
+                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">Person</th>
+                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">Dato</th>
+                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">Antal</th>
+                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">Kurs</th>
+                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide hidden sm:table-cell">Beløb</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="bg-white dark:bg-[#19191f]">
+                  <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">Peter Karlstromer (CEO)</td>
+                  <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">28. maj</td>
+                  <td className="px-4 py-3 text-sm tabular-nums">25.000</td>
+                  <td className="px-4 py-3 text-sm tabular-nums">94,84 DKK</td>
+                  <td className="px-4 py-3 text-sm tabular-nums hidden sm:table-cell">2.371.000 DKK</td>
+                </tr>
+                <tr className="bg-gray-50/50 dark:bg-[#15151a]">
+                  <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">Søren Jelert (CFO)</td>
+                  <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">2. maj</td>
+                  <td className="px-4 py-3 text-sm tabular-nums">8.200</td>
+                  <td className="px-4 py-3 text-sm tabular-nums">90,05 DKK</td>
+                  <td className="px-4 py-3 text-sm tabular-nums hidden sm:table-cell">738.410 DKK</td>
+                </tr>
+                <tr className="bg-white dark:bg-[#19191f]">
+                  <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">Jørgen Bundgaard Hansen</td>
+                  <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">15.-16. maj</td>
+                  <td className="px-4 py-3 text-sm tabular-nums">7.000</td>
+                  <td className="px-4 py-3 text-sm tabular-nums">93,66-98,34 DKK</td>
+                  <td className="px-4 py-3 text-sm tabular-nums hidden sm:table-cell">656.323 DKK</td>
+                </tr>
+                <tr className="bg-gray-50/50 dark:bg-[#15151a]">
+                  <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">Lise Skaarup Mortensen</td>
+                  <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">12. mar</td>
+                  <td className="px-4 py-3 text-sm tabular-nums">4.000</td>
+                  <td className="px-4 py-3 text-sm tabular-nums">118,77 DKK</td>
+                  <td className="px-4 py-3 text-sm tabular-nums hidden sm:table-cell">475.080 DKK</td>
+                </tr>
+                <tr className="bg-white dark:bg-[#19191f]">
+                  <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">Charlotte Johs</td>
+                  <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">18. mar</td>
+                  <td className="px-4 py-3 text-sm tabular-nums">3.270</td>
+                  <td className="px-4 py-3 text-sm tabular-nums">118,98 DKK</td>
+                  <td className="px-4 py-3 text-sm tabular-nums hidden sm:table-cell">388.920 DKK</td>
+                </tr>
+                <tr className="bg-gray-50/50 dark:bg-[#15151a]">
+                  <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">Jukka Pekka Pertola</td>
+                  <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">16. maj</td>
+                  <td className="px-4 py-3 text-sm tabular-nums">2.354</td>
+                  <td className="px-4 py-3 text-sm tabular-nums">94,55 DKK</td>
+                  <td className="px-4 py-3 text-sm tabular-nums hidden sm:table-cell">222.521 DKK</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
+            Det mest markante er CEO Peter Karlstromers køb den 28. maj 2025 for 2,4 mio. DKK. Det er et
+            betydeligt beløb og et klart signal om ledelsens tro på selskabets fremtid. CFO Søren Jelert
+            købte ligeledes for 738.000 DKK kort tid forinden.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-            Der er ikke registreret insider-salg i den tilgængelige periode, hvilket er positivt i betragtning
-            af den massive transformation, selskabet gennemgår. Dog skal det bemærkes, at aktien i dag handles
-            til ca. 94 DKK, tæt på CFO'ens indkøbskurs, så insider-købet har endnu ikke vist sig som en
-            vellykket investering.
+            Samlet set er billedet entydigt: Seks forskellige insidere har alle købt aktier i det åbne marked
+            i en periode med høj shortinteresse, og ingen har solgt. Det er et positivt signal, men det skal
+            ses i sammenhæng med, at aktien i dag handles til ca. 94 DKK, tæt på de kurser, insiderne
+            købte til i maj 2025.
           </p>
         </section>
 
@@ -630,7 +694,7 @@ const GNAnalysisPage: React.FC = () => {
                 <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>SteelSeries vokser 7-13% organisk (2026-guidance)</li>
                 <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Enterprise video-konference vokser tocifret</li>
                 <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Besparelsesprogram på 200 mio. DKK fra 2027</li>
-                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>CFO købte aktier for egne midler</li>
+                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Seks insidere (inkl. CEO og CFO) har købt aktier</li>
               </ul>
             </div>
             <div className="bg-red-50 dark:bg-red-500/10 rounded-2xl border border-red-100 dark:border-red-500/20 p-5">

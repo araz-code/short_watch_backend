@@ -205,28 +205,43 @@ class Command(BaseCommand):
             return 0
 
         pdf_urls = self._extract_pdf_urls(details)
-        if not pdf_urls:
-            self.stdout.write(f"  No PDFs for {announcement_id}, skipping")
-            self._mark_processed(announcement_id, "Skipped: no PDF attachments found in announcement")
+        html_urls = self._extract_html_urls(details) if not pdf_urls else []
+
+        if not pdf_urls and not html_urls:
+            self.stdout.write(f"  No PDFs or HTML for {announcement_id}, skipping")
+            self._mark_processed(announcement_id, "Skipped: no PDF or HTML attachments found in announcement")
             return 0
 
         all_transactions = []
-        pdf_errors = []
-        source_url = pdf_urls[0] if pdf_urls else ""
+        extract_errors = []
+        source_url = (pdf_urls[0] if pdf_urls else html_urls[0]) if (pdf_urls or html_urls) else ""
+
         for url in pdf_urls:
             text = self._extract_pdf_text(url)
             if not text:
-                pdf_errors.append(f"PDF unreadable: {url.split('/')[-1]}")
+                extract_errors.append(f"PDF unreadable: {url.split('/')[-1]}")
                 continue
             transactions = self._extract_with_ai(text)
             if not transactions:
-                pdf_errors.append(f"AI returned no transactions for: {url.split('/')[-1]}")
+                extract_errors.append(f"AI returned no transactions for: {url.split('/')[-1]}")
+            for tx in transactions:
+                tx["_source_url"] = url
+            all_transactions.extend(transactions)
+
+        for url in html_urls:
+            text = self._extract_html_text(url)
+            if not text:
+                extract_errors.append(f"HTML unreadable: {url.split('/')[-1]}")
+                continue
+            transactions = self._extract_with_ai(text)
+            if not transactions:
+                extract_errors.append(f"AI returned no transactions for: {url.split('/')[-1]}")
             for tx in transactions:
                 tx["_source_url"] = url
             all_transactions.extend(transactions)
 
         if not all_transactions:
-            reason = "; ".join(pdf_errors) if pdf_errors else "AI returned no transactions from any PDF"
+            reason = "; ".join(extract_errors) if extract_errors else "AI returned no transactions from any attachment"
             self.stdout.write(f"  No transactions extracted for {announcement_id}")
             self._mark_processed(announcement_id, reason[:500])
             return 0
@@ -406,6 +421,43 @@ class Command(BaseCommand):
                         urls.append(val["url"])
 
         return urls
+
+    def _extract_html_urls(self, details: dict) -> list[str]:
+        urls = []
+        for section in details.get("sections", []):
+            for el in section.get("elements", []):
+                val = el.get("value", {})
+                if val.get("type") == "link":
+                    url = val.get("url", "")
+                    if url.endswith(".html") or url.endswith(".htm"):
+                        urls.append(url)
+        return urls
+
+    def _extract_html_text(self, url: str) -> str:
+        try:
+            resp = self.session.get(url, timeout=60)
+            resp.raise_for_status()
+            import re
+            html = resp.text
+            # Remove style and script tags entirely
+            html = re.sub(r"<(style|script)[^>]*>.*?</\1>", "", html, flags=re.DOTALL | re.IGNORECASE)
+            # Replace table cells and rows with spacing
+            html = re.sub(r"</t[dh]>", " | ", html)
+            html = re.sub(r"</tr>", "\n", html)
+            # Replace block elements with newlines
+            html = re.sub(r"<(br|p|div|h[1-6]|li)[^>]*/?>", "\n", html, flags=re.IGNORECASE)
+            # Strip remaining tags
+            text = re.sub(r"<[^>]+>", "", html)
+            # Decode HTML entities
+            import html as html_module
+            text = html_module.unescape(text)
+            # Collapse whitespace
+            text = re.sub(r"[ \t]+", " ", text)
+            text = re.sub(r"\n{3,}", "\n\n", text)
+            return text.strip()
+        except Exception as e:
+            self.stderr.write(f"  HTML extract failed ({url}): {e}")
+            return ""
 
     def _extract_pdf_text(self, url: str) -> str:
         try:
