@@ -28,6 +28,7 @@ const FAQPage = lazy(() => import("./routes/FAQPage.tsx"));
 const InsiderTransactionsPage = lazy(() => import("./routes/InsiderTransactionsPage.tsx"));
 const InsiderTransactionDetailsPage = lazy(() => import("./routes/InsiderTransactionDetailsPage.tsx"));
 const ZealAnalysisPage = lazy(() => import("./routes/ZealAnalysisPage.tsx"));
+const GNAnalysisPage = lazy(() => import("./routes/GNAnalysisPage.tsx"));
 const AnalysisPage = lazy(() => import("./routes/AnalysisPage.tsx"));
 
 type ConsentButtonProps = {
@@ -119,8 +120,20 @@ const router = createBrowserRouter([
     element: <ErrorBoundary><AnalysisPage /></ErrorBoundary>,
   },
   {
+    path: "analyse/zeal/2026-05-13",
+    element: <ErrorBoundary><ZealAnalysisPage /></ErrorBoundary>,
+  },
+  {
     path: "analyse/zeal",
     element: <ErrorBoundary><ZealAnalysisPage /></ErrorBoundary>,
+  },
+  {
+    path: "analyse/gn/2026-05-14",
+    element: <ErrorBoundary><GNAnalysisPage /></ErrorBoundary>,
+  },
+  {
+    path: "analyse/gn",
+    element: <ErrorBoundary><GNAnalysisPage /></ErrorBoundary>,
   },
 ]);
 
