@@ -429,7 +429,7 @@ const ZealAnalysisPage: React.FC = () => {
             Kulminationen kom den 6. marts 2026, hvor fase 2b-resultater for petrelintide viste
             10,7% vægttab over 42 uger. Markedet havde forventet omkring 13-16%. Resultatet skuffede, fordi det halter
             bagefter konkurrenterne, herunder Eli Lillys eloralintide (9-20% afhængigt af dosis i fase 2). Aktien styrtdykkede
-            35% på en enkelt dag til det laveste niveau i flere år på 234,9 DKK med 3,35 mio. handlede aktier.
+            35% på en enkelt dag til det laveste niveau siden august 2023 på 234,9 DKK med 3,35 mio. handlede aktier.
           </p>
         </section>
 
@@ -581,7 +581,7 @@ const ZealAnalysisPage: React.FC = () => {
               <p>Zealand præsenterede sin strategi med ambitioner om fem produktlanceringer og over ti kliniske programmer inden 2030, samt et nyt forskningscenter i Boston. Insidere solgte aktier i samme måned (CFO solgte for ~8,5 mio. DKK ved ~466 DKK).</p>
             </TimelineEvent>
             <TimelineEvent date="6. marts 2026" title="Petrelintide skuffer: -35% på en dag" color="#e63946">
-              <p>Fase 2b-resultater viste 10,7% vægttab over 42 uger. Markedet forventede omkring 13-16%. Aktien styrtdykkede til det laveste niveau i flere år på 234,9 DKK med 3,35 mio. handlede aktier. CEO Adam Steensberg forsvarede resultatet og kritiserede fokusset på rene kilo fremfor tolerabilitet, hvor petrelintide klarede sig godt (ingen opkast, ingen behandlingsophør).</p>
+              <p>Fase 2b-resultater viste 10,7% vægttab over 42 uger. Markedet forventede omkring 13-16%. Aktien styrtdykkede til det laveste niveau siden august 2023 på 234,9 DKK med 3,35 mio. handlede aktier. CEO Adam Steensberg forsvarede resultatet og kritiserede fokusset på rene kilo fremfor tolerabilitet, hvor petrelintide klarede sig godt (ingen opkast, ingen behandlingsophør).</p>
             </TimelineEvent>
             <TimelineEvent date="28. april 2026" title="Survodutide fase 3: 16,6% vægttab" color="#2a9d8f">
               <p>SYNCHRONIZE-1 viste 16,6% vægttab efter 76 uger vs. 3,2% for placebo. 85,1% opnåede mindst 5% vægttab. Resultatet var på niveau med Novo Nordisks Wegovy, men under Eli Lillys Zepbound. Aktien steg til ~309 DKK.</p>
