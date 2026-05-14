@@ -266,38 +266,45 @@ def get_visits_by_section_table(_: HttpRequest) -> JsonResponse:
     def fmt(today_set, yesterday_set):
         return f"{len(today_set)} ({len(yesterday_set)})"
 
+    def row(section, today_set, yesterday_set):
+        if not today_set:
+            return None
+        return {'section': section, 'count': fmt(today_set, yesterday_set)}
+
     # Collect all price flow codes from both days
     all_pf = sorted(all_pf_codes, key=lambda c: -len(b['price_flow_by_stock'].get(c, set())))
     all_insider = sorted(all_cvrs, key=lambda c: -len(b['insider_detail_by_cvr'].get(c, set())))
 
+    rows = [
+        row('iPhone \u2014 short sellers list', b['sellers_iphone'], y['sellers_iphone']),
+        row('iPhone \u2014 short seller detail', b['sellers_iphone_detail'], y['sellers_iphone_detail']),
+        row('Web \u2014 short sellers list', b['sellers_web'], y['sellers_web']),
+        row('Web \u2014 short seller detail', b['sellers_web_detail'], y['sellers_web_detail']),
+        row('Top lists', b['top_lists'], y['top_lists']),
+        row('Insider list', b['insider_list'], y['insider_list']),
+        row('FAQ', b['faq'], y['faq']),
+        row('Analysis overview', b['analysis_overview'], y['analysis_overview']),
+        row('ZEAL analysis', b['zeal_analysis'], y['zeal_analysis']),
+        row('Help - short watch', b['help_short_watch'], y['help_short_watch']),
+        row('Help - detail page', b['help_details'], y['help_details']),
+        row('Help - sellers list', b['help_sellers_list'], y['help_sellers_list']),
+        row('Help - seller detail', b['help_sellers_detail'], y['help_sellers_detail']),
+        row('Help - insider list', b['help_insider_list'], y['help_insider_list']),
+        row('Help - insider detail', b['help_insider_detail'], y['help_insider_detail']),
+        *[
+            row(f'Web \u2014 price flow: {code_to_symbol.get(code, code)}', b['price_flow_by_stock'].get(code, set()), y['price_flow_by_stock'].get(code, set()))
+            for code in all_pf
+        ],
+        *[
+            row(f'Insider detail: {cvr_to_name.get(cvr, cvr)}', b['insider_detail_by_cvr'].get(cvr, set()), y['insider_detail_by_cvr'].get(cvr, set()))
+            for cvr in all_insider
+        ],
+    ]
+
     return JsonResponse({
         'caption': "Today's unique visitors by section (yesterday)",
         'headers': ['Section', 'Visitors'],
-        'data': [
-            {'section': 'iPhone \u2014 short sellers list', 'count': fmt(b['sellers_iphone'], y['sellers_iphone'])},
-            {'section': 'iPhone \u2014 short seller detail', 'count': fmt(b['sellers_iphone_detail'], y['sellers_iphone_detail'])},
-            {'section': 'Web \u2014 short sellers list', 'count': fmt(b['sellers_web'], y['sellers_web'])},
-            {'section': 'Web \u2014 short seller detail', 'count': fmt(b['sellers_web_detail'], y['sellers_web_detail'])},
-            {'section': 'Top lists', 'count': fmt(b['top_lists'], y['top_lists'])},
-            {'section': 'Insider list', 'count': fmt(b['insider_list'], y['insider_list'])},
-            {'section': 'FAQ', 'count': fmt(b['faq'], y['faq'])},
-            {'section': 'Analysis overview', 'count': fmt(b['analysis_overview'], y['analysis_overview'])},
-            {'section': 'ZEAL analysis', 'count': fmt(b['zeal_analysis'], y['zeal_analysis'])},
-            {'section': 'Help - short watch', 'count': fmt(b['help_short_watch'], y['help_short_watch'])},
-            {'section': 'Help - detail page', 'count': fmt(b['help_details'], y['help_details'])},
-            {'section': 'Help - sellers list', 'count': fmt(b['help_sellers_list'], y['help_sellers_list'])},
-            {'section': 'Help - seller detail', 'count': fmt(b['help_sellers_detail'], y['help_sellers_detail'])},
-            {'section': 'Help - insider list', 'count': fmt(b['help_insider_list'], y['help_insider_list'])},
-            {'section': 'Help - insider detail', 'count': fmt(b['help_insider_detail'], y['help_insider_detail'])},
-            *[
-                {'section': f'Web \u2014 price flow: {code_to_symbol.get(code, code)}', 'count': fmt(b['price_flow_by_stock'].get(code, set()), y['price_flow_by_stock'].get(code, set()))}
-                for code in all_pf
-            ],
-            *[
-                {'section': f'Insider detail: {cvr_to_name.get(cvr, cvr)}', 'count': fmt(b['insider_detail_by_cvr'].get(cvr, set()), y['insider_detail_by_cvr'].get(cvr, set()))}
-                for cvr in all_insider
-            ],
-        ],
+        'data': [r for r in rows if r is not None],
     })
 
 
