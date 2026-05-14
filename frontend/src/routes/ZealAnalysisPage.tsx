@@ -213,11 +213,11 @@ function ShortPriceTooltip({ active, payload, label }: TooltipContentProps<Value
   const volVal = payload.find((p) => p.dataKey === "volume");
   return (
     <div className="rounded-xl shadow-lg px-4 py-3 bg-white/95 dark:bg-[#19191f]/95 backdrop-blur-xs border border-gray-100 dark:border-gray-700 text-sm">
-      <p className="text-[11px] text-gray-400 dark:text-gray-500 text-center mb-1">{String(label)}</p>
+      <p className="text-[11px] text-gray-400 dark:text-gray-400 text-center mb-1">{String(label)}</p>
       {shortVal && <p className="text-center font-bold text-lg tabular-nums text-[#007AFF]">{Number(shortVal.value).toFixed(2)}%</p>}
       {priceVal && priceVal.value != null && <p className="text-center text-purple-500 dark:text-purple-400 tabular-nums">{Number(priceVal.value).toFixed(1)} DKK</p>}
       {volVal && volVal.value != null && Number(volVal.value) > 0 && (
-        <p className="text-center text-xs text-gray-400 dark:text-gray-500 tabular-nums">Vol: {Number(volVal.value).toLocaleString("da-DK")}</p>
+        <p className="text-center text-xs text-gray-500 dark:text-gray-400 tabular-nums">Vol: {Number(volVal.value).toLocaleString("da-DK")}</p>
       )}
     </div>
   );
@@ -241,7 +241,7 @@ function KPI({ value, label }: { value: string; label: string }) {
   return (
     <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-5 text-center">
       <p className="text-lg sm:text-xl font-bold tabular-nums text-gray-900 dark:text-white">{value}</p>
-      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 leading-tight">{label}</p>
+      <p className="text-xs text-gray-500 dark:text-gray-300 mt-1 leading-tight">{label}</p>
     </div>
   );
 }
@@ -252,7 +252,7 @@ function TimelineEvent({ date, title, children, color }: { date: string; title: 
     <div className="relative pl-8 pb-8 last:pb-0 group">
       <div className="absolute left-0 top-1 w-4 h-4 rounded-full border-2 border-white dark:border-[#0d0d12] z-10" style={{ backgroundColor: color }} />
       <div className="absolute left-[7px] top-5 bottom-0 w-0.5 bg-gray-200 dark:bg-gray-700 group-last:hidden" />
-      <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-1">{date}</p>
+      <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-1">{date}</p>
       <h4 className="font-semibold text-gray-900 dark:text-white mb-1.5">{title}</h4>
       <div className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">{children}</div>
     </div>
@@ -265,8 +265,8 @@ function SellerRow({ name, position, date, desc, i }: { name: string; position: 
     <tr className={i % 2 === 0 ? "bg-white dark:bg-[#19191f]" : "bg-gray-50/50 dark:bg-[#15151a]"}>
       <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white whitespace-nowrap">{name}</td>
       <td className="px-4 py-3 text-sm tabular-nums font-semibold text-red-500">{position}</td>
-      <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">{date}</td>
-      <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400 hidden sm:table-cell">{desc}</td>
+      <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">{date}</td>
+      <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-300 hidden sm:table-cell">{desc}</td>
     </tr>
   );
 }
@@ -378,8 +378,8 @@ const ZealAnalysisPage: React.FC = () => {
         {/* ── Chart 1: Full history ── */}
         <section className="mb-12">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2">2. Short-interesse vs. aktiekurs</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Fuld historik siden november 2023. Blå = short-interesse, lilla = lukkekurs.</p>
-          <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-3 sm:p-5">
+          <p className="text-sm text-gray-500 dark:text-gray-300 mb-4">Fuld historik siden november 2023. Blå = short-interesse, lilla = lukkekurs.</p>
+          <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-3 sm:p-5" role="img" aria-label="Graf: Short-interesse vs. aktiekurs for Zealand Pharma siden november 2023">
             <ResponsiveContainer width="100%" height={chartHeight}>
               <ComposedChart data={FULL_HISTORY} margin={{ top: 5, right: 5, left: 0, bottom: 5 }}>
                 <defs>
@@ -403,7 +403,7 @@ const ZealAnalysisPage: React.FC = () => {
                 <ReferenceLine yAxisId="short" y={10.13} stroke="#eab308" strokeDasharray="4 4" strokeWidth={1.5} />
               </ComposedChart>
             </ResponsiveContainer>
-            <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400 mt-2 px-2">
+            <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-300 mt-2 px-2">
               <span className="flex items-center gap-1.5"><span className="w-3 h-[3px] rounded-full bg-[#007AFF] inline-block" />Short-interesse</span>
               <span className="flex items-center gap-1.5"><span className="w-3 h-[3px] rounded-full bg-[#a855f7] inline-block" />Lukkekurs</span>
               <span className="flex items-center gap-1.5"><span className="inline-flex items-center gap-[2px]"><span className="w-[4px] h-[2px] bg-[#eab308] inline-block" /><span className="w-[4px] h-[2px] bg-[#eab308] inline-block" /></span>Nuv. niveau</span>
@@ -457,8 +457,8 @@ const ZealAnalysisPage: React.FC = () => {
         {/* ── Chart 2: Recent 3 months ── */}
         <section className="mb-12">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2">5. Seneste 3 måneder i detaljer</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Short-interesse med volumen. +4,26 procentpoint på blot tre måneder.</p>
-          <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-3 sm:p-5">
+          <p className="text-sm text-gray-500 dark:text-gray-300 mb-4">Short-interesse med volumen. +4,26 procentpoint på blot tre måneder.</p>
+          <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-3 sm:p-5" role="img" aria-label="Graf: Short-interesse med volumen for Zealand Pharma de seneste 3 måneder">
             <ResponsiveContainer width="100%" height={chartHeight}>
               <ComposedChart data={RECENT_3M} margin={{ top: 5, right: 5, left: 0, bottom: 5 }}>
                 <defs>
@@ -476,7 +476,7 @@ const ZealAnalysisPage: React.FC = () => {
                 <Area yAxisId="short" type="stepAfter" dataKey="short" stroke="#e63946" strokeWidth={2.5} fill="url(#shortGrad3m)" activeDot={{ r: 5, fill: "#e63946", stroke: "#fff", strokeWidth: 2 }} />
               </ComposedChart>
             </ResponsiveContainer>
-            <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400 mt-2 px-2">
+            <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-300 mt-2 px-2">
               <span className="flex items-center gap-1.5"><span className="w-3 h-[3px] rounded-full bg-[#e63946] inline-block" />Short-interesse</span>
               <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-gray-400 dark:bg-gray-500 inline-block" />Volumen</span>
             </div>
@@ -518,12 +518,13 @@ const ZealAnalysisPage: React.FC = () => {
           {/* Seller table */}
           <div className="overflow-x-auto rounded-2xl border border-gray-100 dark:border-gray-800 mb-6">
             <table className="w-full text-left">
+              <caption className="sr-only">Aktive short-sælgere i Zealand Pharma</caption>
               <thead>
                 <tr className="bg-blue-500 text-white">
-                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">Short-sælger</th>
-                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">Position</th>
-                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">Dato</th>
-                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide hidden sm:table-cell">Beskrivelse</th>
+                  <th scope="col" className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">Short-sælger</th>
+                  <th scope="col" className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">Position</th>
+                  <th scope="col" className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">Dato</th>
+                  <th scope="col" className="px-4 py-3 text-xs font-semibold uppercase tracking-wide hidden sm:table-cell">Beskrivelse</th>
                 </tr>
               </thead>
               <tbody>
@@ -541,8 +542,8 @@ const ZealAnalysisPage: React.FC = () => {
 
           {/* Seller timeline chart */}
           <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-2">Positionsudvikling over tid</h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Individuelle short-sælgeres positioner baseret på indberetninger til Finanstilsynet.</p>
-          <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-3 sm:p-5">
+          <p className="text-sm text-gray-500 dark:text-gray-300 mb-4">Individuelle short-sælgeres positioner baseret på indberetninger til Finanstilsynet.</p>
+          <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-3 sm:p-5" role="img" aria-label="Graf: Individuelle short-sælgeres positionsudvikling over tid for Zealand Pharma">
             <ResponsiveContainer width="100%" height={chartHeight}>
               <ComposedChart data={sellerChartData} margin={{ top: 5, right: 5, left: 0, bottom: 5 }}>
                 <CartesianGrid horizontal vertical={false} stroke={gridColor} strokeWidth={1} />
@@ -555,7 +556,7 @@ const ZealAnalysisPage: React.FC = () => {
                 ))}
               </ComposedChart>
             </ResponsiveContainer>
-            <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500 dark:text-gray-400 mt-2 px-2">
+            <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500 dark:text-gray-300 mt-2 px-2">
               {SELLERS.map((s, i) => (
                 <span key={s.name} className="flex items-center gap-1.5">
                   <span className="w-2.5 h-2.5 rounded-full inline-block" style={{ backgroundColor: SELLER_COLORS[i] }} />{s.name}
@@ -566,8 +567,8 @@ const ZealAnalysisPage: React.FC = () => {
 
           {/* Pie chart */}
           <h3 className="text-base font-semibold text-gray-900 dark:text-white mt-8 mb-2">Fordeling af den samlede short-interesse</h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Ca. 36% af short-interessen holdes af aktører under 0,50%-tærsklen, hvis identitet er ukendt.</p>
-          <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-3 sm:p-5 flex justify-center">
+          <p className="text-sm text-gray-500 dark:text-gray-300 mb-4">Ca. 36% af short-interessen holdes af aktører under 0,50%-tærsklen, hvis identitet er ukendt.</p>
+          <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-3 sm:p-5 flex justify-center" role="img" aria-label="Cirkeldiagram: Fordeling af den samlede short-interesse i Zealand Pharma">
             <ResponsiveContainer width="100%" height={340}>
               <PieChart>
                 <Pie data={PIE_DATA} cx="50%" cy="50%" outerRadius={110} innerRadius={55} dataKey="value" nameKey="name" paddingAngle={2} label={({ value }) => `${Number(value).toFixed(2)}%`} labelLine={{ stroke: isDark ? "#555" : "#ccc", strokeWidth: 1 }} style={{ fontSize: 11 }}>
@@ -575,7 +576,7 @@ const ZealAnalysisPage: React.FC = () => {
                     <Cell key={i} fill={PIE_COLORS[i]} stroke={isDark ? "#19191f" : "#fff"} strokeWidth={2} />
                   ))}
                 </Pie>
-                <Legend wrapperStyle={{ fontSize: 11 }} formatter={(value) => <span className="text-gray-600 dark:text-gray-400">{value}</span>} />
+                <Legend wrapperStyle={{ fontSize: 11 }} formatter={(value) => <span className="text-gray-600 dark:text-gray-300">{value}</span>} />
                 <Tooltip formatter={(v) => `${Number(v).toFixed(2)}%`} contentStyle={{ backgroundColor: isDark ? "#19191f" : "#fff", border: "1px solid #e5e5e5", borderRadius: 12, fontSize: 12 }} />
               </PieChart>
             </ResponsiveContainer>
@@ -696,12 +697,12 @@ const ZealAnalysisPage: React.FC = () => {
 
         {/* ── Disclaimer ── */}
         <footer className="border-t border-gray-100 dark:border-gray-800 pt-6">
-          <p className="text-xs text-gray-400 dark:text-gray-500 leading-relaxed text-center">
+          <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed text-center">
             <strong>Ansvarsfraskrivelse:</strong> Denne analyse er alene til informationsformål og udgør ikke
             investeringsrådgivning. Data stammer fra Finanstilsynets offentlige registre. Historisk afkast er ikke en garanti for fremtidigt afkast. Foretag altid din
             egen analyse, og søg professionel rådgivning før du handler.
           </p>
-          <p className="text-xs text-gray-400 dark:text-gray-500 text-center mt-3">
+          <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-3">
             Genereret af Zirium  |  13. maj 2026
           </p>
         </footer>
