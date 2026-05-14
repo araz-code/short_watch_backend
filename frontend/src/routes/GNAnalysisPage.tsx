@@ -298,14 +298,14 @@ const GNAnalysisPage: React.FC = () => {
 
         {/* ── Header ── */}
         <header className="mb-10 mt-4">
-          <p className="text-sm text-gray-400 dark:text-gray-500 mb-4">Analyse lavet af Araz Bayat Makoo (Zirium) - 14. maj 2026</p>
+          <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">Analyse lavet af Araz Bayat Makoo (Zirium) - 14. maj 2026</p>
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-white mb-3 leading-tight">
             GN Store Nord (GN)
           </h1>
-          <p className="text-lg sm:text-xl text-gray-500 dark:text-gray-400 leading-relaxed">
+          <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
             Shortanalyse og markedsvurdering
           </p>
-          <p className="text-sm text-gray-400 dark:text-gray-500 mt-3 leading-relaxed">
+          <p className="text-gray-600 dark:text-gray-300 mt-3 leading-relaxed">
             Denne analyse kombinerer udviklingen i short-positioner med selskabets strategiske transformation.
             GN Store Nord er gået fra et konglomerat med tre divisioner til at være på vej mod et mere
             fokuseret enterprise- og gaming-selskab, og undervejs har shortinteressen nået nogle af de højeste
@@ -689,7 +689,7 @@ const GNAnalysisPage: React.FC = () => {
           <div className="grid sm:grid-cols-2 gap-4 mb-4">
             <div className="bg-blue-50 dark:bg-blue-500/10 rounded-2xl border border-blue-100 dark:border-blue-500/20 p-5">
               <h4 className="font-semibold text-blue-700 dark:text-blue-400 mb-3 text-sm uppercase tracking-wide">Positive faktorer</h4>
-              <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+              <ul className="space-y-2 text-[15px] text-gray-700 dark:text-gray-300">
                 <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Hearing-salget giver 17 mia. DKK til gældsnedbringelse</li>
                 <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>SteelSeries vokser 7-13% organisk (2026-guidance)</li>
                 <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Enterprise video-konference vokser tocifret</li>
@@ -699,7 +699,7 @@ const GNAnalysisPage: React.FC = () => {
             </div>
             <div className="bg-red-50 dark:bg-red-500/10 rounded-2xl border border-red-100 dark:border-red-500/20 p-5">
               <h4 className="font-semibold text-red-700 dark:text-red-400 mb-3 text-sm uppercase tracking-wide">Negative faktorer</h4>
-              <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+              <ul className="space-y-2 text-[15px] text-gray-700 dark:text-gray-300">
                 <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>EBITA-margin kun 0,3% i Q1 2026</li>
                 <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Guidance nedjusteret (0-6% vs. 2-8%)</li>
                 <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>750 mio. DKK i engangsomkostninger 2026-2027</li>
@@ -728,8 +728,8 @@ const GNAnalysisPage: React.FC = () => {
           </p>
 
           <div className="bg-gray-50 dark:bg-[#15151a] rounded-2xl border border-gray-100 dark:border-gray-800 p-5 mt-6">
-            <h4 className="font-semibold text-gray-900 dark:text-white mb-3 text-sm">Kommende katalysatorer at holde øje med</h4>
-            <ul className="space-y-1.5 text-sm text-gray-600 dark:text-gray-300">
+            <h4 className="font-semibold text-gray-900 dark:text-white mb-3">Kommende katalysatorer at holde øje med</h4>
+            <ul className="space-y-1.5 text-[15px] text-gray-600 dark:text-gray-300">
               <li>&#x2022; Gennemførelse af Hearing-salget til Amplifon (forventet ultimo 2026)</li>
               <li>&#x2022; Realisering af besparelsesprogrammet (200 mio. DKK mål fra 2027)</li>
               <li>&#x2022; Q2 2026-regnskab (første kvartal med bedre synlighed på stranded costs)</li>
