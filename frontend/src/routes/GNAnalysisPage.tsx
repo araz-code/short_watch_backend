@@ -300,10 +300,10 @@ const GNAnalysisPage: React.FC = () => {
         <header className="mb-10 mt-4">
           <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">Analyse lavet af Araz Bayat Makoo (Zirium) - 14. maj 2026</p>
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-white mb-3 leading-tight">
-            GN Store Nord (GN)
+            Shortanalyse og markedsvurdering
           </h1>
           <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
-            Shortanalyse og markedsvurdering
+            GN Store Nord (GN)
           </p>
           <p className="text-gray-600 dark:text-gray-300 mt-3 leading-relaxed">
             Denne analyse kombinerer udviklingen i short-positioner med selskabets strategiske transformation.

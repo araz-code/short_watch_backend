@@ -13,6 +13,12 @@ interface AnalysisEntry {
 }
 
 const analyses: AnalysisEntry[] = [
+  // {
+  //   slug: "zeal/gennemsnitspris/2026-05-14",
+  //   title: "Zealand Pharma (ZEAL)",
+  //   subtitle: "Hvad er den gennemsnitlige indgangspris for shorts?",
+  //   date: "14. maj 2026",
+  // },
   {
     slug: "gn/2026-05-14",
     title: "GN Store Nord (GN)",
@@ -58,10 +64,10 @@ const AnalysisPage: React.FC = () => {
               <div className="flex items-start justify-between gap-4">
                 <div className="min-w-0">
                   <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                    {a.title}
+                    {a.subtitle}
                   </h2>
                   <p className="text-gray-500 dark:text-gray-400 mt-1">
-                    {a.subtitle}
+                    {a.title}
                   </p>
                 </div>
                 <span className="shrink-0 text-sm text-gray-400 dark:text-gray-500">
