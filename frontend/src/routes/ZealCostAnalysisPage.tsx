@@ -375,13 +375,13 @@ const ZealCostAnalysisPage: React.FC = () => {
             <strong>Vigtigt forbehold:</strong> Disse tal er estimater og skal tages med forbehold.
             For det første antager vi, at de første 0,50% blev åbnet på den dag, positionen krydsede
             offentliggørelsestærsklen. I praksis kan fonden have opbygget positionen gradvist over uger
-            eller måneder til helt andre kurser. For det andet bruger mange institutionelle fonde
-            markedsneutrale strategier, pair trades eller basket shorts, hvor short-positionen kun er en
-            del af en større strategi. En fond som Voleon, der vises med -62%, er en kvantitativ fond,
-            der typisk hedger sine positioner og derfor ikke nødvendigvis taber penge, selvom estimatet
-            antyder det. Vi ved heller ikke, om fondene har handlet inden for dagen til andre kurser,
-            eller om de bruger derivater (optioner, futures) til at afdække risikoen. Det kan vi ikke se
-            i de offentlige data.
+            eller måneder til helt andre kurser. For det andet er den indberettede position en netto
+            short-position, hvor derivater som optioner og futures allerede er medregnet (jf. EU Short
+            Selling Regulation). Det betyder, at en fonds hedging i samme aktie er afspejlet i tallet.
+            Men strategier som pair trades mod andre aktier eller sektorbaserede basket shorts fanges
+            ikke, og en fond kan derfor have en bredere strategi, hvor short-positionen i Zealand Pharma
+            kun er en del af et større billede. Vi ved heller ikke, til hvilke kurser fondene faktisk
+            har handlet inden for dagen.
           </p>
         </section>
 
