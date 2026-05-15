@@ -133,7 +133,26 @@ const ZealCostAnalysisPage: React.FC = () => {
   return (
     <PageTemplate>
       <title>Zirium | Zealand Pharma (ZEAL) - Gennemsnitlig shortpris</title>
-      <meta name="description" content="Analyse af den gennemsnitlige indgangspris for short-positioner i Zealand Pharma (ZEAL). Forskellige beregningsmetoder sammenlignet." />
+      <meta name="description" content="Til hvilken kurs har de shortet Zealand Pharma? Fire beregningsmetoder sammenlignet." />
+      <meta property="og:title" content="Til hvilken kurs har de shortet Zealand Pharma?" />
+      <meta property="og:description" content="Fire beregningsmetoder sammenlignet. Estimeret indgangspris per short-sælger og analyse af hvem der tjener penge." />
+      <meta property="og:type" content="article" />
+      <meta property="og:url" content="https://www.zirium.dk/analyse/zeal/gennemsnitspris/2026-05-14" />
+      <meta property="og:site_name" content="Zirium" />
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:title" content="Til hvilken kurs har de shortet Zealand Pharma?" />
+      <meta name="twitter:description" content="Fire beregningsmetoder sammenlignet. Estimeret indgangspris per short-sælger og analyse af hvem der tjener penge." />
+      <script type="application/ld+json">{JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "Til hvilken kurs har de shortet Zealand Pharma?",
+        "description": "Fire beregningsmetoder sammenlignet. Estimeret indgangspris per short-sælger og analyse af hvem der tjener penge.",
+        "author": { "@type": "Person", "name": "Araz Bayat Makoo" },
+        "publisher": { "@type": "Organization", "name": "Zirium", "url": "https://www.zirium.dk" },
+        "datePublished": "2026-05-15",
+        "mainEntityOfPage": "https://www.zirium.dk/analyse/zeal/gennemsnitspris/2026-05-14",
+        "inLanguage": "da",
+      })}</script>
 
       <article className="w-full max-w-[900px] mx-auto px-5 sm:px-8 pb-10 sm:pb-16">
         <button

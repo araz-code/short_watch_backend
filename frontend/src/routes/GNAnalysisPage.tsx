@@ -276,7 +276,26 @@ const GNAnalysisPage: React.FC = () => {
   return (
     <PageTemplate>
       <title>Zirium | GN Store Nord (GN) - Shortanalyse</title>
-      <meta name="description" content="Dybdegående analyse af short-positioner i GN Store Nord (GN). Hvem shorter, hvor meget, og hvorfor?" />
+      <meta name="description" content="Dybdegående analyse af short-positioner i GN Store Nord (GN). Shorterne holder fast trods Amplifon-salget." />
+      <meta property="og:title" content="Shortanalyse: Shorterne holder fast trods Amplifon-salget" />
+      <meta property="og:description" content="Dybdegående analyse af short-positioner i GN Store Nord (GN). Shorterne holder fast trods Amplifon-salget." />
+      <meta property="og:type" content="article" />
+      <meta property="og:url" content="https://www.zirium.dk/analyse/gn/2026-05-14" />
+      <meta property="og:site_name" content="Zirium" />
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:title" content="Shortanalyse: Shorterne holder fast trods Amplifon-salget" />
+      <meta name="twitter:description" content="Dybdegående analyse af short-positioner i GN Store Nord (GN). Shorterne holder fast trods Amplifon-salget." />
+      <script type="application/ld+json">{JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "Shortanalyse: Shorterne holder fast trods Amplifon-salget",
+        "description": "Dybdegående analyse af short-positioner i GN Store Nord (GN). Shorterne holder fast trods Amplifon-salget.",
+        "author": { "@type": "Person", "name": "Araz Bayat Makoo" },
+        "publisher": { "@type": "Organization", "name": "Zirium", "url": "https://www.zirium.dk" },
+        "datePublished": "2026-05-14",
+        "mainEntityOfPage": "https://www.zirium.dk/analyse/gn/2026-05-14",
+        "inLanguage": "da",
+      })}</script>
 
       <article className="w-full max-w-[900px] mx-auto px-5 sm:px-8 pb-10 sm:pb-16">
         <button

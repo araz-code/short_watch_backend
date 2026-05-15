@@ -6,8 +6,10 @@ import {
   faClockRotateLeft,
   faPerson,
   faArrowRight,
+  faUserTie,
+  faFileLines,
+  faTrophy,
 } from "@fortawesome/free-solid-svg-icons";
-import Card from "../components/UI/Card";
 import { useTranslation } from "react-i18next";
 import AppImage from "../components/Homepage/AppImage";
 import { useEffect, useState } from "react";
@@ -35,6 +37,24 @@ const cards = [
     title: "Short sellers",
     content:
       "See every short seller holding 0.50% or more in a given stock.",
+  },
+  {
+    icon: faTrophy,
+    title: "Top Lists",
+    content:
+      "See which stocks are most shorted, trending, and most viewed.",
+  },
+  {
+    icon: faUserTie,
+    title: "Insider Trades",
+    content:
+      "Track when CEOs, board members, and other insiders buy or sell shares in Danish companies.",
+  },
+  {
+    icon: faFileLines,
+    title: "In-depth analysis",
+    content:
+      "Read our analyses that combine short positions with company events, insider trades, and market context.",
   },
 ];
 
@@ -254,15 +274,20 @@ const HomePage: React.FC = () => {
         </section>
       </div>
 
-      <section className="flex flex-wrap gap-2 justify-center mt-8 sm:mt-10 pb-[20px]">
-        {cards.map((item) => (
-          <Card
-            icon={item.icon}
-            title={t(item.title)}
-            content={t(item.content)}
-            key={item.title}
-          />
-        ))}
+      <section className="mt-8 sm:mt-10 pb-[20px] max-w-[900px] mx-auto px-6">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-6">
+          {cards.map((item) => (
+            <li key={item.title} className="flex items-start gap-4">
+              <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 shrink-0">
+                <FontAwesomeIcon icon={item.icon} />
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-900 dark:text-white">{t(item.title)}</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5 leading-relaxed">{t(item.content)}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <footer className="border-t border-gray-100 dark:border-gray-800 mt-4">

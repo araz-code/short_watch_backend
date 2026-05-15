@@ -317,6 +317,25 @@ const ZealAnalysisPage: React.FC = () => {
     <PageTemplate>
       <title>Zirium | Zealand Pharma (ZEAL) - Shortanalyse</title>
       <meta name="description" content="Dybdegående analyse af short-positioner i Zealand Pharma (ZEAL). Hvem shorter, hvor meget, og hvorfor?" />
+      <meta property="og:title" content="Shortanalyse: Hvem vædder imod Zealand Pharma?" />
+      <meta property="og:description" content="Dybdegående analyse af short-positioner i Zealand Pharma (ZEAL). Hvem shorter, hvor meget, og hvorfor?" />
+      <meta property="og:type" content="article" />
+      <meta property="og:url" content="https://www.zirium.dk/analyse/zeal/2026-05-13" />
+      <meta property="og:site_name" content="Zirium" />
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:title" content="Shortanalyse: Hvem vædder imod Zealand Pharma?" />
+      <meta name="twitter:description" content="Dybdegående analyse af short-positioner i Zealand Pharma (ZEAL). Hvem shorter, hvor meget, og hvorfor?" />
+      <script type="application/ld+json">{JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "Shortanalyse: Hvem vædder imod Zealand Pharma?",
+        "description": "Dybdegående analyse af short-positioner i Zealand Pharma (ZEAL). Hvem shorter, hvor meget, og hvorfor?",
+        "author": { "@type": "Person", "name": "Araz Bayat Makoo" },
+        "publisher": { "@type": "Organization", "name": "Zirium", "url": "https://www.zirium.dk" },
+        "datePublished": "2026-05-13",
+        "mainEntityOfPage": "https://www.zirium.dk/analyse/zeal/2026-05-13",
+        "inLanguage": "da",
+      })}</script>
 
       <article className="w-full max-w-[900px] mx-auto px-5 sm:px-8 pb-10 sm:pb-16">
         <button
