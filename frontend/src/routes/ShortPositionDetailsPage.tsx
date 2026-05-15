@@ -19,6 +19,7 @@ import DetailsHelpDialog from "../components/DetailsHelpDialog";
 import { formatNum } from "../utils/format";
 import { computePriceFlow } from "../utils/computePriceFlow";
 import RecentUpdatesSidebar from "../components/RecentUpdatesSidebar";
+import AnalysesSidebar from "../components/AnalysesSidebar";
 
 const detailOptions = ["Historic data", "Largest sellers", "Price flow"];
 const periodOptions = ["1W", "1M", "3M", "6M", "YTD", "Max"];
@@ -357,8 +358,9 @@ const ShortPositionDetailsPage: React.FC = () => {
       <PageTemplate>
         <div className="w-screen lg:justify-center lg:gap-4 m-auto flex flex-col flex-1 min-h-0 lg:flex-row">
           <div className="hidden xl:block xl:flex-1 relative">
-            <div className="absolute inset-0 flex justify-center items-start pt-[88px] px-4 overflow-hidden">
+            <div className="absolute inset-0 flex flex-col items-center pt-[88px] px-4 overflow-y-auto gap-4">
               {code && <RecentUpdatesSidebar code={code} />}
+              <AnalysesSidebar code={code ?? undefined} />
             </div>
           </div>
 

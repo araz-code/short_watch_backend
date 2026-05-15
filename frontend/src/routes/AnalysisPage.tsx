@@ -17,7 +17,7 @@ const analyses: AnalysisEntry[] = [
     slug: "zeal/gennemsnitspris/2026-05-14",
     title: "Zealand Pharma (ZEAL)",
     subtitle: "Til hvilken kurs har de shortet Zealand Pharma?",
-    date: "14. maj 2026",
+    date: "15. maj 2026",
   },
   {
     slug: "gn/2026-05-14",
