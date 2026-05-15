@@ -5,28 +5,38 @@ const analyses = [
   {
     slug: "zeal/gennemsnitspris/2026-05-14",
     title: "Zealand Pharma (ZEAL)",
-    subtitle: "Til hvilken kurs har de shortet Zealand Pharma?",
-    date: "15. maj 2026",
+    subtitle: {
+      da: "Til hvilken kurs har de shortet Zealand Pharma?",
+      en: "At what price did they short Zealand Pharma?",
+    },
+    date: { da: "15. maj 2026", en: "May 15, 2026" },
     code: "DK0060257814",
   },
   {
     slug: "gn/2026-05-14",
     title: "GN Store Nord (GN)",
-    subtitle: "Shortanalyse: Shorterne holder fast trods Amplifon-salget",
-    date: "14. maj 2026",
+    subtitle: {
+      da: "Shortanalyse: Shorterne holder fast trods Amplifon-salget",
+      en: "Short selling analysis: Short sellers hold firm despite Amplifon sale",
+    },
+    date: { da: "14. maj 2026", en: "May 14, 2026" },
     code: "DK0010272632",
   },
   {
     slug: "zeal/2026-05-13",
     title: "Zealand Pharma (ZEAL)",
-    subtitle: "Shortanalyse: Hvem vædder imod Zealand Pharma?",
-    date: "13. maj 2026",
+    subtitle: {
+      da: "Shortanalyse: Hvem vædder imod Zealand Pharma?",
+      en: "Short selling analysis: Who is betting against Zealand Pharma?",
+    },
+    date: { da: "13. maj 2026", en: "May 13, 2026" },
     code: "DK0060257814",
   },
 ];
 
 export default function AnalysesSidebar({ code }: { code?: string }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isDa = i18n.language.startsWith("da");
   const filtered = code ? analyses.filter((a) => a.code === code) : analyses;
 
   if (filtered.length === 0) return null;
@@ -51,14 +61,14 @@ export default function AnalysesSidebar({ code }: { code?: string }) {
               className={`block px-3 py-2.5 border-b border-gray-100 dark:border-gray-800 last:border-b-0 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors duration-150 ${idx % 2 === 0 ? "bg-white dark:bg-[#19191f]" : "bg-gray-50 dark:bg-[#131318]"}`}
             >
               <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 leading-tight">
-                {a.subtitle}
+                {isDa ? a.subtitle.da : a.subtitle.en}
               </p>
               <div className="flex items-baseline justify-between gap-1 mt-1">
                 <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
                   {a.title}
                 </p>
                 <span className="text-xs text-gray-400 dark:text-gray-500 shrink-0">
-                  {a.date}
+                  {isDa ? a.date.da : a.date.en}
                 </span>
               </div>
             </Link>

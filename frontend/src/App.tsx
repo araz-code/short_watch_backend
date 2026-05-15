@@ -27,10 +27,26 @@ const CookiePolicyPage = lazy(() => import("./routes/CookiePolicyPage.tsx"));
 const FAQPage = lazy(() => import("./routes/FAQPage.tsx"));
 const InsiderTransactionsPage = lazy(() => import("./routes/InsiderTransactionsPage.tsx"));
 const InsiderTransactionDetailsPage = lazy(() => import("./routes/InsiderTransactionDetailsPage.tsx"));
-const ZealAnalysisPage = lazy(() => import("./routes/ZealAnalysisPage.tsx"));
-const GNAnalysisPage = lazy(() => import("./routes/GNAnalysisPage.tsx"));
-const ZealCostAnalysisPage = lazy(() => import("./routes/ZealCostAnalysisPage.tsx"));
+const ZealAnalysisPageDa = lazy(() => import("./routes/ZealAnalysisPage.tsx"));
+const ZealAnalysisPageEn = lazy(() => import("./routes/ZealAnalysisPage.en.tsx"));
+const GNAnalysisPageDa = lazy(() => import("./routes/GNAnalysisPage.tsx"));
+const GNAnalysisPageEn = lazy(() => import("./routes/GNAnalysisPage.en.tsx"));
+const ZealCostAnalysisPageDa = lazy(() => import("./routes/ZealCostAnalysisPage.tsx"));
+const ZealCostAnalysisPageEn = lazy(() => import("./routes/ZealCostAnalysisPage.en.tsx"));
 const AnalysisPage = lazy(() => import("./routes/AnalysisPage.tsx"));
+
+function ZealAnalysisPage() {
+  const lng = localStorage.getItem("i18nextLng") || navigator.language;
+  return lng.startsWith("da") ? <ZealAnalysisPageDa /> : <ZealAnalysisPageEn />;
+}
+function GNAnalysisPage() {
+  const lng = localStorage.getItem("i18nextLng") || navigator.language;
+  return lng.startsWith("da") ? <GNAnalysisPageDa /> : <GNAnalysisPageEn />;
+}
+function ZealCostAnalysisPage() {
+  const lng = localStorage.getItem("i18nextLng") || navigator.language;
+  return lng.startsWith("da") ? <ZealCostAnalysisPageDa /> : <ZealCostAnalysisPageEn />;
+}
 
 type ConsentButtonProps = {
   onClick: () => void;

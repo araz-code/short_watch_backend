@@ -8,33 +8,43 @@ import { HOST } from "../apis/ShortPositionAPI";
 interface AnalysisEntry {
   slug: string;
   title: string;
-  subtitle: string;
-  date: string;
+  subtitle: { da: string; en: string };
+  date: { da: string; en: string };
 }
 
 const analyses: AnalysisEntry[] = [
   {
     slug: "zeal/gennemsnitspris/2026-05-14",
     title: "Zealand Pharma (ZEAL)",
-    subtitle: "Til hvilken kurs har de shortet Zealand Pharma?",
-    date: "15. maj 2026",
+    subtitle: {
+      da: "Til hvilken kurs har de shortet Zealand Pharma?",
+      en: "At what price did they short Zealand Pharma?",
+    },
+    date: { da: "15. maj 2026", en: "May 15, 2026" },
   },
   {
     slug: "gn/2026-05-14",
     title: "GN Store Nord (GN)",
-    subtitle: "Shortanalyse: Shorterne holder fast trods Amplifon-salget",
-    date: "14. maj 2026",
+    subtitle: {
+      da: "Shortanalyse: Shorterne holder fast trods Amplifon-salget",
+      en: "Short selling analysis: Short sellers hold firm despite Amplifon sale",
+    },
+    date: { da: "14. maj 2026", en: "May 14, 2026" },
   },
   {
     slug: "zeal/2026-05-13",
     title: "Zealand Pharma (ZEAL)",
-    subtitle: "Shortanalyse: Hvem vædder imod Zealand Pharma?",
-    date: "13. maj 2026",
+    subtitle: {
+      da: "Shortanalyse: Hvem vædder imod Zealand Pharma?",
+      en: "Short selling analysis: Who is betting against Zealand Pharma?",
+    },
+    date: { da: "13. maj 2026", en: "May 13, 2026" },
   },
 ];
 
 const AnalysisPage: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isDa = i18n.language.startsWith("da");
 
   useEffect(() => {
     trackPageView("/analyse", "analysis_overview");
@@ -64,14 +74,14 @@ const AnalysisPage: React.FC = () => {
               <div className="flex items-start justify-between gap-4">
                 <div className="min-w-0">
                   <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                    {a.subtitle}
+                    {isDa ? a.subtitle.da : a.subtitle.en}
                   </h2>
                   <p className="text-gray-500 dark:text-gray-400 mt-1">
                     {a.title}
                   </p>
                 </div>
                 <span className="shrink-0 text-sm text-gray-400 dark:text-gray-500">
-                  {a.date}
+                  {isDa ? a.date.da : a.date.en}
                 </span>
               </div>
             </Link>
