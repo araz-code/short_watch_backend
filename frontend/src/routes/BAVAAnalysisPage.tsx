@@ -572,40 +572,40 @@ const BAVAAnalysisPage: React.FC = () => {
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-6">8. Tidslinje over nøglebegivenheder</h2>
           <div className="ml-2">
             <TimelineEvent date="Juli - august 2022" title="WHO erklærer mpox-PHEIC: Aktien stiger til 411 DKK" color="#2a9d8f">
-              <p>Mpox-udbruddet spreder sig globalt fra maj 2022, og den 23. juli erklærer WHO en international folkesundhedsnødsituation (PHEIC). USA, EU og andre lande placerer store vaccineordrer. Aktien stiger fra ca. 160 DKK til 411 DKK den 5. august 2022.</p>
+              <p>Mpox-udbruddet spreder sig globalt fra maj 2022, og den 23. juli erklærer WHO en international folkesundhedsnødsituation (PHEIC). USA, EU og andre lande placerer store vaccineordrer. Aktien stiger fra ca. 130 DKK i maj 2022 til 411 DKK intradag den 5. august 2022.</p>
             </TimelineEvent>
             <TimelineEvent date="Februar 2023" title="Emergent-opkøbet annonceret" color="#4361ee">
-              <p>Bavarian Nordic annoncerer køb af Emergent BioSolutions' rejsevaccinportefølje for op til USD 380 mio. Finansiering via kapitalforhøjelse på 1.642 mio. DKK til kurs 233 DKK, svarende til ca. 10% udvanding.</p>
+              <p>Bavarian Nordic annoncerer køb af Emergent BioSolutions' rejsevaccinportefølje (Vivotif, Vaxchora og chikungunya-vaccinekandidaten) for op til USD 380 mio. Handlen blev delvist finansieret via en rettet emission på 1.642 mio. DKK til kurs 233 DKK, svarende til ca. 10% udvanding.</p>
             </TimelineEvent>
-            <TimelineEvent date="November 2023" title="9,06% shortinteresse - højeste i datasættet" color="#e63946">
-              <p>Datasættet starter i november 2023, og den 17. november nås 9,06%, det højeste registrerede niveau. Aktien handlede til ca. 144 DKK. Qube Research & Technologies (1,06%), Millennium International Management (0,90%) og Arrowstreet Capital er blandt de kendte aktører med positioner over 0,50%.</p>
+            <TimelineEvent date="Oktober 2023" title="9,40% shortinteresse - højeste i datasættet" color="#e63946">
+              <p>Datasættet starter i oktober 2023, og den 23. oktober nås 9,40%, det højeste registrerede niveau. Aktien handlede til ca. 131 DKK.</p>
             </TimelineEvent>
-            <TimelineEvent date="August 2024" title="WHO erklærer ny mpox-PHEIC: Aktien stiger til 272 DKK" color="#2a9d8f">
-              <p>WHO erklærer endnu en PHEIC på grund af Clade I mpox-varianten i DRC. Aktien stiger til 272 DKK. Shortinteressen falder til 4,20%.</p>
+            <TimelineEvent date="August 2024" title="WHO erklærer ny mpox-PHEIC: Aktien stiger til 283 DKK" color="#2a9d8f">
+              <p>WHO erklærer endnu en PHEIC på grund af Clade I mpox-varianten i DRC. Aktien stiger til 283 DKK i august 2024. Shortinteressen falder til omkring 4% (lavpunkt 3,96% den 28. august).</p>
             </TimelineEvent>
             <TimelineEvent date="November 2024" title="Q3-regnskab: JYNNEOS-salg -26% år-over-år" color="#e63946">
-              <p>JYNNEOS-salget i Q3 2024 er 74,4 mio. USD mod 100,3 mio. USD året før. Aktien falder 12% på dagen. Shortinteressen stiger efterfølgende fra 3,04% til 5,07% i marts 2025.</p>
+              <p>JYNNEOS-salget i Q3 2024 er 74,4 mio. USD mod 100,3 mio. USD året før. Aktien faldt 17% close-to-close. Shortinteressen stiger efterfølgende fra ca. 2,89% til 5,08% i marts 2025.</p>
             </TimelineEvent>
-            <TimelineEvent date="5. marts 2025" title="Sekundært toppunkt: 5,07% shortinteresse" color="#e63946">
-              <p>Shortinteressen rammer 5,07% ved aktiekurs 168 DKK. Det er det højeste niveau i data siden januar 2024. Samme dag køber CEO Paul Chaplin aktier for 1,4 mio. DKK, CFO Henrik Juuel for 704.000 DKK og CCO Jean-Christophe May for 514.000 DKK. Fra april begynder et hurtigt fald i shortinteressen.</p>
+            <TimelineEvent date="5. marts 2025" title="Sekundært toppunkt: 5,08% shortinteresse" color="#e63946">
+              <p>Shortinteressen rammer 5,08% ved aktiekurs 168 DKK. Det er det højeste niveau i data siden januar 2024. Samme dag køber CEO Paul Chaplin aktier for 1,4 mio. DKK, CFO Henrik Juuel for 704.000 DKK og CCO Jean-Christophe May for 514.000 DKK. Fra april begynder et hurtigt fald i shortinteressen.</p>
             </TimelineEvent>
             <TimelineEvent date="9. maj 2025" title="Insidere køber igen: CEO Chaplin for 4 mio. DKK" color="#2a9d8f">
               <p>CEO Paul Chaplin køber 25.663 aktier for knap 4 mio. DKK. COO Russell Thirsk køber for 735.000 DKK, og tre bestyrelsesmedlemmer køber hver for 150.000 DKK. Shortinteressen er faldet til 2,20%. Samlet insider-køb i 2025: ca. 7,8 mio. DKK.</p>
             </TimelineEvent>
             <TimelineEvent date="Juli 2025" title="Overtagelsesbud fra Nordic Capital og Permira: 233 DKK" color="#4361ee">
-              <p>Nordic Capital og Permira lancerer et overtagelsesbud til 233 DKK per aktie. Shortinteressen falder fra 1,74% i juli til under 1%.</p>
+              <p>Nordic Capital og Permira lancerer et overtagelsesbud til 233 DKK per aktie. Shortinteressen falder markant i de følgende måneder fra omkring 1,7% i juli mod under 1% i takt med at overtagelsesprocessen udvikler sig.</p>
             </TimelineEvent>
             <TimelineEvent date="Oktober 2025" title="Budet hæves til 250 DKK" color="#4361ee">
               <p>Budet hæves til 250 DKK per aktie. Shortinteressen fortsætter ned og rammer 0,77% den 6. november.</p>
             </TimelineEvent>
-            <TimelineEvent date="6. november 2025" title="Budet trækkes tilbage: Aktien -22%, nye shorts indtræder" color="#e63946">
+            <TimelineEvent date="6. november 2025" title="Budet trækkes tilbage: Aktien -21%, shortinteressen stiger igen" color="#e63946">
               <p>Tilslutningen er utilstrækkelig, og budet trækkes tilbage. Aktien falder til 187 DKK med massiv omsætning. I de følgende uger stiger shortinteressen fra 0,77% til 2,11%.</p>
             </TimelineEvent>
             <TimelineEvent date="12. marts 2026" title="Fire insidere køber for samlet 4,5 mio. DKK" color="#2a9d8f">
               <p>CEO Paul Chaplin (1,9 mio. DKK), CFO Henrik Juuel (1,0 mio. DKK), CCO Jean-Christophe May (921.000 DKK) og COO Russell Thirsk (646.000 DKK) køber alle aktier til kurs 177,65 DKK. Shortinteressen er på det tidspunkt 2,69%.</p>
             </TimelineEvent>
-            <TimelineEvent date="Maj 2026" title="Shortinteressen på 1,93%" color="#2a9d8f">
-              <p>Shortinteressen er faldet fra 2,69% i marts 2026 til 1,93%. Connor Clark & Lunn Investment Management er den eneste kendte aktør over 0,50%-grænsen med 0,70%.</p>
+            <TimelineEvent date="Maj 2026" title="Shortinteressen på 1,67%" color="#2a9d8f">
+              <p>Shortinteressen er faldet fra 2,69% i marts 2026 til 1,67%. Connor Clark & Lunn Investment Management er den eneste kendte aktør over 0,50%-grænsen med 0,70%.</p>
             </TimelineEvent>
           </div>
         </section>
@@ -615,8 +615,8 @@ const BAVAAnalysisPage: React.FC = () => {
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">9. Insider-transaktioner</h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             Mens shortsælgerne har reduceret deres positioner, har insidere i Bavarian Nordic
-            købt aktier i det åbne marked. Siden marts 2025 er der registreret 12 insider-køb
-            for samlet ca. 12,2 mio. DKK. Der er ikke registreret insider-salg i den tilgængelige data.
+            købt aktier i det åbne marked. Siden marts 2025 er der registreret 17 insider-køb
+            for samlet ca. 12,9 mio. DKK. Der er ikke registreret insider-salg i den tilgængelige data.
           </p>
 
           <div className="overflow-x-auto rounded-2xl border border-gray-100 dark:border-gray-800 mb-6">
@@ -633,69 +633,76 @@ const BAVAAnalysisPage: React.FC = () => {
               </thead>
               <tbody>
                 <tr className="bg-white dark:bg-[#19191f]">
+                  <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">5 bestyrelsesmedlemmer</td>
+                  <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-300">13. maj 2026</td>
+                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">5 x 771</td>
+                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">188,30 DKK</td>
+                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white hidden sm:table-cell">5 x 133.881 DKK</td>
+                </tr>
+                <tr className="bg-gray-50/50 dark:bg-[#15151a]">
                   <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">Paul Chaplin (CEO)</td>
                   <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-300">12. mar 2026</td>
                   <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">10.642</td>
                   <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">177,65 DKK</td>
                   <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white hidden sm:table-cell">1.891.000 DKK</td>
                 </tr>
-                <tr className="bg-gray-50/50 dark:bg-[#15151a]">
+                <tr className="bg-white dark:bg-[#19191f]">
                   <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">Henrik Juuel (CFO)</td>
                   <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-300">12. mar 2026</td>
                   <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">5.748</td>
                   <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">177,65 DKK</td>
                   <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white hidden sm:table-cell">1.021.000 DKK</td>
                 </tr>
-                <tr className="bg-white dark:bg-[#19191f]">
+                <tr className="bg-gray-50/50 dark:bg-[#15151a]">
                   <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">Jean-Christophe May (CCO)</td>
                   <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-300">12. mar 2026</td>
                   <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">5.184</td>
                   <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">177,65 DKK</td>
                   <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white hidden sm:table-cell">921.000 DKK</td>
                 </tr>
-                <tr className="bg-gray-50/50 dark:bg-[#15151a]">
+                <tr className="bg-white dark:bg-[#19191f]">
                   <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">Russell Thirsk (COO)</td>
                   <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-300">12. mar 2026</td>
                   <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">3.637</td>
                   <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">177,65 DKK</td>
                   <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white hidden sm:table-cell">646.000 DKK</td>
                 </tr>
-                <tr className="bg-white dark:bg-[#19191f]">
+                <tr className="bg-gray-50/50 dark:bg-[#15151a]">
                   <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">Paul Chaplin (CEO)</td>
                   <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-300">9. maj 2025</td>
                   <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">25.663</td>
                   <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">155,81 DKK</td>
                   <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white hidden sm:table-cell">3.999.000 DKK</td>
                 </tr>
-                <tr className="bg-gray-50/50 dark:bg-[#15151a]">
+                <tr className="bg-white dark:bg-[#19191f]">
                   <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">Russell Thirsk (COO)</td>
                   <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-300">9. maj 2025</td>
                   <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">6.669</td>
                   <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">110,21 DKK</td>
                   <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white hidden sm:table-cell">735.000 DKK</td>
                 </tr>
-                <tr className="bg-white dark:bg-[#19191f]">
+                <tr className="bg-gray-50/50 dark:bg-[#15151a]">
                   <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">3 bestyrelsesmedlemmer</td>
                   <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-300">9. maj 2025</td>
                   <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">3 x 983</td>
                   <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">152,58 DKK</td>
                   <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white hidden sm:table-cell">3 x 150.000 DKK</td>
                 </tr>
-                <tr className="bg-gray-50/50 dark:bg-[#15151a]">
+                <tr className="bg-white dark:bg-[#19191f]">
                   <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">Paul Chaplin (CEO)</td>
                   <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-300">5. mar 2025</td>
                   <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">12.543</td>
                   <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">108,71 DKK</td>
                   <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white hidden sm:table-cell">1.364.000 DKK</td>
                 </tr>
-                <tr className="bg-white dark:bg-[#19191f]">
+                <tr className="bg-gray-50/50 dark:bg-[#15151a]">
                   <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">Henrik Juuel (CFO)</td>
                   <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-300">5. mar 2025</td>
                   <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">6.480</td>
                   <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">108,71 DKK</td>
                   <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white hidden sm:table-cell">704.000 DKK</td>
                 </tr>
-                <tr className="bg-gray-50/50 dark:bg-[#15151a]">
+                <tr className="bg-white dark:bg-[#19191f]">
                   <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">Jean-Christophe May (CCO)</td>
                   <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-300">5. mar 2025</td>
                   <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">4.726</td>
@@ -727,7 +734,7 @@ const BAVAAnalysisPage: React.FC = () => {
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             De fleste af de store kendte shortsælgere har lukket deres positioner. Qube Research
             lukkede helt i april 2025, og Millennium faldt under grænsen i november 2024. Connor
-            Clark & Lunn er den eneste aktør over 0,50% i dag med 0,70%. Ca. 64% af den samlede
+            Clark & Lunn er den eneste aktør over 0,50% i dag med 0,70%. Ca. 58% af den samlede
             shortinteresse holdes af ukendte aktører under rapporteringsgrænsen. Her er de mest
             oplagte argumenter på begge sider:
           </p>
