@@ -734,11 +734,11 @@ const BAVAAnalysisPage: React.FC = () => {
         <section className="mb-12">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">10. Argumenter for og imod</h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            De fleste af de store kendte shortsælgere har lukket deres positioner. Qube Research
-            lukkede helt i april 2025, og Millennium faldt under grænsen i november 2024. Connor
-            Clark & Lunn er den eneste aktør over 0,50% i dag med 0,70%. Ca. 58% af den samlede
-            shortinteresse holdes af ukendte aktører under rapporteringsgrænsen. Her er de mest
-            oplagte argumenter på begge sider:
+            De fleste af de store kendte shortsælgere har reduceret deres positioner betydeligt.
+            Qube Research lukkede helt i april 2025, og Millennium faldt under rapporteringsgrænsen
+            på 0,50% i november 2024. Connor Clark & Lunn er den eneste aktør over 0,50% i dag
+            med 0,70%. Ca. 58% af den samlede shortinteresse holdes af aktører under
+            rapporteringsgrænsen. Her er de mest oplagte argumenter på begge sider:
           </p>
 
           <div className="grid sm:grid-cols-2 gap-4 mb-4">
@@ -748,7 +748,7 @@ const BAVAAnalysisPage: React.FC = () => {
                 <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>JYNNEOS-omsætning er knyttet til myndighedsordrer under udbrud</li>
                 <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Mpox-vaccinesalget faldt 46% år-over-år i de første ni måneder af 2024</li>
                 <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Det mislykkede overtagelsesbud efterlader usikkerhed om strategien</li>
-                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Chikungunya-programmet kræver store investeringer uden garanteret udfald</li>
+                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Chikungunya-omsætningen (Vimkunya: 85 mio. DKK i 2025) er stadig lille, og kommerciel opskalering er usikker</li>
               </ul>
             </div>
             <div className="bg-blue-50 dark:bg-blue-500/10 rounded-2xl border border-blue-100 dark:border-blue-500/20 p-5">
@@ -756,9 +756,9 @@ const BAVAAnalysisPage: React.FC = () => {
               <ul className="space-y-2 text-[15px] text-gray-700 dark:text-gray-300">
                 <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>JYNNEOS er fortsat en af de få godkendte mpox-vacciner</li>
                 <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Rejsevacciner (Rabipur, Encepur) giver tilbagevendende omsætning</li>
-                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Aktien er ned 52% fra ATH - en stor del af risikoen kan være prissat ind</li>
-                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>PE-interesse ved 233-250 DKK indikerer en ekstern vurdering af selskabets værdi</li>
-                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Insidere (inkl. CEO, CFO og COO) har købt for 12,2 mio. DKK, ingen har solgt</li>
+                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Aktien er ned 54% fra ATH - en stor del af risikoen kan være prissat ind</li>
+                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Bud fra Nordic Capital og Permira ved 250 DKK indikerer, at professionelle investorer så betydelig værdi i selskabet ved disse kursniveauer</li>
+                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Insidere (inkl. CEO, CFO og COO) har købt for 12,9 mio. DKK; der er ikke registreret insider-salg i perioden</li>
               </ul>
             </div>
           </div>
