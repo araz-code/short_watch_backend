@@ -52,11 +52,11 @@ interface PieSlice {
 
 // ─── static data ────────────────────────────────────────────────────────────
 // Aggregerede datapunkter fra Zirium-datasættet (Finanstilsynet + lukkekurser).
-// Datasættet starter i november 2023.
+// Datasættet starter i oktober 2023.
 const FULL_HISTORY: ChartPoint[] = [
   { date: "2023-10-23", short: 9.40, close: 131.1, volume: null },
   { date: "2023-10-31", short: 9.25, close: 134.25, volume: null },
-  { date: "2023-11-06", short: 8.82, close: 142.7, volume: null },
+  { date: "2023-11-07", short: 8.80, close: 135.6, volume: null },
   { date: "2023-11-17", short: 9.06, close: 144.15, volume: null },
   { date: "2023-12-13", short: 8.16, close: 172.4, volume: null },
   { date: "2024-01-10", short: 7.16, close: 173.5, volume: null },
@@ -64,7 +64,7 @@ const FULL_HISTORY: ChartPoint[] = [
   { date: "2024-03-08", short: 5.65, close: 173.1, volume: null },
   { date: "2024-04-22", short: 6.72, close: 150.1, volume: 421064 },
   { date: "2024-05-08", short: 6.92, close: 162.9, volume: null },
-  { date: "2024-06-03", short: 4.66, close: 186.2, volume: null },
+  { date: "2024-06-03", short: 4.66, close: 186.25, volume: null },
   { date: "2024-07-09", short: 4.44, close: 185.2, volume: null },
   { date: "2024-08-22", short: 4.20, close: 272.3, volume: null },
   { date: "2024-09-12", short: 3.91, close: 237.8, volume: null },
@@ -74,7 +74,7 @@ const FULL_HISTORY: ChartPoint[] = [
   { date: "2025-01-14", short: 3.44, close: 193.3, volume: null },
   { date: "2025-02-21", short: 4.87, close: 174.2, volume: null },
   { date: "2025-03-05", short: 5.07, close: 167.9, volume: null },
-  { date: "2025-04-04", short: 3.06, close: 143.2, volume: null },
+  { date: "2025-04-04", short: 3.06, close: 143.15, volume: null },
   { date: "2025-05-13", short: 2.20, close: 158.6, volume: null },
   { date: "2025-06-13", short: 2.14, close: 183.85, volume: null },
   { date: "2025-07-17", short: 1.74, close: 182.45, volume: null },
@@ -83,11 +83,13 @@ const FULL_HISTORY: ChartPoint[] = [
   { date: "2025-10-22", short: 0.84, close: 241.8, volume: null },
   { date: "2025-11-06", short: 0.77, close: 187.0, volume: 4064267 },
   { date: "2025-11-25", short: 2.11, close: 184.25, volume: null },
-  { date: "2026-01-07", short: 2.62, close: 199.5, volume: null },
+  { date: "2026-01-07", short: 2.60, close: 199.5, volume: null },
   { date: "2026-02-12", short: 2.32, close: 193.2, volume: null },
   { date: "2026-03-11", short: 2.69, close: 183.1, volume: null },
   { date: "2026-04-20", short: 2.11, close: 197.1, volume: null },
   { date: "2026-05-12", short: 1.93, close: 198.4, volume: null },
+  { date: "2026-05-13", short: 1.98, close: 188.3, volume: null },
+  { date: "2026-05-14", short: 1.67, close: 188.3, volume: null },
 ];
 
 const RECENT_PERIOD: ChartPoint[] = FULL_HISTORY.filter(
