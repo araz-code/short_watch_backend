@@ -24,23 +24,23 @@ import {
 // ─── data ───────────────────────────────────────────────────────────────────
 // Short interest changes with corresponding close price (sampled at key changes)
 const POSITION_HISTORY = [
-  { date: "2023-11-06", short: 4.09, close: 279 },
-  { date: "2023-12-01", short: 4.12, close: 302 },
-  { date: "2024-01-15", short: 3.87, close: 355 },
-  { date: "2024-03-01", short: 3.45, close: 480 },
+  { date: "2023-11-06", short: 4.09, close: 291 },
+  { date: "2023-12-01", short: 3.89, close: 330 },
+  { date: "2024-01-15", short: 3.98, close: 434 },
+  { date: "2024-03-01", short: 2.83, close: 649 },
   { date: "2024-05-13", short: 3.20, close: 619 },
-  { date: "2024-07-10", short: 3.10, close: 954 },
-  { date: "2024-09-01", short: 3.55, close: 770 },
+  { date: "2024-07-10", short: 2.68, close: 954 },
+  { date: "2024-09-01", short: 2.59, close: 887 },
   { date: "2024-11-13", short: 4.35, close: 816 },
-  { date: "2025-01-13", short: 5.60, close: 720 },
+  { date: "2025-01-13", short: 5.46, close: 699 },
   { date: "2025-02-13", short: 6.13, close: 749 },
-  { date: "2025-03-12", short: 6.50, close: 700 },
+  { date: "2025-03-12", short: 5.43, close: 674 },
   { date: "2025-05-13", short: 8.34, close: 415 },
-  { date: "2025-06-20", short: 7.90, close: 341 },
+  { date: "2025-06-20", short: 8.16, close: 375 },
   { date: "2025-08-13", short: 7.88, close: 341 },
-  { date: "2025-09-15", short: 6.80, close: 420 },
+  { date: "2025-09-15", short: 7.08, close: 429 },
   { date: "2025-11-13", short: 5.56, close: 521 },
-  { date: "2025-12-11", short: 5.70, close: 470 },
+  { date: "2025-12-11", short: 4.61, close: 514 },
   { date: "2026-01-13", short: 5.87, close: 410 },
   { date: "2026-02-13", short: 5.87, close: 400 },
   { date: "2026-03-06", short: 6.51, close: 235 },
@@ -53,30 +53,30 @@ const POSITION_HISTORY = [
 
 // Per-period breakdown for the method comparison chart
 const METHOD_COMPARISON = [
-  { method: "Metode 1", label: "Eksponeringsvægtet\nhistorisk kursniveau", value: 483, color: "#4361ee" },
-  { method: "Metode 2", label: "Inkrementel indgangspris\n(mest præcis)", value: 486, color: "#2a9d8f" },
-  { method: "Metode 3", label: "Inkrementel indgangspris\n(kun seneste 6 mdr.)", value: 342, color: "#f77f00" },
-  { method: "Metode 4", label: "Simpelt gennemsnit\n(12 mdr.)", value: 395, color: "#9b5de5" },
+  { method: "Metode 1", label: "Eksponeringsvægtet\nhistorisk kursniveau", value: 508, color: "#4361ee" },
+  { method: "Metode 2", label: "Inkrementel indgangspris\n(mest præcis)", value: 499, color: "#2a9d8f" },
+  { method: "Metode 3", label: "Inkrementel indgangspris\n(kun seneste 6 mdr.)", value: 352, color: "#f77f00" },
+  { method: "Metode 4", label: "Simpelt gennemsnit\n(12 mdr.)", value: 403, color: "#9b5de5" },
 ];
 
 // Per-seller estimated entry prices
 const SELLER_ENTRIES = [
-  { name: "D. E. Shaw & Co.", position: "0,50%", entry: 633, current: 311, pnl: "+51%", profitable: true },
-  { name: "Connor Clark & Lunn", position: "0,80%", entry: 379, current: 311, pnl: "+18%", profitable: true },
-  { name: "AHL Partners", position: "0,91%", entry: 365, current: 311, pnl: "+15%", profitable: true },
-  { name: "Jupiter Asset Mgmt", position: "0,70%", entry: 347, current: 311, pnl: "+10%", profitable: true },
-  { name: "Citadel Advisors", position: "0,63%", entry: 325, current: 311, pnl: "+4%", profitable: true },
-  { name: "Marshall Wace", position: "1,28%", entry: 300, current: 311, pnl: "-4%", profitable: false },
-  { name: "Jennison Associates", position: "0,61%", entry: 288, current: 311, pnl: "-8%", profitable: false },
-  { name: "Voleon Capital", position: "1,00%", entry: 192, current: 311, pnl: "-62%", profitable: false },
+  { name: "Marshall Wace", position: "1,28%", entry: 345, current: 311, pnl: "+10%", profitable: true },
+  { name: "AHL Partners", position: "0,91%", entry: 341, current: 311, pnl: "+9%", profitable: true },
+  { name: "Voleon Capital", position: "1,00%", entry: 336, current: 311, pnl: "+7%", profitable: true },
+  { name: "Citadel Advisors", position: "0,63%", entry: 336, current: 311, pnl: "+7%", profitable: true },
+  { name: "D. E. Shaw & Co.", position: "0,50%", entry: 336, current: 311, pnl: "+7%", profitable: true },
+  { name: "Connor Clark & Lunn", position: "0,80%", entry: 301, current: 311, pnl: "-3%", profitable: false },
+  { name: "Jennison Associates", position: "0,61%", entry: 296, current: 311, pnl: "-5%", profitable: false },
+  { name: "Jupiter Asset Mgmt", position: "0,70%", entry: 268, current: 311, pnl: "-16%", profitable: false },
 ];
 
 // Period breakdown
 const PERIOD_DATA = [
-  { period: "Okt 2023 - Jun 2024", avgPrice: 440, sharesAdded: "7,1 mio.", priceRange: "279-954 DKK" },
-  { period: "Jul 2024 - Feb 2025", avgPrice: 806, sharesAdded: "5,1 mio.", priceRange: "700-954 DKK" },
-  { period: "Mar 2025 - Feb 2026", avgPrice: 446, sharesAdded: "11,1 mio.", priceRange: "341-700 DKK" },
-  { period: "Mar 2026 - Maj 2026", avgPrice: 286, sharesAdded: "4,3 mio.", priceRange: "235-345 DKK" },
+  { period: "Okt 2023 - Jun 2024", avgPrice: 454, sharesAdded: "7,2 mio.", priceRange: "279-893 DKK" },
+  { period: "Jul 2024 - Feb 2025", avgPrice: 811, sharesAdded: "5,6 mio.", priceRange: "663-954 DKK" },
+  { period: "Mar 2025 - Feb 2026", avgPrice: 449, sharesAdded: "11,8 mio.", priceRange: "311-674 DKK" },
+  { period: "Mar 2026 - Maj 2026", avgPrice: 292, sharesAdded: "3,9 mio.", priceRange: "235-372 DKK" },
 ];
 
 // ─── helpers ────────────────────────────────────────────────────────────────
@@ -201,8 +201,8 @@ const ZealCostAnalysisPage: React.FC = () => {
           <ul className="space-y-3 text-gray-600 dark:text-gray-300 mb-4">
             <li className="flex gap-3">
               <span className="text-blue-500 font-bold shrink-0">1.</span>
-              <span><strong>Positionerne skifter hænder:</strong> Siden oktober 2023 er der i alt åbnet short-positioner
-              svarende til 27,6 mio. aktier, mens 20,4 mio. er lukket igen. I dag er kun 7,3 mio. aktier shortet.
+              <span><strong>Positionerne skifter hænder:</strong> Siden november 2023 er der i alt åbnet short-positioner
+              svarende til 28,6 mio. aktier, mens 21,4 mio. er lukket igen. I dag er ca. 7,2 mio. aktier shortet.
               Den kumulative short-aktivitet svarer til næsten fire gange den nuværende shortinteresse, hvilket
               indikerer betydelig rotation i positionerne. En fond, der shortede til 800 DKK, kan for længst have
               lukket med gevinst, og en helt anden fond kan sidde med den position i dag.</span>
@@ -230,7 +230,7 @@ const ZealCostAnalysisPage: React.FC = () => {
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2">2. Short-interesse vs. aktiekurs</h2>
           <p className="text-sm text-gray-500 dark:text-gray-300 mb-4">
             Grafen viser, hvordan shortinteressen (blå) og aktiekursen (lilla) har udviklet sig. Den stiplede
-            gule linje viser den inkrementelle indgangspris (~486 DKK). Bemærk, hvor meget kursen har
+            gule linje viser den inkrementelle indgangspris (~499 DKK). Bemærk, hvor meget kursen har
             svinget: fra 235 til 954 DKK.
           </p>
           <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-3 sm:p-5" role="img" aria-label="Graf: Short-interesse vs. aktiekurs for Zealand Pharma med estimeret gennemsnitlig indgangspris">
@@ -249,13 +249,13 @@ const ZealCostAnalysisPage: React.FC = () => {
                 <Tooltip content={ShortPriceTooltip} cursor={{ stroke: "#007AFF", strokeWidth: 1, strokeOpacity: 0.3 }} />
                 <Area yAxisId="short" type="step" dataKey="short" stroke="#007AFF" strokeWidth={2.5} fill="url(#zcShortGrad)" activeDot={{ r: 5, fill: "#007AFF", stroke: "#fff", strokeWidth: 2 }} />
                 <Line yAxisId="price" type="monotone" dataKey="close" stroke="#a855f7" strokeWidth={2} strokeOpacity={0.8} dot={false} activeDot={{ r: 4, fill: "#a855f7", stroke: "#fff", strokeWidth: 2 }} connectNulls />
-                <ReferenceLine yAxisId="price" y={486} stroke="#eab308" strokeDasharray="4 4" strokeWidth={1.5} />
+                <ReferenceLine yAxisId="price" y={499} stroke="#eab308" strokeDasharray="4 4" strokeWidth={1.5} />
               </ComposedChart>
             </ResponsiveContainer>
             <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-300 mt-2 px-2">
               <span className="flex items-center gap-1.5"><span className="w-3 h-[3px] rounded-full bg-[#007AFF] inline-block" />Short-interesse</span>
               <span className="flex items-center gap-1.5"><span className="w-3 h-[3px] rounded-full bg-[#a855f7] inline-block" />Lukkekurs</span>
-              <span className="flex items-center gap-1.5"><span className="inline-flex items-center gap-[2px]"><span className="w-[4px] h-[2px] bg-[#eab308] inline-block" /><span className="w-[4px] h-[2px] bg-[#eab308] inline-block" /></span>Est. gns. entry (~486 DKK)</span>
+              <span className="flex items-center gap-1.5"><span className="inline-flex items-center gap-[2px]"><span className="w-[4px] h-[2px] bg-[#eab308] inline-block" /><span className="w-[4px] h-[2px] bg-[#eab308] inline-block" /></span>Est. gns. entry (~499 DKK)</span>
             </div>
           </div>
         </section>
@@ -295,14 +295,14 @@ const ZealCostAnalysisPage: React.FC = () => {
           </div>
 
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            Det mest slående er perioden juli 2024 til februar 2025. Her blev 5,1 mio. aktier shortet til en
-            gennemsnitskurs på 806 DKK, da aktien stadig var tæt på toppen. Hvis en væsentlig del af disse
+            Det mest slående er perioden juli 2024 til februar 2025. Her blev 5,6 mio. aktier shortet til en
+            gennemsnitskurs på 811 DKK, da aktien stadig var tæt på toppen. Hvis en væsentlig del af disse
             positioner stadig er åbne, repræsenterer de en stor urealiseret gevinst (aktien handles i dag til
             311 DKK). Men det er et stort "hvis": Mange af dem kan allerede have lukket og realiseret gevinsten.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
             I den anden ende af skalaen er de nyeste shorts fra marts-maj 2026, der kom ind til en
-            gennemsnitspris på kun 286 DKK. Disse shorts har næsten ikke nogen gevinst ved den nuværende
+            gennemsnitspris på kun 292 DKK. Disse shorts har næsten ikke nogen gevinst ved den nuværende
             kurs, og risikerer hurtigt at komme i minus, hvis aktien stiger.
           </p>
         </section>
@@ -313,7 +313,7 @@ const ZealCostAnalysisPage: React.FC = () => {
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
             Der findes ikke en enkelt "rigtig" måde at beregne gennemsnitsprisen på. Forskellige metoder
             giver forskellige resultater, fordi de gør forskellige antagelser. Her er fire metoder, der
-            spænder fra 342 til 486 DKK. Sammen giver de et interval, der sandsynligvis fanger den reelle
+            spænder fra 352 til 508 DKK. Sammen giver de et interval, der sandsynligvis fanger den reelle
             gennemsnitspris.
           </p>
 
@@ -331,20 +331,20 @@ const ZealCostAnalysisPage: React.FC = () => {
 
           <div className="space-y-4 text-sm text-gray-600 dark:text-gray-300">
             <div className="bg-gray-50 dark:bg-[#15151a] rounded-2xl border border-gray-100 dark:border-gray-800 p-5">
-              <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Metode 1: Eksponeringsvægtet historisk kursniveau (483 DKK)</h4>
+              <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Metode 1: Eksponeringsvægtet historisk kursniveau (508 DKK)</h4>
               <p>For hver dag i hele datasættet (fra oktober 2023 til i dag) kigger vi på, hvor stor shortinteressen er, og hvad aktiekursen er. Dage med en højere shortinteresse tæller mere, fordi der er flere aktier eksponeret til den kurs. Denne metode viser ikke en reel indgangspris, men snarere det gennemsnitlige kursniveau som short-positionerne har været eksponeret mod over tid. En position der blev åbnet ved 800 DKK og holdt i mange måneder vil dominere resultatet, selvom den måske allerede er lukket.</p>
             </div>
             <div className="bg-gray-50 dark:bg-[#15151a] rounded-2xl border border-gray-100 dark:border-gray-800 p-5">
-              <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Metode 2: Inkrementel indgangspris (486 DKK)</h4>
+              <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Metode 2: Inkrementel indgangspris (499 DKK)</h4>
               <p>Denne metode gennemgår hele datasættet (fra oktober 2023 til i dag) og kigger kun på dage, hvor den samlede shortinteresse steg. Hvis shortinteressen stiger fra 5% til 6%, antager vi, at der netto blev åbnet nye shorts svarende til 1%, og at de blev åbnet til forrige handelsdags kurs. Dage hvor shortinteressen faldt (dvs. hvor der netto blev lukket flere positioner end der blev åbnet) ignoreres. Det giver et estimat på den gennemsnitlige pris, som alle de historiske short-positioner er blevet opbygget til. Svagheden er, at vi ikke ved, om de tidlige shorts stadig er åbne, eller om de for længst er lukket med gevinst.</p>
             </div>
             <div className="bg-gray-50 dark:bg-[#15151a] rounded-2xl border border-gray-100 dark:border-gray-800 p-5">
-              <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Metode 3: Inkrementel indgangspris, seneste 6 mdr. (342 DKK)</h4>
-              <p>Samme metode som metode 2, men kun over de seneste 6 måneder. I denne periode er shortinteressen steget fra 5,73% til 10,27%, og der er netto tilføjet ca. 7,3 mio. aktier. Ved kun at kigge på denne periode fanger vi bedre de nuværende shorts, da mange ældre positioner sandsynligvis allerede er lukket. Resultatet på 342 DKK giver de nyere shorts en buffer på ca. 10% ved den nuværende kurs på ca. 311 DKK. Det er markant mindre end de ~486 DKK fra det fulde datasæt.</p>
+              <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Metode 3: Inkrementel indgangspris, seneste 6 mdr. (352 DKK)</h4>
+              <p>Samme metode som metode 2, men kun over de seneste 6 måneder. I denne periode er shortinteressen steget fra 5,56% til 10,13%, og der er brutto åbnet ca. 6,9 mio. aktier (summen af de daglige stigninger). Ved kun at kigge på denne periode fanger vi bedre de nuværende shorts, da mange ældre positioner sandsynligvis allerede er lukket. Resultatet på 352 DKK giver de nyere shorts en buffer på ca. 12% ved den nuværende kurs på ca. 311 DKK. Det er markant mindre end de ~499 DKK fra det fulde datasæt.</p>
             </div>
             <div className="bg-gray-50 dark:bg-[#15151a] rounded-2xl border border-gray-100 dark:border-gray-800 p-5">
-              <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Metode 4: Simpelt gennemsnit over 12 mdr. (395 DKK)</h4>
-              <p>Denne metode bruger slet ikke shortdata. Den beregner blot den gennemsnitlige lukkekurs for aktien over de seneste 12 måneder, uanset hvad shortinteressen var. Det giver 395 DKK. Metoden er let at forstå, men den antager implicit, at shorts er åbnet jævnt fordelt over hele perioden, hvilket sjældent passer i praksis.</p>
+              <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Metode 4: Simpelt gennemsnit over 12 mdr. (403 DKK)</h4>
+              <p>Denne metode bruger slet ikke shortdata. Den beregner blot den gennemsnitlige lukkekurs for aktien over de seneste 12 måneder, uanset hvad shortinteressen var. Det giver 403 DKK. Metoden er let at forstå, men den antager implicit, at shorts er åbnet jævnt fordelt over hele perioden, hvilket sjældent passer i praksis.</p>
             </div>
           </div>
         </section>
@@ -386,9 +386,14 @@ const ZealCostAnalysisPage: React.FC = () => {
           </div>
 
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            Ifølge dette estimat er fem af de otte fonde i plus (grøn), mens tre er i minus (rød) ved den
-            nuværende kurs på 311 DKK. D. E. Shaw skiller sig ud med en estimeret indgangspris på 633 DKK.
-            Hvis de har holdt positionen uændret siden da, svarer det til en urealiseret gevinst på ca. 51%.
+            Bemærk, at alle otte fonde først har krydset 0,50%-tærsklen inden for de seneste to måneder
+            (marts-maj 2026), og at fem af dem (Marshall Wace, AHL Partners, Voleon Capital, Citadel
+            og D. E. Shaw) først er dukket op i indberetningerne mellem den 7. og 12. maj 2026. Hver fond
+            har kun én indberetning i datasættet, så vi kender ikke deres tidligere positioner under
+            tærsklen. De estimerede indgangskurser ligger derfor alle i et smalt interval mellem 268 og
+            345 DKK. Ved den nuværende kurs på 311 DKK er fem af fondene i et lille plus (op til ca. 10%),
+            mens tre er i et lille minus (op til ca. -16%). Ingen af fondene har på papiret en stor
+            urealiseret gevinst eller et stort tab på denne position.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
             <strong>Vigtigt forbehold:</strong> Disse tal er estimater og skal tages med forbehold.
@@ -409,15 +414,15 @@ const ZealCostAnalysisPage: React.FC = () => {
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">6. Hvad kan vi konkludere?</h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             Den historiske gennemsnitlige indgangspris for alle short-positioner i Zealand Pharma ligger
-            omkring 486 DKK (metode 2). Men kigger vi kun på de seneste 6 måneder, hvor størstedelen af
-            den nuværende positionsopbygning er sket, falder estimatet til 342 DKK (metode 3). Med en
-            aktuel kurs på ca. 311 DKK svarer det til en gevinst på kun ca. 10% for de nyere shorts,
+            omkring 499 DKK (metode 2). Men kigger vi kun på de seneste 6 måneder, hvor størstedelen af
+            den nuværende positionsopbygning er sket, falder estimatet til 352 DKK (metode 3). Med en
+            aktuel kurs på ca. 311 DKK svarer det til en gevinst på kun ca. 12% for de nyere shorts,
             og en positiv nyhed kan hurtigt vende billedet.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             Bag gennemsnittet gemmer sig to vidt forskellige grupper. De shorts, der gik ind i perioden
-            juli 2024 til februar 2025 (til ~806 DKK i gennemsnit), sidder potentielt på store gevinster.
-            Men de nyeste shorts fra 2026 (til ~286 DKK) er tæt på break-even og risikerer tab, hvis
+            juli 2024 til februar 2025 (til ~811 DKK i gennemsnit), sidder potentielt på store gevinster.
+            Men de nyeste shorts fra 2026 (til ~292 DKK) er tæt på break-even og risikerer tab, hvis
             aktien stiger blot lidt. Det er altså ikke en homogen gruppe, men investorer med meget
             forskellige risikoprofiler.
           </p>
