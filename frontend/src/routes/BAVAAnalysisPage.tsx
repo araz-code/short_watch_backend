@@ -147,7 +147,7 @@ const SELLERS: SellerSeries[] = [
 
 const PIE_DATA: PieSlice[] = [
   { name: "Connor Clark & Lunn", value: 0.70 },
-  { name: "Under 0,50% (ukendte)", value: 1.23 },
+  { name: "Under 0,50% (ukendte)", value: 0.97 },
 ];
 
 const PIE_COLORS = ["#e63946", "#d4d4d8"];
@@ -505,7 +505,7 @@ const BAVAAnalysisPage: React.FC = () => {
             Research & Technologies var den største kendte aktør i analyseperioden med en position
             op til 1,33% (august 2023), men lukkede helt ned i april 2025. Millennium International
             Management nåede 1,00% i august 2023 og december 2023, men faldt under grænsen i
-            november 2024. De resterende ca. 1,23% holdes af aktører under rapporteringsgrænsen,
+            november 2024. De resterende ca. 0,97% holdes af aktører under rapporteringsgrænsen,
             hvis identitet vi ikke kender.
           </p>
 
@@ -551,7 +551,7 @@ const BAVAAnalysisPage: React.FC = () => {
           </div>
 
           <h3 className="text-base font-semibold text-gray-900 dark:text-white mt-8 mb-2">Fordeling af den samlede short-interesse</h3>
-          <p className="text-sm text-gray-500 dark:text-gray-300 mb-4">Ca. 64% af short-interessen holdes af aktører under 0,50%-tærsklen, hvis identitet er ukendt.</p>
+          <p className="text-sm text-gray-500 dark:text-gray-300 mb-4">Ca. 58% af short-interessen holdes af aktører under 0,50%-tærsklen, hvis identitet er ukendt.</p>
           <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-3 sm:p-5 flex justify-center" role="img" aria-label="Cirkeldiagram: Fordeling af den samlede short-interesse i Bavarian Nordic">
             <ResponsiveContainer width="100%" height={300}>
               <PieChart>
