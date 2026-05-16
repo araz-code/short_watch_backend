@@ -722,8 +722,10 @@ const BAVAAnalysisPage: React.FC = () => {
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
             <strong>Vigtigt:</strong> Udover disse køb modtog ledelsen også aktietildelinger som
-            en del af deres aflønning i marts 2025 og december 2024. Disse tildelinger er
-            kompensationsbaserede og skal ikke forveksles med åbent markedskøb. Tabellen
+            en del af deres aflønning i marts 2025 og december 2024. Derudover udnyttede
+            Thomas Bennekov tegningsoptioner den 29. november 2024 og erhvervede 2.596
+            aktier til kurs 146,60 DKK (380.574 DKK). Disse tildelinger og option-udnyttelser
+            er kompensationsbaserede og skal ikke forveksles med åbent markedskøb. Tabellen
             ovenfor viser kun køb i det åbne marked.
           </p>
         </section>
