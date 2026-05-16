@@ -33,6 +33,8 @@ const GNAnalysisPageDa = lazy(() => import("./routes/GNAnalysisPage.tsx"));
 const GNAnalysisPageEn = lazy(() => import("./routes/GNAnalysisPage.en.tsx"));
 const ZealCostAnalysisPageDa = lazy(() => import("./routes/ZealCostAnalysisPage.tsx"));
 const ZealCostAnalysisPageEn = lazy(() => import("./routes/ZealCostAnalysisPage.en.tsx"));
+const BAVAAnalysisPageDa = lazy(() => import("./routes/BAVAAnalysisPage.tsx"));
+const BAVAAnalysisPageEn = lazy(() => import("./routes/BAVAAnalysisPage.en.tsx"));
 const AnalysisPage = lazy(() => import("./routes/AnalysisPage.tsx"));
 
 function ZealAnalysisPage() {
@@ -42,6 +44,10 @@ function ZealAnalysisPage() {
 function GNAnalysisPage() {
   const lng = localStorage.getItem("i18nextLng") || navigator.language;
   return lng.startsWith("da") ? <GNAnalysisPageDa /> : <GNAnalysisPageEn />;
+}
+function BAVAAnalysisPage() {
+  const lng = localStorage.getItem("i18nextLng") || navigator.language;
+  return lng.startsWith("da") ? <BAVAAnalysisPageDa /> : <BAVAAnalysisPageEn />;
 }
 function ZealCostAnalysisPage() {
   const lng = localStorage.getItem("i18nextLng") || navigator.language;
@@ -159,6 +165,14 @@ const router = createBrowserRouter([
   {
     path: "analyse/zeal/gennemsnitspris",
     element: <ErrorBoundary><ZealCostAnalysisPage /></ErrorBoundary>,
+  },
+  {
+    path: "analyse/bava/2026-05-15",
+    element: <ErrorBoundary><BAVAAnalysisPage /></ErrorBoundary>,
+  },
+  {
+    path: "analyse/bava",
+    element: <ErrorBoundary><BAVAAnalysisPage /></ErrorBoundary>,
   },
 ]);
 

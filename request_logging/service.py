@@ -463,6 +463,7 @@ def today_visit_buckets(for_date=None) -> dict:
     zeal_analysis = set()
     zeal_cost_analysis = set()
     gn_analysis = set()
+    bava_analysis = set()
     analysis_overview = set()
     bots = set()
     bots_by_name = {}  # fragment -> set of IPs
@@ -535,6 +536,8 @@ def today_visit_buckets(for_date=None) -> dict:
             zeal_cost_analysis.add(ip)
         if "/stats/visit/gn-analysis" in url:
             gn_analysis.add(ip)
+        if "/stats/visit/bava-analysis" in url:
+            bava_analysis.add(ip)
         if "/stats/visit/analysis/" in url:
             analysis_overview.add(ip)
 
@@ -553,6 +556,7 @@ def today_visit_buckets(for_date=None) -> dict:
         'zeal_analysis': zeal_analysis,
         'zeal_cost_analysis': zeal_cost_analysis,
         'gn_analysis': gn_analysis,
+        'bava_analysis': bava_analysis,
         'analysis_overview': analysis_overview,
         'bots': bots, 'bots_by_name': bots_by_name,
     }

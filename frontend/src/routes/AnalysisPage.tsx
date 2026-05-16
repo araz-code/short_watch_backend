@@ -14,6 +14,15 @@ interface AnalysisEntry {
 
 const analyses: AnalysisEntry[] = [
   {
+    slug: "bava/2026-05-15",
+    title: "Bavarian Nordic (BAVA)",
+    subtitle: {
+      da: "Shortanalyse: Da BAVA sad øverst på shortlisten",
+      en: "When BAVA topped the short sellers list",
+    },
+    date: { da: "15. maj 2026", en: "May 15, 2026" },
+  },
+  {
     slug: "zeal/gennemsnitspris/2026-05-14",
     title: "Zealand Pharma (ZEAL)",
     subtitle: {
