@@ -387,22 +387,24 @@ const BAVAAnalysisPage: React.FC = () => {
             Bavarian Nordic er bedst kendt for JYNNEOS, en af de få godkendte mpox-vacciner. Da
             mpox-udbruddet begyndte at sprede sig globalt i maj 2022, og den 23. juli erklærede
             WHO en international folkesundhedsnødsituation (PHEIC). Efterspørgslen eksploderede.
-            USA, EU og en lang række lande placerede store ordrer. Aktien steg fra ca. 160 DKK
-            til 411 DKK den 5. august 2022.
+            USA, EU og en lang række lande placerede store ordrer. Aktien steg fra ca. 130 DKK
+            i maj 2022 til 411 DKK intradag den 5. august 2022.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             Efterfølgende faldt omsætningen igen. JYNNEOS-salget er tæt knyttet til myndighedsordrer
             under udbrud: Regeringer fylder beredskabslagre op og bestiller markant færre doser de
             efterfølgende år. I februar 2023 annoncerede selskabet købet af Emergent BioSolutions'
-            rejsevaccinportefølje (Rabipur, Encepur) for op til USD 380 mio., finansieret via en
-            kapitalforhøjelse på 1.642 mio. DKK til kurs 233 DKK per aktie. Det svarede til ca.
-            10% udvanding.
+            rejsevaccinportefølje (Vivotif mod tyfus, Vaxchora mod kolera samt en chikungunya-kandidat
+            i fase 3) for op til USD 380 mio., blandt andet finansieret via en kapitalforhøjelse på
+            1.642 mio. DKK til kurs 233 DKK per aktie. Det svarede til ca. 10% udvanding. Handelen
+            blev lukket i maj 2023.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-            Det var i denne kontekst, at shortinteressen nåede det niveau vi ser i starten af
-            datasættet. Vi ved fra Finanstilsynets individuelle indberetninger, at en lang
-            række fonde havde positioner over 0,50% allerede i 2022, herunder Marshall Wace
-            (op til 1,60%), Arrowstreet Capital (op til 1,20%) og Capital Fund Management.
+            Det var i denne periode, at shortinteressen byggede sig op til det niveau, vi ser i
+            starten af datasættet i oktober 2023. Vi ved fra Finanstilsynets individuelle
+            indberetninger, at en lang række fonde havde positioner over 0,50% allerede i 2022,
+            herunder Marshall Wace (op til 1,60%), Arrowstreet Capital (op til 1,00%) og Capital
+            Fund Management (op til 0,72%).
           </p>
         </section>
 
