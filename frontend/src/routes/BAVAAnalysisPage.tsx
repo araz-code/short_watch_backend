@@ -803,13 +803,12 @@ const BAVAAnalysisPage: React.FC = () => {
           <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed text-center">
             <strong>Ansvarsfraskrivelse:</strong> Denne analyse er alene til informationsformål og udgør ikke
             investeringsrådgivning. Short-interessedata stammer fra Finanstilsynets offentlige registre
-            via Zirium. Datasættet for den aggregerede shortinteresse starter i november 2023.
-            Individuelle short-sælgerdatapunkter er delvist estimater. Historisk afkast er ikke en
-            garanti for fremtidigt afkast. Foretag altid din egen analyse, og søg professionel
-            rådgivning før du handler.
+            via Zirium. Datasættet for den aggregerede shortinteresse starter i oktober 2023.
+            Historisk afkast er ikke en garanti for fremtidigt afkast. Foretag altid din egen
+            analyse, og søg professionel rådgivning før du handler.
           </p>
           <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-3">
-            Genereret af Zirium  |  15. maj 2026
+            Genereret af Zirium  |  17. maj 2026
           </p>
         </footer>
       </article>
