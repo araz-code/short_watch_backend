@@ -768,28 +768,29 @@ const BAVAAnalysisPage: React.FC = () => {
         <section className="mb-12">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">11. Konklusion</h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            Fra 9,06% i november 2023 til 1,93% i maj 2026 er shortinteressen i Bavarian Nordic
-            faldet ca. 79%. Det er sket i to faser: En gradvis afvikling i 2024, og en hurtig
+            Fra 9,40% i oktober 2023 til 1,67% i maj 2026 er shortinteressen i Bavarian Nordic
+            faldet ca. 82%. Det er sket i to faser: En gradvis afvikling i 2024, og en hurtig
             afvikling under overtagelsesbudet i 2025, hvor shortinteressen faldt til blot 0,77%.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             Det mest interessante signal i nyere data er det, der skete efter budet kollapsede.
-            Shortinteressen steg fra 0,77% til over 2,5% på kort tid, hvilket fortæller os, at
-            nye aktører vurderede, at der var grundlag for en shortposition ved de daværende
-            kursniveauer. Siden marts 2026 er den dog faldet lidt igen.
+            Shortinteressen steg fra 0,77% til over 2,5% på kort tid, hvilket tyder på fornyet
+            shortinteresse ved de daværende kursniveauer. Positionen toppede ved 2,69% i marts
+            2026 og er siden faldet tilbage til 1,67% i maj 2026.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            De store kendte shortsælgere fra 2023 har alle lukket deres positioner. Qube Research
-            & Technologies, der var den største med op til 1,33%, lukkede helt i april 2025.
-            Connor Clark & Lunn er den eneste nuværende aktør over 0,50% med en position på
-            0,70%, aktiv siden december 2025.
+            De store kendte shortsælgere fra 2023 har alle reduceret deres positioner betydeligt.
+            Qube Research & Technologies, der var den største med op til 1,33%, reducerede sin
+            position til under rapporteringsgrænsen i april 2025. Connor Clark & Lunn er den
+            eneste nuværende aktør over 0,50% med en position på 0,70%, senest rapporteret fra
+            december 2025.
           </p>
 
           <div className="bg-gray-50 dark:bg-[#15151a] rounded-2xl border border-gray-100 dark:border-gray-800 p-5 mt-6">
             <h4 className="font-semibold text-gray-900 dark:text-white mb-3">Kommende katalysatorer at holde øje med</h4>
             <ul className="space-y-1.5 text-[15px] text-gray-600 dark:text-gray-300">
               <li>&#x2022; Nye mpox-ordrer fra USA og EU (beredskabslagre fornyes med jævne mellemrum)</li>
-              <li>&#x2022; Resultater fra chikungunya Phase 3-forsøg og eventuel regulatorisk godkendelse</li>
+              <li>&#x2022; Kommerciel opskalering af Vimkunya (chikungunya-vaccinen) og yderligere markedsgodkendelser</li>
               <li>&#x2022; Et nyt overtagelsesforsøg ville igen presse shortsælgere</li>
               <li>&#x2022; Udviklingen i rejsevaccinomsætningen som signal om forretningens stabilitet</li>
               <li>&#x2022; Eventuelle nye mpox-udbrud og myndighedernes reaktion</li>
