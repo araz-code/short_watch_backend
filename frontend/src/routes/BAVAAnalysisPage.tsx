@@ -468,29 +468,30 @@ const BAVAAnalysisPage: React.FC = () => {
 
         {/* 6. Overtagelsesbudet */}
         <section className="mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">6. Fra 5,07% til 0,77%: Budet der ændrede alt</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">6. Fra 5,08% til 0,77%: Budet der ændrede alt</h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            Det tydeligste skift i dataene kommer i perioden april til november 2025.
-            Shortinteressen faldt fra 5,07% i marts til 3,06% i april, videre til 1,74% i
-            juli og helt ned til 0,77% den 6. november. Det er et fald på 85% på otte måneder.
+            Det tydeligste skift i dataene kommer i perioden marts til november 2025.
+            Shortinteressen faldt overordnet fra 5,08% den 5. marts til 1,40% i slutningen af
+            juli og 0,77% den 6. november. Det er et fald på ca. 85% på otte måneder.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             Timingen falder sammen med Nordic Capital og Permiras overtagelsesbud i juli 2025,
             der startede på 233 DKK per aktie og senere blev hævet til 250 DKK i oktober.
             For shortsælgere er et overtagelsesbud en vanskelig
             situation: Aktien stiger mod budkursen, og tabet på en shortposition kan vokse
-            markant, hvis budet gennemføres. Det er en klassisk mekanisme, der tvinger mange
-            til at dække.
+            markant, hvis budet gennemføres. Det er en klassisk mekanisme, der ofte får
+            shortsælgere til at reducere eller lukke positioner.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             Den 6. november 2025 trak Nordic Capital og Permira budet tilbage, da tilslutningen
-            var utilstrækkelig. Aktien faldt fra ca. 242 DKK til 187 DKK med massiv omsætning.
+            var utilstrækkelig. Aktien faldt fra 236 DKK til 187 DKK med massiv omsætning.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
             Det interessante er, hvad der skete bagefter. Shortinteressen steg fra 0,77%
-            til 2,11% på blot 19 dage og nåede 2,69% i marts 2026. Det fortæller os, at nye
-            aktører indtog shortpositioner efter budets kollaps. Siden er den faldet lidt
-            igen til 1,93% i maj 2026.
+            til 2,11% på blot 19 dage og nåede 2,69% i marts 2026. Det tyder på, at nye
+            eller eksisterende aktører øgede shorteksponeringen efter budets kollaps. Siden
+            er den faldet lidt
+            igen til 1,67% i maj 2026.
           </p>
         </section>
 
