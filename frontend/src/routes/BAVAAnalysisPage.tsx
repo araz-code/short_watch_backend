@@ -410,24 +410,28 @@ const BAVAAnalysisPage: React.FC = () => {
 
         {/* 4. Den gradvise afvikling */}
         <section className="mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">4. Den gradvise afvikling: Fra 9,06% til 3%</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">4. Den gradvise afvikling efter toppen</h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            Når man kigger i data, kan man se en jævn nedadgående trend fra november 2023 til
-            november 2024. Shortinteressen faldt fra 9,06% til 8,16% i december og 7,16% i
-            januar 2024. Aktien handlede i 142-173 DKK i denne periode.
-            Det er ikke en dramatisk afvikling, men positioner der lukkes løbende.
+            Fra toppen i oktober 2023 begyndte shorterne at trække sig, i en periode hvor
+            aktien steg markant. Shortinteressen faldt fra 9,40% til 8,16% i december og
+            7,16% i begyndelsen af januar 2024, mens aktien gik fra ca. 131 DKK i slutningen
+            af oktober til 173 DKK i midten af januar. Det er ikke en dramatisk afvikling,
+            men en jævn lukning af positioner, hvilket kan have været påvirket af den
+            stigende aktiekurs.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             I august 2024 kom der en interessant udvikling. WHO erklærede endnu en
-            mpox-PHEIC (Clade I i DRC), og aktien steg markant til 272 DKK.
-            Shortinteressen faldt til 4,20%. Men i de efterfølgende måneder, da aktien faldt
-            tilbage, steg shortinteressen igen. Q3-regnskabet i november 2024 viste, at
-            JYNNEOS-salget var faldet 26% år-over-år (74,4 mio. USD mod 100,3 mio. USD
-            året før), og shortinteressen nåede et sekundært toppunkt på 5,07% den 5.
-            marts 2025 ved aktiekurs 168 DKK.
+            mpox-PHEIC (Clade I i DRC), og aktien steg markant til over 280 DKK.
+            Shortinteressen faldt til omkring 4% i slutningen af august (lavpunkt 3,96% den
+            28. august). Men i de efterfølgende måneder, da aktien faldt tilbage, steg
+            shortinteressen igen. Q3-regnskabet i november 2024 viste, at JYNNEOS-salget
+            var faldet 26% år-over-år (74,4 mio. USD mod 100,3 mio. USD året før), og
+            shortinteressen nåede et sekundært toppunkt på 5,08% den 5. marts 2025 ved
+            aktiekurs 168 DKK.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-            Det bemærkelsesværdige er, at shortinteressen steg efter mpox-nyhederne aftog. Det
+            Det bemærkelsesværdige er, at shortinteressen steg efter markedets fokus på mpox
+            begyndte at aftage. Det
             tyder på, at markedets bekymring ikke handlede om én enkelt begivenhed, men om
             den underliggende forretningsmodel: Kan Bavarian Nordic vokse stabilt, når
             JYNNEOS-omsætningen er knyttet til udbrudscykler?
