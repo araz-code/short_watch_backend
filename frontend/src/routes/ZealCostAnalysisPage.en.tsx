@@ -61,14 +61,14 @@ const METHOD_COMPARISON = [
 
 // Per-seller estimated entry prices
 const SELLER_ENTRIES = [
-  { name: "Marshall Wace", position: "1.28%", entry: 345, current: 311, pnl: "+10%", profitable: true },
-  { name: "AHL Partners", position: "0.91%", entry: 341, current: 311, pnl: "+9%", profitable: true },
-  { name: "Voleon Capital", position: "1.00%", entry: 336, current: 311, pnl: "+7%", profitable: true },
-  { name: "Citadel Advisors", position: "0.63%", entry: 336, current: 311, pnl: "+7%", profitable: true },
-  { name: "D. E. Shaw & Co.", position: "0.50%", entry: 336, current: 311, pnl: "+7%", profitable: true },
-  { name: "Connor Clark & Lunn", position: "0.80%", entry: 301, current: 311, pnl: "-3%", profitable: false },
-  { name: "Jennison Associates", position: "0.61%", entry: 296, current: 311, pnl: "-5%", profitable: false },
-  { name: "Jupiter Asset Mgmt", position: "0.70%", entry: 268, current: 311, pnl: "-16%", profitable: false },
+  { name: "D. E. Shaw & Co.", position: "0.50%", entry: 629, current: 311, pnl: "+51%", profitable: true },
+  { name: "Connor Clark & Lunn", position: "0.80%", entry: 380, current: 311, pnl: "+18%", profitable: true },
+  { name: "AHL Partners", position: "0.91%", entry: 362, current: 311, pnl: "+14%", profitable: true },
+  { name: "Jupiter Asset Mgmt", position: "0.70%", entry: 352, current: 311, pnl: "+12%", profitable: true },
+  { name: "Citadel Advisors", position: "0.63%", entry: 327, current: 311, pnl: "+5%", profitable: true },
+  { name: "Marshall Wace", position: "1.28%", entry: 299, current: 311, pnl: "-4%", profitable: false },
+  { name: "Jennison Associates", position: "0.61%", entry: 289, current: 311, pnl: "-8%", profitable: false },
+  { name: "Voleon Capital", position: "1.00%", entry: 193, current: 311, pnl: "-61%", profitable: false },
 ];
 
 // Period breakdown
@@ -352,12 +352,17 @@ const ZealCostAnalysisPageEn: React.FC = () => {
         <section className="mb-12">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">5. Estimated entry price per short seller</h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            For the eight funds that have disclosed their positions, we can make a more detailed estimate.
-            Each time a fund reports an increase in its position, we assume the increase was shorted at the
-            previous trading day's closing price. For the first report (typically at 0.50%), we assume the
-            entire position was opened at that day's price. This is a simplification, as the fund may have
-            built up the position gradually below the 0.50% threshold over a longer period at different prices.
-            The table shows the estimated entry price and whether the fund is currently in profit or loss (green/red).
+            For the eight funds that currently hold a position above 0.50%, we can make a more detailed
+            estimate by going through their full reporting history. Each time a fund has reported an
+            increase in its position (since the first time they ever crossed the threshold), we assume the
+            increase was shorted at the previous trading day's closing price. For the very first report we
+            assume the position was opened at that day's price. The estimated entry price is the
+            volume-weighted average of all these increases. This means that if a fund has also held earlier
+            positions that were later closed, those increases are also included in the average, because we
+            cannot know which shorts are still concretely open. For funds like Marshall Wace and Voleon
+            Capital, which have history back to 2021-2022, this pulls the estimated entry level down,
+            because some of their earlier shorts were opened at far lower price levels. The table shows the
+            estimated entry price and whether the fund is currently in profit or loss (green/red).
           </p>
 
           <div className="overflow-x-auto rounded-2xl border border-gray-100 dark:border-gray-800 mb-6">
@@ -385,14 +390,13 @@ const ZealCostAnalysisPageEn: React.FC = () => {
           </div>
 
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            Note that all eight funds only crossed the 0.50% threshold within the last two months
-            (March-May 2026), and that five of them (Marshall Wace, AHL Partners, Voleon Capital, Citadel
-            and D. E. Shaw) only appeared in the filings between May 7 and May 12, 2026. Each fund has
-            only one filing in the dataset, so we do not know their earlier positions below the threshold.
-            The estimated entry prices therefore all fall within a narrow range between 268 and 345 DKK.
-            At the current price of 311 DKK, five of the funds are in a small profit (up to approx. 10%),
-            while three are in a small loss (up to approx. -16%). On paper, none of the funds have a large
-            unrealized gain or loss on this position.
+            According to this estimate, five of the eight funds are in profit (green), while three are at a
+            loss (red) at the current price of 311 DKK. D. E. Shaw stands out with an estimated entry price
+            of 629 DKK, because they have held a position since December 2024 and built most of it up while
+            the stock was trading at 600-900 DKK. If they still hold the position, that corresponds to an
+            unrealized gain of approximately 51%. At the other end are Voleon Capital and Marshall Wace,
+            whose estimated entry prices are pulled down by their earlier positions from 2021-2022, when
+            ZEAL traded at far lower levels.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
             <strong>Important caveat:</strong> These figures are estimates and should be taken with caution.

@@ -61,14 +61,14 @@ const METHOD_COMPARISON = [
 
 // Per-seller estimated entry prices
 const SELLER_ENTRIES = [
-  { name: "Marshall Wace", position: "1,28%", entry: 345, current: 311, pnl: "+10%", profitable: true },
-  { name: "AHL Partners", position: "0,91%", entry: 341, current: 311, pnl: "+9%", profitable: true },
-  { name: "Voleon Capital", position: "1,00%", entry: 336, current: 311, pnl: "+7%", profitable: true },
-  { name: "Citadel Advisors", position: "0,63%", entry: 336, current: 311, pnl: "+7%", profitable: true },
-  { name: "D. E. Shaw & Co.", position: "0,50%", entry: 336, current: 311, pnl: "+7%", profitable: true },
-  { name: "Connor Clark & Lunn", position: "0,80%", entry: 301, current: 311, pnl: "-3%", profitable: false },
-  { name: "Jennison Associates", position: "0,61%", entry: 296, current: 311, pnl: "-5%", profitable: false },
-  { name: "Jupiter Asset Mgmt", position: "0,70%", entry: 268, current: 311, pnl: "-16%", profitable: false },
+  { name: "D. E. Shaw & Co.", position: "0,50%", entry: 629, current: 311, pnl: "+51%", profitable: true },
+  { name: "Connor Clark & Lunn", position: "0,80%", entry: 380, current: 311, pnl: "+18%", profitable: true },
+  { name: "AHL Partners", position: "0,91%", entry: 362, current: 311, pnl: "+14%", profitable: true },
+  { name: "Jupiter Asset Mgmt", position: "0,70%", entry: 352, current: 311, pnl: "+12%", profitable: true },
+  { name: "Citadel Advisors", position: "0,63%", entry: 327, current: 311, pnl: "+5%", profitable: true },
+  { name: "Marshall Wace", position: "1,28%", entry: 299, current: 311, pnl: "-4%", profitable: false },
+  { name: "Jennison Associates", position: "0,61%", entry: 289, current: 311, pnl: "-8%", profitable: false },
+  { name: "Voleon Capital", position: "1,00%", entry: 193, current: 311, pnl: "-61%", profitable: false },
 ];
 
 // Period breakdown
@@ -353,12 +353,17 @@ const ZealCostAnalysisPage: React.FC = () => {
         <section className="mb-12">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">5. Estimeret indgangspris per short-sælger</h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            For de otte fonde, der har offentliggjort deres positioner, kan vi lave et mere detaljeret estimat.
-            Hver gang en fond indberetter en stigning i sin position, antager vi, at stigningen blev shortet
-            til forrige handelsdags lukkekurs. For den første indberetning (typisk ved 0,50%) antager vi, at
-            hele positionen blev åbnet til den dags kurs. Det er en forenkling, da fonden kan have opbygget
-            positionen gradvist under 0,50%-tærsklen over en længere periode til andre kurser. Tabellen viser
-            estimeret indgangspris og om fonden aktuelt er i plus eller minus (grøn/rød).
+            For de otte fonde, der har en aktiv position over 0,50%, kan vi lave et mere detaljeret estimat
+            ved at gennemgå deres fulde indberetningshistorik. For hver gang en fond har indberettet en
+            stigning i sin position (siden første gang de overhovedet krydsede tærsklen), antager vi, at
+            stigningen blev shortet til forrige handelsdags lukkekurs. For den allerførste indberetning
+            antager vi, at positionen blev åbnet til den dags kurs. Den estimerede indgangspris er det
+            volumenvægtede gennemsnit af alle disse stigninger. Det betyder, at hvis en fond også har holdt
+            tidligere positioner, der senere er lukket, indgår de stigninger også i gennemsnittet, fordi
+            vi ikke kan vide, hvilke shorts der konkret stadig er åbne. For fonde som Marshall Wace og
+            Voleon Capital, der har historik tilbage til 2021-2022, trækker det estimerede indgangsniveau
+            ned, fordi en del af deres tidligere shorts blev åbnet på langt lavere kursniveauer. Tabellen
+            viser estimeret indgangspris og om fonden aktuelt er i plus eller minus (grøn/rød).
           </p>
 
           <div className="overflow-x-auto rounded-2xl border border-gray-100 dark:border-gray-800 mb-6">
@@ -386,14 +391,13 @@ const ZealCostAnalysisPage: React.FC = () => {
           </div>
 
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            Bemærk, at alle otte fonde først har krydset 0,50%-tærsklen inden for de seneste to måneder
-            (marts-maj 2026), og at fem af dem (Marshall Wace, AHL Partners, Voleon Capital, Citadel
-            og D. E. Shaw) først er dukket op i indberetningerne mellem den 7. og 12. maj 2026. Hver fond
-            har kun én indberetning i datasættet, så vi kender ikke deres tidligere positioner under
-            tærsklen. De estimerede indgangskurser ligger derfor alle i et smalt interval mellem 268 og
-            345 DKK. Ved den nuværende kurs på 311 DKK er fem af fondene i et lille plus (op til ca. 10%),
-            mens tre er i et lille minus (op til ca. -16%). Ingen af fondene har på papiret en stor
-            urealiseret gevinst eller et stort tab på denne position.
+            Ifølge dette estimat er fem af de otte fonde i plus (grøn), mens tre er i minus (rød) ved den
+            nuværende kurs på 311 DKK. D. E. Shaw skiller sig ud med en estimeret indgangspris på 629 DKK,
+            fordi de har holdt en position siden december 2024 og opbygget størstedelen af den, mens kursen
+            lå på 600-900 DKK. Hvis de stadig sidder på positionen, svarer det til en urealiseret gevinst
+            på ca. 51%. I den anden ende er Voleon Capital og Marshall Wace, hvis estimerede indgangskurser
+            trækkes ned af deres tidligere positioner fra 2021-2022, hvor ZEAL handlede på langt lavere
+            niveauer.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
             <strong>Vigtigt forbehold:</strong> Disse tal er estimater og skal tages med forbehold.
