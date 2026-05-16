@@ -52,39 +52,39 @@ interface PieSlice {
 
 // ─── static data ────────────────────────────────────────────────────────────
 const FULL_HISTORY: ChartPoint[] = [
-  { date: "2023-10-20", short: 5.82, close: 120.5, volume: null },
-  { date: "2023-12-06", short: 6.29, close: 172.0, volume: null },
-  { date: "2024-02-09", short: 6.79, close: 159.8, volume: null },
-  { date: "2024-04-29", short: 6.55, close: 190.6, volume: null },
-  { date: "2024-06-06", short: 5.38, close: 224.2, volume: null },
-  { date: "2024-08-05", short: 6.62, close: 161.0, volume: null },
-  { date: "2024-10-15", short: 9.95, close: 136.5, volume: null },
-  { date: "2024-12-31", short: 10.92, close: 133.8, volume: null },
-  { date: "2025-01-15", short: 11.34, close: 140.0, volume: null },
-  { date: "2025-03-05", short: 9.96, close: 127.8, volume: null },
-  { date: "2025-04-09", short: 9.63, close: 82.6, volume: null },
-  { date: "2025-05-08", short: 10.26, close: 90.5, volume: null },
-  { date: "2025-07-18", short: 8.08, close: 93.7, volume: null },
-  { date: "2025-09-01", short: 7.18, close: 115.6, volume: null },
-  { date: "2025-10-02", short: 8.49, close: 107.4, volume: null },
-  { date: "2025-11-24", short: 9.35, close: 103.6, volume: null },
-  { date: "2026-01-06", short: 10.11, close: 109.9, volume: null },
-  { date: "2026-02-04", short: 12.05, close: 112.1, volume: null },
-  { date: "2026-02-25", short: 13.05, close: 93.6, volume: null },
-  { date: "2026-03-11", short: 13.00, close: 87.5, volume: null },
-  { date: "2026-03-16", short: 13.12, close: 86.9, volume: 700093 },
-  { date: "2026-03-18", short: 10.85, close: 118.0, volume: 3200000 },
-  { date: "2026-03-20", short: 11.46, close: 100.2, volume: 1353826 },
-  { date: "2026-03-24", short: 11.01, close: 96.5, volume: 763215 },
-  { date: "2026-04-01", short: 10.96, close: 100.7, volume: 524675 },
-  { date: "2026-04-09", short: 10.42, close: 96.7, volume: 505757 },
-  { date: "2026-04-16", short: 10.71, close: 109.7, volume: 1145982 },
-  { date: "2026-04-23", short: 10.52, close: 97.5, volume: 662279 },
-  { date: "2026-04-30", short: 10.98, close: 95.7, volume: 604156 },
-  { date: "2026-05-06", short: 11.34, close: 99.0, volume: 508490 },
-  { date: "2026-05-08", short: 11.15, close: 95.4, volume: 1469997 },
-  { date: "2026-05-12", short: 10.14, close: 94.5, volume: 508490 },
-  { date: "2026-05-13", short: 9.81, close: 94.5, volume: null },
+  { date: "2023-11-06", short: 6.03, close: 121.1, volume: 700309 },
+  { date: "2023-12-06", short: 6.29, close: 162.7, volume: 441341 },
+  { date: "2024-02-09", short: 6.79, close: 179.55, volume: 1188694 },
+  { date: "2024-04-29", short: 6.55, close: 190.75, volume: 545212 },
+  { date: "2024-06-06", short: 5.18, close: 224.2, volume: 561693 },
+  { date: "2024-08-05", short: 6.62, close: 164.8, volume: 1171143 },
+  { date: "2024-10-15", short: 9.95, close: 136.5, volume: 603143 },
+  { date: "2024-12-31", short: 10.92, close: 133.75, volume: 510995 },
+  { date: "2025-01-15", short: 11.34, close: 128.3, volume: 704037 },
+  { date: "2025-03-05", short: 9.83, close: 123.0, volume: 1088748 },
+  { date: "2025-04-09", short: 8.85, close: 82.56, volume: 2354609 },
+  { date: "2025-05-08", short: 10.09, close: 88.58, volume: 766993 },
+  { date: "2025-07-18", short: 8.08, close: 100.05, volume: 733793 },
+  { date: "2025-09-01", short: 7.18, close: 115.6, volume: 362817 },
+  { date: "2025-10-02", short: 8.49, close: 107.15, volume: 740797 },
+  { date: "2025-11-24", short: 9.35, close: 96.94, volume: 811128 },
+  { date: "2026-01-07", short: 10.11, close: 112.9, volume: 672699 },
+  { date: "2026-02-04", short: 12.05, close: 106.35, volume: 862042 },
+  { date: "2026-02-25", short: 12.85, close: 92.98, volume: 436126 },
+  { date: "2026-03-11", short: 12.9, close: 89.0, volume: 791948 },
+  { date: "2026-03-16", short: 13.04, close: 105.3, volume: 9208005 },
+  { date: "2026-03-18", short: 10.85, close: 98.0, volume: 2213414 },
+  { date: "2026-03-20", short: 11.32, close: 96.5, volume: 1353826 },
+  { date: "2026-03-24", short: 10.81, close: 94.24, volume: 524141 },
+  { date: "2026-04-01", short: 10.31, close: 100.7, volume: 524675 },
+  { date: "2026-04-09", short: 10.42, close: 95.42, volume: 710886 },
+  { date: "2026-04-16", short: 10.71, close: 104.5, volume: 530213 },
+  { date: "2026-04-23", short: 10.52, close: 99.0, volume: 477797 },
+  { date: "2026-04-30", short: 10.97, close: 95.74, volume: 759201 },
+  { date: "2026-05-06", short: 10.85, close: 103.7, volume: 1391904 },
+  { date: "2026-05-08", short: 10.2, close: 95.44, volume: 1469997 },
+  { date: "2026-05-12", short: 9.92, close: 95.58, volume: 611074 },
+  { date: "2026-05-13", short: 9.7, close: null, volume: null },
 ];
 
 const RECENT_3M: ChartPoint[] = FULL_HISTORY.filter(
@@ -158,7 +158,7 @@ const PIE_DATA: PieSlice[] = [
   { name: "Atalan Capital", value: 1.13 },
   { name: "Capital Fund Mgmt", value: 0.7 },
   { name: "Citadel Advisors", value: 0.5 },
-  { name: "Under 0,50% (ukendte)", value: 5.01 },
+  { name: "Under 0,50% (ukendte)", value: 4.90 },
 ];
 
 const PIE_COLORS = [
@@ -334,7 +334,7 @@ const GNAnalysisPage: React.FC = () => {
 
         {/* ── KPIs ── */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-12">
-          <KPI value="9,81%" label="Short-interesse (13. maj)" />
+          <KPI value="9,70%" label="Short-interesse (13. maj)" />
           <KPI value="94,50 DKK" label="Seneste lukkekurs (13. maj)" />
           <KPI value="5" label="Aktive short-sælgere" />
           <KPI value="-58%" label="Fra 3-års high (224 DKK, juni 2024)" />
@@ -351,7 +351,7 @@ const GNAnalysisPage: React.FC = () => {
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
             Shortinteressen nåede 13,12% i marts 2026, hvilket gjorde GN til den mest shortede aktie
-            på det danske marked. Selvom den er faldet til 9,81% efter Amplifon-nyheden, er niveauet fortsat
+            på det danske marked. Selvom den er faldet til 9,70% efter Amplifon-nyheden, er niveauet fortsat
             usædvanligt højt og indikerer, at short-sælgerne endnu ikke er overbeviste om investeringscasen
             efter den strategiske omlægning.
           </p>
@@ -490,7 +490,7 @@ const GNAnalysisPage: React.FC = () => {
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
             Det interessante er, at shortinteressen faldt kraftigt fra 13,12% til 10,85% umiddelbart efter
             annonceringen, steg kortvarigt til over 11% i begyndelsen af maj, og er siden faldet yderligere
-            til 9,81% efter Q1-regnskabet. Trods faldet er niveauet fortsat højt, hvilket kan indikere, at
+            til 9,70% efter Q1-regnskabet. Trods faldet er niveauet fortsat højt, hvilket kan indikere, at
             dele af markedet fortsat ser betydelige risici i den tilbageværende forretning.
           </p>
         </section>
@@ -510,7 +510,7 @@ const GNAnalysisPage: React.FC = () => {
             besparelsesprogram med mål om 200 mio. DKK i strukturelle besparelser fra 2027.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-            I dagene efter Q1-regnskabet faldt shortinteressen markant fra 11,15% til 9,81%. Det kan skyldes,
+            I dagene efter Q1-regnskabet faldt shortinteressen markant fra 11,15% til 9,70%. Det kan skyldes,
             at aktien allerede var faldet til et niveau, hvor nogle shorts valgte at tage gevinst, eller at
             det dårlige resultat var prissat ind på forhånd.
           </p>
@@ -521,7 +521,7 @@ const GNAnalysisPage: React.FC = () => {
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">8. Hvem shorter GN Store Nord?</h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
             Der er i alt 5 institutionelle short-sælgere med positioner over 0,50%. Den samlede indberettede
-            position er ca. 4,80%, mens de resterende ~5,01% holdes af aktører under indberetningtærsklen.
+            position er ca. 4,80%, mens de resterende ~4,90% holdes af aktører under indberetningtærsklen.
             Bemærkelsesværdigt er det, at GN har tiltrukket en bred vifte af hedge fonde over tid. Mere end
             15 forskellige fonde har haft positioner over 0,50% i løbet af de seneste fire år.
           </p>
@@ -538,7 +538,7 @@ const GNAnalysisPage: React.FC = () => {
                 </tr>
               </thead>
               <tbody>
-                <SellerRow i={0} name="AKO Capital LLP" position="1,30%" date="23. apr" desc="Langvarig short. Aktiv siden maj 2022. Toppede 1,24%." />
+                <SellerRow i={0} name="AKO Capital LLP" position="1,30%" date="23. apr" desc="Langvarig short. Aktiv siden maj 2022. Toppede 1,30%." />
                 <SellerRow i={1} name="Millennium Intl Mgmt" position="1,17%" date="8. maj" desc="Genindtrådt i marts 2026. Hurtigt stigende." />
                 <SellerRow i={2} name="Atalan Capital" position="1,13%" date="2. okt 2025" desc="Ingen opdatering siden okt 2025." />
                 <SellerRow i={3} name="Capital Fund Mgmt" position="0,70%" date="7. maj" desc="Ny i marts 2026. Stadig stigende." />

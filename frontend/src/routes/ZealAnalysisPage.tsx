@@ -53,29 +53,29 @@ interface PieSlice {
 // ─── static data (from database queries) ────────────────────────────────────
 // Full history chart data (sampled weekly for performance)
 const FULL_HISTORY: ChartPoint[] = [
-  { date: "2023-11-06", short: 4.09, close: 279.2, volume: null },
-  { date: "2023-12-01", short: 4.12, close: 302.0, volume: null },
-  { date: "2024-01-15", short: 3.87, close: 355.0, volume: null },
-  { date: "2024-03-01", short: 3.45, close: 480.0, volume: null },
-  { date: "2024-05-13", short: 3.20, close: 618.5, volume: null },
-  { date: "2024-07-10", short: 3.10, close: 954.0, volume: null },
-  { date: "2024-09-01", short: 3.55, close: 770.0, volume: null },
-  { date: "2024-11-13", short: 4.35, close: 816.0, volume: null },
-  { date: "2025-01-13", short: 5.60, close: 720.0, volume: null },
-  { date: "2025-02-13", short: 6.13, close: 748.5, volume: null },
-  { date: "2025-03-12", short: 6.50, close: 700.0, volume: null },
-  { date: "2025-05-13", short: 8.34, close: 414.8, volume: null },
-  { date: "2025-06-20", short: 7.90, close: 341.0, volume: null },
-  { date: "2025-08-13", short: 7.88, close: 341.1, volume: null },
-  { date: "2025-09-15", short: 6.80, close: 420.0, volume: null },
-  { date: "2025-11-13", short: 5.56, close: 520.8, volume: null },
-  { date: "2025-12-11", short: 5.70, close: 470.0, volume: null },
-  { date: "2026-01-13", short: 5.87, close: 410.0, volume: null },
-  { date: "2026-02-13", short: 5.87, close: 399.7, volume: null },
+  { date: "2023-11-06", short: 4.09, close: 291.2, volume: 257141 },
+  { date: "2023-12-01", short: 3.89, close: 330.2, volume: 315124 },
+  { date: "2024-01-15", short: 3.98, close: 434.0, volume: 201343 },
+  { date: "2024-03-01", short: 2.83, close: 649.0, volume: 507164 },
+  { date: "2024-05-13", short: 3.2, close: 618.5, volume: 422171 },
+  { date: "2024-07-10", short: 2.68, close: 954.0, volume: 217950 },
+  { date: "2024-09-01", short: 2.59, close: 886.5, volume: 3168434 },
+  { date: "2024-11-13", short: 4.35, close: 816.0, volume: 179537 },
+  { date: "2025-01-13", short: 5.46, close: 699.0, volume: 191860 },
+  { date: "2025-02-13", short: 6.13, close: 748.5, volume: 191693 },
+  { date: "2025-03-12", short: 5.43, close: 674.0, volume: 2633784 },
+  { date: "2025-05-13", short: 8.34, close: 414.8, volume: 298781 },
+  { date: "2025-06-20", short: 8.16, close: 374.7, volume: 937978 },
+  { date: "2025-08-13", short: 7.88, close: 341.1, volume: 309469 },
+  { date: "2025-09-15", short: 7.08, close: 428.7, volume: 335081 },
+  { date: "2025-11-13", short: 5.56, close: 520.8, volume: 824938 },
+  { date: "2025-12-11", short: 4.61, close: 514.2, volume: 366871 },
+  { date: "2026-01-13", short: 5.87, close: 410.0, volume: 240218 },
+  { date: "2026-02-13", short: 5.87, close: 399.7, volume: 502819 },
   { date: "2026-02-19", short: 6.37, close: 382.8, volume: 694487 },
   { date: "2026-03-06", short: 6.51, close: 234.9, volume: 3348855 },
   { date: "2026-03-09", short: 7.58, close: 255.8, volume: 1213156 },
-  { date: "2026-03-13", short: 6.87, close: 268.2, volume: 487979 },
+  { date: "2026-03-13", short: 6.87, close: 268.2, volume: 463933 },
   { date: "2026-03-19", short: 7.15, close: 279.7, volume: 347672 },
   { date: "2026-03-24", short: 7.60, close: 280.5, volume: 325358 },
   { date: "2026-03-31", short: 7.87, close: 295.0, volume: 238330 },
@@ -94,7 +94,7 @@ const FULL_HISTORY: ChartPoint[] = [
   { date: "2026-05-08", short: 10.02, close: 341.2, volume: 510653 },
   { date: "2026-05-11", short: 9.97, close: 346.6, volume: 479766 },
   { date: "2026-05-12", short: 10.13, close: 336.0, volume: 351675 },
-  { date: "2026-05-13", short: 10.13, close: 310.6, volume: null },
+  { date: "2026-05-13", short: 10.13, close: null, volume: null },
 ];
 
 const RECENT_3M: ChartPoint[] = FULL_HISTORY.filter(
@@ -107,8 +107,8 @@ const SELLERS: SellerSeries[] = [
     name: "Marshall Wace",
     latest: 1.28,
     data: [
-      { date: "2021-12-02", value: 0.5 }, { date: "2024-12-23", value: 0.8 },
-      { date: "2025-05-21", value: 1.0 }, { date: "2025-09-09", value: 0.7 },
+      { date: "2021-12-02", value: 0.5 }, { date: "2025-04-29", value: 0.7 },
+      { date: "2025-05-28", value: 0.93 }, { date: "2025-07-07", value: 0.44 },
       { date: "2026-03-04", value: 0.98 }, { date: "2026-03-10", value: 1.42 },
       { date: "2026-03-27", value: 1.39 }, { date: "2026-04-09", value: 1.29 },
       { date: "2026-04-17", value: 1.29 }, { date: "2026-04-22", value: 1.29 },
@@ -150,7 +150,7 @@ const SELLERS: SellerSeries[] = [
     name: "Jupiter Asset Mgmt",
     latest: 0.7,
     data: [
-      { date: "2025-06-19", value: 0.5 }, { date: "2026-03-10", value: 0.62 },
+      { date: "2025-06-19", value: 0.51 }, { date: "2026-03-10", value: 0.62 },
       { date: "2026-03-13", value: 0.7 },
     ],
   },
@@ -158,7 +158,7 @@ const SELLERS: SellerSeries[] = [
     name: "Citadel Advisors",
     latest: 0.63,
     data: [
-      { date: "2025-08-08", value: 0.5 }, { date: "2025-12-18", value: 0.6 },
+      { date: "2025-08-08", value: 0.5 }, { date: "2025-11-14", value: 0.5 },
       { date: "2026-04-16", value: 0.52 }, { date: "2026-04-24", value: 0.61 },
       { date: "2026-04-30", value: 0.73 }, { date: "2026-05-05", value: 0.58 },
       { date: "2026-05-06", value: 0.6 }, { date: "2026-05-07", value: 0.7 },
@@ -177,7 +177,7 @@ const SELLERS: SellerSeries[] = [
     name: "D. E. Shaw & Co.",
     latest: 0.5,
     data: [
-      { date: "2024-12-23", value: 0.5 }, { date: "2026-03-09", value: 0.49 },
+      { date: "2024-12-23", value: 0.52 }, { date: "2026-03-09", value: 0.49 },
       { date: "2026-05-12", value: 0.5 },
     ],
   },
@@ -469,7 +469,7 @@ const ZealAnalysisPage: React.FC = () => {
             Kulminationen kom den 6. marts 2026, hvor fase 2b-resultater for petrelintide viste
             10,7% vægttab over 42 uger. Markedet havde forventet omkring 13-16%. Resultatet skuffede, fordi det halter
             bagefter konkurrenterne, herunder Eli Lillys eloralintide (9-20% afhængigt af dosis i fase 2). Aktien styrtdykkede
-            35% på en enkelt dag til det laveste niveau siden august 2023 på 234,9 DKK med 3,35 mio. handlede aktier.
+            ~36% på en enkelt dag til det laveste niveau siden august 2023 på 234,9 DKK med 3,35 mio. handlede aktier.
           </p>
         </section>
 
@@ -519,7 +519,7 @@ const ZealAnalysisPage: React.FC = () => {
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
             Den 7. maj offentliggjorde Zealand Q1-regnskabet, som slog forventningerne, sammen med et
-            aktietilbagekøbsprogram på 1,3 mia. DKK. Aktien steg 12% på dagen med over 1 mio.
+            aktietilbagekøbsprogram på 1,3 mia. DKK. Aktien steg ca. 9,5% på dagen med over 1 mio.
             handlede aktier. Derudover bekræftede selskabet $700 mio. i milepælsbetalinger fra Roche i
             Q2, da petrelintide avancerer til fase 3. Trods alt dette er shortinteressen fortsat stigende.
           </p>
@@ -612,8 +612,8 @@ const ZealAnalysisPage: React.FC = () => {
             <TimelineEvent date="Marts 2025" title="Roche-partnerskab: $5,3 mia. aftale" color="#4361ee">
               <p>Roche indgik en eksklusiv samarbejdsaftale med Zealand om petrelintide med $1,65 mia. upfront og op til $5,3 mia. i samlede milepælsbetalinger. Trods denne massive validering var aktien allerede begyndt at falde, og shortinteressen steg til over 6%.</p>
             </TimelineEvent>
-            <TimelineEvent date="Juni 2025" title="18-måneders lavpunkt" color="#e63946">
-              <p>Aktien faldt til ~341 DKK i takt med stigende konkurrence. Eli Lillys eloralintide viste 9-20% vægttab afhængigt af dosis i fase 2, hvilket satte spørgsmålstegn ved Zealands differentiering. Shortinteressen toppede på 8,34%.</p>
+            <TimelineEvent date="Sommer 2025" title="Kursfald og stigende shortinteresse" color="#e63946">
+              <p>Aktien faldt fra over 450 DKK til 311 DKK i august i takt med stigende konkurrence. Eli Lillys eloralintide viste 9-20% vægttab afhængigt af dosis i fase 2, hvilket satte spørgsmålstegn ved Zealands differentiering. Shortinteressen nåede 9,81% i slutningen af maj, før den faldt lidt igen hen over sommeren.</p>
             </TimelineEvent>
             <TimelineEvent date="November 2025" title="Midlertidigt opsving til 521 DKK" color="#2a9d8f">
               <p>Den sidste deltager i ZUPREME-1 (petrelintide fase 2) afsluttede sit 28-ugers besøg, og SYNCHRONIZE-1 (survodutide fase 3) afsluttede sin 76-ugers behandlingsperiode. Data var endnu ikke offentliggjort, men forventningerne var høje, og shorts dækkede delvist ind (ned til 5,56%).</p>
@@ -621,14 +621,14 @@ const ZealAnalysisPage: React.FC = () => {
             <TimelineEvent date="December 2025" title={'Capital Markets Day: "Metabolic Frontier 2030"'} color="#4361ee">
               <p>Zealand præsenterede sin strategi med ambitioner om fem produktlanceringer og over ti kliniske programmer inden 2030, samt et nyt forskningscenter i Boston. Insidere solgte aktier i samme måned (CFO solgte for ~8,5 mio. DKK ved ~466 DKK).</p>
             </TimelineEvent>
-            <TimelineEvent date="6. marts 2026" title="Petrelintide skuffer: -35% på en dag" color="#e63946">
+            <TimelineEvent date="6. marts 2026" title="Petrelintide skuffer: ~36% fald på en dag" color="#e63946">
               <p>Fase 2b-resultater viste 10,7% vægttab over 42 uger. Markedet forventede omkring 13-16%. Aktien styrtdykkede til det laveste niveau siden august 2023 på 234,9 DKK med 3,35 mio. handlede aktier. CEO Adam Steensberg forsvarede resultatet og kritiserede fokusset på rene kilo fremfor tolerabilitet, hvor petrelintide klarede sig godt (ingen opkast, ingen behandlingsophør).</p>
             </TimelineEvent>
             <TimelineEvent date="28. april 2026" title="Survodutide fase 3: 16,6% vægttab" color="#2a9d8f">
               <p>SYNCHRONIZE-1 viste 16,6% vægttab efter 76 uger vs. 3,2% for placebo. 85,1% opnåede mindst 5% vægttab. Resultatet var på niveau med Novo Nordisks Wegovy, men under Eli Lillys Zepbound. Aktien steg til ~309 DKK.</p>
             </TimelineEvent>
-            <TimelineEvent date="7. maj 2026" title="Q1-regnskab + tilbagekøbsprogram: +12%" color="#4361ee">
-              <p>Omsætning på 34 mio. DKK (dobbelt så høj som forventet), tab på 539 mio. DKK (bedre end konsensus 672 mio.). Tilbagekøbsprogram på 1,3 mia. DKK og $700 mio. i milepæle fra Roche bekræftet. Aktien steg 12% til 345 DKK med over 1 mio. handlede aktier.</p>
+            <TimelineEvent date="7. maj 2026" title="Q1-regnskab + tilbagekøbsprogram: +ca. 9,5%" color="#4361ee">
+              <p>Omsætning på 34 mio. DKK (dobbelt så høj som forventet), tab på 539 mio. DKK (bedre end konsensus 672 mio.). Tilbagekøbsprogram på 1,3 mia. DKK og $700 mio. i milepæle fra Roche bekræftet. Aktien steg ca. 9,5% til 345 DKK med over 1 mio. handlede aktier.</p>
             </TimelineEvent>
           </div>
         </section>
@@ -644,7 +644,7 @@ const ZealAnalysisPage: React.FC = () => {
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             <strong>Vigtigt:</strong> Disse tildelinger er kompensationsbaserede og skal ikke forveksles med åbent
             markedskøb, som ville være et stærkere positivt signal. Ingen insidere har købt aktier på det åbne
-            marked i den tilgængelige data trods kursfaldet på 67%.
+            marked i den tilgængelige data trods kursfaldet på -67%.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
             I december 2025 solgte CFO Henriette Wennicke ca. 18.220 aktier til gennemsnitskurs
@@ -681,7 +681,7 @@ const ZealAnalysisPage: React.FC = () => {
                 <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Ingen insidere køber aktier</li>
                 <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Petrelintide (10,7%) halter efter konkurrenter (op til 20%)</li>
                 <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Survodutide (16,6%) er på niveau med Wegovy, ikke ledende</li>
-                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Aktien er fortsat ned 67% fra all-time high</li>
+                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Aktien er fortsat ned -67% fra all-time high</li>
               </ul>
             </div>
           </div>
