@@ -53,29 +53,29 @@ interface PieSlice {
 // ─── static data (from database queries) ────────────────────────────────────
 // Full history chart data (sampled weekly for performance)
 const FULL_HISTORY: ChartPoint[] = [
-  { date: "2023-11-06", short: 4.09, close: 279.2, volume: null },
-  { date: "2023-12-01", short: 4.12, close: 302.0, volume: null },
-  { date: "2024-01-15", short: 3.87, close: 355.0, volume: null },
-  { date: "2024-03-01", short: 3.45, close: 480.0, volume: null },
-  { date: "2024-05-13", short: 3.20, close: 618.5, volume: null },
-  { date: "2024-07-10", short: 3.10, close: 954.0, volume: null },
-  { date: "2024-09-01", short: 3.55, close: 770.0, volume: null },
-  { date: "2024-11-13", short: 4.35, close: 816.0, volume: null },
-  { date: "2025-01-13", short: 5.60, close: 720.0, volume: null },
-  { date: "2025-02-13", short: 6.13, close: 748.5, volume: null },
-  { date: "2025-03-12", short: 6.50, close: 700.0, volume: null },
-  { date: "2025-05-13", short: 8.34, close: 414.8, volume: null },
-  { date: "2025-06-20", short: 7.90, close: 341.0, volume: null },
-  { date: "2025-08-13", short: 7.88, close: 341.1, volume: null },
-  { date: "2025-09-15", short: 6.80, close: 420.0, volume: null },
-  { date: "2025-11-13", short: 5.56, close: 520.8, volume: null },
-  { date: "2025-12-11", short: 5.70, close: 470.0, volume: null },
-  { date: "2026-01-13", short: 5.87, close: 410.0, volume: null },
-  { date: "2026-02-13", short: 5.87, close: 399.7, volume: null },
+  { date: "2023-11-06", short: 4.09, close: 291.2, volume: 257141 },
+  { date: "2023-12-01", short: 3.89, close: 330.2, volume: 315124 },
+  { date: "2024-01-15", short: 3.98, close: 434.0, volume: 201343 },
+  { date: "2024-03-01", short: 2.83, close: 649.0, volume: 507164 },
+  { date: "2024-05-13", short: 3.2, close: 618.5, volume: 422171 },
+  { date: "2024-07-10", short: 2.68, close: 954.0, volume: 217950 },
+  { date: "2024-09-01", short: 2.59, close: 886.5, volume: 3168434 },
+  { date: "2024-11-13", short: 4.35, close: 816.0, volume: 179537 },
+  { date: "2025-01-13", short: 5.46, close: 699.0, volume: 191860 },
+  { date: "2025-02-13", short: 6.13, close: 748.5, volume: 191693 },
+  { date: "2025-03-12", short: 5.43, close: 674.0, volume: 2633784 },
+  { date: "2025-05-13", short: 8.34, close: 414.8, volume: 298781 },
+  { date: "2025-06-20", short: 8.16, close: 374.7, volume: 937978 },
+  { date: "2025-08-13", short: 7.88, close: 341.1, volume: 309469 },
+  { date: "2025-09-15", short: 7.08, close: 428.7, volume: 335081 },
+  { date: "2025-11-13", short: 5.56, close: 520.8, volume: 824938 },
+  { date: "2025-12-11", short: 4.61, close: 514.2, volume: 366871 },
+  { date: "2026-01-13", short: 5.87, close: 410.0, volume: 240218 },
+  { date: "2026-02-13", short: 5.87, close: 399.7, volume: 502819 },
   { date: "2026-02-19", short: 6.37, close: 382.8, volume: 694487 },
   { date: "2026-03-06", short: 6.51, close: 234.9, volume: 3348855 },
   { date: "2026-03-09", short: 7.58, close: 255.8, volume: 1213156 },
-  { date: "2026-03-13", short: 6.87, close: 268.2, volume: 487979 },
+  { date: "2026-03-13", short: 6.87, close: 268.2, volume: 463933 },
   { date: "2026-03-19", short: 7.15, close: 279.7, volume: 347672 },
   { date: "2026-03-24", short: 7.60, close: 280.5, volume: 325358 },
   { date: "2026-03-31", short: 7.87, close: 295.0, volume: 238330 },
@@ -94,7 +94,7 @@ const FULL_HISTORY: ChartPoint[] = [
   { date: "2026-05-08", short: 10.02, close: 341.2, volume: 510653 },
   { date: "2026-05-11", short: 9.97, close: 346.6, volume: 479766 },
   { date: "2026-05-12", short: 10.13, close: 336.0, volume: 351675 },
-  { date: "2026-05-13", short: 10.13, close: 310.6, volume: null },
+  { date: "2026-05-13", short: 10.13, close: null, volume: null },
 ];
 
 const RECENT_3M: ChartPoint[] = FULL_HISTORY.filter(
@@ -107,8 +107,8 @@ const SELLERS: SellerSeries[] = [
     name: "Marshall Wace",
     latest: 1.28,
     data: [
-      { date: "2021-12-02", value: 0.5 }, { date: "2024-12-23", value: 0.8 },
-      { date: "2025-05-21", value: 1.0 }, { date: "2025-09-09", value: 0.7 },
+      { date: "2021-12-02", value: 0.5 }, { date: "2025-04-29", value: 0.7 },
+      { date: "2025-05-28", value: 0.93 }, { date: "2025-07-07", value: 0.44 },
       { date: "2026-03-04", value: 0.98 }, { date: "2026-03-10", value: 1.42 },
       { date: "2026-03-27", value: 1.39 }, { date: "2026-04-09", value: 1.29 },
       { date: "2026-04-17", value: 1.29 }, { date: "2026-04-22", value: 1.29 },
@@ -150,7 +150,7 @@ const SELLERS: SellerSeries[] = [
     name: "Jupiter Asset Mgmt",
     latest: 0.7,
     data: [
-      { date: "2025-06-19", value: 0.5 }, { date: "2026-03-10", value: 0.62 },
+      { date: "2025-06-19", value: 0.51 }, { date: "2026-03-10", value: 0.62 },
       { date: "2026-03-13", value: 0.7 },
     ],
   },
@@ -158,7 +158,7 @@ const SELLERS: SellerSeries[] = [
     name: "Citadel Advisors",
     latest: 0.63,
     data: [
-      { date: "2025-08-08", value: 0.5 }, { date: "2025-12-18", value: 0.6 },
+      { date: "2025-08-08", value: 0.5 }, { date: "2025-11-14", value: 0.5 },
       { date: "2026-04-16", value: 0.52 }, { date: "2026-04-24", value: 0.61 },
       { date: "2026-04-30", value: 0.73 }, { date: "2026-05-05", value: 0.58 },
       { date: "2026-05-06", value: 0.6 }, { date: "2026-05-07", value: 0.7 },
@@ -177,7 +177,7 @@ const SELLERS: SellerSeries[] = [
     name: "D. E. Shaw & Co.",
     latest: 0.5,
     data: [
-      { date: "2024-12-23", value: 0.5 }, { date: "2026-03-09", value: 0.49 },
+      { date: "2024-12-23", value: 0.52 }, { date: "2026-03-09", value: 0.49 },
       { date: "2026-05-12", value: 0.5 },
     ],
   },
@@ -471,8 +471,8 @@ const ZealAnalysisPageEn: React.FC = () => {
             The culmination came on March 6, 2026, when Phase 2b results for petrelintide showed
             10.7% weight loss over 42 weeks. The market had expected around 13-16%. The result was
             disappointing because it lagged behind competitors, including Eli Lilly's eloralintide
-            (9-20% depending on dose in Phase 2). The stock plunged 35% in a single day to the lowest
-            level since August 2023 at 234.9 DKK with 3.35 million shares traded.
+            (9-20% depending on dose in Phase 2). The stock plunged
+            ~36% in a single day to the lowest level since August 2023 at 234.9 DKK with 3.35 million shares traded.
           </p>
         </section>
 
@@ -522,7 +522,7 @@ const ZealAnalysisPageEn: React.FC = () => {
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
             On May 7, Zealand published its Q1 report, which beat expectations, along with a
-            share buyback program of 1.3 billion DKK. The stock rose 12% on the day with over 1 million
+            share buyback program of 1.3 billion DKK. The stock rose approximately 9.5% on the day with over 1 million
             shares traded. Furthermore, the company confirmed $700 million in milestone payments from Roche in
             Q2, as petrelintide advances to Phase 3. Despite all of this, short interest continues to rise.
           </p>
@@ -616,8 +616,8 @@ const ZealAnalysisPageEn: React.FC = () => {
             <TimelineEvent date="March 2025" title="Roche partnership: $5.3 billion deal" color="#4361ee">
               <p>Roche entered into an exclusive collaboration agreement with Zealand for petrelintide with $1.65 billion upfront and up to $5.3 billion in total milestone payments. Despite this massive validation, the stock had already started falling, and short interest rose to over 6%.</p>
             </TimelineEvent>
-            <TimelineEvent date="June 2025" title="18-month low" color="#e63946">
-              <p>The stock fell to ~341 DKK amid rising competition. Eli Lilly's eloralintide showed 9-20% weight loss depending on dose in Phase 2, raising questions about Zealand's differentiation. Short interest peaked at 8.34%.</p>
+            <TimelineEvent date="Summer 2025" title="Price decline and rising short interest" color="#e63946">
+              <p>The stock fell from over 450 DKK to 311 DKK in August amid rising competition. Eli Lilly's eloralintide showed 9-20% weight loss depending on dose in Phase 2, raising questions about Zealand's differentiation. Short interest reached 9.81% in late May before falling slightly over the summer.</p>
             </TimelineEvent>
             <TimelineEvent date="November 2025" title="Temporary recovery to 521 DKK" color="#2a9d8f">
               <p>The last participant in ZUPREME-1 (petrelintide Phase 2) completed their 28-week visit, and SYNCHRONIZE-1 (survodutide Phase 3) completed its 76-week treatment period. Data had not yet been published, but expectations were high and shorts partially covered (down to 5.56%).</p>
@@ -625,14 +625,14 @@ const ZealAnalysisPageEn: React.FC = () => {
             <TimelineEvent date="December 2025" title={'Capital Markets Day: "Metabolic Frontier 2030"'} color="#4361ee">
               <p>Zealand presented its strategy with ambitions for five product launches and over ten clinical programs by 2030, along with a new research center in Boston. Insiders sold shares the same month (CFO sold for ~8.5 million DKK at ~466 DKK).</p>
             </TimelineEvent>
-            <TimelineEvent date="March 6, 2026" title="Petrelintide disappoints: -35% in a single day" color="#e63946">
+            <TimelineEvent date="March 6, 2026" title="Petrelintide disappoints: ~36% drop in a single day" color="#e63946">
               <p>Phase 2b results showed 10.7% weight loss over 42 weeks. The market expected around 13-16%. The stock plunged to the lowest level since August 2023 at 234.9 DKK with 3.35 million shares traded. CEO Adam Steensberg defended the result and criticized the focus on pure kilos rather than tolerability, where petrelintide performed well (no vomiting, no treatment discontinuation).</p>
             </TimelineEvent>
             <TimelineEvent date="April 28, 2026" title="Survodutide Phase 3: 16.6% weight loss" color="#2a9d8f">
               <p>SYNCHRONIZE-1 showed 16.6% weight loss after 76 weeks vs. 3.2% for placebo. 85.1% achieved at least 5% weight loss. The result was on par with Novo Nordisk's Wegovy but below Eli Lilly's Zepbound. The stock rose to ~309 DKK.</p>
             </TimelineEvent>
-            <TimelineEvent date="May 7, 2026" title="Q1 report + share buyback program: +12%" color="#4361ee">
-              <p>Revenue of 34 million DKK (double expectations), loss of 539 million DKK (better than consensus of 672 million). Share buyback program of 1.3 billion DKK and $700 million in milestones from Roche confirmed. The stock rose 12% to 345 DKK with over 1 million shares traded.</p>
+            <TimelineEvent date="May 7, 2026" title="Q1 report + share buyback program: +approx. 9.5%" color="#4361ee">
+              <p>Revenue of 34 million DKK (double expectations), loss of 539 million DKK (better than consensus of 672 million). Share buyback program of 1.3 billion DKK and $700 million in milestones from Roche confirmed. The stock rose approximately 9.5% to 345 DKK with over 1 million shares traded.</p>
             </TimelineEvent>
           </div>
         </section>

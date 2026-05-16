@@ -52,15 +52,15 @@ interface PieSlice {
 
 // ─── static data ────────────────────────────────────────────────────────────
 // Aggregerede datapunkter fra Zirium-datasættet (Finanstilsynet + lukkekurser).
-// Datasættet starter i oktober 2023.
+// Datasættet starter i november 2023.
 const FULL_HISTORY: ChartPoint[] = [
-  { date: "2023-10-23", short: 9.40, close: null, volume: null },
-  { date: "2023-11-17", short: 9.06, close: 144.2, volume: null },
+  { date: "2023-11-06", short: 8.82, close: 142.7, volume: null },
+  { date: "2023-11-17", short: 9.06, close: 144.15, volume: null },
   { date: "2023-12-13", short: 8.16, close: 172.4, volume: null },
   { date: "2024-01-10", short: 7.16, close: 173.5, volume: null },
-  { date: "2024-02-14", short: 7.21, close: 155.6, volume: null },
+  { date: "2024-02-14", short: 7.21, close: 155.55, volume: null },
   { date: "2024-03-08", short: 5.65, close: 173.1, volume: null },
-  { date: "2024-04-22", short: 6.72, close: 150.1, volume: null },
+  { date: "2024-04-22", short: 6.72, close: 150.1, volume: 421064 },
   { date: "2024-05-08", short: 6.92, close: 162.9, volume: null },
   { date: "2024-06-03", short: 4.66, close: 186.2, volume: null },
   { date: "2024-07-09", short: 4.44, close: 185.2, volume: null },
@@ -74,14 +74,14 @@ const FULL_HISTORY: ChartPoint[] = [
   { date: "2025-03-05", short: 5.07, close: 167.9, volume: null },
   { date: "2025-04-04", short: 3.06, close: 143.2, volume: null },
   { date: "2025-05-13", short: 2.20, close: 158.6, volume: null },
-  { date: "2025-06-13", short: 2.14, close: 183.8, volume: null },
-  { date: "2025-07-17", short: 1.74, close: 182.4, volume: null },
+  { date: "2025-06-13", short: 2.14, close: 183.85, volume: null },
+  { date: "2025-07-17", short: 1.74, close: 182.45, volume: null },
   { date: "2025-08-14", short: 0.93, close: 238.5, volume: null },
   { date: "2025-09-24", short: 0.87, close: 230.6, volume: null },
   { date: "2025-10-22", short: 0.84, close: 241.8, volume: null },
-  { date: "2025-11-06", short: 0.77, close: 187.0, volume: 4200000 },
-  { date: "2025-11-25", short: 2.11, close: 184.2, volume: null },
-  { date: "2026-01-06", short: 2.62, close: 189.2, volume: null },
+  { date: "2025-11-06", short: 0.77, close: 187.0, volume: 4064267 },
+  { date: "2025-11-25", short: 2.11, close: 184.25, volume: null },
+  { date: "2026-01-07", short: 2.62, close: 199.5, volume: null },
   { date: "2026-02-12", short: 2.32, close: 193.2, volume: null },
   { date: "2026-03-11", short: 2.69, close: 183.1, volume: null },
   { date: "2026-04-20", short: 2.11, close: 197.1, volume: null },
@@ -94,58 +94,60 @@ const RECENT_PERIOD: ChartPoint[] = FULL_HISTORY.filter(
 
 const SELLERS: SellerSeries[] = [
   {
-    name: "AHL Partners LLP",
-    latest: 1.05,
+    name: "Qube Research & Technologies",
+    latest: 0.00,
     data: [
-      { date: "2022-10-14", value: 0.56 },
-      { date: "2023-04-18", value: 0.84 },
-      { date: "2023-10-23", value: 1.10 },
-      { date: "2024-01-16", value: 1.28 },
-      { date: "2024-05-14", value: 1.44 },
-      { date: "2024-09-12", value: 1.65 },
-      { date: "2025-01-20", value: 1.52 },
-      { date: "2025-06-09", value: 1.35 },
-      { date: "2025-11-18", value: 1.12 },
-      { date: "2026-02-10", value: 1.05 },
+      { date: "2023-07-25", value: 1.22 },
+      { date: "2023-08-09", value: 1.33 },
+      { date: "2023-09-21", value: 1.31 },
+      { date: "2023-10-26", value: 1.09 },
+      { date: "2023-12-01", value: 1.10 },
+      { date: "2024-01-25", value: 0.57 },
+      { date: "2024-03-07", value: 0.87 },
+      { date: "2024-08-19", value: 0.80 },
+      { date: "2024-12-24", value: 0.48 },
+      { date: "2025-02-10", value: 1.00 },
+      { date: "2025-03-25", value: 0.69 },
+      { date: "2025-04-04", value: 0.00 },
     ],
   },
   {
-    name: "Citadel Advisors LLC",
-    latest: 0.57,
+    name: "Millennium Intl Mgmt",
+    latest: 0.47,
     data: [
-      { date: "2022-03-01", value: 0.52 },
-      { date: "2022-08-05", value: 0.44 },
-      { date: "2022-11-15", value: 0.55 },
-      { date: "2023-04-18", value: 0.57 },
-      { date: "2023-09-12", value: 0.56 },
-      { date: "2024-02-07", value: 0.57 },
-      { date: "2024-08-20", value: 0.54 },
-      { date: "2025-01-08", value: 0.58 },
-      { date: "2025-07-14", value: 0.57 },
+      { date: "2023-07-31", value: 0.50 },
+      { date: "2023-08-16", value: 1.00 },
+      { date: "2023-09-18", value: 0.68 },
+      { date: "2023-10-27", value: 0.90 },
+      { date: "2023-12-07", value: 1.00 },
+      { date: "2024-02-16", value: 0.48 },
+      { date: "2024-07-04", value: 0.82 },
+      { date: "2024-08-20", value: 0.91 },
+      { date: "2024-10-31", value: 0.58 },
+      { date: "2024-11-04", value: 0.47 },
     ],
   },
   {
-    name: "Marshall Wace LLP",
-    latest: 0.51,
+    name: "Connor Clark & Lunn",
+    latest: 0.70,
     data: [
-      { date: "2022-01-10", value: 0.78 },
-      { date: "2022-07-18", value: 0.53 },
-      { date: "2022-11-02", value: 0.65 },
-      { date: "2023-05-15", value: 0.73 },
-      { date: "2024-01-17", value: 0.66 },
-      { date: "2024-09-05", value: 0.55 },
-      { date: "2025-04-07", value: 0.51 },
+      { date: "2025-12-04", value: 0.53 },
+      { date: "2025-12-15", value: 0.61 },
+      { date: "2026-01-07", value: 0.70 },
+      { date: "2026-01-21", value: 0.81 },
+      { date: "2026-02-06", value: 0.79 },
+      { date: "2026-02-19", value: 0.69 },
+      { date: "2026-04-20", value: 0.70 },
     ],
   },
 ];
 
 const PIE_DATA: PieSlice[] = [
-  { name: "AHL Partners LLP", value: 1.05 },
-  { name: "Citadel Advisors LLC", value: 0.57 },
-  { name: "Under 0,50% (ukendte)", value: 0.31 },
+  { name: "Connor Clark & Lunn", value: 0.70 },
+  { name: "Under 0,50% (ukendte)", value: 1.23 },
 ];
 
-const PIE_COLORS = ["#e63946", "#4361ee", "#d4d4d8"];
+const PIE_COLORS = ["#e63946", "#d4d4d8"];
 const SELLER_COLORS = ["#e63946", "#4361ee", "#2a9d8f"];
 
 // ─── tooltip ────────────────────────────────────────────────────────────────
@@ -255,20 +257,20 @@ const BAVAAnalysisPage: React.FC = () => {
   return (
     <PageTemplate>
       <title>Zirium | Bavarian Nordic (BAVA) - Shortanalyse</title>
-      <meta name="description" content="Analyse af short-positioner i Bavarian Nordic (BAVA). Fra 9,40% i oktober 2023 til under 2% i dag, gennem et overtagelsesbud og et kursfald på 52% fra toppen." />
+      <meta name="description" content="Analyse af short-positioner i Bavarian Nordic (BAVA). Fra 9,06% i november 2023 til under 2% i dag, gennem et overtagelsesbud og et kursfald på 52% fra toppen." />
       <meta property="og:title" content="Shortanalyse: Da BAVA sad øverst på shortlisten" />
-      <meta property="og:description" content="Analyse af short-positioner i Bavarian Nordic (BAVA). Fra 9,40% i oktober 2023 til under 2% i dag, gennem et overtagelsesbud og et kursfald på 52% fra toppen." />
+      <meta property="og:description" content="Analyse af short-positioner i Bavarian Nordic (BAVA). Fra 9,06% i november 2023 til under 2% i dag, gennem et overtagelsesbud og et kursfald på 52% fra toppen." />
       <meta property="og:type" content="article" />
       <meta property="og:url" content="https://www.zirium.dk/analyse/bava/2026-05-15" />
       <meta property="og:site_name" content="Zirium" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:title" content="Shortanalyse: Da BAVA sad øverst på shortlisten" />
-      <meta name="twitter:description" content="Analyse af short-positioner i Bavarian Nordic (BAVA). Fra 9,40% i oktober 2023 til under 2% i dag, gennem et overtagelsesbud og et kursfald på 52% fra toppen." />
+      <meta name="twitter:description" content="Analyse af short-positioner i Bavarian Nordic (BAVA). Fra 9,06% i november 2023 til under 2% i dag, gennem et overtagelsesbud og et kursfald på 52% fra toppen." />
       <script type="application/ld+json">{JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Article",
         "headline": "Shortanalyse: Da BAVA sad øverst på shortlisten",
-        "description": "Analyse af short-positioner i Bavarian Nordic (BAVA). Fra 9,40% i oktober 2023 til under 2% i dag, gennem et overtagelsesbud og et kursfald på 52% fra toppen.",
+        "description": "Analyse af short-positioner i Bavarian Nordic (BAVA). Fra 9,06% i november 2023 til under 2% i dag, gennem et overtagelsesbud og et kursfald på 52% fra toppen.",
         "author": { "@type": "Person", "name": "Araz Bayat Makoo" },
         "publisher": { "@type": "Organization", "name": "Zirium", "url": "https://www.zirium.dk" },
         "datePublished": "2026-05-15",
@@ -302,7 +304,7 @@ const BAVAAnalysisPage: React.FC = () => {
           </p>
           <p className="text-gray-600 dark:text-gray-300 mt-3 leading-relaxed">
             Denne analyse kombinerer udviklingen i short-positioner med de vigtigste
-            begivenheder i Bavarian Nordic siden oktober 2023. Formålet er at sætte tallene
+            begivenheder i Bavarian Nordic siden november 2023. Formålet er at sætte tallene
             i kontekst: Hvad skete der, da shortinteressen var på sit højeste, og hvad har
             bragt den ned til under 2%?
           </p>
@@ -311,8 +313,8 @@ const BAVAAnalysisPage: React.FC = () => {
         {/* KPIs */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-12">
           <KPI value="1,93%" label="Short-interesse (maj 2026)" />
-          <KPI value="9,40%" label="Højeste i datasættet (okt 2023)" />
-          <KPI value="2" label="Aktive short-sælgere over 0,50%" />
+          <KPI value="9,06%" label="Højeste i datasættet (nov 2023)" />
+          <KPI value="1" label="Aktiv short-sælger over 0,50%" />
           <KPI value="-52%" label="Fra ATH (411 DKK, aug 2022)" />
         </div>
 
@@ -322,9 +324,10 @@ const BAVAAnalysisPage: React.FC = () => {
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             En af grundene til, at jeg byggede Danish Short Watch appen og hjemmesiden, var min interesse i at følge netop BAVAs
             shortposition. I 2023 var aktien noget af det mest diskuterede på det danske aktiemarked,
-            og shortinteressen var bemærkelsesværdig høj. Det første datapunkt i datasættet, fra
-            oktober 2023, viser 9,40%. Det er det højeste registrerede niveau vi har, men datasættet
-            dækker ikke perioden før, så niveauet kan have været endnu højere.
+            og shortinteressen var bemærkelsesværdig høj. Datasættet starter i november 2023,
+            og den 17. november nåede shortinteressen 9,06%. Det er det højeste registrerede
+            niveau vi har, men datasættet dækker ikke perioden før, så niveauet kan have
+            været endnu højere.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             Siden da er shortinteressen faldet til 1,93%, et fald på ca. 80%.
@@ -340,8 +343,8 @@ const BAVAAnalysisPage: React.FC = () => {
         {/* Chart 1: Full history */}
         <section className="mb-12">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2">2. Short-interesse vs. aktiekurs</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-300 mb-4">Historik siden oktober 2023. Blå = short-interesse, lilla = lukkekurs (DKK).</p>
-          <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-3 sm:p-5" role="img" aria-label="Graf: Short-interesse vs. aktiekurs for Bavarian Nordic fra oktober 2023 til maj 2026">
+          <p className="text-sm text-gray-500 dark:text-gray-300 mb-4">Historik siden november 2023. Blå = short-interesse, lilla = lukkekurs (DKK).</p>
+          <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-3 sm:p-5" role="img" aria-label="Graf: Short-interesse vs. aktiekurs for Bavarian Nordic fra november 2023 til maj 2026">
             <ResponsiveContainer width="100%" height={chartHeight}>
               <ComposedChart data={FULL_HISTORY} margin={{ top: 5, right: 5, left: 0, bottom: 5 }}>
                 <defs>
@@ -362,7 +365,7 @@ const BAVAAnalysisPage: React.FC = () => {
                 <Tooltip content={ShortPriceTooltip} cursor={{ stroke: "#007AFF", strokeWidth: 1, strokeOpacity: 0.3 }} />
                 <Area yAxisId="short" type="step" dataKey="short" stroke="#007AFF" strokeWidth={2.5} fill="url(#bavaShortGrad)" activeDot={{ r: 5, fill: "#007AFF", stroke: "#fff", strokeWidth: 2, filter: "url(#bavaGlow)" }} />
                 <Line yAxisId="price" type="monotone" dataKey="close" stroke="#a855f7" strokeWidth={2} strokeOpacity={0.8} dot={false} activeDot={{ r: 4, fill: "#a855f7", stroke: "#fff", strokeWidth: 2 }} connectNulls />
-                <ReferenceLine yAxisId="short" y={9.40} stroke="#eab308" strokeDasharray="4 4" strokeWidth={1.5} label={{ value: "9,40%", fontSize: 9, fill: "#eab308", position: "insideTopLeft" }} />
+                <ReferenceLine yAxisId="short" y={9.06} stroke="#eab308" strokeDasharray="4 4" strokeWidth={1.5} label={{ value: "9,06%", fontSize: 9, fill: "#eab308", position: "insideTopLeft" }} />
               </ComposedChart>
             </ResponsiveContainer>
             <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-300 mt-2 px-2">
@@ -393,18 +396,19 @@ const BAVAAnalysisPage: React.FC = () => {
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
             Det var i denne kontekst, at shortinteressen nåede det niveau vi ser i starten af
-            datasættet. Vi ved fra Finanstilsynets individuelle indberetninger, at AHL Partners,
-            Citadel og Marshall Wace alle havde positioner over 0,50% allerede i 2022.
+            datasættet. Vi ved fra Finanstilsynets individuelle indberetninger, at en lang
+            række fonde havde positioner over 0,50% allerede i 2022, herunder Marshall Wace
+            (op til 1,60%), Arrowstreet Capital (op til 1,20%) og Capital Fund Management.
           </p>
         </section>
 
         {/* 4. Den gradvise afvikling */}
         <section className="mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">4. Den gradvise afvikling: Fra 9,40% til 3%</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">4. Den gradvise afvikling: Fra 9,06% til 3%</h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            Når man kigger i data, kan man se en jævn nedadgående trend fra oktober 2023 til
-            november 2024. Shortinteressen faldt fra 9,40% til 9,06% i november, 8,16% i
-            december og 7,16% i januar 2024. Aktien handlede i 144-173 DKK i denne periode.
+            Når man kigger i data, kan man se en jævn nedadgående trend fra november 2023 til
+            november 2024. Shortinteressen faldt fra 9,06% til 8,16% i december og 7,16% i
+            januar 2024. Aktien handlede i 142-173 DKK i denne periode.
             Det er ikke en dramatisk afvikling, men positioner der lukkes løbende.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
@@ -485,13 +489,14 @@ const BAVAAnalysisPage: React.FC = () => {
         <section className="mb-12">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">7. Hvem shorter Bavarian Nordic?</h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
-            Der er i dag 2 institutionelle aktører med positioner over 0,50%-indberetningsgrænsen.
-            AHL Partners LLP (Man Group) er den største kendte aktør med 1,05% ifølge seneste
-            indberetning i februar 2026. Citadel Advisors LLC har holdt en stabil position på
-            0,5-0,6% siden marts 2022. Marshall Wace LLP har sin seneste indberetning fra april
-            2025 på 0,51% og er sandsynligvis faldet under grænsen siden. De resterende ca. 0,31%
-            holdes af aktører under rapporteringsgrænsen, hvis identitet vi ikke kender.
-            (Estimeret som differencen mellem den samlede shortinteresse og summen af kendte positioner.)
+            Der er i dag 1 institutionel aktør med en position over 0,50%-indberetningsgrænsen:
+            Connor Clark & Lunn Investment Management Ltd med 0,70% ifølge seneste indberetning
+            den 20. april 2026. Historisk har en lang række fonde haft positioner i BAVA. Qube
+            Research & Technologies var den største kendte aktør i analyseperioden med en position
+            op til 1,33% (august 2023), men lukkede helt ned i april 2025. Millennium International
+            Management nåede 1,00% i august 2023 og december 2023, men faldt under grænsen i
+            november 2024. De resterende ca. 1,23% holdes af aktører under rapporteringsgrænsen,
+            hvis identitet vi ikke kender.
           </p>
 
           <div className="overflow-x-auto rounded-2xl border border-gray-100 dark:border-gray-800 mb-6">
@@ -506,9 +511,7 @@ const BAVAAnalysisPage: React.FC = () => {
                 </tr>
               </thead>
               <tbody>
-                <SellerRow i={0} name="AHL Partners LLP (Man Group)" position="1,05%" date="10. feb 2026" desc="Aktiv siden okt 2022. Højeste kendte indberetning: 1,65% (sep 2024)." />
-                <SellerRow i={1} name="Citadel Advisors LLC" position="0,57%" date="14. jul 2025" desc="Aktiv siden mar 2022. Stabil i 0,5-0,6% intervallet." />
-                <SellerRow i={2} name="Marshall Wace LLP" position="0,51%*" date="7. apr 2025" desc="*Senest indberettede. Sandsynligvis faldet under 0,50% siden." />
+                <SellerRow i={0} name="Connor Clark & Lunn Inv. Mgmt" position="0,70%" date="20. apr" desc="Aktiv siden dec 2025. Højeste kendte: 0,81% (jan 2026)." />
               </tbody>
             </table>
           </div>
@@ -538,7 +541,7 @@ const BAVAAnalysisPage: React.FC = () => {
           </div>
 
           <h3 className="text-base font-semibold text-gray-900 dark:text-white mt-8 mb-2">Fordeling af den samlede short-interesse</h3>
-          <p className="text-sm text-gray-500 dark:text-gray-300 mb-4">Ca. 16% af short-interessen holdes af aktører under 0,50%-tærsklen, hvis identitet er ukendt.</p>
+          <p className="text-sm text-gray-500 dark:text-gray-300 mb-4">Ca. 64% af short-interessen holdes af aktører under 0,50%-tærsklen, hvis identitet er ukendt.</p>
           <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-3 sm:p-5 flex justify-center" role="img" aria-label="Cirkeldiagram: Fordeling af den samlede short-interesse i Bavarian Nordic">
             <ResponsiveContainer width="100%" height={300}>
               <PieChart>
@@ -564,8 +567,8 @@ const BAVAAnalysisPage: React.FC = () => {
             <TimelineEvent date="Februar 2023" title="Emergent-opkøbet annonceret" color="#4361ee">
               <p>Bavarian Nordic annoncerer køb af Emergent BioSolutions' rejsevaccinportefølje for op til USD 380 mio. Finansiering via kapitalforhøjelse på 1.642 mio. DKK til kurs 233 DKK, svarende til ca. 10% udvanding.</p>
             </TimelineEvent>
-            <TimelineEvent date="Oktober 2023" title="9,40% shortinteresse - højeste i datasættet" color="#e63946">
-              <p>Det første datapunkt i Danish Short Watch datasættet viser en samlet shortposition på 9,40%. Aktien handlede til ca. 144 DKK i november 2023. AHL Partners, Citadel og Marshall Wace er kendte aktører med positioner over 0,50%.</p>
+            <TimelineEvent date="November 2023" title="9,06% shortinteresse - højeste i datasættet" color="#e63946">
+              <p>Datasættet starter i november 2023, og den 17. november nås 9,06%, det højeste registrerede niveau. Aktien handlede til ca. 144 DKK. Qube Research & Technologies (1,06%), Millennium International Management (0,90%) og Arrowstreet Capital er blandt de kendte aktører med positioner over 0,50%.</p>
             </TimelineEvent>
             <TimelineEvent date="August 2024" title="WHO erklærer ny mpox-PHEIC: Aktien stiger til 272 DKK" color="#2a9d8f">
               <p>WHO erklærer endnu en PHEIC på grund af Clade I mpox-varianten i DRC. Aktien stiger til 272 DKK. Shortinteressen falder til 4,20%.</p>
@@ -592,7 +595,7 @@ const BAVAAnalysisPage: React.FC = () => {
               <p>CEO Paul Chaplin (1,9 mio. DKK), CFO Henrik Juuel (1,0 mio. DKK), CCO Jean-Christophe May (921.000 DKK) og COO Russell Thirsk (646.000 DKK) køber alle aktier til kurs 177,65 DKK. Shortinteressen er på det tidspunkt 2,69%.</p>
             </TimelineEvent>
             <TimelineEvent date="Maj 2026" title="Shortinteressen på 1,93%" color="#2a9d8f">
-              <p>Shortinteressen er faldet fra 2,69% i marts 2026 til 1,93%. To kendte aktører er stadig aktive over 0,50%-grænsen: AHL Partners LLP (1,05%) og Citadel Advisors LLC (0,57%).</p>
+              <p>Shortinteressen er faldet fra 2,69% i marts 2026 til 1,93%. Connor Clark & Lunn Investment Management er den eneste kendte aktør over 0,50%-grænsen med 0,70%.</p>
             </TimelineEvent>
           </div>
         </section>
@@ -712,9 +715,11 @@ const BAVAAnalysisPage: React.FC = () => {
         <section className="mb-12">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">10. Argumenter for og imod</h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            At AHL Partners og Citadel stadig holder positioner efter en afvikling fra 9,40%
-            til under 2% er bemærkelsesværdigt. Vi kan ikke vide præcist, hvad der driver deres
-            beslutninger, men her er de mest oplagte argumenter på begge sider:
+            De fleste af de store kendte shortsælgere har lukket deres positioner. Qube Research
+            lukkede helt i april 2025, og Millennium faldt under grænsen i november 2024. Connor
+            Clark & Lunn er den eneste aktør over 0,50% i dag med 0,70%. Ca. 64% af den samlede
+            shortinteresse holdes af ukendte aktører under rapporteringsgrænsen. Her er de mest
+            oplagte argumenter på begge sider:
           </p>
 
           <div className="grid sm:grid-cols-2 gap-4 mb-4">
@@ -744,8 +749,8 @@ const BAVAAnalysisPage: React.FC = () => {
         <section className="mb-12">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">11. Konklusion</h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            Fra 9,40% i oktober 2023 til 1,93% i maj 2026 er shortinteressen i Bavarian Nordic
-            faldet ca. 80%. Det er sket i to faser: En gradvis afvikling i 2024, og en hurtig
+            Fra 9,06% i november 2023 til 1,93% i maj 2026 er shortinteressen i Bavarian Nordic
+            faldet ca. 79%. Det er sket i to faser: En gradvis afvikling i 2024, og en hurtig
             afvikling under overtagelsesbudet i 2025, hvor shortinteressen faldt til blot 0,77%.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
@@ -755,9 +760,10 @@ const BAVAAnalysisPage: React.FC = () => {
             kursniveauer. Siden marts 2026 er den dog faldet lidt igen.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            De to tilbageværende kendte fonde har holdt positioner i BAVA siden 2022. Citadels
-            position har været bemærkelsesværdigt stabil på 0,5-0,6% gennem hele perioden,
-            mens AHL Partners har reduceret sin fra 1,65% til 1,05%.
+            De store kendte shortsælgere fra 2023 har alle lukket deres positioner. Qube Research
+            & Technologies, der var den største med op til 1,33%, lukkede helt i april 2025.
+            Connor Clark & Lunn er den eneste nuværende aktør over 0,50% med en position på
+            0,70%, aktiv siden december 2025.
           </p>
 
           <div className="bg-gray-50 dark:bg-[#15151a] rounded-2xl border border-gray-100 dark:border-gray-800 p-5 mt-6">
@@ -777,7 +783,7 @@ const BAVAAnalysisPage: React.FC = () => {
           <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed text-center">
             <strong>Ansvarsfraskrivelse:</strong> Denne analyse er alene til informationsformål og udgør ikke
             investeringsrådgivning. Short-interessedata stammer fra Finanstilsynets offentlige registre
-            via Zirium. Datasættet for den aggregerede shortinteresse starter i oktober 2023.
+            via Zirium. Datasættet for den aggregerede shortinteresse starter i november 2023.
             Individuelle short-sælgerdatapunkter er delvist estimater. Historisk afkast er ikke en
             garanti for fremtidigt afkast. Foretag altid din egen analyse, og søg professionel
             rådgivning før du handler.
