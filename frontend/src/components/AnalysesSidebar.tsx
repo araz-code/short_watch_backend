@@ -3,13 +3,13 @@ import { useTranslation } from "react-i18next";
 
 const analyses = [
   {
-    slug: "bava/2026-05-15",
+    slug: "bava/2026-05-17",
     title: "Bavarian Nordic (BAVA)",
     subtitle: {
       da: "Shortanalyse: Da BAVA sad øverst på shortlisten",
       en: "When BAVA topped the short sellers list",
     },
-    date: { da: "15. maj 2026", en: "May 15, 2026" },
+    date: { da: "17. maj 2026", en: "May 17, 2026" },
     code: "DK0015998017",
   },
   {

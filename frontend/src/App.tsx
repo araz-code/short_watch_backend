@@ -167,7 +167,7 @@ const router = createBrowserRouter([
     element: <ErrorBoundary><ZealCostAnalysisPage /></ErrorBoundary>,
   },
   {
-    path: "analyse/bava/2026-05-15",
+    path: "analyse/bava/2026-05-17",
     element: <ErrorBoundary><BAVAAnalysisPage /></ErrorBoundary>,
   },
   {

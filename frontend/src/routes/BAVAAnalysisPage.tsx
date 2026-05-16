@@ -54,6 +54,8 @@ interface PieSlice {
 // Aggregerede datapunkter fra Zirium-datasættet (Finanstilsynet + lukkekurser).
 // Datasættet starter i november 2023.
 const FULL_HISTORY: ChartPoint[] = [
+  { date: "2023-10-23", short: 9.40, close: 131.1, volume: null },
+  { date: "2023-10-31", short: 9.25, close: 134.25, volume: null },
   { date: "2023-11-06", short: 8.82, close: 142.7, volume: null },
   { date: "2023-11-17", short: 9.06, close: 144.15, volume: null },
   { date: "2023-12-13", short: 8.16, close: 172.4, volume: null },
@@ -257,24 +259,24 @@ const BAVAAnalysisPage: React.FC = () => {
   return (
     <PageTemplate>
       <title>Zirium | Bavarian Nordic (BAVA) - Shortanalyse</title>
-      <meta name="description" content="Analyse af short-positioner i Bavarian Nordic (BAVA). Fra 9,06% i november 2023 til under 2% i dag, gennem et overtagelsesbud og et kursfald på 52% fra toppen." />
+      <meta name="description" content="Analyse af short-positioner i Bavarian Nordic (BAVA). Fra 9,40% i oktober 2023 til under 2% i dag, gennem et overtagelsesbud og et kursfald på 54% fra toppen." />
       <meta property="og:title" content="Shortanalyse: Da BAVA sad øverst på shortlisten" />
-      <meta property="og:description" content="Analyse af short-positioner i Bavarian Nordic (BAVA). Fra 9,06% i november 2023 til under 2% i dag, gennem et overtagelsesbud og et kursfald på 52% fra toppen." />
+      <meta property="og:description" content="Analyse af short-positioner i Bavarian Nordic (BAVA). Fra 9,40% i oktober 2023 til under 2% i dag, gennem et overtagelsesbud og et kursfald på 54% fra toppen." />
       <meta property="og:type" content="article" />
-      <meta property="og:url" content="https://www.zirium.dk/analyse/bava/2026-05-15" />
+      <meta property="og:url" content="https://www.zirium.dk/analyse/bava/2026-05-17" />
       <meta property="og:site_name" content="Zirium" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:title" content="Shortanalyse: Da BAVA sad øverst på shortlisten" />
-      <meta name="twitter:description" content="Analyse af short-positioner i Bavarian Nordic (BAVA). Fra 9,06% i november 2023 til under 2% i dag, gennem et overtagelsesbud og et kursfald på 52% fra toppen." />
+      <meta name="twitter:description" content="Analyse af short-positioner i Bavarian Nordic (BAVA). Fra 9,40% i oktober 2023 til under 2% i dag, gennem et overtagelsesbud og et kursfald på 54% fra toppen." />
       <script type="application/ld+json">{JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Article",
         "headline": "Shortanalyse: Da BAVA sad øverst på shortlisten",
-        "description": "Analyse af short-positioner i Bavarian Nordic (BAVA). Fra 9,06% i november 2023 til under 2% i dag, gennem et overtagelsesbud og et kursfald på 52% fra toppen.",
+        "description": "Analyse af short-positioner i Bavarian Nordic (BAVA). Fra 9,40% i oktober 2023 til under 2% i dag, gennem et overtagelsesbud og et kursfald på 54% fra toppen.",
         "author": { "@type": "Person", "name": "Araz Bayat Makoo" },
         "publisher": { "@type": "Organization", "name": "Zirium", "url": "https://www.zirium.dk" },
-        "datePublished": "2026-05-15",
-        "mainEntityOfPage": "https://www.zirium.dk/analyse/bava/2026-05-15",
+        "datePublished": "2026-05-17",
+        "mainEntityOfPage": "https://www.zirium.dk/analyse/bava/2026-05-17",
         "inLanguage": "da",
       })}</script>
 
@@ -295,7 +297,7 @@ const BAVAAnalysisPage: React.FC = () => {
 
         {/* Header */}
         <header className="mb-10 mt-4">
-          <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">Analyse lavet af Araz Bayat Makoo (Zirium) - 15. maj 2026</p>
+          <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">Analyse lavet af Araz Bayat Makoo (Zirium) - 17. maj 2026</p>
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-white mb-3 leading-tight">
             Shortanalyse: Da BAVA sad øverst på shortlisten
           </h1>
@@ -304,7 +306,7 @@ const BAVAAnalysisPage: React.FC = () => {
           </p>
           <p className="text-gray-600 dark:text-gray-300 mt-3 leading-relaxed">
             Denne analyse kombinerer udviklingen i short-positioner med de vigtigste
-            begivenheder i Bavarian Nordic siden november 2023. Formålet er at sætte tallene
+            begivenheder i Bavarian Nordic siden oktober 2023. Formålet er at sætte tallene
             i kontekst: Hvad skete der, da shortinteressen var på sit højeste, og hvad har
             bragt den ned til under 2%?
           </p>
@@ -312,10 +314,10 @@ const BAVAAnalysisPage: React.FC = () => {
 
         {/* KPIs */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-12">
-          <KPI value="1,93%" label="Short-interesse (maj 2026)" />
-          <KPI value="9,06%" label="Højeste i datasættet (nov 2023)" />
+          <KPI value="1,67%" label="Short-interesse (maj 2026)" />
+          <KPI value="9,40%" label="Højeste i datasættet (okt 2023)" />
           <KPI value="1" label="Aktiv short-sælger over 0,50%" />
-          <KPI value="-52%" label="Fra ATH (411 DKK, aug 2022)" />
+          <KPI value="-54%" label="Fra ATH (411 DKK, aug 2022)" />
         </div>
 
         {/* 1. Overordnet billede */}
@@ -324,13 +326,13 @@ const BAVAAnalysisPage: React.FC = () => {
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             En af grundene til, at jeg byggede Danish Short Watch appen og hjemmesiden, var min interesse i at følge netop BAVAs
             shortposition. I 2023 var aktien noget af det mest diskuterede på det danske aktiemarked,
-            og shortinteressen var bemærkelsesværdig høj. Datasættet starter i november 2023,
-            og den 17. november nåede shortinteressen 9,06%. Det er det højeste registrerede
+            og shortinteressen var høj. Datasættet starter i oktober 2023,
+            og den 23. oktober nåede shortinteressen 9,40%. Det er det højeste registrerede
             niveau vi har, men datasættet dækker ikke perioden før, så niveauet kan have
             været endnu højere.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            Siden da er shortinteressen faldet til 1,93%, et fald på ca. 80%.
+            Siden da er shortinteressen faldet til 1,67%, et fald på ca. 82%.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
             Undervejs er der sket en række ting: WHO erklærede en ny mpox-PHEIC i
@@ -343,7 +345,7 @@ const BAVAAnalysisPage: React.FC = () => {
         {/* Chart 1: Full history */}
         <section className="mb-12">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2">2. Short-interesse vs. aktiekurs</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-300 mb-4">Historik siden november 2023. Blå = short-interesse, lilla = lukkekurs (DKK).</p>
+          <p className="text-sm text-gray-500 dark:text-gray-300 mb-4">Historik siden oktober 2023. Blå = short-interesse, lilla = lukkekurs (DKK).</p>
           <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-3 sm:p-5" role="img" aria-label="Graf: Short-interesse vs. aktiekurs for Bavarian Nordic fra november 2023 til maj 2026">
             <ResponsiveContainer width="100%" height={chartHeight}>
               <ComposedChart data={FULL_HISTORY} margin={{ top: 5, right: 5, left: 0, bottom: 5 }}>
@@ -365,7 +367,7 @@ const BAVAAnalysisPage: React.FC = () => {
                 <Tooltip content={ShortPriceTooltip} cursor={{ stroke: "#007AFF", strokeWidth: 1, strokeOpacity: 0.3 }} />
                 <Area yAxisId="short" type="step" dataKey="short" stroke="#007AFF" strokeWidth={2.5} fill="url(#bavaShortGrad)" activeDot={{ r: 5, fill: "#007AFF", stroke: "#fff", strokeWidth: 2, filter: "url(#bavaGlow)" }} />
                 <Line yAxisId="price" type="monotone" dataKey="close" stroke="#a855f7" strokeWidth={2} strokeOpacity={0.8} dot={false} activeDot={{ r: 4, fill: "#a855f7", stroke: "#fff", strokeWidth: 2 }} connectNulls />
-                <ReferenceLine yAxisId="short" y={9.06} stroke="#eab308" strokeDasharray="4 4" strokeWidth={1.5} label={{ value: "9,06%", fontSize: 9, fill: "#eab308", position: "insideTopLeft" }} />
+                <ReferenceLine yAxisId="short" y={9.40} stroke="#eab308" strokeDasharray="4 4" strokeWidth={1.5} label={{ value: "9,40%", fontSize: 9, fill: "#eab308", position: "insideTopLeft" }} />
               </ComposedChart>
             </ResponsiveContainer>
             <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-300 mt-2 px-2">
