@@ -48,7 +48,7 @@ const Navigation: React.FC = () => {
   }, []);
 
   const navClasses = isHome
-    ? "bg-[#0d1b4c] border border-white/30 shadow-lg shadow-black/20"
+    ? "bg-[#0d1b4c] border border-white/20 shadow-lg shadow-black/20"
     : "bg-[#0d1b4c] shadow-lg shadow-black/10";
 
   const linkClasses =
