@@ -357,7 +357,7 @@ const ZealAnalysisPage: React.FC = () => {
 
         {/* ── Header ── */}
         <header className="mb-10 mt-4">
-          <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">Analyse lavet af Araz Bayat Makoo (Zirium) - 13. maj 2026</p>
+          <p className="text-base text-gray-600 dark:text-gray-300 mb-4">Analyse lavet af Araz Bayat Makoo (Zirium) - 13. maj 2026</p>
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-white mb-3 leading-tight">
             Shortanalyse: Hvem vædder imod Zealand Pharma?
           </h1>

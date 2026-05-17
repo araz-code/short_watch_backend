@@ -317,7 +317,7 @@ const GNAnalysisPageEn: React.FC = () => {
 
         {/* ── Header ── */}
         <header className="mb-10 mt-4">
-          <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">Analysis by Araz Bayat Makoo (Zirium) - May 14, 2026</p>
+          <p className="text-base text-gray-600 dark:text-gray-300 mb-4">Analysis by Araz Bayat Makoo (Zirium) - May 14, 2026</p>
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-white mb-3 leading-tight">
             Short selling analysis: Short sellers hold firm despite Amplifon sale
           </h1>
