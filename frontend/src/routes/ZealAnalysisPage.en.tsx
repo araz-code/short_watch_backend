@@ -300,7 +300,7 @@ const ZealAnalysisPageEn: React.FC = () => {
   }, [getChartHeight]);
 
   const gridColor = isDark ? "#2a2a35" : "#f0f0f0";
-  const tickColor = isDark ? "#666" : "#bbb";
+  const tickColor = isDark ? "#999" : "#888";
 
   // Build merged seller chart data: all dates on one axis, one key per seller
   const allSellerDates = [...new Set(SELLERS.flatMap((s) => s.data.map((d) => d.date)))].sort();

@@ -128,7 +128,7 @@ const ZealCostAnalysisPage: React.FC = () => {
   }, [getChartHeight]);
 
   const gridColor = isDark ? "#2a2a35" : "#f0f0f0";
-  const tickColor = isDark ? "#666" : "#bbb";
+  const tickColor = isDark ? "#999" : "#888";
 
   return (
     <PageTemplate>
