@@ -52,10 +52,10 @@ const Navigation: React.FC = () => {
     : "bg-[#0d1b4c] shadow-lg shadow-black/10";
 
   const linkClasses =
-    "block px-3 py-2.5 md:py-1.5 rounded-full transition-all duration-200 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10 md:text-white/70 md:hover:text-white md:hover:bg-white/10 md:dark:text-white/70 md:dark:hover:text-white";
+    "block px-3 py-2.5 lg:py-1.5 rounded-full transition-all duration-200 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10 lg:text-white/70 lg:hover:text-white lg:hover:bg-white/10 lg:dark:text-white/70 lg:dark:hover:text-white";
 
   const activeLinkClasses =
-    "block px-3 py-2.5 md:py-1.5 rounded-full text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 md:text-white md:bg-white/15 md:dark:text-white md:dark:bg-white/15";
+    "block px-3 py-2.5 lg:py-1.5 rounded-full text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 lg:text-white lg:bg-white/15 lg:dark:text-white lg:dark:bg-white/15";
 
   return (
     <>
@@ -65,9 +65,9 @@ const Navigation: React.FC = () => {
       >
         Skip to main content
       </a>
-      <div className="relative z-30 flex justify-center md:pt-3 md:px-4">
+      <div className="relative z-30 flex justify-center lg:pt-3 lg:px-4">
         <nav
-          className={`w-full max-w-[900px] px-4 py-2 md:rounded-2xl ${navClasses}`}
+          className={`w-full max-w-[900px] px-4 py-2 lg:rounded-2xl ${navClasses}`}
         >
           <div className="flex items-center justify-between">
             <Link
@@ -80,7 +80,7 @@ const Navigation: React.FC = () => {
               type="button"
               aria-label="Toggle navigation menu"
               aria-expanded={!collapseMenu.mainMenu}
-              className={`inline-flex items-center p-2 w-9 h-9 justify-center text-sm text-white/80 rounded-lg md:hidden hover:bg-white/10 focus:ring-2 focus:ring-white/40 ${
+              className={`inline-flex items-center p-2 w-9 h-9 justify-center text-sm text-white/80 rounded-lg lg:hidden hover:bg-white/10 focus:ring-2 focus:ring-white/40 ${
                 collapseMenu.mainMenu
                   ? ""
                   : "bg-white/15 ring-1 ring-white/30"
@@ -106,15 +106,15 @@ const Navigation: React.FC = () => {
             <div
               className={`${
                 collapseMenu.mainMenu
-                  ? "md:w-auto hidden"
-                  : "absolute top-[3.2rem] right-4 left-4 md:static md:w-auto md:m-0"
-              } md:block`}
+                  ? "lg:w-auto hidden"
+                  : "absolute top-[3.2rem] right-4 left-4 lg:static lg:w-auto lg:m-0"
+              } lg:block`}
             >
               <ul
-                className={`flex flex-col gap-1 text-sm p-3 md:p-0 rounded-xl md:flex-row md:items-center md:gap-1 md:rounded-none ${
+                className={`flex flex-col gap-1 text-sm p-3 lg:p-0 rounded-xl lg:flex-row lg:items-center lg:gap-1 lg:rounded-none ${
                   collapseMenu.mainMenu
                     ? ""
-                    : "bg-white/95 dark:bg-[#19191f]/95 backdrop-blur-lg border border-gray-200 dark:border-gray-700 shadow-xl text-gray-700 dark:text-gray-200 md:bg-transparent md:dark:bg-transparent md:backdrop-blur-none md:border-0 md:shadow-none md:text-white"
+                    : "bg-white/95 dark:bg-[#19191f]/95 backdrop-blur-lg border border-gray-200 dark:border-gray-700 shadow-xl text-gray-700 dark:text-gray-200 lg:bg-transparent lg:dark:bg-transparent lg:backdrop-blur-none lg:border-0 lg:shadow-none lg:text-white"
                 }`}
               >
                 <li>
@@ -196,7 +196,7 @@ const Navigation: React.FC = () => {
                 <li className="relative">
                   <button
                     aria-expanded={!collapseMenu.moreMenu}
-                    className={`flex items-center gap-1.5 w-full md:w-auto ${
+                    className={`flex items-center gap-1.5 w-full lg:w-auto ${
                       isMoreActive ? activeLinkClasses : linkClasses
                     }`}
                     onClick={toggleMoreMenu}
@@ -221,7 +221,7 @@ const Navigation: React.FC = () => {
                     </svg>
                   </button>
                   <div
-                    className={`md:absolute md:z-10 md:right-0 md:mt-2 md:w-48 md:rounded-xl md:shadow-xl bg-white dark:bg-[#19191f] md:border md:border-gray-200 dark:md:border-gray-700 text-gray-800 dark:text-white overflow-hidden ${
+                    className={`lg:absolute lg:z-10 lg:right-0 lg:mt-2 lg:w-48 lg:rounded-xl lg:shadow-xl bg-white dark:bg-[#19191f] lg:border lg:border-gray-200 dark:lg:border-gray-700 text-gray-800 dark:text-white overflow-hidden ${
                       collapseMenu.moreMenu ? "hidden" : ""
                     }`}
                   >
