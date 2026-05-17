@@ -283,11 +283,6 @@ def get_visits_by_section_table(_: HttpRequest) -> JsonResponse:
         row('Top lists', b['top_lists'], y['top_lists']),
         row('Insider list', b['insider_list'], y['insider_list']),
         row('FAQ', b['faq'], y['faq']),
-        row('Analysis overview', b['analysis_overview'], y['analysis_overview']),
-        row('ZEAL analysis', b['zeal_analysis'], y['zeal_analysis']),
-        row('ZEAL cost analysis', b['zeal_cost_analysis'], y['zeal_cost_analysis']),
-        row('GN analysis', b['gn_analysis'], y['gn_analysis']),
-        row('BAVA analysis', b['bava_analysis'], y['bava_analysis']),
         row('Help - short watch', b['help_short_watch'], y['help_short_watch']),
         row('Help - detail page', b['help_details'], y['help_details']),
         row('Help - sellers list', b['help_sellers_list'], y['help_sellers_list']),
@@ -308,6 +303,37 @@ def get_visits_by_section_table(_: HttpRequest) -> JsonResponse:
         'caption': "Today's unique visitors by section (yesterday)",
         'headers': ['Section', 'Visitors'],
         'data': [r for r in rows if r is not None],
+    })
+
+
+@staff_member_required
+def get_visits_by_analysis_table(_: HttpRequest) -> JsonResponse:
+    from datetime import timedelta
+    from django.utils import timezone
+    b = service.today_visit_buckets()
+    y = service.today_visit_buckets(for_date=timezone.localdate() - timedelta(days=1))
+    t = service.analysis_all_time_unique_ips()
+
+    def row(name, key):
+        return {
+            'analysis': name,
+            'today': len(b[key]),
+            'yesterday': len(y[key]),
+            'total': len(t[key]),
+        }
+
+    rows = [
+        row('Analysis overview', 'analysis_overview'),
+        row('ZEAL analysis', 'zeal_analysis'),
+        row('ZEAL cost analysis', 'zeal_cost_analysis'),
+        row('GN analysis', 'gn_analysis'),
+        row('BAVA analysis', 'bava_analysis'),
+    ]
+
+    return JsonResponse({
+        'caption': "Unique visitors per analysis",
+        'headers': ['Analysis', 'Today', 'Yesterday', 'Total'],
+        'data': rows,
     })
 
 

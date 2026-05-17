@@ -443,6 +443,48 @@ def referers_called() -> list:
     return rows
 
 
+def analysis_all_time_unique_ips() -> dict:
+    """All-time public client IPs per analysis page, bucketed by URL pattern.
+    Bots and private IPs are excluded to match today_visit_buckets semantics."""
+    queryset = RequestLog.objects.filter(requested_url__contains='/stats/visit/') \
+        .values('requested_url', 'client_ip', 'user_agent')
+
+    zeal_analysis = set()
+    zeal_cost_analysis = set()
+    gn_analysis = set()
+    bava_analysis = set()
+    analysis_overview = set()
+
+    for entry in queryset:
+        ip = entry['client_ip']
+        try:
+            if ipaddress.ip_address(ip).is_private:
+                continue
+        except ValueError:
+            continue
+        if is_bot(entry['user_agent']):
+            continue
+        url = entry['requested_url']
+        if "/stats/visit/zeal-analysis" in url:
+            zeal_analysis.add(ip)
+        if "/stats/visit/zeal-cost-analysis" in url:
+            zeal_cost_analysis.add(ip)
+        if "/stats/visit/gn-analysis" in url:
+            gn_analysis.add(ip)
+        if "/stats/visit/bava-analysis" in url:
+            bava_analysis.add(ip)
+        if "/stats/visit/analysis/" in url:
+            analysis_overview.add(ip)
+
+    return {
+        'zeal_analysis': zeal_analysis,
+        'zeal_cost_analysis': zeal_cost_analysis,
+        'gn_analysis': gn_analysis,
+        'bava_analysis': bava_analysis,
+        'analysis_overview': analysis_overview,
+    }
+
+
 def today_visit_buckets(for_date=None) -> dict:
     """Public client IPs for a given date, bucketed by URL pattern (platform/section)."""
     if for_date is None:

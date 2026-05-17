@@ -9,6 +9,7 @@ function loadAllCharts() {
   loadTable("referersTable", `/stats/chart/referers/`);
   loadTable("visitsByPlatformTable", `/stats/chart/visits-by-platform/`);
   loadTable("visitsBySectionTable", `/stats/chart/visits-by-section/`);
+  loadTable("visitsByAnalysisTable", `/stats/chart/visits-by-analysis/`);
   loadTable("pickHistoricTable", `/stats/chart/pick-history/`);
   loadTable("watchHistoricTable", `/stats/chart/watch-history/`);
   loadTable("uniqueIpsTable", `/stats/chart/unique-ips/`);

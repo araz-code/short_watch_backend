@@ -23,6 +23,7 @@ urlpatterns = [
     path('chart/unique-ips/', views.get_unique_ips_per_day_table),
     path('chart/visits-by-platform/', views.get_visits_by_platform_table),
     path('chart/visits-by-section/', views.get_visits_by_section_table),
+    path('chart/visits-by-analysis/', views.get_visits_by_analysis_table),
 
     # Tracking
     path('clicked/<str:code>', views.clicked),
