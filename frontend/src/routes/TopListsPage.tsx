@@ -175,7 +175,7 @@ const TopListsPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen dark:bg-[#0d0d12] overflow-auto">
+    <div className="min-h-screen dark:bg-[#0d0d12]">
       <title>Zirium | Top Lists</title>
       <meta name="description" content="Discover the top 10 most shorted, most viewed, and most followed Danish stocks. Updated daily." />
       <PageTemplate>

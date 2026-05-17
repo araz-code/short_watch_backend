@@ -3,6 +3,26 @@ import { useTranslation } from "react-i18next";
 import { analyses } from "../data/analyses";
 import { trackEvent } from "../analytics";
 
+// Deterministic colour per stock code — cycles through a palette
+const PALETTE = [
+  "#007AFF",
+  "#a855f7",
+  "#10b981",
+  "#f59e0b",
+  "#e63946",
+  "#06b6d4",
+];
+
+// Build a stable code→colour map from the full analyses list
+const codeColourMap: Record<string, typeof PALETTE[0]> = {};
+let paletteIdx = 0;
+for (const a of analyses) {
+  if (!codeColourMap[a.code]) {
+    codeColourMap[a.code] = PALETTE[paletteIdx % PALETTE.length];
+    paletteIdx++;
+  }
+}
+
 export default function AnalysesSidebar({ code, source = "sidebar" }: { code?: string; source?: string }) {
   const { t, i18n } = useTranslation();
   const isDa = i18n.language.startsWith("da");
@@ -23,27 +43,31 @@ export default function AnalysesSidebar({ code, source = "sidebar" }: { code?: s
       </div>
 
       <ul role="list">
-        {filtered.map((a, idx) => (
-          <li key={a.slug} role="listitem">
-            <Link
-              to={`/analyse/${a.slug}`}
-              onClick={() => trackEvent("analysis_link_click", { source, slug: a.slug })}
-              className={`block px-3 py-2.5 border-b border-gray-100 dark:border-gray-800 last:border-b-0 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors duration-150 ${idx % 2 === 0 ? "bg-white dark:bg-[#19191f]" : "bg-gray-50 dark:bg-[#131318]"}`}
-            >
-              <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 leading-tight">
-                {isDa ? a.subtitle.da : a.subtitle.en}
-              </p>
-              <div className="flex items-baseline justify-between gap-1 mt-1">
-                <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
-                  {a.title}
+        {filtered.map((a) => {
+          const colour = codeColourMap[a.code] ?? PALETTE[0];
+          return (
+            <li key={a.slug} role="listitem">
+              <Link
+                to={`/analyse/${a.slug}`}
+                onClick={() => trackEvent("analysis_link_click", { source, slug: a.slug })}
+                  className={`block px-3 py-2.5 border-b border-gray-100 dark:border-gray-800 last:border-b-0 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors duration-150 border-l-[3px] ${filtered.indexOf(a) % 2 === 0 ? "bg-white dark:bg-[#19191f]" : "bg-gray-50 dark:bg-[#131318]"}`}
+                style={{ borderLeftColor: colour }}
+              >
+                <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 leading-tight">
+                  {isDa ? a.subtitle.da : a.subtitle.en}
                 </p>
-                <span className="text-xs text-gray-400 dark:text-gray-500 shrink-0">
-                  {isDa ? a.date.da : a.date.en}
-                </span>
-              </div>
-            </Link>
-          </li>
-        ))}
+                <div className="flex items-baseline justify-between gap-1 mt-1">
+                  <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                    {a.title}
+                  </p>
+                  <span className="text-xs text-gray-400 dark:text-gray-500 shrink-0">
+                    {isDa ? a.date.da : a.date.en}
+                  </span>
+                </div>
+              </Link>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

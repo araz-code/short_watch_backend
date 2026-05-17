@@ -11,6 +11,16 @@ import PageTemplate from "../components/PageTemplate";
 import ErrorBlock from "../components/UI/ErrorBlock";
 import LoadingIndicator from "../components/UI/LoadingIndicator";
 import { useTranslation } from "react-i18next";
+import {
+  ResponsiveContainer,
+  ComposedChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ReferenceLine,
+} from "recharts";
 
 import { trackEvent, trackPageView } from "../analytics";
 import Announcement from "../models/Announcement";
@@ -21,6 +31,47 @@ import ShortSellerDetailsHelpDialog from "../components/ShortSellerDetailsHelpDi
 interface GroupedAnnouncements {
   [key: string]: Announcement[];
 }
+
+const fmtDate = (d: string) => {
+  const dt = new Date(d);
+  return dt.toLocaleDateString("da-DK", { day: "numeric", month: "short", year: "2-digit" });
+};
+
+const SellerChart: React.FC<{ announcements: Announcement[] }> = ({ announcements }) => {
+  const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const sorted = [...announcements].sort((a, b) => a.publishedDate.localeCompare(b.publishedDate));
+  const data = sorted.map((a) => ({ date: a.publishedDate.slice(0, 10), value: a.value }));
+  const latest = data[data.length - 1]?.value;
+  const minY = Math.max(0, Math.min(...data.map((d) => d.value)) - 0.2);
+  const maxY = Math.max(...data.map((d) => d.value)) + 0.3;
+
+  return (
+    <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 px-2 pt-3 pb-2 mb-3">
+      <ResponsiveContainer width="100%" height={130}>
+        <ComposedChart data={data} margin={{ top: 5, right: 5, left: 0, bottom: 0 }}>
+          <defs>
+            <linearGradient id="sellerGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#007AFF" stopOpacity={0.35} />
+              <stop offset="100%" stopColor="#007AFF" stopOpacity={0} />
+            </linearGradient>
+          </defs>
+          <CartesianGrid horizontal vertical={false} stroke={isDark ? "#2a2a35" : "#f0f0f0"} strokeWidth={1} />
+          <XAxis dataKey="date" tick={{ fontSize: 9, fill: isDark ? "#666" : "#bbb" }} tickFormatter={fmtDate} interval="preserveStartEnd" />
+          <YAxis tick={{ fontSize: 9, fill: isDark ? "#666" : "#bbb" }} tickFormatter={(v) => `${v}%`} domain={[minY, maxY]} width={32} tickLine={false} axisLine={false} />
+          <Tooltip
+            contentStyle={{ backgroundColor: isDark ? "#19191f" : "#fff", border: "1px solid #e5e5e5", borderRadius: 12, fontSize: 12 }}
+            formatter={(v) => [`${Number(v).toFixed(2)}%`, ""]}
+            labelFormatter={(label) => fmtDate(String(label))}
+          />
+          {latest != null && (
+            <ReferenceLine y={latest} stroke="#eab308" strokeDasharray="4 4" strokeWidth={1.5} yAxisId={0} />
+          )}
+          <Area type="step" dataKey="value" stroke="#007AFF" strokeWidth={2.5} fill="url(#sellerGrad)" dot={{ r: 3, fill: "#007AFF", strokeWidth: 0 }} activeDot={{ r: 5, stroke: "#fff", strokeWidth: 2 }} />
+        </ComposedChart>
+      </ResponsiveContainer>
+    </div>
+  );
+};
 
 const ShortSellerDetailsPage: React.FC = () => {
   const { t } = useTranslation();
@@ -103,7 +154,6 @@ const ShortSellerDetailsPage: React.FC = () => {
             {t("Data on this page comes from announcements.")}{" "}
             {t("Danish FSA updates only positions above 0.5%.")}
           </p>
-          <div className="mt-3 mx-auto w-12 h-0.5 rounded-full bg-blue-500/40" />
         </div>
         <div className="flex-1 min-h-0 [@media(max-height:900px)_and_(orientation:landscape)]:flex-none">
           <div className="overflow-y-auto h-full [@media(max-height:900px)_and_(orientation:landscape)]:overflow-visible [@media(max-height:900px)_and_(orientation:landscape)]:h-auto">
@@ -127,6 +177,9 @@ const ShortSellerDetailsPage: React.FC = () => {
                       {symbol} →
                     </Link>
                   </div>
+                  {groupedAnnouncements[symbol].length > 1 && (
+                    <SellerChart announcements={groupedAnnouncements[symbol]} />
+                  )}
                   <ul>
                     {groupedAnnouncements[symbol].map((announcement, index) => (
                       <li key={announcement.dfsaId}>

@@ -12,7 +12,6 @@ const Navigation: React.FC = () => {
   const [collapseMenu, setCollapseMenu] = useState(defaultCollapseMenu);
   const { t } = useTranslation();
   const location = useLocation();
-  const isHome = location.pathname === "/";
 
   const toggleMainMenu = () => {
     setCollapseMenu((prev) => ({
@@ -47,9 +46,7 @@ const Navigation: React.FC = () => {
     return () => document.removeEventListener("keydown", handleEscape);
   }, []);
 
-  const navClasses = isHome
-    ? "bg-white/10 backdrop-blur-lg border border-white/15 shadow-lg shadow-black/5"
-    : "bg-[#0d1b4c] shadow-lg shadow-black/10";
+  const navClasses = "bg-[#0d1b4c] shadow-lg shadow-black/10";
 
   const linkClasses =
     "block px-3 py-2.5 lg:py-1.5 rounded-full transition-all duration-200 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10 lg:text-white/70 lg:hover:text-white lg:hover:bg-white/10 lg:dark:text-white/70 lg:dark:hover:text-white";
@@ -65,7 +62,7 @@ const Navigation: React.FC = () => {
       >
         Skip to main content
       </a>
-      <div className="relative z-30 flex justify-center lg:pt-3 lg:px-4">
+      <div className="sticky top-0 z-30 flex justify-center lg:pt-3 lg:px-4">
         <nav
           className={`w-full max-w-[900px] px-4 py-2 lg:rounded-2xl ${navClasses}`}
         >
