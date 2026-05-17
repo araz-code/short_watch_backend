@@ -370,7 +370,7 @@ const ShortPositionDetailsPage: React.FC = () => {
           <MobileSidePanel code={code ?? undefined} />
 
           <div className="lg:w-[900px] flex flex-col flex-1 min-h-0 lg:flex-initial">
-            <div className="flex items-center justify-between shrink-0">
+            <div className="relative flex items-center justify-between shrink-0">
               <button
                 className="text-blue-500 hover:text-blue-700 bg-transparent border-none text-base p-4 inline-flex items-center gap-1.5 focus:ring-2 focus:ring-blue-300 rounded-sm min-h-[44px] min-w-[44px]"
                 onClick={() => {
@@ -387,7 +387,7 @@ const ShortPositionDetailsPage: React.FC = () => {
                 <span aria-hidden="true">←</span>
                 {t("Back")}
               </button>
-              <span className="font-semibold text-sm tracking-wider dark:text-white">
+              <span className="absolute left-1/2 -translate-x-1/2 font-semibold text-sm tracking-wider dark:text-white pointer-events-none">
                 {stockSymbol ?? code}
               </span>
               <div className="flex items-center gap-1 sm:gap-3 pr-2">
