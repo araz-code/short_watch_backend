@@ -213,7 +213,6 @@ def status_check(request):
 
             return Response(status=status.HTTP_204_NO_CONTENT)
         except WebUser.DoesNotExist:
-            Error.objects.create(message=f'Users-status_check: Unknown user id: {user_id}.'[:500])
             return Response(status=status.HTTP_204_NO_CONTENT)
 
     return Response(status=status.HTTP_204_NO_CONTENT)
