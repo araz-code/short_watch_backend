@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import PageTemplate from "../components/PageTemplate";
+import RelatedAnalyses from "../components/RelatedAnalyses";
 import { trackPageView } from "../analytics";
 import { HOST } from "../apis/ShortPositionAPI";
 import {
@@ -798,6 +799,8 @@ const BAVAAnalysisPageEn: React.FC = () => {
             </ul>
           </div>
         </section>
+
+        <RelatedAnalyses currentSlug="bava/2026-05-17" />
 
         {/* Disclaimer */}
         <footer className="border-t border-gray-100 dark:border-gray-800 pt-6">
