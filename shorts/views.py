@@ -383,20 +383,21 @@ def stats_view(request):
             if prev_pos:
                 most_shorted_prev_value = prev_pos.value
 
-        # 2. Most viewed detail page in last month
+        # 2. Most viewed detail page in last month (by unique IPs)
         one_month_ago = timezone.now() - timedelta(days=30)
         code_pattern = re.compile(r'/details/(\S+)')
         detail_logs = list(RequestLog.objects.filter(
             requested_url__icontains='/details/',
             timestamp__gte=one_month_ago,
-        ).values_list('requested_url', flat=True))
+        ).values_list('requested_url', 'client_ip'))
 
-        view_counts = {}
-        for url in detail_logs:
+        unique_ips = {}
+        for url, ip in detail_logs:
             match = code_pattern.search(url)
             if match:
                 code = match.group(1).strip('/')
-                view_counts[code] = view_counts.get(code, 0) + 1
+                unique_ips.setdefault(code, set()).add(ip)
+        view_counts = {code: len(ips) for code, ips in unique_ips.items()}
 
         most_viewed_code = max(view_counts, key=view_counts.get) if view_counts else None
         most_viewed_stock = None
@@ -455,13 +456,14 @@ def _compute_most_viewed(one_month_ago):
     detail_logs = list(RequestLog.objects.filter(
         requested_url__icontains='/details/',
         timestamp__gte=one_month_ago,
-    ).values_list('requested_url', flat=True))
-    view_counts = {}
-    for url in detail_logs:
+    ).values_list('requested_url', 'client_ip'))
+    unique_ips = {}
+    for url, ip in detail_logs:
         match = code_pattern.search(url)
         if match:
             code = match.group(1).strip('/')
-            view_counts[code] = view_counts.get(code, 0) + 1
+            unique_ips.setdefault(code, set()).add(ip)
+    view_counts = {code: len(ips) for code, ips in unique_ips.items()}
     sorted_views = sorted(view_counts.items(), key=lambda x: x[1], reverse=True)[:10]
     result = []
     for code, _ in sorted_views:
