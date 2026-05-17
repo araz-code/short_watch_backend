@@ -326,8 +326,8 @@ const BAVAAnalysisPage: React.FC = () => {
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">1. Overordnet billede</h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             En af grundene til, at jeg byggede Danish Short Watch appen og hjemmesiden, var min interesse i at følge netop BAVAs
-            shortposition. I 2023 var aktien noget af det mest diskuterede på det danske aktiemarked,
-            og shortinteressen var høj. Datasættet starter i oktober 2023,
+            shortposition. I 2023 havde aktien en af de højeste shortinteresser på det danske
+            aktiemarked. Datasættet starter i oktober 2023,
             og den 23. oktober nåede shortinteressen 9,40%. Det er det højeste registrerede
             niveau vi har, men datasættet dækker ikke perioden før, så niveauet kan have
             været endnu højere.
@@ -336,10 +336,11 @@ const BAVAAnalysisPage: React.FC = () => {
             Siden da er shortinteressen faldet til 1,67%, et fald på ca. 82%.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-            Undervejs er der sket en række ting: WHO erklærede en ny mpox-PHEIC i
-            august 2024, og aktien steg til 272 DKK. Nordic Capital og Permira fremsatte et
-            overtagelsesbud i juli 2025, og budet kollapsede i november samme år. Alle
-            disse begivenheder ser ud til at afspejle sig i udviklingen i shortinteressen.
+            Undervejs er der sket en række ting: WHO erklærede på ny mpox til
+            folkesundhedsnødsituation (PHEIC) i august 2024, og aktien steg til 283 DKK.
+            Nordic Capital og Permira fremsatte et overtagelsesbud i juli 2025, og budet
+            kollapsede i november samme år. Alle disse begivenheder ser ud til at afspejle
+            sig i udviklingen i shortinteressen.
           </p>
         </section>
 
@@ -571,7 +572,7 @@ const BAVAAnalysisPage: React.FC = () => {
         <section className="mb-12">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-6">8. Tidslinje over nøglebegivenheder</h2>
           <div className="ml-2">
-            <TimelineEvent date="Juli - august 2022" title="WHO erklærer mpox-PHEIC: Aktien stiger til 411 DKK" color="#2a9d8f">
+            <TimelineEvent date="Juli - august 2022" title="WHO erklærer mpox til folkesundhedsnødsituation (PHEIC): Aktien stiger til 411 DKK" color="#2a9d8f">
               <p>Mpox-udbruddet spreder sig globalt fra maj 2022, og den 23. juli erklærer WHO en international folkesundhedsnødsituation (PHEIC). USA, EU og andre lande placerer store vaccineordrer. Aktien stiger fra ca. 130 DKK i maj 2022 til 411 DKK intradag den 5. august 2022.</p>
             </TimelineEvent>
             <TimelineEvent date="Februar 2023" title="Emergent-opkøbet annonceret" color="#4361ee">
@@ -580,7 +581,7 @@ const BAVAAnalysisPage: React.FC = () => {
             <TimelineEvent date="Oktober 2023" title="9,40% shortinteresse - højeste i datasættet" color="#e63946">
               <p>Datasættet starter i oktober 2023, og den 23. oktober nås 9,40%, det højeste registrerede niveau. Aktien handlede til ca. 131 DKK.</p>
             </TimelineEvent>
-            <TimelineEvent date="August 2024" title="WHO erklærer ny mpox-PHEIC: Aktien stiger til 283 DKK" color="#2a9d8f">
+            <TimelineEvent date="August 2024" title="WHO erklærer på ny mpox til folkesundhedsnødsituation (PHEIC): Aktien stiger til 283 DKK" color="#2a9d8f">
               <p>WHO erklærer endnu en PHEIC på grund af Clade I mpox-varianten i DRC. Aktien stiger til 283 DKK i august 2024. Shortinteressen falder til omkring 4% (lavpunkt 3,96% den 28. august).</p>
             </TimelineEvent>
             <TimelineEvent date="November 2024" title="Q3-regnskab: JYNNEOS-salg -26% år-over-år" color="#e63946">
