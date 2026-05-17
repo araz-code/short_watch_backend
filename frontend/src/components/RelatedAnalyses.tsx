@@ -55,22 +55,22 @@ export default function RelatedAnalyses({ currentSlug, max = 3 }: Props) {
                   from_slug: currentSlug,
                 })
               }
-              className="group block rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#19191f] hover:shadow-lg hover:border-gray-300 dark:hover:border-gray-600 transition-all"
+              className="group block rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#19191f] hover:shadow-md hover:border-gray-300 dark:hover:border-gray-600 transition-all"
             >
-              <div className={`relative bg-gradient-to-br ${gradient} h-14 sm:h-16 flex items-center justify-center px-4`}>
-                <span className="text-white text-xl sm:text-2xl font-bold tracking-tight">
+              <div className={`relative bg-gradient-to-br ${gradient} h-9 flex items-center px-3`}>
+                <span className="text-white text-sm font-bold tracking-tight">
                   {ticker}
                 </span>
                 <FontAwesomeIcon
                   icon={faFileLines}
-                  className="absolute top-2 right-3 text-white/40 text-sm"
+                  className="absolute top-2 right-3 text-white/40 text-xs"
                 />
               </div>
-              <div className="p-4 sm:p-5">
-                <h3 className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white leading-snug group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+              <div className="p-3">
+                <h3 className="text-sm font-semibold text-gray-900 dark:text-white leading-snug group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                   {isDa ? a.subtitle.da : a.subtitle.en}
                 </h3>
-                <div className="flex items-baseline justify-between gap-2 mt-3">
+                <div className="flex items-baseline justify-between gap-2 mt-2">
                   <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
                     {a.title}
                   </p>
