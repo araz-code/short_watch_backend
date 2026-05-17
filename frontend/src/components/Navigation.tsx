@@ -12,6 +12,7 @@ const Navigation: React.FC = () => {
   const [collapseMenu, setCollapseMenu] = useState(defaultCollapseMenu);
   const { t } = useTranslation();
   const location = useLocation();
+  const isHome = location.pathname === "/";
 
   const toggleMainMenu = () => {
     setCollapseMenu((prev) => ({
@@ -46,7 +47,9 @@ const Navigation: React.FC = () => {
     return () => document.removeEventListener("keydown", handleEscape);
   }, []);
 
-  const navClasses = "bg-[#0d1b4c] shadow-lg shadow-black/10";
+  const navClasses = isHome
+    ? "bg-[#0d1b4c] border border-white/30 shadow-lg shadow-black/20"
+    : "bg-[#0d1b4c] shadow-lg shadow-black/10";
 
   const linkClasses =
     "block px-3 py-2.5 lg:py-1.5 rounded-full transition-all duration-200 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10 lg:text-white/70 lg:hover:text-white lg:hover:bg-white/10 lg:dark:text-white/70 lg:dark:hover:text-white";
