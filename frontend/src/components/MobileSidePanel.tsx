@@ -95,13 +95,13 @@ export default function MobileSidePanel({ code, codes, feedTypes, feedDays }: Pr
           onClose={() => setOpen(false)}
           enableXClose
         >
-          <div className="flex flex-col gap-5">
-            <section>
+          <div className="h-[70vh] flex flex-col gap-5">
+            <section className="flex flex-col min-h-0 flex-1">
               <h4 className="text-xs font-bold uppercase tracking-wide text-blue-600 dark:text-blue-400 mb-2">
                 {t("Recent updates")}
               </h4>
 
-              <div className="max-h-[34vh] overflow-y-auto">
+              <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden">
               {isLoading && (
                 <div className="px-3 py-2 space-y-3" aria-busy="true">
                   {[...Array(4)].map((_, i) => (
@@ -120,7 +120,7 @@ export default function MobileSidePanel({ code, codes, feedTypes, feedDays }: Pr
               )}
 
               {!isLoading && !isEmptyList && feed && feed.length > 0 && (
-                <ul className="flex flex-col -mx-2">
+                <ul className="flex flex-col">
                   {feed.map((item: RecentFeedItem, idx: number) => {
                     const dot = item.type === "large_seller" ? "large_seller" : (item.transactionCategory ?? "other");
                     const label = isDa ? dotLabel[dot]?.da : dotLabel[dot]?.en;
@@ -141,13 +141,13 @@ export default function MobileSidePanel({ code, codes, feedTypes, feedDays }: Pr
                           <div className="flex items-start gap-2">
                             <span className={`mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 ${dotColor[dot]}`} aria-hidden="true" />
                             <div className="min-w-0 flex-1">
-                              <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 leading-tight truncate">
+                              <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 leading-tight [overflow-wrap:anywhere]">
                                 {item.type === "large_seller"
                                   ? `${item.stockSymbol}${item.value != null ? " · " + item.value.toFixed(2) + "%" : ""}`
                                   : (item.stockSymbol || item.issuerName)}
                               </p>
                               <div className="flex items-baseline justify-between gap-2 mt-1">
-                                <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                                <p className="text-xs text-gray-500 dark:text-gray-400 [overflow-wrap:anywhere] min-w-0 flex-1">
                                   {item.type === "large_seller"
                                     ? (item.sellerName ?? label)
                                     : (item.personName
@@ -170,12 +170,12 @@ export default function MobileSidePanel({ code, codes, feedTypes, feedDays }: Pr
             </section>
 
             {filteredAnalyses.length > 0 && (
-              <section>
+              <section className="flex flex-col min-h-0 flex-1">
                 <h4 className="text-xs font-bold uppercase tracking-wide text-blue-600 dark:text-blue-400 mb-2">
                   {t("Analysis")}
                 </h4>
-                <div className="max-h-[34vh] overflow-y-auto">
-                <ul className="flex flex-col -mx-2">
+                <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden">
+                <ul className="flex flex-col">
                   {filteredAnalyses.map((a) => (
                     <li key={a.slug}>
                       <Link
@@ -186,11 +186,11 @@ export default function MobileSidePanel({ code, codes, feedTypes, feedDays }: Pr
                         }}
                         className="block px-3 py-3 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
                       >
-                        <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 leading-tight">
+                        <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 leading-tight [overflow-wrap:anywhere]">
                           {isDa ? a.subtitle.da : a.subtitle.en}
                         </p>
                         <div className="flex items-baseline justify-between gap-2 mt-1">
-                          <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                          <p className="text-xs text-gray-500 dark:text-gray-400 [overflow-wrap:anywhere] min-w-0 flex-1">
                             {a.title}
                           </p>
                           <span className="text-xs text-gray-400 dark:text-gray-500 shrink-0">

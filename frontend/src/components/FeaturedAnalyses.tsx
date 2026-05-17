@@ -40,19 +40,14 @@ export default function FeaturedAnalyses() {
 
   return (
     <section className="max-w-[1000px] mx-auto px-6 py-8 sm:py-10">
-      <div className="flex items-baseline justify-between mb-4 sm:mb-6">
-        <div>
-          <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white tracking-tight">
-            {t("Latest analyses")}
-          </h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-            {t("Short positions in context: events, sellers, and price action.")}
-          </p>
-        </div>
+      <div className="flex items-center gap-3 mb-4 sm:mb-6">
+        <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white tracking-tight">
+          {t("Latest analyses")}
+        </h2>
         <Link
           to="/analyse"
           onClick={() => trackEvent("analysis_link_click", { source: "homepage_featured_seeall" })}
-          className="hidden sm:inline-flex items-center gap-1.5 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 shrink-0"
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 shrink-0"
         >
           {t("See all")} <FontAwesomeIcon icon={faArrowRight} className="text-xs" />
         </Link>
@@ -96,15 +91,6 @@ export default function FeaturedAnalyses() {
         })}
       </div>
 
-      <div className="flex sm:hidden justify-center mt-5">
-        <Link
-          to="/analyse"
-          onClick={() => trackEvent("analysis_link_click", { source: "homepage_featured_seeall" })}
-          className="inline-flex items-center gap-1.5 text-sm font-medium text-blue-600 dark:text-blue-400"
-        >
-          {t("See all")} <FontAwesomeIcon icon={faArrowRight} className="text-xs" />
-        </Link>
-      </div>
     </section>
   );
 }
