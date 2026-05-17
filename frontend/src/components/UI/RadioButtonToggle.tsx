@@ -10,7 +10,7 @@ const RadioButtonToggle: React.FC<{
   return (
     <div
       role="radiogroup"
-      className="inline-flex items-center gap-4 text-[11px] sm:text-sm font-medium tracking-wide uppercase"
+      className="inline-flex items-center gap-4 text-sm sm:text-sm font-medium tracking-wide uppercase"
     >
       {options.map((option, index) => {
         const isSelected = selectedOption === option;
@@ -18,7 +18,7 @@ const RadioButtonToggle: React.FC<{
           <label
             key={option}
             htmlFor={`${option}-${index}`}
-            className={`cursor-pointer select-none border-b-2 pb-0.5 transition-colors duration-150 ${
+            className={`cursor-pointer select-none border-b-2 pb-1 transition-colors duration-150 ${
               isSelected
                 ? "text-blue-500 border-blue-500"
                 : "text-gray-600 dark:text-gray-300 border-transparent hover:text-gray-800 dark:hover:text-gray-100"

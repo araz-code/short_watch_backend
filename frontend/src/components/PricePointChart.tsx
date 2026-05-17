@@ -204,7 +204,7 @@ const PricePointChart: React.FC<{
 
   return (
     <div>
-      <div className="flex items-center justify-between px-5 mb-1">
+      <div className="flex items-center justify-between px-2 mb-1">
         <div className="flex items-center gap-2">
           <button
             onClick={toggleClosingPrices}
@@ -293,8 +293,8 @@ const PricePointChart: React.FC<{
           data={pricePoints}
           margin={{
             top: 5,
-            right: 20,
-            left: 20,
+            right: 5,
+            left: 5,
             bottom: 5,
           }}
         >
@@ -432,7 +432,7 @@ const PricePointChart: React.FC<{
       </ResponsiveContainer>
 
       {/* Legend */}
-      <div className="flex items-center px-5 mt-2">
+      <div className="flex items-center px-2 mt-2">
         <div className="flex items-center gap-3 text-xs text-gray-600 dark:text-gray-300">
           <span className="flex items-center gap-1.5">
             <span className="w-3 h-[3px] rounded-full bg-[#007AFF] inline-block" />

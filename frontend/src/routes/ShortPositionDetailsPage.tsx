@@ -237,9 +237,6 @@ const ShortPositionDetailsPage: React.FC = () => {
     content = (
       <>
         <div className="text-center pb-1 sm:pb-2 dark:text-white shrink-0">
-          <h1 className="text-base sm:text-xl">
-            {data.historic.length > 0 && data.historic[0].name}
-          </h1>
           {data.historic.length > 0 && (
             <>
               <div className="flex items-center justify-center gap-4 mt-1">
@@ -271,7 +268,7 @@ const ShortPositionDetailsPage: React.FC = () => {
                 <div className="flex items-center justify-center gap-2 mt-1.5 flex-wrap text-xs sm:text-sm tabular-nums text-gray-600 dark:text-gray-300">
                   {data.percentileAllTime != null && (
                     <span className="rounded px-1.5 py-px font-medium bg-amber-500/10 dark:bg-amber-500/25 text-amber-600 dark:text-amber-400">
-                      {formatOrdinal(Math.round(data.percentileAllTime), i18n.language)} {t("percentile")}
+                      {formatOrdinal(Math.floor(data.percentileAllTime), i18n.language)} {t("percentile")}
                     </span>
                   )}
                   {data.percentileAllTime != null && data.daysToCover != null && (
@@ -373,7 +370,7 @@ const ShortPositionDetailsPage: React.FC = () => {
           <MobileSidePanel code={code ?? undefined} />
 
           <div className="lg:w-[900px] flex flex-col flex-1 min-h-0 lg:flex-initial">
-            <div className="flex place-content-between shrink-0">
+            <div className="flex items-center justify-between shrink-0">
               <button
                 className="text-blue-500 hover:text-blue-700 bg-transparent border-none text-base p-4 inline-flex items-center gap-1.5 focus:ring-2 focus:ring-blue-300 rounded-sm min-h-[44px] min-w-[44px]"
                 onClick={() => {
@@ -390,7 +387,10 @@ const ShortPositionDetailsPage: React.FC = () => {
                 <span aria-hidden="true">←</span>
                 {t("Back")}
               </button>
-              <div className="flex items-center gap-1 sm:gap-3 pr-2 pt-4">
+              <span className="font-semibold text-sm tracking-wider dark:text-white">
+                {stockSymbol ?? code}
+              </span>
+              <div className="flex items-center gap-1 sm:gap-3 pr-2">
                 <FavoriteToggleButton
                   isFavorite={isFavorite}
                   addToMyList={addToMyList}
