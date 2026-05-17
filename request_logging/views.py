@@ -287,6 +287,7 @@ def get_visits_by_section_table(_: HttpRequest) -> JsonResponse:
         row('ZEAL analysis', b['zeal_analysis'], y['zeal_analysis']),
         row('ZEAL cost analysis', b['zeal_cost_analysis'], y['zeal_cost_analysis']),
         row('GN analysis', b['gn_analysis'], y['gn_analysis']),
+        row('BAVA analysis', b['bava_analysis'], y['bava_analysis']),
         row('Help - short watch', b['help_short_watch'], y['help_short_watch']),
         row('Help - detail page', b['help_details'], y['help_details']),
         row('Help - sellers list', b['help_sellers_list'], y['help_sellers_list']),
