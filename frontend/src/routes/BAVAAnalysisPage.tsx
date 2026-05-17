@@ -318,7 +318,7 @@ const BAVAAnalysisPage: React.FC = () => {
           <KPI value="1,67%" label="Short-interesse (maj 2026)" />
           <KPI value="9,40%" label="Højeste i datasættet (okt 2023)" />
           <KPI value="1" label="Aktiv short-sælger over 0,50%" />
-          <KPI value="-54%" label="Fra ATH (411 DKK, aug 2022)" />
+          <KPI value="-54%" label="Fra ATH (411 DKK intradag, aug 2022)" />
         </div>
 
         {/* 1. Overordnet billede */}
@@ -588,10 +588,7 @@ const BAVAAnalysisPage: React.FC = () => {
               <p>JYNNEOS-salget i Q3 2024 er 74,4 mio. USD mod 100,3 mio. USD året før. Aktien faldt 17% close-to-close. Shortinteressen stiger efterfølgende fra ca. 2,89% til 5,08% i marts 2025.</p>
             </TimelineEvent>
             <TimelineEvent date="5. marts 2025" title="Sekundært toppunkt: 5,08% shortinteresse" color="#e63946">
-              <p>Shortinteressen rammer 5,08% ved aktiekurs 168 DKK. Det er det højeste niveau i data siden januar 2024. Samme dag køber CEO Paul Chaplin aktier for 1,4 mio. DKK, CFO Henrik Juuel for 704.000 DKK og CCO Jean-Christophe May for 514.000 DKK. Fra april begynder et hurtigt fald i shortinteressen.</p>
-            </TimelineEvent>
-            <TimelineEvent date="9. maj 2025" title="Insidere køber igen: CEO Chaplin for 4 mio. DKK" color="#2a9d8f">
-              <p>CEO Paul Chaplin køber 25.663 aktier for knap 4 mio. DKK. COO Russell Thirsk køber for 735.000 DKK, og tre bestyrelsesmedlemmer køber hver for 150.000 DKK. Shortinteressen er faldet til 2,20%. Samlet insider-køb i 2025: ca. 7,8 mio. DKK.</p>
+              <p>Shortinteressen rammer 5,08% ved aktiekurs 168 DKK. Det er det højeste niveau i data siden januar 2024. Fra april begynder et hurtigt fald i shortinteressen.</p>
             </TimelineEvent>
             <TimelineEvent date="Juli 2025" title="Overtagelsesbud fra Nordic Capital og Permira: 233 DKK" color="#4361ee">
               <p>Nordic Capital og Permira lancerer et overtagelsesbud til 233 DKK per aktie. Shortinteressen falder markant i de følgende måneder fra omkring 1,7% i juli mod under 1% i takt med at overtagelsesprocessen udvikler sig.</p>
@@ -602,8 +599,8 @@ const BAVAAnalysisPage: React.FC = () => {
             <TimelineEvent date="6. november 2025" title="Budet trækkes tilbage: Aktien -21%, shortinteressen stiger igen" color="#e63946">
               <p>Tilslutningen er utilstrækkelig, og budet trækkes tilbage. Aktien falder til 187 DKK med massiv omsætning. I de følgende uger stiger shortinteressen fra 0,77% til 2,11%.</p>
             </TimelineEvent>
-            <TimelineEvent date="12. marts 2026" title="Fire insidere køber for samlet 4,5 mio. DKK" color="#2a9d8f">
-              <p>CEO Paul Chaplin (1,9 mio. DKK), CFO Henrik Juuel (1,0 mio. DKK), CCO Jean-Christophe May (921.000 DKK) og COO Russell Thirsk (646.000 DKK) køber alle aktier til kurs 177,65 DKK. Shortinteressen er på det tidspunkt 2,69%.</p>
+            <TimelineEvent date="2. marts 2026" title="CEO Paul Chaplin meddeler sin afgang" color="#e63946">
+              <p>Efter mere end et årti som CEO meddeler Paul Chaplin, at han træder tilbage af personlige grunde, da hans familie ønsker at vende tilbage til Australien. Han forbliver i rollen gennem 2026 eller indtil en efterfølger er udpeget. Bestyrelsen indleder en formel søgeproces.</p>
             </TimelineEvent>
             <TimelineEvent date="Maj 2026" title="Shortinteressen på 1,67%" color="#2a9d8f">
               <p>Shortinteressen er faldet fra 2,69% i marts 2026 til 1,67%. Connor Clark & Lunn Investment Management er den eneste kendte aktør over 0,50%-grænsen med 0,70%.</p>
@@ -615,9 +612,13 @@ const BAVAAnalysisPage: React.FC = () => {
         <section className="mb-12">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">9. Insider-transaktioner</h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            Mens shortsælgerne har reduceret deres positioner, har insidere i Bavarian Nordic
-            købt aktier i det åbne marked. Siden marts 2025 er der registreret 17 insider-køb
-            for samlet ca. 12,9 mio. DKK. Der er ikke registreret insider-salg i den tilgængelige data.
+            Siden marts 2025 er der registreret 17 insider-transaktioner i Bavarian Nordic for
+            samlet ca. 12,9 mio. DKK, og der er ikke registreret nogen insider-salg.
+            <strong> Vigtigt:</strong> Selvom transaktionerne fremgår som "Køb", er de reelt
+            en del af ledelsens og bestyrelsens løn - aktier de modtager som bonus over tid.
+            Det er altså ikke aktier, de selv har valgt at købe på børsen med egne penge.
+            Det er fortsat et positivt signal, at ingen sælger, men det er ikke det samme som
+            et reelt køb på det åbne marked.
           </p>
 
           <div className="overflow-x-auto rounded-2xl border border-gray-100 dark:border-gray-800 mb-6">
@@ -715,19 +716,18 @@ const BAVAAnalysisPage: React.FC = () => {
           </div>
 
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            Det mest markante er CEO Paul Chaplins tre separate køb for samlet ca. 7,25 mio.
-            DKK. Han købte først i marts 2025 ved 108 DKK (nær det sekundære toppunkt i
-            shortinteressen), igen i maj 2025 for knap 4 mio. DKK, og senest i marts 2026
-            ved 177 DKK. CFO Henrik Juuel og COO Russell Thirsk har begge købt ved to
-            lejligheder.
+            Den største enkelttransaktion er CEO Paul Chaplins RSU-vesting i maj 2025 på knap
+            4 mio. DKK fra en fastholdelsesordning etableret i 2021. RSU-vestings i marts 2025
+            stammer fra tildelinger i 2022, marts 2026-vestings fra det kortsigtede
+            incitamentsprogram med 3-års vesting, og maj 2026-vestings fra bestyrelsens
+            2023-tildeling.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-            <strong>Vigtigt:</strong> Udover disse køb modtog ledelsen også aktietildelinger som
-            en del af deres aflønning i marts 2025 og december 2024. Derudover udnyttede
-            Thomas Bennekov tegningsoptioner den 29. november 2024 og erhvervede 2.596
-            aktier til kurs 146,60 DKK (380.574 DKK). Disse tildelinger og option-udnyttelser
-            er kompensationsbaserede og skal ikke forveksles med åbent markedskøb. Tabellen
-            ovenfor viser kun køb i det åbne marked.
+            <strong>Yderligere transaktioner:</strong> Derudover modtog ledelsen rene
+            aktietildelinger (uden modydelse) i marts 2025 og december 2024. Thomas Bennekov
+            udnyttede tegningsoptioner den 29. november 2024 og erhvervede 2.596 aktier til
+            kurs 146,60 DKK (380.574 DKK). Alle disse transaktioner er kompensationsbaserede
+            og afspejler aktiebaseret aflønning, ikke aktive investeringsbeslutninger.
           </p>
         </section>
 
@@ -749,6 +749,7 @@ const BAVAAnalysisPage: React.FC = () => {
                 <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>JYNNEOS-omsætning er knyttet til myndighedsordrer under udbrud</li>
                 <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Mpox-vaccinesalget faldt 46% år-over-år i de første ni måneder af 2024</li>
                 <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Det mislykkede overtagelsesbud efterlader usikkerhed om strategien</li>
+                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>CEO Paul Chaplin har meddelt sin afgang i 2026, hvilket skaber lederskifte-usikkerhed</li>
                 <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Chikungunya-omsætningen (Vimkunya: 85 mio. DKK i 2025) er stadig lille, og kommerciel opskalering er usikker</li>
               </ul>
             </div>
@@ -759,7 +760,7 @@ const BAVAAnalysisPage: React.FC = () => {
                 <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Rejsevacciner (Rabipur, Encepur) giver tilbagevendende omsætning</li>
                 <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Aktien er ned 54% fra ATH - en stor del af risikoen kan være prissat ind</li>
                 <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Bud fra Nordic Capital og Permira ved 250 DKK indikerer, at professionelle investorer så betydelig værdi i selskabet ved disse kursniveauer</li>
-                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Insidere (inkl. CEO, CFO og COO) har købt for 12,9 mio. DKK; der er ikke registreret insider-salg i perioden</li>
+                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Der er ikke registreret insider-salg i perioden, hvilket indikerer at ledelsen har valgt at beholde de aktier, de modtager gennem aflønning</li>
               </ul>
             </div>
           </div>
