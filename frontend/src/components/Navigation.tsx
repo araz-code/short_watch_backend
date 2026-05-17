@@ -1,6 +1,7 @@
 import { Link, NavLink, useLocation } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { trackEvent } from "../analytics";
 
 const defaultCollapseMenu = {
   mainMenu: true,
@@ -181,7 +182,10 @@ const Navigation: React.FC = () => {
                     className={({ isActive }) =>
                       `${isActive || isAnalysisActive ? activeLinkClasses : linkClasses} inline-flex items-center gap-1.5`
                     }
-                    onClick={() => setCollapseMenu(defaultCollapseMenu)}
+                    onClick={() => {
+                      trackEvent("analysis_link_click", { source: "nav" });
+                      setCollapseMenu(defaultCollapseMenu);
+                    }}
                   >
                     {t("Analysis")}
                     <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-amber-400 text-[#0d1b4c] leading-none">

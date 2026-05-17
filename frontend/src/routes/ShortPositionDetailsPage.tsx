@@ -20,6 +20,8 @@ import { formatNum } from "../utils/format";
 import { computePriceFlow } from "../utils/computePriceFlow";
 import RecentUpdatesSidebar from "../components/RecentUpdatesSidebar";
 import AnalysesSidebar from "../components/AnalysesSidebar";
+import MobileSidePanel from "../components/MobileSidePanel";
+import { analyses } from "../data/analyses";
 
 const detailOptions = ["Historic data", "Largest sellers", "Price flow"];
 const periodOptions = ["1W", "1M", "3M", "6M", "YTD", "Max"];
@@ -291,19 +293,20 @@ const ShortPositionDetailsPage: React.FC = () => {
               </>
             )}
           </p>
-          {(code === "DK0060257814" || code === "DK0010272632" || code === "DK0015998017") && (
-            <a
-              href={
-                code === "DK0060257814" ? "/analyse/zeal/2026-05-13" :
-                code === "DK0010272632" ? "/analyse/gn/2026-05-14" :
-                "/analyse/bava/2026-05-17"
-              }
-              className="inline-flex items-center gap-1.5 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 mt-2 transition-colors"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-              {t("Læs shortanalyse")} →
-            </a>
-          )}
+          {(() => {
+            const analysis = code ? analyses.find((a) => a.code === code) : undefined;
+            if (!analysis) return null;
+            return (
+              <a
+                href={`/analyse/${analysis.slug}`}
+                onClick={() => trackEvent("analysis_link_click", { source: "stock_detail", slug: analysis.slug })}
+                className="inline-flex items-center gap-1.5 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 mt-2 transition-colors"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                {t("Læs shortanalyse")} →
+              </a>
+            );
+          })()}
         </div>
         <div className="flex flex-col flex-1 min-h-0">
           <div className="mb-3 shrink-0">
@@ -364,9 +367,10 @@ const ShortPositionDetailsPage: React.FC = () => {
           <div className="hidden xl:block xl:flex-1 relative">
             <div className="absolute inset-0 flex flex-col items-center pt-[88px] px-4 overflow-y-auto gap-4">
               {code && <RecentUpdatesSidebar code={code} />}
-              <AnalysesSidebar code={code ?? undefined} />
+              <AnalysesSidebar code={code ?? undefined} source="sidebar_stock_detail" />
             </div>
           </div>
+          <MobileSidePanel code={code ?? undefined} />
 
           <div className="lg:w-[900px] flex flex-col flex-1 min-h-0 lg:flex-initial">
             <div className="flex place-content-between shrink-0">

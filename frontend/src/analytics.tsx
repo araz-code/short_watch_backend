@@ -34,7 +34,10 @@ export type AnalyticsEvent =
   | "insider_list_view"
   | "insider_detail_view"
   | "insider_watchlist_add"
-  | "insider_watchlist_remove";
+  | "insider_watchlist_remove"
+  | "analysis_link_click"
+  | "analysis_panel_open"
+  | "homepage_card_click";
 
 type EventParams = Record<string, string | number | boolean | undefined>;
 

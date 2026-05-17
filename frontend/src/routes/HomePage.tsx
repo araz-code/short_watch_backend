@@ -12,6 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
 import AppImage from "../components/Homepage/AppImage";
+import FeaturedAnalyses from "../components/FeaturedAnalyses";
 import { useEffect, useState } from "react";
 import { trackEvent, trackPageView } from "../analytics";
 import { useQuery } from "@tanstack/react-query";
@@ -19,42 +20,62 @@ import { fetchStats, ShortStats } from "../apis/ShortPositionAPI";
 import { formatTimestamp } from "../utils/dates";
 import { formatNum } from "../utils/format";
 
-const cards = [
+type HomeCard = {
+  icon: typeof faChartSimple;
+  title: string;
+  content: string;
+  to: string;
+  slug: string;
+};
+
+const cards: HomeCard[] = [
   {
     icon: faChartSimple,
     title: "Personal list",
     content:
       "Build a watchlist of the Danish stocks you care about.",
+    to: "/short-watch",
+    slug: "personal_list",
   },
   {
     icon: faClockRotateLeft,
     title: "Historic data",
     content:
       "Explore short positions over time, tables and charts included.",
+    to: "/short-watch",
+    slug: "historic_data",
   },
   {
     icon: faPerson,
     title: "Short sellers",
     content:
       "See every short seller holding 0.50% or more in a given stock.",
+    to: "/short-sellers",
+    slug: "short_sellers",
   },
   {
     icon: faTrophy,
     title: "Top Lists",
     content:
       "See which stocks are most shorted, trending, and most viewed.",
+    to: "/top-lists",
+    slug: "top_lists",
   },
   {
     icon: faUserTie,
     title: "Insider Trades",
     content:
       "Track when CEOs, board members, and other insiders buy or sell shares in Danish companies.",
+    to: "/insider-transactions",
+    slug: "insider_trades",
   },
   {
     icon: faFileLines,
     title: "In-depth analysis",
     content:
       "Read our analyses that combine short positions with company events, insider trades, and market context.",
+    to: "/analyse",
+    slug: "analysis",
   },
 ];
 
@@ -193,6 +214,9 @@ const HomePage: React.FC = () => {
           </main>
         </div>
 
+        {/* Featured analyses */}
+        <FeaturedAnalyses />
+
         {/* Live stats */}
         {stats && (
           <section className="py-10 sm:py-12">
@@ -277,14 +301,29 @@ const HomePage: React.FC = () => {
       <section className="mt-8 sm:mt-10 pb-[20px] max-w-[900px] mx-auto px-6">
         <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-6">
           {cards.map((item) => (
-            <li key={item.title} className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 shrink-0">
-                <FontAwesomeIcon icon={item.icon} />
-              </div>
-              <div>
-                <h3 className="font-semibold text-gray-900 dark:text-white">{t(item.title)}</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5 leading-relaxed">{t(item.content)}</p>
-              </div>
+            <li key={item.title}>
+              <Link
+                to={item.to}
+                onClick={() => {
+                  if (item.slug === "analysis") {
+                    trackEvent("analysis_link_click", { source: "homepage_card" });
+                  } else {
+                    trackEvent("homepage_card_click", { card: item.slug });
+                  }
+                }}
+                className="group flex items-start gap-4 -m-2 p-2 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800/40 transition-colors"
+              >
+                <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 shrink-0 group-hover:bg-blue-100 dark:group-hover:bg-blue-900/50 transition-colors">
+                  <FontAwesomeIcon icon={item.icon} />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors inline-flex items-center gap-2">
+                    {t(item.title)}
+                    <FontAwesomeIcon icon={faArrowRight} className="text-xs text-blue-600 dark:text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </h3>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5 leading-relaxed">{t(item.content)}</p>
+                </div>
+              </Link>
             </li>
           ))}
         </ul>
