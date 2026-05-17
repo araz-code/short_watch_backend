@@ -204,7 +204,7 @@ const PricePointChart: React.FC<{
 
   return (
     <div>
-      <div className="flex items-center justify-between px-2 mb-1">
+      <div className="flex items-center justify-between px-2 mb-1 mt-2 sm:mt-0">
         <div className="flex items-center gap-2">
           <button
             onClick={toggleClosingPrices}

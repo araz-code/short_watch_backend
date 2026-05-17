@@ -325,7 +325,7 @@ const ShortPositionDetailsPage: React.FC = () => {
               <button
                 key={option}
                 onClick={() => setSelectedDetailOption(option)}
-                className={`pt-2 pb-3 text-xs sm:text-sm font-medium transition-colors duration-200 border-b-2 -mb-px ${
+                className={`pt-2 pb-3 text-sm font-medium transition-colors duration-200 border-b-2 -mb-px ${
                   selectedDetailOption === option
                     ? "border-blue-500 text-blue-600 dark:text-blue-400"
                     : "border-transparent text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100"
@@ -404,9 +404,13 @@ const ShortPositionDetailsPage: React.FC = () => {
                     setShowHelp(true);
                   }}
                   aria-label={t("Help")}
-                  className="text-sm font-medium text-blue-500 border border-blue-300 dark:border-blue-700 rounded-md px-3 py-1.5 hover:bg-blue-50 dark:hover:bg-blue-900/30 focus:ring-2 focus:ring-blue-300 transition-colors"
+                  className="bg-transparent border-none text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 focus:ring-2 focus:ring-blue-300 rounded-sm"
                 >
-                  {t("Help")}
+                  <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="16" x2="12" y2="12"/>
+                    <line x1="12" y1="8" x2="12.01" y2="8"/>
+                  </svg>
                 </button>
               </div>
             </div>
