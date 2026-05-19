@@ -131,7 +131,7 @@ const NovoDCFPage: React.FC = () => {
       .then((data) => {
         const chart = data?.chartValues;
         if (Array.isArray(chart) && chart.length > 0) {
-          const last = chart[chart.length - 1];
+          const last = chart[0];
           if (last.close && last.close > 0) {
             setCurrentPrice(last.close);
             const d = new Date(last.timestamp);
