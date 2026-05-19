@@ -9,6 +9,7 @@ const gradients: Record<string, string> = {
   BAVA: "from-emerald-500 to-teal-600",
   ZEAL: "from-violet-500 to-indigo-600",
   GN: "from-amber-500 to-orange-600",
+    NOVO: "from-sky-500 to-blue-600",
 };
 
 function tickerFromTitle(title: string): string {
@@ -21,9 +22,9 @@ export default function FeaturedAnalyses() {
   const isDa = i18n.language.startsWith("da");
 
   const featuredSlugs = [
+    "novo/dcf/2026-05-19",
     "bava/2026-05-17",
     "zeal/2026-05-13",
-    "gn/2026-05-14",
   ];
   const featured = featuredSlugs
     .map((slug) => analyses.find((a) => a.slug === slug))

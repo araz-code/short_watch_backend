@@ -8,6 +8,16 @@ export interface Analysis {
 
 export const analyses: Analysis[] = [
   {
+    slug: "novo/dcf/2026-05-19",
+    title: "Novo Nordisk A/S (NOVO)",
+    subtitle: {
+      da: "Lav din egen vurdering af Novo Nordisk A/S",
+      en: "Build your own valuation of Novo Nordisk A/S",
+    },
+    date: { da: "19. maj 2026", en: "May 19, 2026" },
+    code: "DK0062498333",
+  },
+  {
     slug: "bava/2026-05-17",
     title: "Bavarian Nordic (BAVA)",
     subtitle: {

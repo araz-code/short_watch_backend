@@ -35,6 +35,7 @@ const ZealCostAnalysisPageDa = lazy(() => import("./routes/ZealCostAnalysisPage.
 const ZealCostAnalysisPageEn = lazy(() => import("./routes/ZealCostAnalysisPage.en.tsx"));
 const BAVAAnalysisPageDa = lazy(() => import("./routes/BAVAAnalysisPage.tsx"));
 const BAVAAnalysisPageEn = lazy(() => import("./routes/BAVAAnalysisPage.en.tsx"));
+const NovoDCFPage = lazy(() => import("./routes/NovoDCFPage.tsx"));
 const AnalysisPage = lazy(() => import("./routes/AnalysisPage.tsx"));
 
 function ZealAnalysisPage() {
@@ -173,6 +174,14 @@ const router = createBrowserRouter([
   {
     path: "analyse/bava",
     element: <ErrorBoundary><BAVAAnalysisPage /></ErrorBoundary>,
+  },
+  {
+    path: "analyse/novo/dcf/2026-05-19",
+    element: <ErrorBoundary><NovoDCFPage /></ErrorBoundary>,
+  },
+  {
+    path: "analyse/novo/dcf",
+    element: <ErrorBoundary><NovoDCFPage /></ErrorBoundary>,
   },
 ]);
 
