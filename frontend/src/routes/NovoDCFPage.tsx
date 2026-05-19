@@ -131,10 +131,10 @@ const NovoDCFPage: React.FC = () => {
       .then((data) => {
         const chart = data?.chartValues;
         if (Array.isArray(chart) && chart.length > 0) {
-          const last = chart[0];
-          if (last.close && last.close > 0) {
-            setCurrentPrice(last.close);
-            const d = new Date(last.timestamp);
+          const entry = chart.find((c: { close: number | null }) => c.close != null && c.close > 0);
+          if (entry) {
+            setCurrentPrice(entry.close);
+            const d = new Date(entry.timestamp);
             setPriceDate(d.toLocaleDateString("da-DK", { day: "numeric", month: "short", year: "numeric" }));
           }
         }
