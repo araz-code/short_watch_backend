@@ -35,7 +35,8 @@ const ZealCostAnalysisPageDa = lazy(() => import("./routes/ZealCostAnalysisPage.
 const ZealCostAnalysisPageEn = lazy(() => import("./routes/ZealCostAnalysisPage.en.tsx"));
 const BAVAAnalysisPageDa = lazy(() => import("./routes/BAVAAnalysisPage.tsx"));
 const BAVAAnalysisPageEn = lazy(() => import("./routes/BAVAAnalysisPage.en.tsx"));
-const NovoDCFPage = lazy(() => import("./routes/NovoDCFPage.tsx"));
+const NovoDCFPageDa = lazy(() => import("./routes/NovoDCFPage.tsx"));
+const NovoDCFPageEn = lazy(() => import("./routes/NovoDCFPage.en.tsx"));
 const AnalysisPage = lazy(() => import("./routes/AnalysisPage.tsx"));
 
 function ZealAnalysisPage() {
@@ -53,6 +54,10 @@ function BAVAAnalysisPage() {
 function ZealCostAnalysisPage() {
   const lng = localStorage.getItem("i18nextLng") || navigator.language;
   return lng.startsWith("da") ? <ZealCostAnalysisPageDa /> : <ZealCostAnalysisPageEn />;
+}
+function NovoDCFPage() {
+  const lng = localStorage.getItem("i18nextLng") || navigator.language;
+  return lng.startsWith("da") ? <NovoDCFPageDa /> : <NovoDCFPageEn />;
 }
 
 type ConsentButtonProps = {
