@@ -324,10 +324,12 @@ def get_visits_by_analysis_table(_: HttpRequest) -> JsonResponse:
 
     rows = [
         row('Analysis overview', 'analysis_overview'),
+        row('NOVO DCF analysis', 'novo_dcf_analysis'),
+        row('NOVO DCF shares', 'novo_dcf_share'),
+        row('BAVA analysis', 'bava_analysis'),
         row('ZEAL analysis', 'zeal_analysis'),
         row('ZEAL cost analysis', 'zeal_cost_analysis'),
         row('GN analysis', 'gn_analysis'),
-        row('BAVA analysis', 'bava_analysis'),
     ]
 
     return JsonResponse({

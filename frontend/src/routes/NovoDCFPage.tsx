@@ -127,7 +127,7 @@ const NovoDCFPage: React.FC = () => {
     fetch(`${HOST}/stats/visit/novo-dcf-analysis/`).catch(() => {});
 
     // Fetch latest closing price from chart data
-    fetchShortPositionDetails({ category: "c25", code: NOVO_ISIN })
+    fetchShortPositionDetails({ category: "pick", code: NOVO_ISIN })
       .then((data) => {
         const chart = data?.chartValues;
         if (Array.isArray(chart) && chart.length > 0) {
