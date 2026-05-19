@@ -260,26 +260,27 @@ const NovoDCFPageEn: React.FC = () => {
 
   return (
     <PageTemplate>
-      <title>Zirium | Novo Nordisk DCF: Build your own valuation</title>
-      <meta name="description" content="Interactive DCF analysis of Novo Nordisk A/S. Adjust your own assumptions about growth, margins, and discount rate to see what the stock is worth." />
-      <meta property="og:title" content="Build your own valuation of Novo Nordisk A/S" />
-      <meta property="og:description" content="Interactive DCF analysis of Novo Nordisk A/S. Adjust your own assumptions about growth, margins, and discount rate to see what the stock is worth." />
+      <title>Novo Nordisk (NOVO B) DCF Model: Calculate Your Own Fair Value | Zirium</title>
+      <meta name="description" content="Free interactive DCF model for Novo Nordisk A/S (NOVO B). Adjust revenue growth, operating margin, WACC, and terminal growth to calculate fair value and a 12-month price target in real time. Includes sensitivity analysis." />
+      <meta property="og:title" content="Novo Nordisk (NOVO B) DCF: Calculate your own fair value" />
+      <meta property="og:description" content="Free interactive DCF model for Novo Nordisk. Adjust growth, margin, and WACC assumptions to see fair value and price target in real time." />
       <meta property="og:type" content="article" />
       <meta property="og:url" content={`https://www.zirium.dk/analyse/${SLUG}`} />
       <meta property="og:site_name" content="Zirium" />
       <meta name="twitter:card" content="summary" />
-      <meta name="twitter:title" content="Build your own valuation of Novo Nordisk A/S" />
-      <meta name="twitter:description" content="Interactive DCF analysis of Novo Nordisk A/S." />
+      <meta name="twitter:title" content="Novo Nordisk (NOVO B) DCF: Calculate your own fair value" />
+      <meta name="twitter:description" content="Free interactive DCF model for Novo Nordisk. Adjust growth, margin, and WACC to see fair value and 12-month price target. Includes sensitivity table." />
       <script type="application/ld+json">{JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Article",
-        "headline": "Build your own valuation of Novo Nordisk A/S",
-        "description": "Interactive DCF analysis of Novo Nordisk A/S. Adjust your own assumptions and see what the stock is worth.",
+        "headline": "Novo Nordisk (NOVO B) DCF Model: Calculate your own fair value",
+        "description": "Free interactive DCF model for Novo Nordisk A/S (NOVO B). Adjust revenue growth, operating margin, WACC, and terminal growth to calculate fair value and a 12-month price target in real time.",
         "author": { "@type": "Person", "name": "Araz Bayat Makoo" },
         "publisher": { "@type": "Organization", "name": "Zirium", "url": "https://www.zirium.dk" },
         "datePublished": "2026-05-19",
         "mainEntityOfPage": `https://www.zirium.dk/analyse/${SLUG}`,
         "inLanguage": "en",
+        "about": { "@type": "Corporation", "name": "Novo Nordisk A/S", "tickerSymbol": "NOVO B", "url": "https://www.novonordisk.com" },
       })}</script>
 
       <article className="w-full max-w-[900px] mx-auto px-5 sm:px-8 pb-10 sm:pb-16">

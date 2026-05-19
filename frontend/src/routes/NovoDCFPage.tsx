@@ -260,26 +260,27 @@ const NovoDCFPage: React.FC = () => {
 
   return (
     <PageTemplate>
-      <title>Zirium | Novo Nordisk DCF: Lav din egen vurdering</title>
-      <meta name="description" content="Interaktiv DCF-analyse af Novo Nordisk A/S. Juster dine egne antagelser om vækst, margin og diskonteringsrente og se hvad aktien er værd." />
-      <meta property="og:title" content="Lav din egen vurdering af Novo Nordisk A/S" />
-      <meta property="og:description" content="Interaktiv DCF-analyse af Novo Nordisk A/S. Juster dine egne antagelser om vækst, margin og diskonteringsrente og se hvad aktien er værd." />
+      <title>Novo Nordisk (NOVO B) DCF-analyse: Beregn din egen fair value | Zirium</title>
+      <meta name="description" content="Interaktiv DCF-model for Novo Nordisk A/S (NOVO B). Juster vækst, margin, WACC og terminalvækst og se fair value og 12-måneders kursmål i realtid. Gratis aktieanalyse med følsomhedstabel." />
+      <meta property="og:title" content="Novo Nordisk (NOVO B) DCF: Beregn din egen fair value" />
+      <meta property="og:description" content="Interaktiv DCF-model for Novo Nordisk. Juster dine antagelser om vækst, margin og WACC og se kursmål og fair value i realtid." />
       <meta property="og:type" content="article" />
       <meta property="og:url" content={`https://www.zirium.dk/analyse/${SLUG}`} />
       <meta property="og:site_name" content="Zirium" />
       <meta name="twitter:card" content="summary" />
-      <meta name="twitter:title" content="Lav din egen vurdering af Novo Nordisk A/S" />
-      <meta name="twitter:description" content="Interaktiv DCF-analyse af Novo Nordisk A/S." />
+      <meta name="twitter:title" content="Novo Nordisk (NOVO B) DCF: Beregn din egen fair value" />
+      <meta name="twitter:description" content="Interaktiv DCF-model for Novo Nordisk. Juster vækst, margin og WACC og se fair value og kursmål i realtid. Gratis aktieanalyse." />
       <script type="application/ld+json">{JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Article",
-        "headline": "Lav din egen vurdering af Novo Nordisk A/S",
-        "description": "Interaktiv DCF-analyse af Novo Nordisk A/S. Juster dine egne antagelser og se hvad aktien er værd.",
+        "headline": "Novo Nordisk (NOVO B) DCF-analyse: Beregn din egen fair value",
+        "description": "Interaktiv DCF-model for Novo Nordisk A/S (NOVO B). Juster vækst, margin, WACC og terminalvækst og se fair value og 12-måneders kursmål i realtid.",
         "author": { "@type": "Person", "name": "Araz Bayat Makoo" },
         "publisher": { "@type": "Organization", "name": "Zirium", "url": "https://www.zirium.dk" },
         "datePublished": "2026-05-19",
         "mainEntityOfPage": `https://www.zirium.dk/analyse/${SLUG}`,
         "inLanguage": "da",
+        "about": { "@type": "Corporation", "name": "Novo Nordisk A/S", "tickerSymbol": "NOVO B", "url": "https://www.novonordisk.com" },
       })}</script>
 
       <article className="w-full max-w-[900px] mx-auto px-5 sm:px-8 pb-10 sm:pb-16">
