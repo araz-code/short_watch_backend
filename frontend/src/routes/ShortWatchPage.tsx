@@ -11,7 +11,7 @@ import LoadingIndicator from "../components/UI/LoadingIndicator";
 import HelpDialog from "../components/HelpDialog";
 import RecentUpdatesSidebar from "../components/RecentUpdatesSidebar";
 import AnalysesSidebar from "../components/AnalysesSidebar";
-import MobileSidePanel from "../components/MobileSidePanel";
+import MobileAnalysesCarousel from "../components/MobileAnalysesCarousel";
 import { useTranslation } from "react-i18next";
 import { trackEvent, trackPageView } from "../analytics";
 
@@ -153,7 +153,7 @@ const ShortWatchPage: React.FC = () => {
               <AnalysesSidebar source="sidebar_short_watch" />
             </div>
           </div>
-          <MobileSidePanel codes={showMyList ? myList : undefined} feedTypes="insider" feedDays={30} />
+          {/* MobileSidePanel hidden — carousel replaces it on mobile */}
           <div className="lg:w-[900px] flex flex-col flex-1 min-h-0 lg:flex-initial">
             <h1 className="text-2xl lg:text-3xl text-center py-6 dark:text-white shrink-0">
               Danish Short Watch
@@ -246,7 +246,7 @@ const ShortWatchPage: React.FC = () => {
                   {t("You can get more details by clicking on a row")}
                 </p>
                 {content}
-                <div className="h-4"></div>
+                <div className="h-16 xl:h-4"></div>
               </div>
             </section>
           </div>
@@ -259,6 +259,8 @@ const ShortWatchPage: React.FC = () => {
           <HelpDialog onClose={() => setShowHelp(false)} />
         </div>
       )}
+
+      <MobileAnalysesCarousel />
     </div>
   );
 };
