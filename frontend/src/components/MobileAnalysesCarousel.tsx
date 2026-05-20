@@ -82,7 +82,7 @@ export default function MobileAnalysesCarousel() {
         >
           <span className={`${accent} shrink-0 w-1 self-stretch rounded-full`} />
           <div className="min-w-0 flex-1">
-            <p className="text-sm font-semibold text-white leading-snug truncate">
+            <p className="text-sm font-semibold text-white leading-snug line-clamp-2">
               {isDa ? a.subtitle.da : a.subtitle.en}
             </p>
             <p className="text-xs text-indigo-200 truncate mt-0.5">
