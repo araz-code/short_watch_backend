@@ -1026,8 +1026,9 @@ const NovoDCFPage: React.FC = () => {
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-2">
             Din beregnede fair value er{" "}
-            <strong className="text-gray-900 dark:text-white">{Math.round(fairValuePerShare).toLocaleString("da-DK")} DKK</strong> (markeret
-            med blåt). Grøn betyder over nuværende kurs ({currentPrice} DKK), rød betyder under.
+            <strong className="text-gray-900 dark:text-white">{Math.round(fairValuePerShare).toLocaleString("da-DK")} DKK</strong>.
+            Den blå celle markerer den tabelværdi, der ligger tættest på dit resultat.
+            Grøn betyder over nuværende kurs ({currentPrice} DKK), rød betyder under.
           </p>
           <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400 mb-5">
             <span className="flex items-center gap-1.5"><span className="inline-block w-3 h-3 rounded-sm bg-red-100 dark:bg-red-900/40 border border-red-200 dark:border-red-800" /> Under kurs</span>
@@ -1053,9 +1054,20 @@ const NovoDCFPage: React.FC = () => {
                   const allValues = senMatrix.flat().map((c) => c.perShare);
                   const minVal = Math.min(...allValues);
                   const maxVal = Math.max(...allValues);
-                  // Find nearest cell to current WACC and terminal growth
-                  const nearestWaccIdx = WACC_VALUES.reduce((best, v, i) => Math.abs(v - wacc) < Math.abs(WACC_VALUES[best] - wacc) ? i : best, 0);
-                  const nearestTgIdx = TG_VALUES.reduce((best, v, i) => Math.abs(v - terminalGrowth) < Math.abs(TG_VALUES[best] - terminalGrowth) ? i : best, 0);
+                  // Find cell whose value is closest to the computed fair value
+                  let nearestWaccIdx = 0;
+                  let nearestTgIdx = 0;
+                  let nearestDiff = Infinity;
+                  senMatrix.forEach((row, ri) => {
+                    row.forEach((cell, ci) => {
+                      const diff = Math.abs(cell.perShare - fairValuePerShare);
+                      if (diff < nearestDiff) {
+                        nearestDiff = diff;
+                        nearestWaccIdx = ri;
+                        nearestTgIdx = ci;
+                      }
+                    });
+                  });
                   return senMatrix.map((row, ri) => {
                     const rowWacc = WACC_VALUES[ri];
                     return (
@@ -1114,7 +1126,7 @@ const NovoDCFPage: React.FC = () => {
             </table>
           </div>
           <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
-            Alle værdier i DKK per aktie. Blåt felt med ramme svarer til dine nuværende WACC- og g-værdier ({Math.round(fairValuePerShare).toLocaleString("da-DK")} DKK).
+            Alle værdier i DKK per aktie. Blåt felt med ramme er den celle, der ligger tættest på din beregnede fair value ({Math.round(fairValuePerShare).toLocaleString("da-DK")} DKK).
             Tabellen opdateres automatisk når du ændrer dine antagelser.
           </p>
         </section>
