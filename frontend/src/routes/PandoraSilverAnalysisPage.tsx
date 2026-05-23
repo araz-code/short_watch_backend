@@ -1831,7 +1831,7 @@ const PandoraSilverAnalysisPage: React.FC = () => {
             til. Et markant fald i forbrugertilliden plejer derfor at slå
             igennem på efterspørgslen efter den slags ikke-essentielle køb.
             Det kan være med til at forklare, hvorfor Pandoras Nordamerika-LFL
-            er gået fra +11% i Q1 2025 til -2% i Q1 2026, selv om vi ikke kan
+            er gået fra +6% i FY 2025 (heraf +2% i Q4 2025 alene) til -2% i Q1 2026, selv om vi ikke kan
             tilskrive hele faldet til forbrugertilliden alene.
           </p>
 
@@ -1882,7 +1882,7 @@ const PandoraSilverAnalysisPage: React.FC = () => {
               <h4 className="font-semibold text-amber-700 dark:text-amber-400 mb-3 text-sm uppercase tracking-wide">Efterspørgselssiden (sentiment)</h4>
               <ul className="space-y-2 text-[15px] text-gray-700 dark:text-gray-300">
                 <li className="flex gap-2"><span className="text-amber-500 mt-0.5">&#x25BC;</span>Amerikansk forbrugertillid på 44,8 (laveste niveau siden 1952)</li>
-                <li className="flex gap-2"><span className="text-amber-500 mt-0.5">&#x25BC;</span>USA-LFL +11% i Q1 2025 → Nordamerika-LFL -2% i Q1 2026</li>
+                <li className="flex gap-2"><span className="text-amber-500 mt-0.5">&#x25BC;</span>Nordamerika-LFL gået fra +6% i FY 2025 til -2% i Q1 2026</li>
                 <li className="flex gap-2"><span className="text-amber-500 mt-0.5">&#x25BC;</span>Europa svagt: UK -8%, Frankrig -7% LFL i Q3 2025</li>
                 <li className="flex gap-2"><span className="text-amber-500 mt-0.5">&#x25BC;</span>Organisk vækst guidet til -1% til 2% i 2026 (2025 endte på 6%, 2024 var 13%)</li>
               </ul>
@@ -2033,33 +2033,38 @@ const PandoraSilverAnalysisPage: React.FC = () => {
             en stærk negativ sammenhæng, men den fortæller ikke hele historien.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            Sølvprisen er den mest direkte faktor. Den påvirker Pandoras
-            materialeomkostninger og dermed EBIT-marginen. Selvom hedging forsinker
-            effekten, har det vedvarende rally i sølv fra $23 til $76/oz tvunget
-            Pandora til at sænke sine marginmål fra "ca. 24%" (2025) til 21-22% (2026).
+            Sølvprisen påvirker Pandoras materialeomkostninger og dermed
+            EBIT-marginen. Selvom hedging forsinker effekten, har rallyet fra
+            $23 til $76/oz været en væsentlig del af den eksterne modvind
+            (samlet 300 bp i 2025, 440 bp i Q1 2026, jf. Pandoras egne
+            opgørelser fra Q4 2025 og Q1 2026), der har fået Pandora til at
+            sænke EBIT-margin guidance fra "ca. 24%" (2025) til 21-22% (2026).
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            Den amerikanske forbrugertillid er den sekundære, men vigtige faktor.
-            Med USA som største enkeltmarked (ca. 32% af omsætningen) og en amerikansk forbrugertillid på meget lave 44,8 er efterspørgselssiden
-            under pres. Smykker er en diskretionær kategori, og Pandora har allerede
-            set Nordamerika-LFL falde fra +11% (USA i Q1 2025) til -2% (Q1 2026).
+            På efterspørgselssiden er den amerikanske forbrugertillid faldet
+            til 44,8 i maj 2026, det laveste niveau siden indeksets start i
+            1952. USA er Pandoras største enkeltmarked (ca. 32% af omsætningen
+            i 9M 2025), og smykker er en diskretionær forbrugerkategori. Pandora
+            har allerede set Nordamerika-LFL falde fra +6% i FY 2025 (heraf
+            +2% i Q4 2025 alene) til -2% i Q1 2026.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            Det centrale spørgsmål for investorer er, om den nuværende kurs (556 DKK,
-            P/E 8,3) allerede afspejler disse udfordringer, eller om der er mere
-            nedside. Svaret afhænger primært af to ting: Hvor sølvprisen stabiliserer
-            sig, og hvornår den amerikanske forbrugertillid begynder at vende.
+            Det centrale spørgsmål for investorer er, om den nuværende kurs
+            (556 DKK, P/E 8,3) allerede afspejler disse udfordringer, eller om
+            der er mere nedside. To variabler er centrale at følge: Hvor
+            sølvprisen stabiliserer sig, og hvornår den amerikanske
+            forbrugertillid begynder at vende.
           </p>
 
           <div className="bg-gray-50 dark:bg-[#15151a] rounded-2xl border border-gray-100 dark:border-gray-800 p-5 mt-6">
             <h4 className="font-semibold text-gray-900 dark:text-white mb-3">Hvad skal man holde øje med</h4>
             <ul className="space-y-1.5 text-[15px] text-gray-600 dark:text-gray-300">
-              <li>&#x2022; Sølvprisen: Et vedvarende fald under $60/oz ville lette margintrykket markant</li>
-              <li>&#x2022; Amerikansk forbrugertillid: Et vendepunkt i indekset ville signalere bedre efterspørgsel</li>
-              <li>&#x2022; US-toldsatser: Eventuelle lempelser af toldregimet for Thailand-import</li>
-              <li>&#x2022; Pandoras hedging-strategi: Niveauet for 2027-hedging vil vise forventet sølveksponering</li>
-              <li>&#x2022; Ny CEO Berta de Pablos-Barbier: Strategisk retning fra januar 2026</li>
-              <li>&#x2022; Platinbelægningstrategi: Kan ændre materialeeksponeringen over tid</li>
+              <li>&#x2022; <strong>Sølvprisens spot-niveau:</strong> Pandoras 2026 er låst ved ~$32/oz hedget; men spot-niveauet i 2026 bestemmer hvor 2027-hedges sættes (offentliggøres i kommende kvartalsrapporter). Pandora oplyser i Q1 2026 at 1100 bp ekstern modvind forventes i 2027 hvis sølv-spot holder $82/oz</li>
+              <li>&#x2022; <strong>Amerikansk forbrugertillid:</strong> Pandora citerer selv "weak consumer sentiment" som driver bag Nordamerika-svaghed (Q4 2025-rapport); et vendepunkt i UMich-indekset ville fjerne denne specifikke modvind</li>
+              <li>&#x2022; <strong>US-toldsatser:</strong> 19% Thailand-told bidrog med 210 bp af Q1 2026's samlede 440 bp eksterne modvind (Pandora Q1 2026); eventuelle lempelser ville fjerne en betydelig del</li>
+              <li>&#x2022; <strong>2027-hedge niveau:</strong> Pandora offentliggør hedge-priser for kommende kvartaler i hver rapport; Q1 2026-tabellen viser fx Q1 2027 estimeret cost-of-sales pris ved ~$46/oz (inkl. nye hedges fra april 2026 hvor sølv-spot var historisk høj)</li>
+              <li>&#x2022; <strong>Ny CEO Berta de Pablos-Barbier (siden 1. januar 2026):</strong> Implementering af EVERSHINE og næste strategiske cyklus annonceres 4. november 2026 (afløser nuværende strategi 2024-2026)</li>
+              <li>&#x2022; <strong>EVERSHINE platinbelægning:</strong> Pandoras egne mål er mindst 50% af sølvsortimentet omlagt ved udgangen af 2027 og ca. 80% i 2028 (Q1 2026-rapport)</li>
             </ul>
           </div>
         </section>
