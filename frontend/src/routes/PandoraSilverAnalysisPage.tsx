@@ -629,7 +629,7 @@ const PRICE_DATA: PricePoint[] = [
   { date: "2026-05-22", pandora: 556, silver: 75.9 },
 ];
 
-// Pandora aktiekurs + University of Michigan Consumer Sentiment Index
+// Pandora aktiekurs + amerikansk forbrugertillid (University of Michigan Consumer Sentiment Index)
 const SENTIMENT_DATA: SentimentPoint[] = [
   { date: "2024-01-02", pandora: 936, sentiment: 79.0 },
   { date: "2024-01-03", pandora: 922, sentiment: 79.0 },
@@ -1818,8 +1818,7 @@ const PandoraSilverAnalysisPage: React.FC = () => {
             markant fald i den amerikanske forbrugertillid.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            University of Michigan Consumer Sentiment Index faldt fra 79,0 i januar
-            2024 til 44,8 i maj 2026. Det er det laveste niveau, indekset har
+            Den amerikanske forbrugertillid (University of Michigan Consumer Sentiment Index) faldt fra 79,0 i januar 2024 til 44,8 i maj 2026. Det er det laveste niveau, indekset har
             registreret siden målingerne begyndte i 1952, lavere end både
             finanskrisens bund i 2008-2009 og det tidligere lavpunkt på 50,0 i
             juni 2022. Faldet accelererede fra februar 2025 og fortsatte
@@ -1836,7 +1835,7 @@ const PandoraSilverAnalysisPage: React.FC = () => {
             tilskrive hele faldet til forbrugertilliden alene.
           </p>
 
-          <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-3 sm:p-5" role="img" aria-label="Graf: Pandora aktiekurs vs. US Consumer Sentiment Index">
+          <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-3 sm:p-5" role="img" aria-label="Graf: Pandora aktiekurs vs. amerikansk forbrugertillid">
             <ResponsiveContainer width="100%" height={chartHeight}>
               <ComposedChart data={SENTIMENT_DATA} margin={{ top: 5, right: 5, left: 0, bottom: 5 }}>
                 <defs>
@@ -1857,7 +1856,7 @@ const PandoraSilverAnalysisPage: React.FC = () => {
             </ResponsiveContainer>
             <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-300 mt-2 px-2">
               <span className="flex items-center gap-1.5"><span className="w-3 h-[3px] rounded-full bg-[#ec4899] inline-block" />Pandora (DKK)</span>
-              <span className="flex items-center gap-1.5"><span className="w-3 h-[3px] rounded-full bg-[#f59e0b] inline-block" />Consumer Sentiment</span>
+              <span className="flex items-center gap-1.5"><span className="w-3 h-[3px] rounded-full bg-[#f59e0b] inline-block" />Amerikansk forbrugertillid</span>
             </div>
           </div>
         </section>
@@ -1882,7 +1881,7 @@ const PandoraSilverAnalysisPage: React.FC = () => {
             <div className="bg-amber-50 dark:bg-amber-500/10 rounded-2xl border border-amber-100 dark:border-amber-500/20 p-5">
               <h4 className="font-semibold text-amber-700 dark:text-amber-400 mb-3 text-sm uppercase tracking-wide">Efterspørgselssiden (sentiment)</h4>
               <ul className="space-y-2 text-[15px] text-gray-700 dark:text-gray-300">
-                <li className="flex gap-2"><span className="text-amber-500 mt-0.5">&#x25BC;</span>Consumer Sentiment på 44,8 (laveste niveau siden 1952)</li>
+                <li className="flex gap-2"><span className="text-amber-500 mt-0.5">&#x25BC;</span>Amerikansk forbrugertillid på 44,8 (laveste niveau siden 1952)</li>
                 <li className="flex gap-2"><span className="text-amber-500 mt-0.5">&#x25BC;</span>USA-LFL +11% i Q1 2025 → Nordamerika-LFL -2% i Q1 2026</li>
                 <li className="flex gap-2"><span className="text-amber-500 mt-0.5">&#x25BC;</span>Europa svagt: UK -8%, Frankrig -7% LFL i Q3 2025</li>
                 <li className="flex gap-2"><span className="text-amber-500 mt-0.5">&#x25BC;</span>Organisk vækst guidet til -1% til 2% i 2026 (2025 endte på 6%, 2024 var 13%)</li>
@@ -1903,34 +1902,37 @@ const PandoraSilverAnalysisPage: React.FC = () => {
           <SectionHeader n={9} title="Tidslinje: Nøglebegivenheder" />
           <div className="ml-2">
             <TimelineEvent date="Januar 2024" title="Pandora starter året i 936 DKK" color="#ec4899">
-              <p>Sølvprisen er $23/oz. Pandora har netop leveret stærke Q4 2023-resultater med 12% organisk vækst. Consumer Sentiment ligger på 79.</p>
+              <p>Sølvprisen er $23/oz. Pandora er på vej til at lukke et stærkt 2023 (Q4 2023-resultaterne, der annonceres 7. februar, viser 12% organisk vækst). Den amerikanske forbrugertillid ligger på 79.</p>
             </TimelineEvent>
             <TimelineEvent date="August 2024" title="Pandora når 1.181 DKK" color="#2a9d8f">
               <p>Stærk vækst i USA (+5% LFL) og god Q2-rapport driver aktien op. Sølvprisen er stadig relativt stabil omkring $29/oz.</p>
             </TimelineEvent>
             <TimelineEvent date="December 2024" title="Pandora stiger til 1.317 DKK" color="#2a9d8f">
-              <p>Q4 organisk vækst på 11%. Aktien nærmer sig all-time high. Markedet er optimistisk trods begyndende bekymringer om toldsatser.</p>
+              <p>Q3 2024-rapporten viste 11% organisk vækst og er Pandoras femte kvartal i træk med tocifret organisk vækst. Aktien nærmer sig all-time high. Sølvprisen er stadig stabil omkring $29-31/oz.</p>
             </TimelineEvent>
             <TimelineEvent date="Januar 2025" title="All-time high: 1.415 DKK intradag" color="#ec4899">
-              <p>Pandora rammer sit højeste kursniveau nogensinde den 31. januar 2025. Sølvprisen er $32/oz, og Consumer Sentiment er begyndt at falde (71,1).</p>
+              <p>Pandora rammer sit højeste kursniveau nogensinde den 31. januar 2025. Sølvprisen er $32/oz, og den amerikanske forbrugertillid er begyndt at falde (71,7).</p>
             </TimelineEvent>
             <TimelineEvent date="Februar-april 2025" title="Fald begynder: Told, sølv og sentiment" color="#e63946">
-              <p>Aktien falder fra 1.268 DKK (slut februar) til 972 DKK (slut april). Consumer Sentiment falder markant til 52-57. US-told på import fra Thailand og Kina annonceres. Sølvprisen stiger til $34/oz.</p>
+              <p>Aktien falder fra 1.268 DKK (slut februar) til 972 DKK (slut april). Den amerikanske forbrugertillid falder markant til 52-57. US-told på import fra Thailand og Kina annonceres. Sølvprisen stiger til $34/oz.</p>
             </TimelineEvent>
             <TimelineEvent date="August-september 2025" title="Sølv eksploderer over $40/oz" color="#e63946">
-              <p>Sølvprisen bryder op fra $36 til $46/oz. Pandora falder til 828 DKK. Q3-rapporten viser 380 bp samlet margintryk fra råvarer, valuta og told. Den 30. september meddeler CEO Alexander Lacik, at han går på pension, og bestyrelsen udpeger CMO Berta de Pablos-Barbier som efterfølger fra generalforsamlingen i marts 2026.</p>
+              <p>Sølvprisen bryder op fra $36 til $46/oz. Pandora falder til 828 DKK. Den 30. september meddeler CEO Alexander Lacik, at han går på pension, og bestyrelsen udpeger CMO Berta de Pablos-Barbier som efterfølger fra generalforsamlingen i marts 2026.</p>
             </TimelineEvent>
-            <TimelineEvent date="November-december 2025" title="Sølv over $56-70/oz, Pandora under 700 DKK" color="#e63946">
-              <p>Sølvprisen accelererer mod $70/oz. Pandora-aktien falder til ca. 700 DKK. Consumer Sentiment falder til 51-53. EBIT-margin target for 2026 sænkes til 21-22%.</p>
+            <TimelineEvent date="November-december 2025" title="Sølv stiger til $77/oz, Pandora under 700 DKK" color="#e63946">
+              <p>Sølvprisen accelererer fra ca. $48 i starten af november til peak omkring $77/oz den 30. december. Pandora-aktien falder til ca. 700 DKK. Den amerikanske forbrugertillid falder til 51-53. I Q3 2025-rapporten (5. november) viser Pandora 380 bp samlet margintryk fra råvarer, valuta og told i Q3, og selskabet sænker 2026 EBIT-margin target fra "mindst 24%" til "omkring 23%" som følge af nye eksterne modvinde.</p>
             </TimelineEvent>
             <TimelineEvent date="Januar 2026" title="Sølv rammer all-time high: ~$122/oz intradag" color="#e63946">
-              <p>Pandora-aktien falder til 485 DKK (intraday low 469 DKK den 29. januar), det laveste niveau siden 2022. Aktien fortsætter ned i februar-marts og rammer et lokalt bundpunkt på 435 DKK den 17. marts 2026. Sølvprisen rammer sit historiske højdepunkt på ca. $122/oz intradag den 29. januar (daglig lukkekurs ca. $114/oz), før den falder markant tilbage til $76-78/oz.</p>
+              <p>Pandora-aktien falder til 485 DKK (intraday low 469 DKK den 29. januar), det laveste niveau siden 2022. Sølvprisen rammer sit historiske højdepunkt på ca. $122/oz intradag den 29. januar (daglig lukkekurs ca. $114/oz), før den crasher med over 30% til ca. $78/oz close dagen efter (30. januar) og siden stabiliserer sig omkring $76/oz i februar.</p>
             </TimelineEvent>
             <TimelineEvent date="1. januar 2026" title="Berta de Pablos-Barbier overtager som CEO" color="#4361ee">
               <p>Den tidligere CMO overtager officielt som CEO den 1. januar 2026, ca. to en halv måned før planlagt. Alexander Lacik fortsætter som Special Advisor indtil generalforsamlingen den 11. marts. Hun medbringer ca. 30 års erfaring fra bl.a. LVMH (Moët &amp; Chandon), Mars Wrigley, Lacoste og Kering-ejede Boucheron.</p>
             </TimelineEvent>
+            <TimelineEvent date="Februar-marts 2026" title="Årsrapport 2025, ny guidance og lokalt bundpunkt" color="#e63946">
+              <p>Den 4. februar publicerer Pandora Q4 2025 / årsrapport 2025. FY 2025 organisk vækst endte på 6% (under guidance på 7-8%) og EBIT-margin på 23,9% (under guidance på "omkring 24%"). 2026-guidance sættes til -1% til +2% organisk vækst og 21-22% EBIT-margin, yderligere sænket fra "omkring 23%" som Pandora annoncerede i Q3 2025. Samtidig annonceres EVERSHINE platinbelægnings-strategien med mål om at omlægge mindst 50% af sølvsortimentet ved udgangen af 2027 og ca. 80% ved udgangen af 2028 for at reducere sølvafhængigheden. Aktien rammer et lokalt bundpunkt på 435 DKK den 17. marts (kort efter udbytte-ex-dato 12. marts, hvor 22 DKK/aktie blev udbetalt).</p>
+            </TimelineEvent>
             <TimelineEvent date="Maj 2026" title="Bund eller bounce?" color="#f59e0b">
-              <p>Pandora leverer Q1 2026 med 2% organisk vækst (0% LFL globalt) og 20,9% EBIT-margin. Aktien stiger 11% på dagen. Consumer Sentiment falder til 44,8, et meget lavt niveau historisk set. Sølvprisen har stabiliseret sig omkring $76/oz. Aktien handles til 556 DKK med P/E på 8,3.</p>
+              <p>Pandora leverer Q1 2026 med 2% organisk vækst (0% LFL globalt) og 20,9% EBIT-margin. Aktien stiger 14% på dagen (fra 498 DKK til 569 DKK). Den amerikanske forbrugertillid falder til 44,8, det laveste niveau siden 1952. Sølvprisen har stabiliseret sig omkring $76/oz. Aktien handles til 556 DKK med P/E på 8,3.</p>
             </TimelineEvent>
           </div>
         </section>
@@ -2038,7 +2040,7 @@ const PandoraSilverAnalysisPage: React.FC = () => {
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             Den amerikanske forbrugertillid er den sekundære, men vigtige faktor.
-            Med USA som største enkeltmarked (ca. 32% af omsætningen) og et Consumer Sentiment Index på meget lave 44,8 er efterspørgselssiden
+            Med USA som største enkeltmarked (ca. 32% af omsætningen) og en amerikansk forbrugertillid på meget lave 44,8 er efterspørgselssiden
             under pres. Smykker er en diskretionær kategori, og Pandora har allerede
             set Nordamerika-LFL falde fra +11% (USA i Q1 2025) til -2% (Q1 2026).
           </p>
@@ -2053,7 +2055,7 @@ const PandoraSilverAnalysisPage: React.FC = () => {
             <h4 className="font-semibold text-gray-900 dark:text-white mb-3">Hvad skal man holde øje med</h4>
             <ul className="space-y-1.5 text-[15px] text-gray-600 dark:text-gray-300">
               <li>&#x2022; Sølvprisen: Et vedvarende fald under $60/oz ville lette margintrykket markant</li>
-              <li>&#x2022; Consumer Sentiment: Et vendepunkt i forbrugertilliden ville signalere bedre efterspørgsel</li>
+              <li>&#x2022; Amerikansk forbrugertillid: Et vendepunkt i indekset ville signalere bedre efterspørgsel</li>
               <li>&#x2022; US-toldsatser: Eventuelle lempelser af toldregimet for Thailand-import</li>
               <li>&#x2022; Pandoras hedging-strategi: Niveauet for 2027-hedging vil vise forventet sølveksponering</li>
               <li>&#x2022; Ny CEO Berta de Pablos-Barbier: Strategisk retning fra januar 2026</li>
