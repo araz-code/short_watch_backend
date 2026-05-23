@@ -140,14 +140,14 @@ const ShortWatchPage: React.FC = () => {
             if (index === 5 && analyses[0]) {
               items.push(
                 <li key="inline-analysis-top">
-                  <InlineAnalysisCard analysis={analyses[0]} position={6} />
+                  <InlineAnalysisCard analysis={analyses[0]} source="inline_short_list_card" position={6} />
                 </li>
               );
             }
             if (index === 15 && analyses[1]) {
               items.push(
                 <li key="inline-analysis-mid">
-                  <InlineAnalysisCard analysis={analyses[1]} position={16} />
+                  <InlineAnalysisCard analysis={analyses[1]} source="inline_short_list_card" position={16} />
                 </li>
               );
             }

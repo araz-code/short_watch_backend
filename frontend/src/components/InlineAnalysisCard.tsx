@@ -18,10 +18,11 @@ function tickerFromTitle(title: string): string {
 
 interface Props {
   analysis: Analysis;
-  position: number;
+  source: string;
+  position?: number;
 }
 
-export default function InlineAnalysisCard({ analysis, position }: Props) {
+export default function InlineAnalysisCard({ analysis, source, position }: Props) {
   const { i18n } = useTranslation();
   const isDa = i18n.language.startsWith("da");
   const ticker = tickerFromTitle(analysis.title);
@@ -34,9 +35,9 @@ export default function InlineAnalysisCard({ analysis, position }: Props) {
       to={`/analyse/${analysis.slug}`}
       onClick={() =>
         trackEvent("analysis_link_click", {
-          source: "inline_short_list_card",
+          source,
           slug: analysis.slug,
-          position,
+          ...(position !== undefined && { position }),
         })
       }
       className="mx-2 my-1 px-4 py-2.5 rounded-lg flex items-center justify-between shadow-xs hover:shadow-md hover:-translate-y-px transition-all duration-200 bg-gradient-to-r from-indigo-50/80 to-blue-50/80 dark:from-indigo-950/40 dark:to-blue-950/40 border border-indigo-200 dark:border-indigo-800/50"
