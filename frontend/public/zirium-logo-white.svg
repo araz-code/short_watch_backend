@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 180" width="760" height="180" role="img" aria-label="ZIRIUM">
+  <defs>
+    <style>
+      .zirium-word {
+        font-family: "Inter Tight", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+        font-weight: 900;
+        font-size: 150px;
+        letter-spacing: -3px;
+      }
+    </style>
+  </defs>
+
+  <g transform="translate(0,15) scale(0.25)" fill="#ffffff">
+    <rect x="0" y="0" width="600" height="132"></rect>
+    <rect x="0" y="468" width="600" height="132"></rect>
+    <path d="M408,132 L540,132 L435.5,322 L303.5,322 Z"></path>
+    <path d="M130.4,340 L262.4,340 L192,468 L60,468 Z"></path>
+  </g>
+
+  <text x="170" y="145" class="zirium-word" fill="#ffffff">IRIUM</text>
+</svg>

@@ -72,9 +72,35 @@ const Navigation: React.FC = () => {
           <div className="flex items-center justify-between">
             <Link
               to="/"
-              className="text-white font-bold text-lg tracking-wider"
+              className="inline-flex items-center"
+              aria-label="Zirium"
             >
-              ZIRIUM
+              <svg
+                viewBox="0 0 760 180"
+                className="h-7 w-auto block"
+                role="img"
+                aria-label="Zirium"
+              >
+                <g transform="translate(0,15) scale(0.25)" fill="#ffffff">
+                  <rect x="0" y="0" width="600" height="132" />
+                  <rect x="0" y="468" width="600" height="132" />
+                  <path d="M408,132 L540,132 L435.5,322 L303.5,322 Z" />
+                  <path d="M130.4,340 L262.4,340 L192,468 L60,468 Z" />
+                </g>
+                <text
+                  x="170"
+                  y="145"
+                  fill="#ffffff"
+                  style={{
+                    fontFamily: '"Inter Tight", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif',
+                    fontWeight: 900,
+                    fontSize: "150px",
+                    letterSpacing: "-3px",
+                  }}
+                >
+                  IRIUM
+                </text>
+              </svg>
             </Link>
             <button
               type="button"
