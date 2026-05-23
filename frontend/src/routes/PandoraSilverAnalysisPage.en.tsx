@@ -1326,7 +1326,7 @@ const PandoraSilverAnalysisPage: React.FC = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    trackPageView("/analyse/pandora/soelv", "pandora_silver_analysis_en");
+    trackPageView("/analyse/pandora", "pandora_silver_analysis_en");
     fetch(`${HOST}/stats/visit/pandora-silver-analysis/`).catch(() => {});
   }, []);
 
@@ -1408,7 +1408,7 @@ const PandoraSilverAnalysisPage: React.FC = () => {
       <meta property="og:title" content="Pandora and the silver price: How commodities and consumer sentiment are driving the stock" />
       <meta property="og:description" content="An analysis of the relationship between the silver price, US consumer sentiment, and Pandora's share price performance. From around DKK 940 in January 2024 to DKK 556 in May 2026, while the silver price more than tripled." />
       <meta property="og:type" content="article" />
-      <meta property="og:url" content="https://www.zirium.dk/analyse/pandora/soelv/2026-05-23" />
+      <meta property="og:url" content="https://www.zirium.dk/analyse/pandora/2026-05-23" />
       <meta property="og:site_name" content="Zirium" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:title" content="Pandora and the silver price: How commodities and consumer sentiment are driving the stock" />
@@ -1421,7 +1421,7 @@ const PandoraSilverAnalysisPage: React.FC = () => {
         "author": { "@type": "Person", "name": "Araz Bayat Makoo" },
         "publisher": { "@type": "Organization", "name": "Zirium", "url": "https://www.zirium.dk" },
         "datePublished": "2026-05-23",
-        "mainEntityOfPage": "https://www.zirium.dk/analyse/pandora/soelv/2026-05-23",
+        "mainEntityOfPage": "https://www.zirium.dk/analyse/pandora/2026-05-23",
         "inLanguage": "en",
         "about": {
           "@type": "Corporation",
@@ -2056,7 +2056,7 @@ const PandoraSilverAnalysisPage: React.FC = () => {
           </div>
         </section>
 
-        <RelatedAnalyses currentSlug="pandora/soelv/2026-05-23" />
+        <RelatedAnalyses currentSlug="pandora/2026-05-23" />
 
         {/* Disclaimer */}
         <footer className="border-t border-gray-100 dark:border-gray-800 pt-6">

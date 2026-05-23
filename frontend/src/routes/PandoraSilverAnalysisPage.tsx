@@ -1326,7 +1326,7 @@ const PandoraSilverAnalysisPage: React.FC = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    trackPageView("/analyse/pandora/soelv", "pandora_silver_analysis");
+    trackPageView("/analyse/pandora", "pandora_silver_analysis");
     fetch(`${HOST}/stats/visit/pandora-silver-analysis/`).catch(() => {});
   }, []);
 
@@ -1408,7 +1408,7 @@ const PandoraSilverAnalysisPage: React.FC = () => {
       <meta property="og:title" content="Pandora og sølvprisen: Hvordan råvarer og forbrugertillid påvirker aktien" />
       <meta property="og:description" content="Analyse af sammenhængen mellem sølvprisen, amerikansk forbrugertillid og Pandora-aktiens kursudvikling. Fra ca. 940 DKK i januar 2024 til 556 DKK i maj 2026, mens sølvprisen mere end tredobledes." />
       <meta property="og:type" content="article" />
-      <meta property="og:url" content="https://www.zirium.dk/analyse/pandora/soelv/2026-05-23" />
+      <meta property="og:url" content="https://www.zirium.dk/analyse/pandora/2026-05-23" />
       <meta property="og:site_name" content="Zirium" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:title" content="Pandora og sølvprisen: Hvordan råvarer og forbrugertillid påvirker aktien" />
@@ -1421,7 +1421,7 @@ const PandoraSilverAnalysisPage: React.FC = () => {
         "author": { "@type": "Person", "name": "Araz Bayat Makoo" },
         "publisher": { "@type": "Organization", "name": "Zirium", "url": "https://www.zirium.dk" },
         "datePublished": "2026-05-23",
-        "mainEntityOfPage": "https://www.zirium.dk/analyse/pandora/soelv/2026-05-23",
+        "mainEntityOfPage": "https://www.zirium.dk/analyse/pandora/2026-05-23",
         "inLanguage": "da",
         "about": {
           "@type": "Corporation",
@@ -2070,7 +2070,7 @@ const PandoraSilverAnalysisPage: React.FC = () => {
           </div>
         </section>
 
-        <RelatedAnalyses currentSlug="pandora/soelv/2026-05-23" />
+        <RelatedAnalyses currentSlug="pandora/2026-05-23" />
 
         {/* Disclaimer */}
         <footer className="border-t border-gray-100 dark:border-gray-800 pt-6">

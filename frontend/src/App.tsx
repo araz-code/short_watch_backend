@@ -187,11 +187,11 @@ const router = createBrowserRouter([
     element: <ErrorBoundary><BAVAAnalysisPage /></ErrorBoundary>,
   },
   {
-    path: "analyse/pandora/soelv/2026-05-23",
+    path: "analyse/pandora/2026-05-23",
     element: <ErrorBoundary><PandoraSilverPage /></ErrorBoundary>,
   },
   {
-    path: "analyse/pandora/soelv",
+    path: "analyse/pandora",
     element: <ErrorBoundary><PandoraSilverPage /></ErrorBoundary>,
   },
   {

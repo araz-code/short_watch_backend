@@ -8,7 +8,7 @@ export interface Analysis {
 
 export const analyses: Analysis[] = [
   {
-    slug: "pandora/soelv/2026-05-23",
+    slug: "pandora/2026-05-23",
     title: "Pandora A/S (PNDORA)",
     subtitle: {
       da: "Pandora og sølvprisen: Hvordan råvarer og forbrugertillid påvirker aktien",
