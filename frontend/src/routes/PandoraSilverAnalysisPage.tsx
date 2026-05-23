@@ -1492,12 +1492,12 @@ const PandoraSilverAnalysisPage: React.FC = () => {
             om end korrelation ikke beviser kausalitet.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-            Men sølvprisen er ikke den eneste faktor. Nordamerika er Pandoras
-            største marked med ca. 34% af omsætningen (hvoraf USA udgør
-            hovedparten), og den amerikanske forbrugertillid er faldet fra 79 i
-            januar 2024 til 44,8 i maj 2026, et meget lavt niveau historisk set.
-            For en virksomhed der sælger smykker til forbrugere, er begge
-            faktorer relevante.
+            Men sølvprisen er ikke den eneste faktor. USA er Pandoras
+            største enkeltmarked med ca. 32% af omsætningen, og hele
+            Nordamerika-regionen tegnede sig for 36% i 2025. Den amerikanske
+            forbrugertillid er faldet fra 79 i januar 2024 til 44,8 i maj
+            2026, et meget lavt niveau historisk set. For en virksomhed der
+            sælger smykker til forbrugere, er begge faktorer relevante.
           </p>
         </section>
 
@@ -1506,7 +1506,7 @@ const PandoraSilverAnalysisPage: React.FC = () => {
           <SectionHeader n={2} title="Hvorfor er sølvprisen steget så meget?" />
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             Sølvprisen er steget fra ca. $23/oz i januar 2024 til over $120/oz intradag i januar 2026,
-            før den faldt tilbage til ca. $76/oz. Stigningen skyldes flere samtidige faktorer:
+            før den er faldet tilbage og i dag handles omkring $76/oz. Stigningen skyldes flere samtidige faktorer:
           </p>
           <ul className="space-y-3 text-gray-600 dark:text-gray-300 text-[15px] leading-relaxed mb-4">
             <li className="flex gap-2">
@@ -1769,8 +1769,7 @@ const PandoraSilverAnalysisPage: React.FC = () => {
         <section className="mb-12">
           <SectionHeader n={7} title="Amerikansk forbrugertillid og Pandora" />
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            Nordamerika er Pandoras største marked med ca. 34% af den samlede
-            omsætning i 2025, hvor USA udgør hovedparten. I Q1 2025 voksede USA
+            USA er Pandoras største enkeltmarked med ca. 32% af omsætningen i 2025. Nordamerika-regionen som helhed udgjorde 36%, mens EMEA er Pandoras største region med ca. 50%. I Q1 2025 voksede USA
             med +11% like-for-like, men i Q1 2026 var Nordamerika som helhed
             faldet til -2% like-for-like, mens den globale LFL-vækst landede på
             0%. Opbremsningen i Nordamerika ser ud til at være en væsentlig
@@ -1921,8 +1920,16 @@ const PandoraSilverAnalysisPage: React.FC = () => {
                   <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">22 DKK/aktie (3,96%)</td>
                 </tr>
                 <tr className="bg-white dark:bg-[#19191f]">
-                  <td className="px-4 py-3 text-sm text-gray-900 dark:text-white">Nordamerika-omsætning (andel)</td>
-                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">~34%</td>
+                  <td className="px-4 py-3 text-sm text-gray-900 dark:text-white">USA-omsætning (9M 2025)</td>
+                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">6,6 mia. DKK (~32%)</td>
+                </tr>
+                <tr className="bg-gray-50/50 dark:bg-[#15151a]">
+                  <td className="px-4 py-3 text-sm text-gray-900 dark:text-white">Nordamerika-omsætning (FY 2025)</td>
+                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">11,8 mia. DKK (36%)</td>
+                </tr>
+                <tr className="bg-white dark:bg-[#19191f]">
+                  <td className="px-4 py-3 text-sm text-gray-900 dark:text-white">EMEA-omsætning (FY 2025)</td>
+                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">16,1 mia. DKK (50%)</td>
                 </tr>
                 <tr className="bg-gray-50/50 dark:bg-[#15151a]">
                   <td className="px-4 py-3 text-sm text-gray-900 dark:text-white">Primært metal i produkter</td>
@@ -1978,8 +1985,7 @@ const PandoraSilverAnalysisPage: React.FC = () => {
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             Den amerikanske forbrugertillid er den sekundære, men vigtige faktor.
-            Med ca. 34% af omsætningen i Nordamerika (hvor USA udgør hovedparten)
-            og et Consumer Sentiment Index på meget lave 44,8 er efterspørgselssiden
+            Med USA som største enkeltmarked (ca. 32% af omsætningen) og et Consumer Sentiment Index på meget lave 44,8 er efterspørgselssiden
             under pres. Smykker er en diskretionær kategori, og Pandora har allerede
             set Nordamerika-LFL falde fra +11% (USA i Q1 2025) til -2% (Q1 2026).
           </p>
@@ -2010,7 +2016,7 @@ const PandoraSilverAnalysisPage: React.FC = () => {
           <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed text-center">
             <strong>Ansvarsfraskrivelse:</strong> Denne analyse er alene til informationsformål og udgør ikke
             investeringsrådgivning. Data stammer fra Yahoo Finance, University
-            of Michigan Surveys of Consumers, Pandora årsrapport 2025, Q1 2026-, Q2 2025- og Q3 2025-interimrapporter, Pandoras pressemeddelelse om CEO-skifte (30. september 2025) samt Silver Institute (World Silver Survey 2025). Historisk afkast er ikke en garanti for fremtidigt afkast.
+            of Michigan Surveys of Consumers, Pandora Q4 2025-interimrapport (4. februar 2026) for FY 2025-tal og regional fordeling, Pandora Q3 2025-interimrapport (5. november 2025) for USA-specifik omsætning (9M 2025), Pandora Q1 2026-interimrapport, Pandoras pressemeddelelse om CEO-skifte (30. september 2025), University of Michigan Surveys of Consumers samt Silver Institute (World Silver Survey 2025). Historisk afkast er ikke en garanti for fremtidigt afkast.
             Foretag altid din egen analyse, og søg professionel rådgivning før du handler.
           </p>
           <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-3">
