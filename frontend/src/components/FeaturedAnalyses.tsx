@@ -21,14 +21,8 @@ export default function FeaturedAnalyses() {
   const { t, i18n } = useTranslation();
   const isDa = i18n.language.startsWith("da");
 
-  const featuredSlugs = [
-    "novo/dcf/2026-05-19",
-    "bava/2026-05-17",
-    "zeal/2026-05-13",
-  ];
-  const featured = featuredSlugs
-    .map((slug) => analyses.find((a) => a.slug === slug))
-    .filter((a): a is (typeof analyses)[number] => a !== undefined);
+  // Show the 3 most recent analyses (the data array is ordered newest-first)
+  const featured = analyses.slice(0, 3);
 
   if (featured.length === 0) return null;
 
