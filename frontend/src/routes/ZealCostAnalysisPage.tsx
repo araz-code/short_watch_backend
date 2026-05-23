@@ -139,10 +139,15 @@ const ZealCostAnalysisPage: React.FC = () => {
       <meta property="og:description" content="Fire beregningsmetoder sammenlignet. Estimeret indgangspris per short-sælger og analyse af hvem der tjener penge." />
       <meta property="og:type" content="article" />
       <meta property="og:url" content="https://www.zirium.dk/analyse/zeal/gennemsnitspris/2026-05-14" />
+      <meta property="og:image" content="https://www.zirium.dk/og-images/zeal-gennemsnitspris-2026-05-14.png" />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:image:type" content="image/png" />
       <meta property="og:site_name" content="Zirium" />
-      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content="Til hvilken kurs har de shortet Zealand Pharma?" />
       <meta name="twitter:description" content="Fire beregningsmetoder sammenlignet. Estimeret indgangspris per short-sælger og analyse af hvem der tjener penge." />
+      <meta name="twitter:image" content="https://www.zirium.dk/og-images/zeal-gennemsnitspris-2026-05-14.png" />
       <script type="application/ld+json">{JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Article",

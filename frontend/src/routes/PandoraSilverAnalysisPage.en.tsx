@@ -1409,10 +1409,15 @@ const PandoraSilverAnalysisPage: React.FC = () => {
       <meta property="og:description" content="An analysis of the relationship between the silver price, US consumer sentiment, and Pandora's share price performance. From around DKK 940 in January 2024 to DKK 556 in May 2026, while the silver price more than tripled." />
       <meta property="og:type" content="article" />
       <meta property="og:url" content="https://www.zirium.dk/analyse/pandora/2026-05-23" />
+      <meta property="og:image" content="https://www.zirium.dk/og-images/pandora-2026-05-23-en.png" />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:image:type" content="image/png" />
       <meta property="og:site_name" content="Zirium" />
-      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content="Pandora and the silver price: How commodities and consumer sentiment are driving the stock" />
       <meta name="twitter:description" content="An analysis of the relationship between the silver price, US consumer sentiment, and Pandora's share price performance." />
+      <meta name="twitter:image" content="https://www.zirium.dk/og-images/pandora-2026-05-23-en.png" />
       <script type="application/ld+json">{JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Article",

@@ -266,10 +266,15 @@ const BAVAAnalysisPage: React.FC = () => {
       <meta property="og:description" content="Analyse af short-positioner i Bavarian Nordic (BAVA). Fra 9,40% i oktober 2023 til under 2% i dag, gennem et overtagelsesbud og et kursfald på 54% fra toppen." />
       <meta property="og:type" content="article" />
       <meta property="og:url" content="https://www.zirium.dk/analyse/bava/2026-05-17" />
+      <meta property="og:image" content="https://www.zirium.dk/og-images/bava-2026-05-17.png" />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:image:type" content="image/png" />
       <meta property="og:site_name" content="Zirium" />
-      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content="Shortanalyse: Da BAVA sad øverst på shortlisten" />
       <meta name="twitter:description" content="Analyse af short-positioner i Bavarian Nordic (BAVA). Fra 9,40% i oktober 2023 til under 2% i dag, gennem et overtagelsesbud og et kursfald på 54% fra toppen." />
+      <meta name="twitter:image" content="https://www.zirium.dk/og-images/bava-2026-05-17.png" />
       <script type="application/ld+json">{JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Article",

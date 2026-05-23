@@ -322,10 +322,15 @@ const ZealAnalysisPage: React.FC = () => {
       <meta property="og:description" content="Dybdegående analyse af short-positioner i Zealand Pharma (ZEAL). Hvem shorter, hvor meget, og hvorfor?" />
       <meta property="og:type" content="article" />
       <meta property="og:url" content="https://www.zirium.dk/analyse/zeal/2026-05-13" />
+      <meta property="og:image" content="https://www.zirium.dk/og-images/zeal-2026-05-13.png" />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:image:type" content="image/png" />
       <meta property="og:site_name" content="Zirium" />
-      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content="Shortanalyse: Hvem vædder imod Zealand Pharma?" />
       <meta name="twitter:description" content="Dybdegående analyse af short-positioner i Zealand Pharma (ZEAL). Hvem shorter, hvor meget, og hvorfor?" />
+      <meta name="twitter:image" content="https://www.zirium.dk/og-images/zeal-2026-05-13.png" />
       <script type="application/ld+json">{JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Article",

@@ -282,10 +282,15 @@ const GNAnalysisPageEn: React.FC = () => {
       <meta property="og:description" content="In-depth analysis of short positions in GN Store Nord (GN). Short sellers hold firm despite the Amplifon sale." />
       <meta property="og:type" content="article" />
       <meta property="og:url" content="https://www.zirium.dk/en/analyse/gn/2026-05-14" />
+      <meta property="og:image" content="https://www.zirium.dk/og-images/gn-2026-05-14-en.png" />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:image:type" content="image/png" />
       <meta property="og:site_name" content="Zirium" />
-      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content="Short selling analysis: Short sellers hold firm despite Amplifon sale" />
       <meta name="twitter:description" content="In-depth analysis of short positions in GN Store Nord (GN). Short sellers hold firm despite the Amplifon sale." />
+      <meta name="twitter:image" content="https://www.zirium.dk/og-images/gn-2026-05-14-en.png" />
       <script type="application/ld+json">{JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Article",

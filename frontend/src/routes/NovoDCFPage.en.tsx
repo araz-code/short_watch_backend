@@ -266,10 +266,15 @@ const NovoDCFPageEn: React.FC = () => {
       <meta property="og:description" content="Free interactive DCF model for Novo Nordisk. Adjust growth, margin, and WACC assumptions to see fair value and price target in real time." />
       <meta property="og:type" content="article" />
       <meta property="og:url" content={`https://www.zirium.dk/analyse/${SLUG}`} />
+      <meta property="og:image" content="https://www.zirium.dk/og-images/novo-dcf-2026-05-19-en.png" />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:image:type" content="image/png" />
       <meta property="og:site_name" content="Zirium" />
-      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content="Novo Nordisk (NOVO B) DCF: Calculate your own fair value" />
       <meta name="twitter:description" content="Free interactive DCF model for Novo Nordisk. Adjust growth, margin, and WACC to see fair value and 12-month price target. Includes sensitivity table." />
+      <meta name="twitter:image" content="https://www.zirium.dk/og-images/novo-dcf-2026-05-19-en.png" />
       <script type="application/ld+json">{JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Article",
