@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import PageTemplate from "../components/PageTemplate";
 import RelatedAnalyses from "../components/RelatedAnalyses";
+import FeedbackWidget from "../components/FeedbackWidget";
 import { trackPageView } from "../analytics";
 import { HOST } from "../apis/ShortPositionAPI";
 import {
@@ -806,6 +807,7 @@ const BAVAAnalysisPage: React.FC = () => {
           </div>
         </section>
 
+        <FeedbackWidget pageType="analysis" pageId="bava/2026-05-17" />
         <RelatedAnalyses currentSlug="bava/2026-05-17" />
 
         {/* Disclaimer */}

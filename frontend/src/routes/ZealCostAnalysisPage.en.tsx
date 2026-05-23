@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import PageTemplate from "../components/PageTemplate";
 import RelatedAnalyses from "../components/RelatedAnalyses";
+import FeedbackWidget from "../components/FeedbackWidget";
 import { trackPageView } from "../analytics";
 import { HOST } from "../apis/ShortPositionAPI";
 import {
@@ -449,6 +450,7 @@ const ZealCostAnalysisPageEn: React.FC = () => {
           </p>
         </section>
 
+        <FeedbackWidget pageType="analysis" pageId="zeal/gennemsnitspris/2026-05-14" />
         <RelatedAnalyses currentSlug="zeal/gennemsnitspris/2026-05-14" />
 
         {/* ── Disclaimer ── */}

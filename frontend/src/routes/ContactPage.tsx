@@ -1,15 +1,22 @@
 import { useTranslation } from "react-i18next";
+import { useSearchParams } from "react-router-dom";
 import PageTemplate from "../components/PageTemplate";
-import image from "../static/mail-bird-2.webp";
 import { useEffect, useState } from "react";
 import { trackEvent, trackPageView } from "../analytics";
 import { HOST } from "../apis/ShortPositionAPI";
 
 type FormState = "idle" | "submitting" | "success" | "error";
 
+const VALID_CATEGORIES = ["feedback", "bug", "idea", "analysis", "other"];
+
 const ContactPage: React.FC = () => {
-  const { t } = useTranslation();
-  const [category, setCategory] = useState("feedback");
+  const { t, i18n } = useTranslation();
+  const isDa = i18n.language.startsWith("da");
+  const [searchParams] = useSearchParams();
+  const initialCategory = searchParams.get("category") || "";
+  const [category, setCategory] = useState(
+    VALID_CATEGORIES.includes(initialCategory) ? initialCategory : "feedback"
+  );
   const [message, setMessage] = useState("");
   const [email, setEmail] = useState("");
   const [website, setWebsite] = useState("");
@@ -82,10 +89,8 @@ const ContactPage: React.FC = () => {
     <PageTemplate>
       <title>Zirium | Contact Us</title>
       <meta name="description" content="Get in touch with the Danish Short Watch team. Questions, feedback, or assistance." />
-      <div className="w-full max-w-[900px] mx-auto px-6 py-12 dark:text-white">
-        <div className="flex flex-col lg:flex-row items-start gap-10 lg:gap-16">
-          {/* Left: form */}
-          <div className="flex-1 w-full">
+      <div className="w-full max-w-[600px] mx-auto px-6 py-12 dark:text-white">
+        <div>
             <p className="text-sm uppercase tracking-widest text-blue-500 dark:text-blue-400 font-medium mb-3">
               {t("Contact us")}
             </p>
@@ -123,6 +128,7 @@ const ContactPage: React.FC = () => {
                     <option value="feedback">{t("Feedback")}</option>
                     <option value="bug">{t("Bug")}</option>
                     <option value="idea">{t("Idea")}</option>
+                    <option value="analysis">{isDa ? "Analyse" : "Analysis"}</option>
                     <option value="other">{t("Other")}</option>
                   </select>
                 </div>
@@ -201,16 +207,6 @@ const ContactPage: React.FC = () => {
                 </p>
               </form>
             )}
-          </div>
-
-          {/* Right: image */}
-          <div className="hidden lg:flex flex-1 justify-center">
-            <img
-              src={image}
-              alt="Mail Bird"
-              className="w-full max-w-[280px] lg:max-w-[320px] drop-shadow-xl"
-            />
-          </div>
         </div>
       </div>
     </PageTemplate>

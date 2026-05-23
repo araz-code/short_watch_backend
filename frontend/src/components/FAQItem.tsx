@@ -1,4 +1,5 @@
 import { trackEvent } from "../analytics";
+import FeedbackWidget from "./FeedbackWidget";
 
 interface FAQItemProps {
   id: string;
@@ -59,6 +60,7 @@ const FAQItem: React.FC<FAQItemProps> = ({
       {open && (
         <div className="pb-4 pr-10 text-sm leading-relaxed text-gray-600 dark:text-gray-400">
           {answer}
+          <FeedbackWidget compact pageType="faq" pageId={id} />
         </div>
       )}
     </div>

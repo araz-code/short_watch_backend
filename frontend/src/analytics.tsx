@@ -42,7 +42,10 @@ export type AnalyticsEvent =
   | "email_click"
   | "contact_form_view"
   | "contact_form_submit"
-  | "contact_form_error";
+  | "contact_form_error"
+  | "feedback_thumbs_click"
+  | "feedback_comment_submit"
+  | "feedback_contact_click";
 
 type EventParams = Record<string, string | number | boolean | undefined>;
 

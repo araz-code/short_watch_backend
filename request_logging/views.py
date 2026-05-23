@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
 from request_logging import service
-from request_logging.models import ContactSubmission
+from request_logging.models import ContactSubmission, PageFeedback
 
 COLOR_PRIMARY = 'rgba(33, 97, 140, 0.9)'
 COLOR_SECONDARY = 'rgba(161, 202, 193, 0.9)'
@@ -362,7 +362,7 @@ def track_visit(_: HttpRequest, page: str) -> HttpResponse:
 
 # --- Contact form -----------------------------------------------------------
 
-VALID_CONTACT_CATEGORIES = {'bug', 'feedback', 'idea', 'other'}
+VALID_CONTACT_CATEGORIES = {'bug', 'feedback', 'idea', 'analysis', 'other'}
 CONTACT_RATE_LIMIT_HOURS = 1
 CONTACT_RATE_LIMIT_MAX = 3
 
@@ -410,6 +410,65 @@ def submit_contact(request: HttpRequest) -> HttpResponse:
         category=category,
         message=message,
         email=email,
+        client_ip=client_ip,
+        user_agent=user_agent,
+    )
+    return JsonResponse({'ok': True})
+
+
+# --- Page feedback (thumbs up/down) -----------------------------------------
+
+VALID_FEEDBACK_SENTIMENTS = {'positive', 'negative'}
+FEEDBACK_RATE_LIMIT_HOURS = 1
+FEEDBACK_RATE_LIMIT_MAX = 20  # generous: same user can rate many pages
+
+
+@csrf_exempt
+@require_POST
+def submit_page_feedback(request: HttpRequest) -> HttpResponse:
+    try:
+        data = json.loads(request.body)
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'invalid_json'}, status=400)
+
+    if data.get('website'):
+        return JsonResponse({'ok': True})  # honeypot
+
+    sentiment = (data.get('sentiment') or '').strip()
+    page_type = (data.get('page_type') or '').strip()
+    page_id = (data.get('page_id') or '').strip()
+    comment = (data.get('comment') or '').strip()
+
+    if sentiment not in VALID_FEEDBACK_SENTIMENTS:
+        return JsonResponse({'error': 'invalid_sentiment'}, status=400)
+    if not page_type or len(page_type) > 50:
+        return JsonResponse({'error': 'invalid_page_type'}, status=400)
+    if not page_id or len(page_id) > 200:
+        return JsonResponse({'error': 'invalid_page_id'}, status=400)
+    if len(comment) > 2000:
+        return JsonResponse({'error': 'comment_too_long'}, status=400)
+
+    client_ip = (request.META.get('HTTP_X_FORWARDED_FOR') or
+                 request.META.get('REMOTE_ADDR') or '')
+    if ',' in client_ip:
+        client_ip = client_ip.split(',')[0].strip()
+    client_ip = client_ip or None
+
+    if client_ip:
+        cutoff = timezone.now() - timedelta(hours=FEEDBACK_RATE_LIMIT_HOURS)
+        recent = PageFeedback.objects.filter(
+            client_ip=client_ip, created_at__gte=cutoff
+        ).count()
+        if recent >= FEEDBACK_RATE_LIMIT_MAX:
+            return JsonResponse({'error': 'rate_limited'}, status=429)
+
+    user_agent = (request.META.get('HTTP_USER_AGENT') or '')[:255]
+
+    PageFeedback.objects.create(
+        sentiment=sentiment,
+        page_type=page_type,
+        page_id=page_id,
+        comment=comment,
         client_ip=client_ip,
         user_agent=user_agent,
     )

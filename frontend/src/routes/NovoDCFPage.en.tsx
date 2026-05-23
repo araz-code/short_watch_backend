@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShareNodes, faCheck } from "@fortawesome/free-solid-svg-icons";
 import PageTemplate from "../components/PageTemplate";
 import RelatedAnalyses from "../components/RelatedAnalyses";
+import FeedbackWidget from "../components/FeedbackWidget";
 import { trackPageView, trackEvent } from "../analytics";
 import { HOST, fetchShortPositionDetails } from "../apis/ShortPositionAPI";
 import {
@@ -1168,6 +1169,7 @@ const NovoDCFPageEn: React.FC = () => {
           </div>
         </section>
 
+        <FeedbackWidget pageType="analysis" pageId={SLUG} />
         <RelatedAnalyses currentSlug={SLUG} />
       </article>
     </PageTemplate>

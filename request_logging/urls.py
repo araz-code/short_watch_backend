@@ -31,4 +31,7 @@ urlpatterns = [
 
     # Contact form
     path('contact/', views.submit_contact),
+
+    # Page feedback (thumbs up/down)
+    path('feedback/', views.submit_page_feedback),
 ]
