@@ -455,6 +455,7 @@ def analysis_all_time_unique_ips() -> dict:
     bava_analysis = set()
     novo_dcf_analysis = set()
     novo_dcf_share = set()
+    pandora_silver_analysis = set()
     analysis_overview = set()
 
     for entry in queryset:
@@ -479,6 +480,8 @@ def analysis_all_time_unique_ips() -> dict:
             novo_dcf_analysis.add(ip)
         if "/stats/visit/novo-dcf-share" in url:
             novo_dcf_share.add(ip)
+        if "/stats/visit/pandora-silver-analysis" in url:
+            pandora_silver_analysis.add(ip)
         if "/stats/visit/analysis/" in url:
             analysis_overview.add(ip)
 
@@ -489,6 +492,7 @@ def analysis_all_time_unique_ips() -> dict:
         'bava_analysis': bava_analysis,
         'novo_dcf_analysis': novo_dcf_analysis,
         'novo_dcf_share': novo_dcf_share,
+        'pandora_silver_analysis': pandora_silver_analysis,
         'analysis_overview': analysis_overview,
     }
 
@@ -516,6 +520,7 @@ def today_visit_buckets(for_date=None) -> dict:
     bava_analysis = set()
     novo_dcf_analysis = set()
     novo_dcf_share = set()
+    pandora_silver_analysis = set()
     analysis_overview = set()
     bots = set()
     bots_by_name = {}  # fragment -> set of IPs
@@ -594,6 +599,8 @@ def today_visit_buckets(for_date=None) -> dict:
             novo_dcf_analysis.add(ip)
         if "/stats/visit/novo-dcf-share" in url:
             novo_dcf_share.add(ip)
+        if "/stats/visit/pandora-silver-analysis" in url:
+            pandora_silver_analysis.add(ip)
         if "/stats/visit/analysis/" in url:
             analysis_overview.add(ip)
 
@@ -615,6 +622,7 @@ def today_visit_buckets(for_date=None) -> dict:
         'bava_analysis': bava_analysis,
         'novo_dcf_analysis': novo_dcf_analysis,
         'novo_dcf_share': novo_dcf_share,
+        'pandora_silver_analysis': pandora_silver_analysis,
         'analysis_overview': analysis_overview,
         'bots': bots, 'bots_by_name': bots_by_name,
     }
