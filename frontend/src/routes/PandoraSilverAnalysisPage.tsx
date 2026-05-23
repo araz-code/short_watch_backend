@@ -1376,7 +1376,7 @@ const PandoraSilverAnalysisPage: React.FC = () => {
 
   const MODEL_REVENUE = 32.5;
   const MODEL_SHARES = 74.8;
-  const MODEL_TAX = 0.245;
+  const MODEL_TAX = 0.25;
   const MODEL_REF_BLENDED = 33;
   const MODEL_REF_MARGIN = 21.5;
   const MODEL_SENSITIVITY = 0.50;
@@ -1710,7 +1710,7 @@ const PandoraSilverAnalysisPage: React.FC = () => {
               <li><strong>Marginændring</strong> = (blended pris - referencepris $33/oz) × -0,50 procentpoint per $1/oz</li>
               <li><strong>Estimeret EBIT-margin</strong> = 21,5% (2026-guidance) + marginændring</li>
               <li><strong>EBIT</strong> = omsætning 32,5 mia. DKK × EBIT-margin</li>
-              <li><strong>Nettoindkomst</strong> = EBIT × (1 - 24,5% skattesats)</li>
+              <li><strong>Nettoindkomst</strong> = EBIT × (1 - 25% skattesats)</li>
               <li><strong>EPS</strong> = nettoindkomst / 74,8 mio. aktier</li>
               <li><strong>Implied P/E</strong> = aktiekurs 556 DKK / EPS</li>
             </ol>
@@ -1796,7 +1796,7 @@ const PandoraSilverAnalysisPage: React.FC = () => {
           <div className="bg-gray-50 dark:bg-[#15151a] rounded-2xl border border-gray-100 dark:border-gray-800 p-4 mt-4">
             <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
               <strong>Modelantagelser:</strong> Omsætning: 32,5 mia. DKK (2025-niveau).
-              Skattesats: 24,5%. Aktier: 74,8 mio. udestående (efter kapitalnedsættelse 10. april 2026). Reference: 21,5% EBIT-margin ved $33/oz blended (2026 guidance).
+              Skattesats: ca. 25% (Pandoras 2026-forventning, op fra 24,2% i 2025). Aktier: 74,8 mio. udestående (efter kapitalnedsættelse 10. april 2026). Reference: 21,5% EBIT-margin ved $33/oz blended (2026 guidance).
               Følsomhed: ~50 bp per $1/oz ændring i blended sølvpris (baseret på Pandoras oplyste råvaremodvind).
               Modellen medtager ikke valutakurser, told, volumenvækst eller andre faktorer.
             </p>
