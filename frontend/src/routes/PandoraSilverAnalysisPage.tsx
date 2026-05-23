@@ -1469,7 +1469,7 @@ const PandoraSilverAnalysisPage: React.FC = () => {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-12">
           <KPI value={`${pandoraChange}%`} label="Pandora-aktien (jan '24 - maj '26)" highlight />
           <KPI value={`+${silverChange}%`} label="Sølvpris (jan '24 - maj '26)" />
-          <KPI value={correlation.toFixed(2)} label="Korrelation (sølv vs. aktie)" />
+          <KPI value={correlation.toFixed(2).replace(".", ",")} label="Korrelation (sølv vs. aktie)" />
           <KPI value={`${pandoraATH.toLocaleString("da-DK")} DKK`} label="ATH intradag (31. jan 2025)" />
         </div>
 
@@ -1490,7 +1490,7 @@ const PandoraSilverAnalysisPage: React.FC = () => {
             til ca. $76/oz, en stigning på over 200%. I samme periode er
             Pandora-aktien faldet fra ca. 940 DKK til ca. 556 DKK, et fald på ca.
             41%. Der observeres en stærk negativ sammenhæng mellem de to
-            (korrelation: {correlation.toFixed(2)} baseret på daglige lukkekurser),
+            (korrelation: {correlation.toFixed(2).replace(".", ",")} baseret på daglige lukkekurser),
             om end korrelation ikke beviser kausalitet.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
@@ -1572,7 +1572,7 @@ const PandoraSilverAnalysisPage: React.FC = () => {
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             Når man måler hvor tæt sølvprisen og Pandora-aktien har fulgt hinanden
             dagligt over de sidste ca. 2,5 år, får man en korrelation på{' '}
-            {correlation.toFixed(2)}. På en skala fra -1 til +1, hvor
+            {correlation.toFixed(2).replace(".", ",")}. På en skala fra -1 til +1, hvor
             0 betyder "ingen sammenhæng" og ±1 betyder "perfekt sammenhæng",
             er det meget tæt. Det negative fortegn betyder at
             de to bevæger sig modsat: Når sølvprisen stiger, falder
@@ -2030,7 +2030,7 @@ const PandoraSilverAnalysisPage: React.FC = () => {
           <SectionHeader n={12} title="Konklusion" />
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             Pandora-aktien er faldet ca. 41% fra januar 2024 til maj 2026, mens sølvprisen
-            er mere end tredoblet i samme periode. Korrelationen på {correlation.toFixed(2)} viser
+            er mere end tredoblet i samme periode. Korrelationen på {correlation.toFixed(2).replace(".", ",")} viser
             en stærk negativ sammenhæng, men den fortæller ikke hele historien.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
