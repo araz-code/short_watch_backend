@@ -1629,7 +1629,17 @@ const PandoraSilverAnalysisPage: React.FC = () => {
             Pandoras officielle politik er at hedge mindst 70% af det forventede
             sølv- og guldforbrug ud fra en rullende 12-måneders produktionsplan.
             Der går herefter typisk 5-10 måneder fra et hedge-køb til omkostningen
-            rammer regnskabet (smykkerne skal først produceres og sælges). I praksis betyder det:
+            rammer regnskabet (smykkerne skal først produceres og sælges).
+          </p>
+          <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
+            Når Pandora i tabellen nedenfor oplyser at fx 95-100% af 2026-resultatet
+            er afdækket, lyder det inkonsistent med 70%-politikken. Det er
+            det ikke: 70% gælder de næste 12 måneders <em>fremtidige køb</em>,
+            mens tallene i tabellen er <em>resultatets</em> dækning. Fordi der
+            er 5-10 måneders forsinkelse fra køb til regnskab, er størstedelen
+            af det aktuelle års køb allerede foretaget og hedget på et givent
+            tidspunkt. Derfor kan andelen af årets resultatpåvirkning være højere end den
+            løbende 70%-andel af fremtidige køb.
           </p>
 
           <div className="overflow-x-auto rounded-2xl border border-gray-100 dark:border-gray-800 mb-6">
@@ -1637,24 +1647,24 @@ const PandoraSilverAnalysisPage: React.FC = () => {
               <caption className="sr-only">Pandoras sølvhedging over tid</caption>
               <thead>
                 <tr className="bg-pink-500 text-white">
-                  <th scope="col" className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">P&L-år</th>
-                  <th scope="col" className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">Hedget andel</th>
+                  <th scope="col" className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">År</th>
+                  <th scope="col" className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">Andel af årets resultat afdækket</th>
                   <th scope="col" className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">Hedget sølvpris</th>
-                  <th scope="col" className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">EBIT-margintryk (Y/Y)</th>
+                  <th scope="col" className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">Ekstern modvind på EBIT (Y/Y)</th>
                 </tr>
               </thead>
               <tbody>
                 <tr className="bg-white dark:bg-[#19191f]">
-                  <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">2025</td>
-                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">91%</td>
-                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">~$29/oz</td>
-                  <td className="px-4 py-3 text-sm tabular-nums text-red-500">-210 bp (råvarer + FX)</td>
+                  <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">2025 (realiseret)</td>
+                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">~100%</td>
+                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">~$28/oz</td>
+                  <td className="px-4 py-3 text-sm tabular-nums text-red-500">-300 bp (råvarer + FX + told)</td>
                 </tr>
                 <tr className="bg-gray-50/50 dark:bg-[#15151a]">
-                  <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">2026</td>
+                  <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">2026 (forventet)</td>
                   <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">95-100%</td>
                   <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">~$32/oz</td>
-                  <td className="px-4 py-3 text-sm tabular-nums text-red-500">-150-200 bp (råvarer)</td>
+                  <td className="px-4 py-3 text-sm tabular-nums text-red-500">-150-200 bp (kun råvarer)</td>
                 </tr>
                 <tr className="bg-white dark:bg-[#19191f]">
                   <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">Q1 2026 (realiseret)</td>
@@ -1673,9 +1683,13 @@ const PandoraSilverAnalysisPage: React.FC = () => {
             toldsatser og valutakursændringer er betydelig.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-            <strong>Strategisk respons:</strong> Pandora er begyndt at introducere
-            smykker med platinbelægning for at mindske afhængigheden af sølv. Det er
-            en langsigtet strategi, der endnu ikke har ændret den overordnede
+            <strong>Strategisk respons:</strong> Pandora har annonceret en strategi
+            om at omlægge størstedelen af sølvsortimentet til platinbelagte
+            smykker (under navnet EVERSHINE) for at reducere sølvafhængigheden.
+            De første "Design Variations" er ifølge Pandora planlagt til
+            lancering senere i 2026, med mål om at have omlagt mindst 50% af
+            det relevante sølvsortiment ved udgangen af 2027 og ca. 80% ved
+            udgangen af 2028. Per Q1 2026 har omlægningen endnu ikke ændret den overordnede
             materialefordeling væsentligt.
           </p>
         </section>
@@ -1723,9 +1737,9 @@ const PandoraSilverAnalysisPage: React.FC = () => {
             <AssumptionSlider label="Sølv spotpris" value={silverSpot} min={20} max={150} step={1}
               onChange={setSilverSpot} hint="Nuværende spotpris: ~$76/oz (maj 2026)" />
             <AssumptionSlider label="Hedget andel" value={hedgedShare} min={50} max={100} step={5} unit="%"
-              onChange={setHedgedShare} hint="Pandora hedger ud fra en rullende 12-måneders produktionsplan" />
+              onChange={setHedgedShare} hint="Andel af årets resultat der er afdækket (typisk 95-100% iht. Pandoras rapporter)" />
             <AssumptionSlider label="Hedget sølvpris" value={hedgedPrice} min={20} max={80} step={1}
-              onChange={setHedgedPrice} hint="2026 P&L er hedget til ~$32/oz" />
+              onChange={setHedgedPrice} hint="2026-resultatet er hedget til ~$32/oz" />
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
