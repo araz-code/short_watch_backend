@@ -11,7 +11,8 @@ import LoadingIndicator from "../components/UI/LoadingIndicator";
 import HelpDialog from "../components/HelpDialog";
 import RecentUpdatesSidebar from "../components/RecentUpdatesSidebar";
 import AnalysesSidebar from "../components/AnalysesSidebar";
-import MobileAnalysesCarousel from "../components/MobileAnalysesCarousel";
+import InlineAnalysisCard from "../components/InlineAnalysisCard";
+import { analyses } from "../data/analyses";
 import { useTranslation } from "react-i18next";
 import { trackEvent, trackPageView } from "../analytics";
 
@@ -127,15 +128,30 @@ const ShortWatchPage: React.FC = () => {
           </p>
         )}
         {filteredData.length > 0 &&
-          sort(filteredData, selectedSorting).map((short: PricePoint, index: number) => {
+          sort(filteredData, selectedSorting).flatMap((short: PricePoint, index: number) => {
             const showCheckmark = myList.includes(short.code) && !showMyList;
-            return (
+            const items: React.ReactNode[] = [
               <li key={`${short.code}-${short.timestamp}`}>
                 <Link to={`/short-watch-details?code=${short.code}`}>
                   <ShortPositionRow {...short} showCheckmark={showCheckmark} isEven={index % 2 === 0} />
                 </Link>
-              </li>
-            );
+              </li>,
+            ];
+            if (index === 5 && analyses[0]) {
+              items.push(
+                <li key="inline-analysis-top">
+                  <InlineAnalysisCard analysis={analyses[0]} position={6} />
+                </li>
+              );
+            }
+            if (index === 15 && analyses[1]) {
+              items.push(
+                <li key="inline-analysis-mid">
+                  <InlineAnalysisCard analysis={analyses[1]} position={16} />
+                </li>
+              );
+            }
+            return items;
           })}
       </ul>
     );
@@ -246,7 +262,7 @@ const ShortWatchPage: React.FC = () => {
                   {t("You can get more details by clicking on a row")}
                 </p>
                 {content}
-                <div className="h-16 xl:h-4"></div>
+                <div className="h-4"></div>
               </div>
             </section>
           </div>
@@ -259,8 +275,6 @@ const ShortWatchPage: React.FC = () => {
           <HelpDialog onClose={() => setShowHelp(false)} />
         </div>
       )}
-
-      <MobileAnalysesCarousel />
     </div>
   );
 };
