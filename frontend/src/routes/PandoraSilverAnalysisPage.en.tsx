@@ -45,542 +45,542 @@ interface CorrelationPoint {
 }
 
 // ─── static data ────────────────────────────────────────────────────────────
-// Pandora (PNDORA.CO) monthly close prices in DKK + silver price (SI=F) USD/oz.
-// Sources: Yahoo Finance, LBMA.
+// Pandora (PNDORA.CO) daily nominal close prices in DKK (Yahoo Close, not dividend-adjusted)
+// + silver price (SI=F) USD/oz. Sources: Yahoo Finance, LBMA.
 const PRICE_DATA: PricePoint[] = [
-  { date: "2024-01-02", pandora: 863, silver: 23.7 },
-  { date: "2024-01-03", pandora: 850, silver: 22.9 },
-  { date: "2024-01-04", pandora: 857, silver: 23.0 },
-  { date: "2024-01-05", pandora: 873, silver: 23.1 },
-  { date: "2024-01-08", pandora: 903, silver: 23.1 },
-  { date: "2024-01-09", pandora: 900, silver: 22.9 },
-  { date: "2024-01-10", pandora: 920, silver: 22.9 },
-  { date: "2024-01-11", pandora: 909, silver: 22.5 },
-  { date: "2024-01-12", pandora: 902, silver: 23.2 },
-  { date: "2024-01-16", pandora: 910, silver: 22.9 },
-  { date: "2024-01-17", pandora: 908, silver: 22.5 },
-  { date: "2024-01-18", pandora: 894, silver: 22.7 },
-  { date: "2024-01-19", pandora: 884, silver: 22.6 },
-  { date: "2024-01-22", pandora: 898, silver: 22.2 },
-  { date: "2024-01-23", pandora: 897, silver: 22.3 },
-  { date: "2024-01-24", pandora: 912, silver: 22.8 },
-  { date: "2024-01-25", pandora: 926, silver: 22.8 },
-  { date: "2024-01-26", pandora: 915, silver: 22.8 },
-  { date: "2024-01-29", pandora: 933, silver: 23.1 },
-  { date: "2024-01-30", pandora: 939, silver: 23.1 },
-  { date: "2024-01-31", pandora: 930, silver: 23.1 },
-  { date: "2024-02-01", pandora: 922, silver: 23.1 },
-  { date: "2024-02-02", pandora: 937, silver: 22.7 },
-  { date: "2024-02-05", pandora: 937, silver: 22.3 },
-  { date: "2024-02-06", pandora: 949, silver: 22.4 },
-  { date: "2024-02-07", pandora: 945, silver: 22.3 },
-  { date: "2024-02-08", pandora: 994, silver: 22.6 },
-  { date: "2024-02-09", pandora: 1004, silver: 22.5 },
-  { date: "2024-02-12", pandora: 1012, silver: 22.7 },
-  { date: "2024-02-13", pandora: 1003, silver: 22.1 },
-  { date: "2024-02-14", pandora: 1018, silver: 22.3 },
-  { date: "2024-02-15", pandora: 1022, silver: 22.9 },
-  { date: "2024-02-16", pandora: 1046, silver: 23.4 },
-  { date: "2024-02-20", pandora: 1052, silver: 23.1 },
-  { date: "2024-02-21", pandora: 1045, silver: 22.9 },
-  { date: "2024-02-22", pandora: 1053, silver: 22.8 },
-  { date: "2024-02-23", pandora: 1062, silver: 23.0 },
-  { date: "2024-02-26", pandora: 1063, silver: 22.5 },
-  { date: "2024-02-27", pandora: 1063, silver: 22.5 },
-  { date: "2024-02-28", pandora: 1060, silver: 22.4 },
-  { date: "2024-02-29", pandora: 1026, silver: 22.7 },
-  { date: "2024-03-01", pandora: 1058, silver: 23.1 },
-  { date: "2024-03-04", pandora: 1049, silver: 23.8 },
-  { date: "2024-03-05", pandora: 1038, silver: 23.8 },
-  { date: "2024-03-06", pandora: 1027, silver: 24.3 },
-  { date: "2024-03-07", pandora: 1047, silver: 24.4 },
-  { date: "2024-03-08", pandora: 1067, silver: 24.3 },
-  { date: "2024-03-11", pandora: 1052, silver: 24.5 },
-  { date: "2024-03-12", pandora: 1071, silver: 24.2 },
-  { date: "2024-03-13", pandora: 1072, silver: 25.0 },
-  { date: "2024-03-14", pandora: 1087, silver: 24.9 },
-  { date: "2024-03-15", pandora: 1073, silver: 25.2 },
-  { date: "2024-03-18", pandora: 1069, silver: 25.1 },
-  { date: "2024-03-19", pandora: 1076, silver: 25.0 },
-  { date: "2024-03-20", pandora: 1070, silver: 24.9 },
-  { date: "2024-03-21", pandora: 1089, silver: 24.8 },
-  { date: "2024-03-22", pandora: 1050, silver: 24.7 },
-  { date: "2024-03-25", pandora: 1052, silver: 24.7 },
-  { date: "2024-03-26", pandora: 1068, silver: 24.5 },
-  { date: "2024-03-27", pandora: 1043, silver: 24.6 },
-  { date: "2024-04-02", pandora: 1028, silver: 25.8 },
-  { date: "2024-04-03", pandora: 1039, silver: 26.9 },
-  { date: "2024-04-04", pandora: 1028, silver: 27.1 },
-  { date: "2024-04-05", pandora: 1026, silver: 27.4 },
-  { date: "2024-04-08", pandora: 1020, silver: 27.7 },
-  { date: "2024-04-09", pandora: 1006, silver: 27.9 },
-  { date: "2024-04-10", pandora: 1023, silver: 28.0 },
-  { date: "2024-04-11", pandora: 1027, silver: 28.2 },
-  { date: "2024-04-12", pandora: 996, silver: 28.3 },
-  { date: "2024-04-15", pandora: 1011, silver: 28.7 },
-  { date: "2024-04-16", pandora: 999, silver: 28.3 },
-  { date: "2024-04-17", pandora: 1010, silver: 28.3 },
-  { date: "2024-04-18", pandora: 1006, silver: 28.3 },
-  { date: "2024-04-19", pandora: 1013, silver: 28.8 },
-  { date: "2024-04-22", pandora: 1033, silver: 27.2 },
-  { date: "2024-04-23", pandora: 1029, silver: 27.3 },
-  { date: "2024-04-24", pandora: 1025, silver: 27.3 },
-  { date: "2024-04-25", pandora: 1009, silver: 27.3 },
-  { date: "2024-04-26", pandora: 1030, silver: 27.2 },
-  { date: "2024-04-29", pandora: 1017, silver: 27.4 },
-  { date: "2024-04-30", pandora: 1001, silver: 26.4 },
-  { date: "2024-05-01", pandora: 1014, silver: 26.5 },
-  { date: "2024-05-02", pandora: 1076, silver: 26.6 },
-  { date: "2024-05-03", pandora: 1048, silver: 26.4 },
-  { date: "2024-05-06", pandora: 1043, silver: 27.4 },
-  { date: "2024-05-07", pandora: 1041, silver: 27.3 },
-  { date: "2024-05-08", pandora: 1059, silver: 27.4 },
-  { date: "2024-05-13", pandora: 1088, silver: 28.2 },
-  { date: "2024-05-14", pandora: 1058, silver: 28.5 },
-  { date: "2024-05-15", pandora: 1074, silver: 29.5 },
-  { date: "2024-05-16", pandora: 1090, silver: 29.7 },
-  { date: "2024-05-17", pandora: 1095, silver: 31.0 },
-  { date: "2024-05-21", pandora: 1075, silver: 31.9 },
-  { date: "2024-05-22", pandora: 1043, silver: 31.3 },
-  { date: "2024-05-23", pandora: 1067, silver: 30.3 },
-  { date: "2024-05-24", pandora: 1067, silver: 30.3 },
-  { date: "2024-05-28", pandora: 1043, silver: 32.0 },
-  { date: "2024-05-29", pandora: 1045, silver: 32.2 },
-  { date: "2024-05-30", pandora: 1044, silver: 31.4 },
-  { date: "2024-05-31", pandora: 1052, silver: 30.3 },
-  { date: "2024-06-03", pandora: 1035, silver: 30.6 },
-  { date: "2024-06-04", pandora: 1028, silver: 29.5 },
-  { date: "2024-06-06", pandora: 1025, silver: 31.2 },
-  { date: "2024-06-07", pandora: 1047, silver: 29.3 },
-  { date: "2024-06-10", pandora: 1045, silver: 29.8 },
-  { date: "2024-06-11", pandora: 1022, silver: 29.1 },
-  { date: "2024-06-12", pandora: 1031, silver: 30.2 },
-  { date: "2024-06-13", pandora: 1011, silver: 29.0 },
-  { date: "2024-06-14", pandora: 985, silver: 29.4 },
-  { date: "2024-06-17", pandora: 983, silver: 29.3 },
-  { date: "2024-06-18", pandora: 984, silver: 29.5 },
-  { date: "2024-06-20", pandora: 1009, silver: 30.8 },
-  { date: "2024-06-21", pandora: 997, silver: 29.6 },
-  { date: "2024-06-24", pandora: 999, silver: 29.5 },
-  { date: "2024-06-25", pandora: 994, silver: 28.8 },
-  { date: "2024-06-26", pandora: 999, silver: 28.9 },
-  { date: "2024-06-27", pandora: 990, silver: 28.9 },
-  { date: "2024-06-28", pandora: 984, silver: 29.2 },
-  { date: "2024-07-01", pandora: 945, silver: 29.3 },
-  { date: "2024-07-02", pandora: 936, silver: 29.4 },
-  { date: "2024-07-03", pandora: 934, silver: 30.5 },
-  { date: "2024-07-05", pandora: 932, silver: 31.4 },
-  { date: "2024-07-08", pandora: 949, silver: 30.6 },
-  { date: "2024-07-09", pandora: 955, silver: 30.8 },
-  { date: "2024-07-10", pandora: 954, silver: 30.7 },
-  { date: "2024-07-11", pandora: 962, silver: 31.4 },
-  { date: "2024-07-12", pandora: 990, silver: 30.9 },
-  { date: "2024-07-15", pandora: 987, silver: 30.7 },
-  { date: "2024-07-16", pandora: 1005, silver: 31.2 },
-  { date: "2024-07-17", pandora: 993, silver: 30.1 },
-  { date: "2024-07-18", pandora: 985, silver: 30.0 },
-  { date: "2024-07-19", pandora: 986, silver: 29.1 },
-  { date: "2024-07-22", pandora: 1008, silver: 29.1 },
-  { date: "2024-07-23", pandora: 999, silver: 29.1 },
-  { date: "2024-07-24", pandora: 1003, silver: 29.1 },
-  { date: "2024-07-25", pandora: 984, silver: 27.8 },
-  { date: "2024-07-26", pandora: 991, silver: 27.9 },
-  { date: "2024-07-29", pandora: 1007, silver: 27.7 },
-  { date: "2024-07-30", pandora: 1019, silver: 28.4 },
-  { date: "2024-07-31", pandora: 1012, silver: 28.8 },
-  { date: "2024-08-01", pandora: 1008, silver: 28.3 },
-  { date: "2024-08-02", pandora: 947, silver: 28.2 },
-  { date: "2024-08-05", pandora: 914, silver: 27.1 },
-  { date: "2024-08-06", pandora: 933, silver: 27.1 },
-  { date: "2024-08-07", pandora: 943, silver: 26.8 },
-  { date: "2024-08-08", pandora: 950, silver: 27.5 },
-  { date: "2024-08-09", pandora: 960, silver: 27.5 },
-  { date: "2024-08-12", pandora: 975, silver: 27.9 },
-  { date: "2024-08-13", pandora: 1010, silver: 27.7 },
-  { date: "2024-08-14", pandora: 993, silver: 27.3 },
-  { date: "2024-08-15", pandora: 994, silver: 28.3 },
-  { date: "2024-08-16", pandora: 999, silver: 28.8 },
-  { date: "2024-08-19", pandora: 1024, silver: 29.2 },
-  { date: "2024-08-20", pandora: 1043, silver: 29.5 },
-  { date: "2024-08-21", pandora: 1048, silver: 29.5 },
-  { date: "2024-08-22", pandora: 1061, silver: 29.0 },
-  { date: "2024-08-23", pandora: 1071, silver: 29.8 },
-  { date: "2024-08-26", pandora: 1074, silver: 30.0 },
-  { date: "2024-08-27", pandora: 1083, silver: 30.0 },
-  { date: "2024-08-28", pandora: 1085, silver: 29.2 },
-  { date: "2024-08-29", pandora: 1096, silver: 29.6 },
-  { date: "2024-08-30", pandora: 1106, silver: 28.7 },
-  { date: "2024-09-03", pandora: 1104, silver: 28.0 },
-  { date: "2024-09-04", pandora: 1098, silver: 28.2 },
-  { date: "2024-09-05", pandora: 1084, silver: 28.7 },
-  { date: "2024-09-06", pandora: 1073, silver: 27.8 },
-  { date: "2024-09-09", pandora: 1080, silver: 28.3 },
-  { date: "2024-09-10", pandora: 1065, silver: 28.3 },
-  { date: "2024-09-11", pandora: 1084, silver: 28.6 },
-  { date: "2024-09-12", pandora: 1109, silver: 29.7 },
-  { date: "2024-09-13", pandora: 1127, silver: 30.7 },
-  { date: "2024-09-16", pandora: 1115, silver: 30.8 },
-  { date: "2024-09-17", pandora: 1092, silver: 30.6 },
-  { date: "2024-09-18", pandora: 1073, silver: 30.3 },
-  { date: "2024-09-19", pandora: 1100, silver: 31.1 },
-  { date: "2024-09-20", pandora: 1072, silver: 31.2 },
-  { date: "2024-09-23", pandora: 1072, silver: 30.8 },
-  { date: "2024-09-24", pandora: 1088, silver: 32.1 },
-  { date: "2024-09-25", pandora: 1048, silver: 31.7 },
-  { date: "2024-09-26", pandora: 1034, silver: 32.0 },
-  { date: "2024-09-27", pandora: 1029, silver: 31.5 },
-  { date: "2024-09-30", pandora: 1032, silver: 31.2 },
-  { date: "2024-10-01", pandora: 1000, silver: 31.4 },
-  { date: "2024-10-02", pandora: 996, silver: 31.6 },
-  { date: "2024-10-03", pandora: 984, silver: 32.2 },
-  { date: "2024-10-04", pandora: 988, silver: 32.1 },
-  { date: "2024-10-07", pandora: 978, silver: 31.7 },
-  { date: "2024-10-08", pandora: 999, silver: 30.4 },
-  { date: "2024-10-09", pandora: 992, silver: 30.4 },
-  { date: "2024-10-10", pandora: 1003, silver: 31.0 },
-  { date: "2024-10-11", pandora: 1009, silver: 31.5 },
-  { date: "2024-10-14", pandora: 997, silver: 31.1 },
-  { date: "2024-10-15", pandora: 995, silver: 31.5 },
-  { date: "2024-10-16", pandora: 995, silver: 31.8 },
-  { date: "2024-10-17", pandora: 1013, silver: 31.6 },
-  { date: "2024-10-18", pandora: 1005, silver: 33.0 },
-  { date: "2024-10-21", pandora: 983, silver: 33.9 },
-  { date: "2024-10-22", pandora: 965, silver: 34.8 },
-  { date: "2024-10-23", pandora: 959, silver: 33.6 },
-  { date: "2024-10-24", pandora: 981, silver: 33.6 },
-  { date: "2024-10-25", pandora: 974, silver: 33.6 },
-  { date: "2024-10-28", pandora: 982, silver: 33.8 },
-  { date: "2024-10-29", pandora: 999, silver: 34.3 },
-  { date: "2024-10-30", pandora: 988, silver: 33.9 },
-  { date: "2024-10-31", pandora: 968, silver: 32.7 },
-  { date: "2024-11-01", pandora: 992, silver: 32.5 },
-  { date: "2024-11-04", pandora: 993, silver: 32.5 },
-  { date: "2024-11-05", pandora: 992, silver: 32.7 },
-  { date: "2024-11-06", pandora: 975, silver: 31.2 },
-  { date: "2024-11-07", pandora: 987, silver: 31.8 },
-  { date: "2024-11-08", pandora: 997, silver: 31.4 },
-  { date: "2024-11-11", pandora: 1008, silver: 30.5 },
-  { date: "2024-11-12", pandora: 1025, silver: 30.7 },
-  { date: "2024-11-13", pandora: 1022, silver: 30.6 },
-  { date: "2024-11-14", pandora: 1027, silver: 30.5 },
-  { date: "2024-11-15", pandora: 1016, silver: 30.4 },
-  { date: "2024-11-18", pandora: 1025, silver: 31.2 },
-  { date: "2024-11-19", pandora: 1000, silver: 31.2 },
-  { date: "2024-11-20", pandora: 1011, silver: 31.0 },
-  { date: "2024-11-21", pandora: 1017, silver: 30.9 },
-  { date: "2024-11-22", pandora: 1049, silver: 31.3 },
-  { date: "2024-11-25", pandora: 1052, silver: 30.2 },
-  { date: "2024-11-26", pandora: 1046, silver: 30.4 },
-  { date: "2024-11-27", pandora: 1037, silver: 30.1 },
-  { date: "2024-11-29", pandora: 1064, silver: 30.7 },
-  { date: "2024-12-02", pandora: 1090, silver: 30.4 },
-  { date: "2024-12-03", pandora: 1111, silver: 31.1 },
-  { date: "2024-12-04", pandora: 1112, silver: 31.5 },
-  { date: "2024-12-05", pandora: 1102, silver: 31.1 },
-  { date: "2024-12-06", pandora: 1138, silver: 31.2 },
-  { date: "2024-12-09", pandora: 1177, silver: 32.2 },
-  { date: "2024-12-10", pandora: 1182, silver: 32.4 },
-  { date: "2024-12-11", pandora: 1195, silver: 32.6 },
-  { date: "2024-12-12", pandora: 1185, silver: 31.2 },
-  { date: "2024-12-13", pandora: 1194, silver: 30.7 },
-  { date: "2024-12-16", pandora: 1198, silver: 30.7 },
-  { date: "2024-12-17", pandora: 1178, silver: 30.6 },
-  { date: "2024-12-18", pandora: 1190, silver: 30.4 },
-  { date: "2024-12-19", pandora: 1183, silver: 29.1 },
-  { date: "2024-12-20", pandora: 1193, silver: 29.7 },
-  { date: "2024-12-23", pandora: 1212, silver: 29.9 },
-  { date: "2024-12-27", pandora: 1244, silver: 29.7 },
-  { date: "2024-12-30", pandora: 1233, silver: 29.1 },
-  { date: "2025-01-02", pandora: 1236, silver: 29.6 },
-  { date: "2025-01-03", pandora: 1234, silver: 29.8 },
-  { date: "2025-01-06", pandora: 1230, silver: 30.3 },
-  { date: "2025-01-07", pandora: 1222, silver: 30.4 },
-  { date: "2025-01-08", pandora: 1227, silver: 30.5 },
-  { date: "2025-01-09", pandora: 1236, silver: 30.8 },
-  { date: "2025-01-10", pandora: 1247, silver: 31.1 },
-  { date: "2025-01-13", pandora: 1189, silver: 30.1 },
-  { date: "2025-01-14", pandora: 1162, silver: 30.1 },
-  { date: "2025-01-15", pandora: 1170, silver: 31.3 },
-  { date: "2025-01-16", pandora: 1187, silver: 31.5 },
-  { date: "2025-01-17", pandora: 1200, silver: 31.0 },
-  { date: "2025-01-21", pandora: 1220, silver: 31.3 },
-  { date: "2025-01-22", pandora: 1237, silver: 31.2 },
-  { date: "2025-01-23", pandora: 1256, silver: 30.7 },
-  { date: "2025-01-24", pandora: 1244, silver: 31.0 },
-  { date: "2025-01-27", pandora: 1275, silver: 30.3 },
-  { date: "2025-01-28", pandora: 1268, silver: 30.7 },
-  { date: "2025-01-29", pandora: 1290, silver: 31.2 },
-  { date: "2025-01-30", pandora: 1311, silver: 32.4 },
-  { date: "2025-01-31", pandora: 1293, silver: 32.1 },
-  { date: "2025-02-03", pandora: 1292, silver: 32.4 },
-  { date: "2025-02-04", pandora: 1286, silver: 32.9 },
-  { date: "2025-02-05", pandora: 1256, silver: 32.9 },
-  { date: "2025-02-06", pandora: 1261, silver: 32.5 },
-  { date: "2025-02-07", pandora: 1235, silver: 32.3 },
-  { date: "2025-02-10", pandora: 1247, silver: 32.4 },
-  { date: "2025-02-11", pandora: 1238, silver: 32.2 },
-  { date: "2025-02-12", pandora: 1243, silver: 32.7 },
-  { date: "2025-02-13", pandora: 1235, silver: 32.7 },
-  { date: "2025-02-14", pandora: 1181, silver: 32.8 },
-  { date: "2025-02-18", pandora: 1176, silver: 33.3 },
-  { date: "2025-02-19", pandora: 1168, silver: 33.0 },
-  { date: "2025-02-20", pandora: 1160, silver: 33.4 },
-  { date: "2025-02-21", pandora: 1196, silver: 33.0 },
-  { date: "2025-02-24", pandora: 1163, silver: 32.6 },
-  { date: "2025-02-25", pandora: 1183, silver: 31.8 },
-  { date: "2025-02-26", pandora: 1187, silver: 32.3 },
-  { date: "2025-02-27", pandora: 1161, silver: 31.8 },
-  { date: "2025-02-28", pandora: 1187, silver: 31.2 },
-  { date: "2025-03-03", pandora: 1165, silver: 32.0 },
-  { date: "2025-03-04", pandora: 1137, silver: 32.1 },
-  { date: "2025-03-05", pandora: 1121, silver: 32.9 },
-  { date: "2025-03-06", pandora: 1094, silver: 33.1 },
-  { date: "2025-03-07", pandora: 1087, silver: 32.5 },
-  { date: "2025-03-10", pandora: 1075, silver: 32.3 },
-  { date: "2025-03-11", pandora: 1055, silver: 32.9 },
-  { date: "2025-03-12", pandora: 1057, silver: 33.5 },
-  { date: "2025-03-13", pandora: 1059, silver: 34.1 },
-  { date: "2025-03-14", pandora: 1052, silver: 34.2 },
-  { date: "2025-03-17", pandora: 1053, silver: 34.1 },
-  { date: "2025-03-18", pandora: 1025, silver: 34.6 },
-  { date: "2025-03-19", pandora: 1065, silver: 34.0 },
-  { date: "2025-03-20", pandora: 1080, silver: 33.8 },
-  { date: "2025-03-21", pandora: 1063, silver: 33.3 },
-  { date: "2025-03-24", pandora: 1080, silver: 33.3 },
-  { date: "2025-03-25", pandora: 1057, silver: 34.0 },
-  { date: "2025-03-26", pandora: 1058, silver: 34.0 },
-  { date: "2025-03-27", pandora: 1038, silver: 34.9 },
-  { date: "2025-03-28", pandora: 1017, silver: 34.6 },
-  { date: "2025-03-31", pandora: 1005, silver: 34.5 },
-  { date: "2025-04-01", pandora: 1011, silver: 34.2 },
-  { date: "2025-04-02", pandora: 1013, silver: 34.5 },
-  { date: "2025-04-03", pandora: 905, silver: 31.8 },
-  { date: "2025-04-04", pandora: 832, silver: 29.1 },
-  { date: "2025-04-07", pandora: 862, silver: 29.5 },
-  { date: "2025-04-08", pandora: 878, silver: 29.6 },
-  { date: "2025-04-09", pandora: 842, silver: 30.3 },
-  { date: "2025-04-10", pandora: 905, silver: 30.7 },
-  { date: "2025-04-11", pandora: 889, silver: 31.8 },
-  { date: "2025-04-14", pandora: 905, silver: 32.1 },
-  { date: "2025-04-15", pandora: 910, silver: 32.2 },
-  { date: "2025-04-16", pandora: 878, silver: 32.9 },
-  { date: "2025-04-22", pandora: 894, silver: 32.9 },
-  { date: "2025-04-23", pandora: 937, silver: 33.5 },
-  { date: "2025-04-24", pandora: 914, silver: 33.5 },
-  { date: "2025-04-25", pandora: 919, silver: 33.0 },
-  { date: "2025-04-28", pandora: 932, silver: 33.0 },
-  { date: "2025-04-29", pandora: 931, silver: 33.3 },
-  { date: "2025-04-30", pandora: 927, silver: 32.5 },
-  { date: "2025-05-01", pandora: 938, silver: 32.2 },
-  { date: "2025-05-02", pandora: 957, silver: 32.0 },
-  { date: "2025-05-05", pandora: 957, silver: 32.2 },
-  { date: "2025-05-06", pandora: 936, silver: 33.1 },
-  { date: "2025-05-07", pandora: 952, silver: 32.5 },
-  { date: "2025-05-08", pandora: 959, silver: 32.4 },
-  { date: "2025-05-09", pandora: 984, silver: 32.7 },
-  { date: "2025-05-12", pandora: 1060, silver: 32.4 },
-  { date: "2025-05-13", pandora: 1083, silver: 32.9 },
-  { date: "2025-05-14", pandora: 1101, silver: 32.2 },
-  { date: "2025-05-15", pandora: 1101, silver: 32.5 },
-  { date: "2025-05-16", pandora: 1141, silver: 32.2 },
-  { date: "2025-05-19", pandora: 1154, silver: 32.3 },
-  { date: "2025-05-20", pandora: 1156, silver: 33.0 },
-  { date: "2025-05-21", pandora: 1156, silver: 33.5 },
-  { date: "2025-05-22", pandora: 1136, silver: 33.0 },
-  { date: "2025-05-23", pandora: 1130, silver: 33.4 },
-  { date: "2025-05-27", pandora: 1161, silver: 33.1 },
-  { date: "2025-05-28", pandora: 1140, silver: 33.0 },
-  { date: "2025-06-02", pandora: 1123, silver: 34.6 },
-  { date: "2025-06-03", pandora: 1143, silver: 34.5 },
-  { date: "2025-06-04", pandora: 1162, silver: 34.5 },
-  { date: "2025-06-06", pandora: 1130, silver: 36.0 },
-  { date: "2025-06-10", pandora: 1128, silver: 36.5 },
-  { date: "2025-06-11", pandora: 1138, silver: 36.2 },
-  { date: "2025-06-12", pandora: 1123, silver: 36.2 },
-  { date: "2025-06-13", pandora: 1095, silver: 36.3 },
-  { date: "2025-06-16", pandora: 1143, silver: 36.4 },
-  { date: "2025-06-17", pandora: 1118, silver: 37.1 },
-  { date: "2025-06-18", pandora: 1119, silver: 36.9 },
-  { date: "2025-06-20", pandora: 1113, silver: 36.0 },
-  { date: "2025-06-23", pandora: 1054, silver: 36.2 },
-  { date: "2025-06-24", pandora: 1082, silver: 35.7 },
-  { date: "2025-06-25", pandora: 1051, silver: 36.1 },
-  { date: "2025-06-26", pandora: 1032, silver: 36.6 },
-  { date: "2025-06-27", pandora: 1059, silver: 36.0 },
-  { date: "2025-06-30", pandora: 1060, silver: 35.9 },
-  { date: "2025-07-01", pandora: 1056, silver: 36.1 },
-  { date: "2025-07-02", pandora: 1055, silver: 36.4 },
-  { date: "2025-07-03", pandora: 1052, silver: 36.8 },
-  { date: "2025-07-04", pandora: 1035, silver: 36.8 },
-  { date: "2025-07-07", pandora: 1015, silver: 36.6 },
-  { date: "2025-07-08", pandora: 1016, silver: 36.5 },
-  { date: "2025-07-09", pandora: 1026, silver: 36.4 },
-  { date: "2025-07-10", pandora: 1019, silver: 37.0 },
-  { date: "2025-07-11", pandora: 1005, silver: 38.7 },
-  { date: "2025-07-14", pandora: 990, silver: 38.5 },
-  { date: "2025-07-15", pandora: 972, silver: 37.8 },
-  { date: "2025-07-16", pandora: 988, silver: 37.9 },
-  { date: "2025-07-17", pandora: 997, silver: 38.1 },
-  { date: "2025-07-18", pandora: 1000, silver: 38.2 },
-  { date: "2025-07-21", pandora: 988, silver: 39.1 },
-  { date: "2025-07-22", pandora: 990, silver: 39.3 },
-  { date: "2025-07-23", pandora: 1001, silver: 39.3 },
-  { date: "2025-07-24", pandora: 1015, silver: 39.0 },
-  { date: "2025-07-25", pandora: 1007, silver: 38.2 },
-  { date: "2025-07-28", pandora: 1026, silver: 38.0 },
-  { date: "2025-07-29", pandora: 1019, silver: 38.1 },
-  { date: "2025-07-30", pandora: 1025, silver: 37.6 },
-  { date: "2025-07-31", pandora: 1035, silver: 36.6 },
-  { date: "2025-08-01", pandora: 1024, silver: 36.8 },
-  { date: "2025-08-04", pandora: 1034, silver: 37.2 },
-  { date: "2025-08-05", pandora: 1023, silver: 37.7 },
-  { date: "2025-08-06", pandora: 988, silver: 37.8 },
-  { date: "2025-08-07", pandora: 989, silver: 38.2 },
-  { date: "2025-08-08", pandora: 984, silver: 38.4 },
-  { date: "2025-08-11", pandora: 981, silver: 37.7 },
-  { date: "2025-08-12", pandora: 966, silver: 37.9 },
-  { date: "2025-08-13", pandora: 988, silver: 38.5 },
-  { date: "2025-08-14", pandora: 987, silver: 38.0 },
-  { date: "2025-08-15", pandora: 805, silver: 37.9 },
-  { date: "2025-08-18", pandora: 803, silver: 38.0 },
-  { date: "2025-08-19", pandora: 834, silver: 37.3 },
-  { date: "2025-08-20", pandora: 854, silver: 37.7 },
-  { date: "2025-08-21", pandora: 848, silver: 38.0 },
-  { date: "2025-08-22", pandora: 869, silver: 39.0 },
-  { date: "2025-08-25", pandora: 845, silver: 38.7 },
-  { date: "2025-08-26", pandora: 858, silver: 38.6 },
-  { date: "2025-08-27", pandora: 858, silver: 38.7 },
-  { date: "2025-08-28", pandora: 857, silver: 39.2 },
-  { date: "2025-08-29", pandora: 840, silver: 40.2 },
-  { date: "2025-09-02", pandora: 802, silver: 41.1 },
-  { date: "2025-09-03", pandora: 805, silver: 41.5 },
-  { date: "2025-09-04", pandora: 819, silver: 40.9 },
-  { date: "2025-09-05", pandora: 819, silver: 41.1 },
-  { date: "2025-09-08", pandora: 820, silver: 41.4 },
-  { date: "2025-09-09", pandora: 818, silver: 40.9 },
-  { date: "2025-09-10", pandora: 820, silver: 41.1 },
-  { date: "2025-09-11", pandora: 826, silver: 41.7 },
-  { date: "2025-09-12", pandora: 830, silver: 42.4 },
-  { date: "2025-09-15", pandora: 830, silver: 42.5 },
-  { date: "2025-09-16", pandora: 825, silver: 42.5 },
-  { date: "2025-09-17", pandora: 826, silver: 41.7 },
-  { date: "2025-09-18", pandora: 844, silver: 41.7 },
-  { date: "2025-09-19", pandora: 834, silver: 42.5 },
-  { date: "2025-09-22", pandora: 816, silver: 43.8 },
-  { date: "2025-09-23", pandora: 814, silver: 44.2 },
-  { date: "2025-09-24", pandora: 795, silver: 43.8 },
-  { date: "2025-09-25", pandora: 791, silver: 44.7 },
-  { date: "2025-09-26", pandora: 798, silver: 46.2 },
-  { date: "2025-09-29", pandora: 811, silver: 46.6 },
-  { date: "2025-09-30", pandora: 790, silver: 46.3 },
-  { date: "2025-10-01", pandora: 803, silver: 47.3 },
-  { date: "2025-10-02", pandora: 792, silver: 46.0 },
-  { date: "2025-10-03", pandora: 782, silver: 47.6 },
-  { date: "2025-10-06", pandora: 786, silver: 48.1 },
-  { date: "2025-10-07", pandora: 787, silver: 47.2 },
-  { date: "2025-10-08", pandora: 801, silver: 48.7 },
-  { date: "2025-10-09", pandora: 788, silver: 46.8 },
-  { date: "2025-10-10", pandora: 773, silver: 46.9 },
-  { date: "2025-10-13", pandora: 761, silver: 50.1 },
-  { date: "2025-10-14", pandora: 758, silver: 50.3 },
-  { date: "2025-10-15", pandora: 775, silver: 51.1 },
-  { date: "2025-10-16", pandora: 784, silver: 53.0 },
-  { date: "2025-10-17", pandora: 785, silver: 49.9 },
-  { date: "2025-10-20", pandora: 794, silver: 51.1 },
-  { date: "2025-10-21", pandora: 827, silver: 47.5 },
-  { date: "2025-10-22", pandora: 824, silver: 47.5 },
-  { date: "2025-10-23", pandora: 842, silver: 48.5 },
-  { date: "2025-10-24", pandora: 848, silver: 48.4 },
-  { date: "2025-10-27", pandora: 848, silver: 46.6 },
-  { date: "2025-10-28", pandora: 840, silver: 47.1 },
-  { date: "2025-10-29", pandora: 838, silver: 47.7 },
-  { date: "2025-10-30", pandora: 830, silver: 48.4 },
-  { date: "2025-10-31", pandora: 827, silver: 48.0 },
-  { date: "2025-11-03", pandora: 788, silver: 47.9 },
-  { date: "2025-11-04", pandora: 774, silver: 47.1 },
-  { date: "2025-11-05", pandora: 732, silver: 47.9 },
-  { date: "2025-11-06", pandora: 742, silver: 47.8 },
-  { date: "2025-11-07", pandora: 734, silver: 48.0 },
-  { date: "2025-11-10", pandora: 760, silver: 50.2 },
-  { date: "2025-11-11", pandora: 767, silver: 50.6 },
-  { date: "2025-11-12", pandora: 763, silver: 53.3 },
-  { date: "2025-11-13", pandora: 745, silver: 53.1 },
-  { date: "2025-11-14", pandora: 752, silver: 50.6 },
-  { date: "2025-11-17", pandora: 726, silver: 50.6 },
-  { date: "2025-11-18", pandora: 705, silver: 50.5 },
-  { date: "2025-11-19", pandora: 718, silver: 50.8 },
-  { date: "2025-11-20", pandora: 711, silver: 50.2 },
-  { date: "2025-11-21", pandora: 726, silver: 49.9 },
-  { date: "2025-11-24", pandora: 716, silver: 50.3 },
-  { date: "2025-11-25", pandora: 725, silver: 50.9 },
-  { date: "2025-11-26", pandora: 730, silver: 52.9 },
-  { date: "2025-11-28", pandora: 733, silver: 56.4 },
-  { date: "2025-12-01", pandora: 733, silver: 58.4 },
-  { date: "2025-12-02", pandora: 708, silver: 58.0 },
-  { date: "2025-12-03", pandora: 692, silver: 57.9 },
-  { date: "2025-12-04", pandora: 702, silver: 56.8 },
-  { date: "2025-12-05", pandora: 705, silver: 58.4 },
-  { date: "2025-12-08", pandora: 694, silver: 57.8 },
-  { date: "2025-12-09", pandora: 688, silver: 60.2 },
-  { date: "2025-12-10", pandora: 674, silver: 60.4 },
-  { date: "2025-12-11", pandora: 674, silver: 63.9 },
-  { date: "2025-12-12", pandora: 666, silver: 61.4 },
-  { date: "2025-12-15", pandora: 660, silver: 62.9 },
-  { date: "2025-12-16", pandora: 680, silver: 62.7 },
-  { date: "2025-12-17", pandora: 662, silver: 66.2 },
-  { date: "2025-12-18", pandora: 667, silver: 64.6 },
-  { date: "2025-12-19", pandora: 666, silver: 66.8 },
-  { date: "2025-12-22", pandora: 669, silver: 67.9 },
-  { date: "2025-12-23", pandora: 670, silver: 70.5 },
-  { date: "2025-12-29", pandora: 670, silver: 69.9 },
-  { date: "2025-12-30", pandora: 674, silver: 77.4 },
-  { date: "2026-01-02", pandora: 663, silver: 70.6 },
-  { date: "2026-01-05", pandora: 645, silver: 76.2 },
-  { date: "2026-01-06", pandora: 649, silver: 80.5 },
-  { date: "2026-01-07", pandora: 631, silver: 77.1 },
-  { date: "2026-01-08", pandora: 645, silver: 74.7 },
-  { date: "2026-01-09", pandora: 561, silver: 78.9 },
-  { date: "2026-01-12", pandora: 544, silver: 84.6 },
-  { date: "2026-01-13", pandora: 545, silver: 85.9 },
-  { date: "2026-01-14", pandora: 530, silver: 90.9 },
-  { date: "2026-01-15", pandora: 520, silver: 91.9 },
-  { date: "2026-01-16", pandora: 524, silver: 88.1 },
-  { date: "2026-01-20", pandora: 492, silver: 94.2 },
-  { date: "2026-01-21", pandora: 493, silver: 92.2 },
-  { date: "2026-01-22", pandora: 486, silver: 96.0 },
-  { date: "2026-01-23", pandora: 481, silver: 100.9 },
-  { date: "2026-01-26", pandora: 464, silver: 115.1 },
-  { date: "2026-01-27", pandora: 470, silver: 105.5 },
-  { date: "2026-01-28", pandora: 464, silver: 113.1 },
-  { date: "2026-01-29", pandora: 462, silver: 114.0 },
-  { date: "2026-01-30", pandora: 485, silver: 78.3 },
-  { date: "2026-02-02", pandora: 530, silver: 76.8 },
-  { date: "2026-02-03", pandora: 481, silver: 83.0 },
-  { date: "2026-02-04", pandora: 489, silver: 84.2 },
-  { date: "2026-02-05", pandora: 516, silver: 76.5 },
-  { date: "2026-02-06", pandora: 543, silver: 76.7 },
-  { date: "2026-02-09", pandora: 511, silver: 82.1 },
-  { date: "2026-02-10", pandora: 530, silver: 80.2 },
-  { date: "2026-02-11", pandora: 509, silver: 83.8 },
-  { date: "2026-02-12", pandora: 511, silver: 75.5 },
-  { date: "2026-02-13", pandora: 515, silver: 77.9 },
-  { date: "2026-02-17", pandora: 510, silver: 73.4 },
-  { date: "2026-02-18", pandora: 510, silver: 77.5 },
-  { date: "2026-02-19", pandora: 501, silver: 77.6 },
-  { date: "2026-02-20", pandora: 522, silver: 82.3 },
-  { date: "2026-02-23", pandora: 495, silver: 86.5 },
-  { date: "2026-02-24", pandora: 501, silver: 87.5 },
-  { date: "2026-02-25", pandora: 477, silver: 90.9 },
-  { date: "2026-02-26", pandora: 492, silver: 87.0 },
-  { date: "2026-02-27", pandora: 477, silver: 92.7 },
-  { date: "2026-03-02", pandora: 463, silver: 88.3 },
-  { date: "2026-03-03", pandora: 460, silver: 82.9 },
-  { date: "2026-03-04", pandora: 463, silver: 82.6 },
-  { date: "2026-03-05", pandora: 475, silver: 81.7 },
-  { date: "2026-03-06", pandora: 470, silver: 83.8 },
-  { date: "2026-03-09", pandora: 464, silver: 84.0 },
-  { date: "2026-03-10", pandora: 457, silver: 89.1 },
-  { date: "2026-03-11", pandora: 448, silver: 85.1 },
+  { date: "2024-01-02", pandora: 936, silver: 23.7 },
+  { date: "2024-01-03", pandora: 922, silver: 22.9 },
+  { date: "2024-01-04", pandora: 930, silver: 23.0 },
+  { date: "2024-01-05", pandora: 947, silver: 23.1 },
+  { date: "2024-01-08", pandora: 980, silver: 23.1 },
+  { date: "2024-01-09", pandora: 977, silver: 22.9 },
+  { date: "2024-01-10", pandora: 998, silver: 22.9 },
+  { date: "2024-01-11", pandora: 986, silver: 22.5 },
+  { date: "2024-01-12", pandora: 978, silver: 23.2 },
+  { date: "2024-01-16", pandora: 987, silver: 22.9 },
+  { date: "2024-01-17", pandora: 985, silver: 22.5 },
+  { date: "2024-01-18", pandora: 969, silver: 22.7 },
+  { date: "2024-01-19", pandora: 959, silver: 22.6 },
+  { date: "2024-01-22", pandora: 974, silver: 22.2 },
+  { date: "2024-01-23", pandora: 973, silver: 22.3 },
+  { date: "2024-01-24", pandora: 989, silver: 22.8 },
+  { date: "2024-01-25", pandora: 1004, silver: 22.8 },
+  { date: "2024-01-26", pandora: 992, silver: 22.8 },
+  { date: "2024-01-29", pandora: 1012, silver: 23.1 },
+  { date: "2024-01-30", pandora: 1018, silver: 23.1 },
+  { date: "2024-01-31", pandora: 1009, silver: 23.1 },
+  { date: "2024-02-01", pandora: 1000, silver: 23.1 },
+  { date: "2024-02-02", pandora: 1016, silver: 22.7 },
+  { date: "2024-02-05", pandora: 1016, silver: 22.3 },
+  { date: "2024-02-06", pandora: 1030, silver: 22.4 },
+  { date: "2024-02-07", pandora: 1026, silver: 22.3 },
+  { date: "2024-02-08", pandora: 1078, silver: 22.6 },
+  { date: "2024-02-09", pandora: 1090, silver: 22.5 },
+  { date: "2024-02-12", pandora: 1098, silver: 22.7 },
+  { date: "2024-02-13", pandora: 1088, silver: 22.1 },
+  { date: "2024-02-14", pandora: 1104, silver: 22.3 },
+  { date: "2024-02-15", pandora: 1108, silver: 22.9 },
+  { date: "2024-02-16", pandora: 1134, silver: 23.4 },
+  { date: "2024-02-20", pandora: 1142, silver: 23.1 },
+  { date: "2024-02-21", pandora: 1133, silver: 22.9 },
+  { date: "2024-02-22", pandora: 1142, silver: 22.8 },
+  { date: "2024-02-23", pandora: 1152, silver: 23.0 },
+  { date: "2024-02-26", pandora: 1152, silver: 22.5 },
+  { date: "2024-02-27", pandora: 1154, silver: 22.5 },
+  { date: "2024-02-28", pandora: 1150, silver: 22.4 },
+  { date: "2024-02-29", pandora: 1113, silver: 22.7 },
+  { date: "2024-03-01", pandora: 1147, silver: 23.1 },
+  { date: "2024-03-04", pandora: 1138, silver: 23.8 },
+  { date: "2024-03-05", pandora: 1126, silver: 23.8 },
+  { date: "2024-03-06", pandora: 1114, silver: 24.3 },
+  { date: "2024-03-07", pandora: 1136, silver: 24.4 },
+  { date: "2024-03-08", pandora: 1158, silver: 24.3 },
+  { date: "2024-03-11", pandora: 1141, silver: 24.5 },
+  { date: "2024-03-12", pandora: 1162, silver: 24.2 },
+  { date: "2024-03-13", pandora: 1163, silver: 25.0 },
+  { date: "2024-03-14", pandora: 1180, silver: 24.9 },
+  { date: "2024-03-15", pandora: 1146, silver: 25.2 },
+  { date: "2024-03-18", pandora: 1142, silver: 25.1 },
+  { date: "2024-03-19", pandora: 1149, silver: 25.0 },
+  { date: "2024-03-20", pandora: 1143, silver: 24.9 },
+  { date: "2024-03-21", pandora: 1164, silver: 24.8 },
+  { date: "2024-03-22", pandora: 1122, silver: 24.7 },
+  { date: "2024-03-25", pandora: 1124, silver: 24.7 },
+  { date: "2024-03-26", pandora: 1140, silver: 24.5 },
+  { date: "2024-03-27", pandora: 1114, silver: 24.6 },
+  { date: "2024-04-02", pandora: 1098, silver: 25.8 },
+  { date: "2024-04-03", pandora: 1110, silver: 26.9 },
+  { date: "2024-04-04", pandora: 1098, silver: 27.1 },
+  { date: "2024-04-05", pandora: 1096, silver: 27.4 },
+  { date: "2024-04-08", pandora: 1090, silver: 27.7 },
+  { date: "2024-04-09", pandora: 1074, silver: 27.9 },
+  { date: "2024-04-10", pandora: 1093, silver: 28.0 },
+  { date: "2024-04-11", pandora: 1097, silver: 28.2 },
+  { date: "2024-04-12", pandora: 1064, silver: 28.3 },
+  { date: "2024-04-15", pandora: 1080, silver: 28.7 },
+  { date: "2024-04-16", pandora: 1067, silver: 28.3 },
+  { date: "2024-04-17", pandora: 1078, silver: 28.3 },
+  { date: "2024-04-18", pandora: 1074, silver: 28.3 },
+  { date: "2024-04-19", pandora: 1082, silver: 28.8 },
+  { date: "2024-04-22", pandora: 1103, silver: 27.2 },
+  { date: "2024-04-23", pandora: 1099, silver: 27.3 },
+  { date: "2024-04-24", pandora: 1095, silver: 27.3 },
+  { date: "2024-04-25", pandora: 1078, silver: 27.3 },
+  { date: "2024-04-26", pandora: 1100, silver: 27.2 },
+  { date: "2024-04-29", pandora: 1086, silver: 27.4 },
+  { date: "2024-04-30", pandora: 1070, silver: 26.4 },
+  { date: "2024-05-01", pandora: 1082, silver: 26.5 },
+  { date: "2024-05-02", pandora: 1150, silver: 26.6 },
+  { date: "2024-05-03", pandora: 1120, silver: 26.4 },
+  { date: "2024-05-06", pandora: 1114, silver: 27.4 },
+  { date: "2024-05-07", pandora: 1112, silver: 27.3 },
+  { date: "2024-05-08", pandora: 1132, silver: 27.4 },
+  { date: "2024-05-13", pandora: 1162, silver: 28.2 },
+  { date: "2024-05-14", pandora: 1130, silver: 28.5 },
+  { date: "2024-05-15", pandora: 1148, silver: 29.5 },
+  { date: "2024-05-16", pandora: 1164, silver: 29.7 },
+  { date: "2024-05-17", pandora: 1170, silver: 31.0 },
+  { date: "2024-05-21", pandora: 1148, silver: 31.9 },
+  { date: "2024-05-22", pandora: 1114, silver: 31.3 },
+  { date: "2024-05-23", pandora: 1140, silver: 30.3 },
+  { date: "2024-05-24", pandora: 1140, silver: 30.3 },
+  { date: "2024-05-28", pandora: 1114, silver: 32.0 },
+  { date: "2024-05-29", pandora: 1116, silver: 32.2 },
+  { date: "2024-05-30", pandora: 1115, silver: 31.4 },
+  { date: "2024-05-31", pandora: 1124, silver: 30.3 },
+  { date: "2024-06-03", pandora: 1105, silver: 30.6 },
+  { date: "2024-06-04", pandora: 1098, silver: 29.5 },
+  { date: "2024-06-06", pandora: 1094, silver: 31.2 },
+  { date: "2024-06-07", pandora: 1118, silver: 29.3 },
+  { date: "2024-06-10", pandora: 1116, silver: 29.8 },
+  { date: "2024-06-11", pandora: 1092, silver: 29.1 },
+  { date: "2024-06-12", pandora: 1102, silver: 30.2 },
+  { date: "2024-06-13", pandora: 1080, silver: 29.0 },
+  { date: "2024-06-14", pandora: 1052, silver: 29.4 },
+  { date: "2024-06-17", pandora: 1050, silver: 29.3 },
+  { date: "2024-06-18", pandora: 1050, silver: 29.5 },
+  { date: "2024-06-20", pandora: 1078, silver: 30.8 },
+  { date: "2024-06-21", pandora: 1064, silver: 29.6 },
+  { date: "2024-06-24", pandora: 1067, silver: 29.5 },
+  { date: "2024-06-25", pandora: 1062, silver: 28.8 },
+  { date: "2024-06-26", pandora: 1068, silver: 28.9 },
+  { date: "2024-06-27", pandora: 1057, silver: 28.9 },
+  { date: "2024-06-28", pandora: 1051, silver: 29.2 },
+  { date: "2024-07-01", pandora: 1009, silver: 29.3 },
+  { date: "2024-07-02", pandora: 999, silver: 29.4 },
+  { date: "2024-07-03", pandora: 997, silver: 30.5 },
+  { date: "2024-07-05", pandora: 995, silver: 31.4 },
+  { date: "2024-07-08", pandora: 1014, silver: 30.6 },
+  { date: "2024-07-09", pandora: 1020, silver: 30.8 },
+  { date: "2024-07-10", pandora: 1019, silver: 30.7 },
+  { date: "2024-07-11", pandora: 1028, silver: 31.4 },
+  { date: "2024-07-12", pandora: 1058, silver: 30.9 },
+  { date: "2024-07-15", pandora: 1054, silver: 30.7 },
+  { date: "2024-07-16", pandora: 1073, silver: 31.2 },
+  { date: "2024-07-17", pandora: 1060, silver: 30.1 },
+  { date: "2024-07-18", pandora: 1052, silver: 30.0 },
+  { date: "2024-07-19", pandora: 1054, silver: 29.1 },
+  { date: "2024-07-22", pandora: 1076, silver: 29.1 },
+  { date: "2024-07-23", pandora: 1066, silver: 29.1 },
+  { date: "2024-07-24", pandora: 1071, silver: 29.1 },
+  { date: "2024-07-25", pandora: 1051, silver: 27.8 },
+  { date: "2024-07-26", pandora: 1059, silver: 27.9 },
+  { date: "2024-07-29", pandora: 1076, silver: 27.7 },
+  { date: "2024-07-30", pandora: 1088, silver: 28.4 },
+  { date: "2024-07-31", pandora: 1081, silver: 28.8 },
+  { date: "2024-08-01", pandora: 1076, silver: 28.3 },
+  { date: "2024-08-02", pandora: 1011, silver: 28.2 },
+  { date: "2024-08-05", pandora: 976, silver: 27.1 },
+  { date: "2024-08-06", pandora: 997, silver: 27.1 },
+  { date: "2024-08-07", pandora: 1008, silver: 26.8 },
+  { date: "2024-08-08", pandora: 1014, silver: 27.5 },
+  { date: "2024-08-09", pandora: 1025, silver: 27.5 },
+  { date: "2024-08-12", pandora: 1041, silver: 27.9 },
+  { date: "2024-08-13", pandora: 1079, silver: 27.7 },
+  { date: "2024-08-14", pandora: 1060, silver: 27.3 },
+  { date: "2024-08-15", pandora: 1062, silver: 28.3 },
+  { date: "2024-08-16", pandora: 1068, silver: 28.8 },
+  { date: "2024-08-19", pandora: 1094, silver: 29.2 },
+  { date: "2024-08-20", pandora: 1114, silver: 29.5 },
+  { date: "2024-08-21", pandora: 1119, silver: 29.5 },
+  { date: "2024-08-22", pandora: 1134, silver: 29.0 },
+  { date: "2024-08-23", pandora: 1144, silver: 29.8 },
+  { date: "2024-08-26", pandora: 1148, silver: 30.0 },
+  { date: "2024-08-27", pandora: 1156, silver: 30.0 },
+  { date: "2024-08-28", pandora: 1159, silver: 29.2 },
+  { date: "2024-08-29", pandora: 1171, silver: 29.6 },
+  { date: "2024-08-30", pandora: 1181, silver: 28.7 },
+  { date: "2024-09-03", pandora: 1179, silver: 28.0 },
+  { date: "2024-09-04", pandora: 1173, silver: 28.2 },
+  { date: "2024-09-05", pandora: 1158, silver: 28.7 },
+  { date: "2024-09-06", pandora: 1146, silver: 27.8 },
+  { date: "2024-09-09", pandora: 1153, silver: 28.3 },
+  { date: "2024-09-10", pandora: 1138, silver: 28.3 },
+  { date: "2024-09-11", pandora: 1158, silver: 28.6 },
+  { date: "2024-09-12", pandora: 1184, silver: 29.7 },
+  { date: "2024-09-13", pandora: 1204, silver: 30.7 },
+  { date: "2024-09-16", pandora: 1190, silver: 30.8 },
+  { date: "2024-09-17", pandora: 1166, silver: 30.6 },
+  { date: "2024-09-18", pandora: 1146, silver: 30.3 },
+  { date: "2024-09-19", pandora: 1174, silver: 31.1 },
+  { date: "2024-09-20", pandora: 1146, silver: 31.2 },
+  { date: "2024-09-23", pandora: 1144, silver: 30.8 },
+  { date: "2024-09-24", pandora: 1162, silver: 32.1 },
+  { date: "2024-09-25", pandora: 1119, silver: 31.7 },
+  { date: "2024-09-26", pandora: 1104, silver: 32.0 },
+  { date: "2024-09-27", pandora: 1100, silver: 31.5 },
+  { date: "2024-09-30", pandora: 1102, silver: 31.2 },
+  { date: "2024-10-01", pandora: 1068, silver: 31.4 },
+  { date: "2024-10-02", pandora: 1064, silver: 31.6 },
+  { date: "2024-10-03", pandora: 1050, silver: 32.2 },
+  { date: "2024-10-04", pandora: 1055, silver: 32.1 },
+  { date: "2024-10-07", pandora: 1044, silver: 31.7 },
+  { date: "2024-10-08", pandora: 1067, silver: 30.4 },
+  { date: "2024-10-09", pandora: 1060, silver: 30.4 },
+  { date: "2024-10-10", pandora: 1071, silver: 31.0 },
+  { date: "2024-10-11", pandora: 1078, silver: 31.5 },
+  { date: "2024-10-14", pandora: 1064, silver: 31.1 },
+  { date: "2024-10-15", pandora: 1063, silver: 31.5 },
+  { date: "2024-10-16", pandora: 1063, silver: 31.8 },
+  { date: "2024-10-17", pandora: 1082, silver: 31.6 },
+  { date: "2024-10-18", pandora: 1074, silver: 33.0 },
+  { date: "2024-10-21", pandora: 1050, silver: 33.9 },
+  { date: "2024-10-22", pandora: 1030, silver: 34.8 },
+  { date: "2024-10-23", pandora: 1024, silver: 33.6 },
+  { date: "2024-10-24", pandora: 1048, silver: 33.6 },
+  { date: "2024-10-25", pandora: 1040, silver: 33.6 },
+  { date: "2024-10-28", pandora: 1048, silver: 33.8 },
+  { date: "2024-10-29", pandora: 1067, silver: 34.3 },
+  { date: "2024-10-30", pandora: 1056, silver: 33.9 },
+  { date: "2024-10-31", pandora: 1034, silver: 32.7 },
+  { date: "2024-11-01", pandora: 1060, silver: 32.5 },
+  { date: "2024-11-04", pandora: 1061, silver: 32.5 },
+  { date: "2024-11-05", pandora: 1060, silver: 32.7 },
+  { date: "2024-11-06", pandora: 1042, silver: 31.2 },
+  { date: "2024-11-07", pandora: 1054, silver: 31.8 },
+  { date: "2024-11-08", pandora: 1064, silver: 31.4 },
+  { date: "2024-11-11", pandora: 1076, silver: 30.5 },
+  { date: "2024-11-12", pandora: 1094, silver: 30.7 },
+  { date: "2024-11-13", pandora: 1092, silver: 30.6 },
+  { date: "2024-11-14", pandora: 1097, silver: 30.5 },
+  { date: "2024-11-15", pandora: 1085, silver: 30.4 },
+  { date: "2024-11-18", pandora: 1095, silver: 31.2 },
+  { date: "2024-11-19", pandora: 1068, silver: 31.2 },
+  { date: "2024-11-20", pandora: 1080, silver: 31.0 },
+  { date: "2024-11-21", pandora: 1086, silver: 30.9 },
+  { date: "2024-11-22", pandora: 1120, silver: 31.3 },
+  { date: "2024-11-25", pandora: 1124, silver: 30.2 },
+  { date: "2024-11-26", pandora: 1117, silver: 30.4 },
+  { date: "2024-11-27", pandora: 1108, silver: 30.1 },
+  { date: "2024-11-29", pandora: 1136, silver: 30.7 },
+  { date: "2024-12-02", pandora: 1164, silver: 30.4 },
+  { date: "2024-12-03", pandora: 1186, silver: 31.1 },
+  { date: "2024-12-04", pandora: 1188, silver: 31.5 },
+  { date: "2024-12-05", pandora: 1178, silver: 31.1 },
+  { date: "2024-12-06", pandora: 1215, silver: 31.2 },
+  { date: "2024-12-09", pandora: 1257, silver: 32.2 },
+  { date: "2024-12-10", pandora: 1262, silver: 32.4 },
+  { date: "2024-12-11", pandora: 1276, silver: 32.6 },
+  { date: "2024-12-12", pandora: 1266, silver: 31.2 },
+  { date: "2024-12-13", pandora: 1275, silver: 30.7 },
+  { date: "2024-12-16", pandora: 1280, silver: 30.7 },
+  { date: "2024-12-17", pandora: 1258, silver: 30.6 },
+  { date: "2024-12-18", pandora: 1271, silver: 30.4 },
+  { date: "2024-12-19", pandora: 1264, silver: 29.1 },
+  { date: "2024-12-20", pandora: 1274, silver: 29.7 },
+  { date: "2024-12-23", pandora: 1294, silver: 29.9 },
+  { date: "2024-12-27", pandora: 1328, silver: 29.7 },
+  { date: "2024-12-30", pandora: 1317, silver: 29.1 },
+  { date: "2025-01-02", pandora: 1320, silver: 29.6 },
+  { date: "2025-01-03", pandora: 1318, silver: 29.8 },
+  { date: "2025-01-06", pandora: 1314, silver: 30.3 },
+  { date: "2025-01-07", pandora: 1305, silver: 30.4 },
+  { date: "2025-01-08", pandora: 1311, silver: 30.5 },
+  { date: "2025-01-09", pandora: 1320, silver: 30.8 },
+  { date: "2025-01-10", pandora: 1332, silver: 31.1 },
+  { date: "2025-01-13", pandora: 1270, silver: 30.1 },
+  { date: "2025-01-14", pandora: 1241, silver: 30.1 },
+  { date: "2025-01-15", pandora: 1250, silver: 31.3 },
+  { date: "2025-01-16", pandora: 1268, silver: 31.5 },
+  { date: "2025-01-17", pandora: 1282, silver: 31.0 },
+  { date: "2025-01-21", pandora: 1304, silver: 31.3 },
+  { date: "2025-01-22", pandora: 1321, silver: 31.2 },
+  { date: "2025-01-23", pandora: 1342, silver: 30.7 },
+  { date: "2025-01-24", pandora: 1329, silver: 31.0 },
+  { date: "2025-01-27", pandora: 1362, silver: 30.3 },
+  { date: "2025-01-28", pandora: 1354, silver: 30.7 },
+  { date: "2025-01-29", pandora: 1378, silver: 31.2 },
+  { date: "2025-01-30", pandora: 1400, silver: 32.4 },
+  { date: "2025-01-31", pandora: 1380, silver: 32.1 },
+  { date: "2025-02-03", pandora: 1380, silver: 32.4 },
+  { date: "2025-02-04", pandora: 1374, silver: 32.9 },
+  { date: "2025-02-05", pandora: 1342, silver: 32.9 },
+  { date: "2025-02-06", pandora: 1347, silver: 32.5 },
+  { date: "2025-02-07", pandora: 1320, silver: 32.3 },
+  { date: "2025-02-10", pandora: 1332, silver: 32.4 },
+  { date: "2025-02-11", pandora: 1322, silver: 32.2 },
+  { date: "2025-02-12", pandora: 1328, silver: 32.7 },
+  { date: "2025-02-13", pandora: 1320, silver: 32.7 },
+  { date: "2025-02-14", pandora: 1261, silver: 32.8 },
+  { date: "2025-02-18", pandora: 1256, silver: 33.3 },
+  { date: "2025-02-19", pandora: 1247, silver: 33.0 },
+  { date: "2025-02-20", pandora: 1240, silver: 33.4 },
+  { date: "2025-02-21", pandora: 1278, silver: 33.0 },
+  { date: "2025-02-24", pandora: 1242, silver: 32.6 },
+  { date: "2025-02-25", pandora: 1264, silver: 31.8 },
+  { date: "2025-02-26", pandora: 1268, silver: 32.3 },
+  { date: "2025-02-27", pandora: 1240, silver: 31.8 },
+  { date: "2025-02-28", pandora: 1268, silver: 31.2 },
+  { date: "2025-03-03", pandora: 1244, silver: 32.0 },
+  { date: "2025-03-04", pandora: 1214, silver: 32.1 },
+  { date: "2025-03-05", pandora: 1198, silver: 32.9 },
+  { date: "2025-03-06", pandora: 1168, silver: 33.1 },
+  { date: "2025-03-07", pandora: 1162, silver: 32.5 },
+  { date: "2025-03-10", pandora: 1148, silver: 32.3 },
+  { date: "2025-03-11", pandora: 1126, silver: 32.9 },
+  { date: "2025-03-12", pandora: 1128, silver: 33.5 },
+  { date: "2025-03-13", pandora: 1111, silver: 34.1 },
+  { date: "2025-03-14", pandora: 1104, silver: 34.2 },
+  { date: "2025-03-17", pandora: 1104, silver: 34.1 },
+  { date: "2025-03-18", pandora: 1075, silver: 34.6 },
+  { date: "2025-03-19", pandora: 1118, silver: 34.0 },
+  { date: "2025-03-20", pandora: 1133, silver: 33.8 },
+  { date: "2025-03-21", pandora: 1116, silver: 33.3 },
+  { date: "2025-03-24", pandora: 1133, silver: 33.3 },
+  { date: "2025-03-25", pandora: 1108, silver: 34.0 },
+  { date: "2025-03-26", pandora: 1110, silver: 34.0 },
+  { date: "2025-03-27", pandora: 1089, silver: 34.9 },
+  { date: "2025-03-28", pandora: 1068, silver: 34.6 },
+  { date: "2025-03-31", pandora: 1054, silver: 34.5 },
+  { date: "2025-04-01", pandora: 1061, silver: 34.2 },
+  { date: "2025-04-02", pandora: 1062, silver: 34.5 },
+  { date: "2025-04-03", pandora: 949, silver: 31.8 },
+  { date: "2025-04-04", pandora: 873, silver: 29.1 },
+  { date: "2025-04-07", pandora: 904, silver: 29.5 },
+  { date: "2025-04-08", pandora: 921, silver: 29.6 },
+  { date: "2025-04-09", pandora: 884, silver: 30.3 },
+  { date: "2025-04-10", pandora: 950, silver: 30.7 },
+  { date: "2025-04-11", pandora: 932, silver: 31.8 },
+  { date: "2025-04-14", pandora: 949, silver: 32.1 },
+  { date: "2025-04-15", pandora: 955, silver: 32.2 },
+  { date: "2025-04-16", pandora: 921, silver: 32.9 },
+  { date: "2025-04-22", pandora: 938, silver: 32.9 },
+  { date: "2025-04-23", pandora: 983, silver: 33.5 },
+  { date: "2025-04-24", pandora: 959, silver: 33.5 },
+  { date: "2025-04-25", pandora: 964, silver: 33.0 },
+  { date: "2025-04-28", pandora: 977, silver: 33.0 },
+  { date: "2025-04-29", pandora: 977, silver: 33.3 },
+  { date: "2025-04-30", pandora: 972, silver: 32.5 },
+  { date: "2025-05-01", pandora: 984, silver: 32.2 },
+  { date: "2025-05-02", pandora: 1004, silver: 32.0 },
+  { date: "2025-05-05", pandora: 1004, silver: 32.2 },
+  { date: "2025-05-06", pandora: 982, silver: 33.1 },
+  { date: "2025-05-07", pandora: 999, silver: 32.5 },
+  { date: "2025-05-08", pandora: 1006, silver: 32.4 },
+  { date: "2025-05-09", pandora: 1032, silver: 32.7 },
+  { date: "2025-05-12", pandora: 1112, silver: 32.4 },
+  { date: "2025-05-13", pandora: 1136, silver: 32.9 },
+  { date: "2025-05-14", pandora: 1155, silver: 32.2 },
+  { date: "2025-05-15", pandora: 1156, silver: 32.5 },
+  { date: "2025-05-16", pandora: 1197, silver: 32.2 },
+  { date: "2025-05-19", pandora: 1211, silver: 32.3 },
+  { date: "2025-05-20", pandora: 1212, silver: 33.0 },
+  { date: "2025-05-21", pandora: 1212, silver: 33.5 },
+  { date: "2025-05-22", pandora: 1192, silver: 33.0 },
+  { date: "2025-05-23", pandora: 1186, silver: 33.4 },
+  { date: "2025-05-27", pandora: 1218, silver: 33.1 },
+  { date: "2025-05-28", pandora: 1196, silver: 33.0 },
+  { date: "2025-06-02", pandora: 1178, silver: 34.6 },
+  { date: "2025-06-03", pandora: 1200, silver: 34.5 },
+  { date: "2025-06-04", pandora: 1220, silver: 34.5 },
+  { date: "2025-06-06", pandora: 1186, silver: 36.0 },
+  { date: "2025-06-10", pandora: 1184, silver: 36.5 },
+  { date: "2025-06-11", pandora: 1194, silver: 36.2 },
+  { date: "2025-06-12", pandora: 1178, silver: 36.2 },
+  { date: "2025-06-13", pandora: 1149, silver: 36.3 },
+  { date: "2025-06-16", pandora: 1200, silver: 36.4 },
+  { date: "2025-06-17", pandora: 1172, silver: 37.1 },
+  { date: "2025-06-18", pandora: 1174, silver: 36.9 },
+  { date: "2025-06-20", pandora: 1168, silver: 36.0 },
+  { date: "2025-06-23", pandora: 1106, silver: 36.2 },
+  { date: "2025-06-24", pandora: 1135, silver: 35.7 },
+  { date: "2025-06-25", pandora: 1103, silver: 36.1 },
+  { date: "2025-06-26", pandora: 1082, silver: 36.6 },
+  { date: "2025-06-27", pandora: 1111, silver: 36.0 },
+  { date: "2025-06-30", pandora: 1112, silver: 35.9 },
+  { date: "2025-07-01", pandora: 1108, silver: 36.1 },
+  { date: "2025-07-02", pandora: 1106, silver: 36.4 },
+  { date: "2025-07-03", pandora: 1104, silver: 36.8 },
+  { date: "2025-07-04", pandora: 1086, silver: 36.8 },
+  { date: "2025-07-07", pandora: 1064, silver: 36.6 },
+  { date: "2025-07-08", pandora: 1066, silver: 36.5 },
+  { date: "2025-07-09", pandora: 1076, silver: 36.4 },
+  { date: "2025-07-10", pandora: 1070, silver: 37.0 },
+  { date: "2025-07-11", pandora: 1054, silver: 38.7 },
+  { date: "2025-07-14", pandora: 1039, silver: 38.5 },
+  { date: "2025-07-15", pandora: 1020, silver: 37.8 },
+  { date: "2025-07-16", pandora: 1037, silver: 37.9 },
+  { date: "2025-07-17", pandora: 1046, silver: 38.1 },
+  { date: "2025-07-18", pandora: 1050, silver: 38.2 },
+  { date: "2025-07-21", pandora: 1037, silver: 39.1 },
+  { date: "2025-07-22", pandora: 1039, silver: 39.3 },
+  { date: "2025-07-23", pandora: 1050, silver: 39.3 },
+  { date: "2025-07-24", pandora: 1064, silver: 39.0 },
+  { date: "2025-07-25", pandora: 1057, silver: 38.2 },
+  { date: "2025-07-28", pandora: 1076, silver: 38.0 },
+  { date: "2025-07-29", pandora: 1069, silver: 38.1 },
+  { date: "2025-07-30", pandora: 1075, silver: 37.6 },
+  { date: "2025-07-31", pandora: 1086, silver: 36.6 },
+  { date: "2025-08-01", pandora: 1074, silver: 36.8 },
+  { date: "2025-08-04", pandora: 1084, silver: 37.2 },
+  { date: "2025-08-05", pandora: 1073, silver: 37.7 },
+  { date: "2025-08-06", pandora: 1036, silver: 37.8 },
+  { date: "2025-08-07", pandora: 1038, silver: 38.2 },
+  { date: "2025-08-08", pandora: 1032, silver: 38.4 },
+  { date: "2025-08-11", pandora: 1029, silver: 37.7 },
+  { date: "2025-08-12", pandora: 1014, silver: 37.9 },
+  { date: "2025-08-13", pandora: 1037, silver: 38.5 },
+  { date: "2025-08-14", pandora: 1035, silver: 38.0 },
+  { date: "2025-08-15", pandora: 845, silver: 37.9 },
+  { date: "2025-08-18", pandora: 843, silver: 38.0 },
+  { date: "2025-08-19", pandora: 875, silver: 37.3 },
+  { date: "2025-08-20", pandora: 896, silver: 37.7 },
+  { date: "2025-08-21", pandora: 889, silver: 38.0 },
+  { date: "2025-08-22", pandora: 912, silver: 39.0 },
+  { date: "2025-08-25", pandora: 887, silver: 38.7 },
+  { date: "2025-08-26", pandora: 900, silver: 38.6 },
+  { date: "2025-08-27", pandora: 900, silver: 38.7 },
+  { date: "2025-08-28", pandora: 899, silver: 39.2 },
+  { date: "2025-08-29", pandora: 881, silver: 40.2 },
+  { date: "2025-09-02", pandora: 841, silver: 41.1 },
+  { date: "2025-09-03", pandora: 845, silver: 41.5 },
+  { date: "2025-09-04", pandora: 859, silver: 40.9 },
+  { date: "2025-09-05", pandora: 860, silver: 41.1 },
+  { date: "2025-09-08", pandora: 861, silver: 41.4 },
+  { date: "2025-09-09", pandora: 859, silver: 40.9 },
+  { date: "2025-09-10", pandora: 860, silver: 41.1 },
+  { date: "2025-09-11", pandora: 866, silver: 41.7 },
+  { date: "2025-09-12", pandora: 871, silver: 42.4 },
+  { date: "2025-09-15", pandora: 871, silver: 42.5 },
+  { date: "2025-09-16", pandora: 866, silver: 42.5 },
+  { date: "2025-09-17", pandora: 866, silver: 41.7 },
+  { date: "2025-09-18", pandora: 885, silver: 41.7 },
+  { date: "2025-09-19", pandora: 875, silver: 42.5 },
+  { date: "2025-09-22", pandora: 856, silver: 43.8 },
+  { date: "2025-09-23", pandora: 854, silver: 44.2 },
+  { date: "2025-09-24", pandora: 834, silver: 43.8 },
+  { date: "2025-09-25", pandora: 830, silver: 44.7 },
+  { date: "2025-09-26", pandora: 837, silver: 46.2 },
+  { date: "2025-09-29", pandora: 851, silver: 46.6 },
+  { date: "2025-09-30", pandora: 828, silver: 46.3 },
+  { date: "2025-10-01", pandora: 842, silver: 47.3 },
+  { date: "2025-10-02", pandora: 831, silver: 46.0 },
+  { date: "2025-10-03", pandora: 820, silver: 47.6 },
+  { date: "2025-10-06", pandora: 825, silver: 48.1 },
+  { date: "2025-10-07", pandora: 826, silver: 47.2 },
+  { date: "2025-10-08", pandora: 840, silver: 48.7 },
+  { date: "2025-10-09", pandora: 826, silver: 46.8 },
+  { date: "2025-10-10", pandora: 811, silver: 46.9 },
+  { date: "2025-10-13", pandora: 798, silver: 50.1 },
+  { date: "2025-10-14", pandora: 796, silver: 50.3 },
+  { date: "2025-10-15", pandora: 813, silver: 51.1 },
+  { date: "2025-10-16", pandora: 822, silver: 53.0 },
+  { date: "2025-10-17", pandora: 824, silver: 49.9 },
+  { date: "2025-10-20", pandora: 833, silver: 51.1 },
+  { date: "2025-10-21", pandora: 867, silver: 47.5 },
+  { date: "2025-10-22", pandora: 865, silver: 47.5 },
+  { date: "2025-10-23", pandora: 883, silver: 48.5 },
+  { date: "2025-10-24", pandora: 889, silver: 48.4 },
+  { date: "2025-10-27", pandora: 890, silver: 46.6 },
+  { date: "2025-10-28", pandora: 882, silver: 47.1 },
+  { date: "2025-10-29", pandora: 879, silver: 47.7 },
+  { date: "2025-10-30", pandora: 871, silver: 48.4 },
+  { date: "2025-10-31", pandora: 868, silver: 48.0 },
+  { date: "2025-11-03", pandora: 826, silver: 47.9 },
+  { date: "2025-11-04", pandora: 812, silver: 47.1 },
+  { date: "2025-11-05", pandora: 768, silver: 47.9 },
+  { date: "2025-11-06", pandora: 778, silver: 47.8 },
+  { date: "2025-11-07", pandora: 770, silver: 48.0 },
+  { date: "2025-11-10", pandora: 797, silver: 50.2 },
+  { date: "2025-11-11", pandora: 805, silver: 50.6 },
+  { date: "2025-11-12", pandora: 800, silver: 53.3 },
+  { date: "2025-11-13", pandora: 781, silver: 53.1 },
+  { date: "2025-11-14", pandora: 789, silver: 50.6 },
+  { date: "2025-11-17", pandora: 762, silver: 50.6 },
+  { date: "2025-11-18", pandora: 739, silver: 50.5 },
+  { date: "2025-11-19", pandora: 754, silver: 50.8 },
+  { date: "2025-11-20", pandora: 746, silver: 50.2 },
+  { date: "2025-11-21", pandora: 762, silver: 49.9 },
+  { date: "2025-11-24", pandora: 751, silver: 50.3 },
+  { date: "2025-11-25", pandora: 761, silver: 50.9 },
+  { date: "2025-11-26", pandora: 766, silver: 52.9 },
+  { date: "2025-11-28", pandora: 769, silver: 56.4 },
+  { date: "2025-12-01", pandora: 769, silver: 58.4 },
+  { date: "2025-12-02", pandora: 743, silver: 58.0 },
+  { date: "2025-12-03", pandora: 726, silver: 57.9 },
+  { date: "2025-12-04", pandora: 736, silver: 56.8 },
+  { date: "2025-12-05", pandora: 740, silver: 58.4 },
+  { date: "2025-12-08", pandora: 728, silver: 57.8 },
+  { date: "2025-12-09", pandora: 722, silver: 60.2 },
+  { date: "2025-12-10", pandora: 707, silver: 60.4 },
+  { date: "2025-12-11", pandora: 707, silver: 63.9 },
+  { date: "2025-12-12", pandora: 699, silver: 61.4 },
+  { date: "2025-12-15", pandora: 692, silver: 62.9 },
+  { date: "2025-12-16", pandora: 714, silver: 62.7 },
+  { date: "2025-12-17", pandora: 694, silver: 66.2 },
+  { date: "2025-12-18", pandora: 700, silver: 64.6 },
+  { date: "2025-12-19", pandora: 699, silver: 66.8 },
+  { date: "2025-12-22", pandora: 702, silver: 67.9 },
+  { date: "2025-12-23", pandora: 703, silver: 70.5 },
+  { date: "2025-12-29", pandora: 703, silver: 69.9 },
+  { date: "2025-12-30", pandora: 708, silver: 77.4 },
+  { date: "2026-01-02", pandora: 696, silver: 70.6 },
+  { date: "2026-01-05", pandora: 677, silver: 76.2 },
+  { date: "2026-01-06", pandora: 681, silver: 80.5 },
+  { date: "2026-01-07", pandora: 662, silver: 77.1 },
+  { date: "2026-01-08", pandora: 676, silver: 74.7 },
+  { date: "2026-01-09", pandora: 588, silver: 78.9 },
+  { date: "2026-01-12", pandora: 571, silver: 84.6 },
+  { date: "2026-01-13", pandora: 572, silver: 85.9 },
+  { date: "2026-01-14", pandora: 556, silver: 90.9 },
+  { date: "2026-01-15", pandora: 546, silver: 91.9 },
+  { date: "2026-01-16", pandora: 550, silver: 88.1 },
+  { date: "2026-01-20", pandora: 516, silver: 94.2 },
+  { date: "2026-01-21", pandora: 517, silver: 92.2 },
+  { date: "2026-01-22", pandora: 510, silver: 96.0 },
+  { date: "2026-01-23", pandora: 505, silver: 100.9 },
+  { date: "2026-01-26", pandora: 487, silver: 115.1 },
+  { date: "2026-01-27", pandora: 494, silver: 105.5 },
+  { date: "2026-01-28", pandora: 487, silver: 113.1 },
+  { date: "2026-01-29", pandora: 485, silver: 114.0 },
+  { date: "2026-01-30", pandora: 509, silver: 78.3 },
+  { date: "2026-02-02", pandora: 556, silver: 76.8 },
+  { date: "2026-02-03", pandora: 504, silver: 83.0 },
+  { date: "2026-02-04", pandora: 513, silver: 84.2 },
+  { date: "2026-02-05", pandora: 541, silver: 76.5 },
+  { date: "2026-02-06", pandora: 570, silver: 76.7 },
+  { date: "2026-02-09", pandora: 537, silver: 82.1 },
+  { date: "2026-02-10", pandora: 556, silver: 80.2 },
+  { date: "2026-02-11", pandora: 534, silver: 83.8 },
+  { date: "2026-02-12", pandora: 537, silver: 75.5 },
+  { date: "2026-02-13", pandora: 540, silver: 77.9 },
+  { date: "2026-02-17", pandora: 535, silver: 73.4 },
+  { date: "2026-02-18", pandora: 535, silver: 77.5 },
+  { date: "2026-02-19", pandora: 526, silver: 77.6 },
+  { date: "2026-02-20", pandora: 547, silver: 82.3 },
+  { date: "2026-02-23", pandora: 520, silver: 86.5 },
+  { date: "2026-02-24", pandora: 526, silver: 87.5 },
+  { date: "2026-02-25", pandora: 500, silver: 90.9 },
+  { date: "2026-02-26", pandora: 516, silver: 87.0 },
+  { date: "2026-02-27", pandora: 500, silver: 92.7 },
+  { date: "2026-03-02", pandora: 486, silver: 88.3 },
+  { date: "2026-03-03", pandora: 483, silver: 82.9 },
+  { date: "2026-03-04", pandora: 486, silver: 82.6 },
+  { date: "2026-03-05", pandora: 498, silver: 81.7 },
+  { date: "2026-03-06", pandora: 494, silver: 83.8 },
+  { date: "2026-03-09", pandora: 486, silver: 84.0 },
+  { date: "2026-03-10", pandora: 480, silver: 89.1 },
+  { date: "2026-03-11", pandora: 470, silver: 85.1 },
   { date: "2026-03-12", pandora: 445, silver: 84.7 },
   { date: "2026-03-13", pandora: 443, silver: 80.9 },
   { date: "2026-03-16", pandora: 444, silver: 80.3 },
@@ -629,556 +629,556 @@ const PRICE_DATA: PricePoint[] = [
   { date: "2026-05-22", pandora: 556, silver: 75.9 },
 ];
 
-// Pandora stock price + University of Michigan Consumer Sentiment Index
+// Pandora share price + US consumer sentiment (University of Michigan Consumer Sentiment Index)
 const SENTIMENT_DATA: SentimentPoint[] = [
-  { date: "2024-01-02", pandora: 863, sentiment: 79.0 },
-  { date: "2024-01-03", pandora: 850, sentiment: 79.0 },
-  { date: "2024-01-04", pandora: 857, sentiment: 79.0 },
-  { date: "2024-01-05", pandora: 873, sentiment: 79.0 },
-  { date: "2024-01-08", pandora: 903, sentiment: 79.0 },
-  { date: "2024-01-09", pandora: 900, sentiment: 79.0 },
-  { date: "2024-01-10", pandora: 920, sentiment: 79.0 },
-  { date: "2024-01-11", pandora: 909, sentiment: 79.0 },
-  { date: "2024-01-12", pandora: 902, sentiment: 79.0 },
-  { date: "2024-01-15", pandora: 901, sentiment: 79.0 },
-  { date: "2024-01-16", pandora: 910, sentiment: 79.0 },
-  { date: "2024-01-17", pandora: 908, sentiment: 79.0 },
-  { date: "2024-01-18", pandora: 894, sentiment: 79.0 },
-  { date: "2024-01-19", pandora: 884, sentiment: 79.0 },
-  { date: "2024-01-22", pandora: 898, sentiment: 79.0 },
-  { date: "2024-01-23", pandora: 897, sentiment: 79.0 },
-  { date: "2024-01-24", pandora: 912, sentiment: 79.0 },
-  { date: "2024-01-25", pandora: 926, sentiment: 79.0 },
-  { date: "2024-01-26", pandora: 915, sentiment: 79.0 },
-  { date: "2024-01-29", pandora: 933, sentiment: 79.0 },
-  { date: "2024-01-30", pandora: 939, sentiment: 79.0 },
-  { date: "2024-01-31", pandora: 930, sentiment: 79.0 },
-  { date: "2024-02-01", pandora: 922, sentiment: 76.9 },
-  { date: "2024-02-02", pandora: 937, sentiment: 76.9 },
-  { date: "2024-02-05", pandora: 937, sentiment: 76.9 },
-  { date: "2024-02-06", pandora: 949, sentiment: 76.9 },
-  { date: "2024-02-07", pandora: 945, sentiment: 76.9 },
-  { date: "2024-02-08", pandora: 994, sentiment: 76.9 },
-  { date: "2024-02-09", pandora: 1004, sentiment: 76.9 },
-  { date: "2024-02-12", pandora: 1012, sentiment: 76.9 },
-  { date: "2024-02-13", pandora: 1003, sentiment: 76.9 },
-  { date: "2024-02-14", pandora: 1018, sentiment: 76.9 },
-  { date: "2024-02-15", pandora: 1022, sentiment: 76.9 },
-  { date: "2024-02-16", pandora: 1046, sentiment: 76.9 },
-  { date: "2024-02-19", pandora: 1055, sentiment: 76.9 },
-  { date: "2024-02-20", pandora: 1052, sentiment: 76.9 },
-  { date: "2024-02-21", pandora: 1045, sentiment: 76.9 },
-  { date: "2024-02-22", pandora: 1053, sentiment: 76.9 },
-  { date: "2024-02-23", pandora: 1062, sentiment: 76.9 },
-  { date: "2024-02-26", pandora: 1063, sentiment: 76.9 },
-  { date: "2024-02-27", pandora: 1063, sentiment: 76.9 },
-  { date: "2024-02-28", pandora: 1060, sentiment: 76.9 },
-  { date: "2024-02-29", pandora: 1026, sentiment: 76.9 },
-  { date: "2024-03-01", pandora: 1058, sentiment: 79.4 },
-  { date: "2024-03-04", pandora: 1049, sentiment: 79.4 },
-  { date: "2024-03-05", pandora: 1038, sentiment: 79.4 },
-  { date: "2024-03-06", pandora: 1027, sentiment: 79.4 },
-  { date: "2024-03-07", pandora: 1047, sentiment: 79.4 },
-  { date: "2024-03-08", pandora: 1067, sentiment: 79.4 },
-  { date: "2024-03-11", pandora: 1052, sentiment: 79.4 },
-  { date: "2024-03-12", pandora: 1071, sentiment: 79.4 },
-  { date: "2024-03-13", pandora: 1072, sentiment: 79.4 },
-  { date: "2024-03-14", pandora: 1087, sentiment: 79.4 },
-  { date: "2024-03-15", pandora: 1073, sentiment: 79.4 },
-  { date: "2024-03-18", pandora: 1069, sentiment: 79.4 },
-  { date: "2024-03-19", pandora: 1076, sentiment: 79.4 },
-  { date: "2024-03-20", pandora: 1070, sentiment: 79.4 },
-  { date: "2024-03-21", pandora: 1089, sentiment: 79.4 },
-  { date: "2024-03-22", pandora: 1050, sentiment: 79.4 },
-  { date: "2024-03-25", pandora: 1052, sentiment: 79.4 },
-  { date: "2024-03-26", pandora: 1068, sentiment: 79.4 },
-  { date: "2024-03-27", pandora: 1043, sentiment: 79.4 },
-  { date: "2024-04-02", pandora: 1028, sentiment: 77.2 },
-  { date: "2024-04-03", pandora: 1039, sentiment: 77.2 },
-  { date: "2024-04-04", pandora: 1028, sentiment: 77.2 },
-  { date: "2024-04-05", pandora: 1026, sentiment: 77.2 },
-  { date: "2024-04-08", pandora: 1020, sentiment: 77.2 },
-  { date: "2024-04-09", pandora: 1006, sentiment: 77.2 },
-  { date: "2024-04-10", pandora: 1023, sentiment: 77.2 },
-  { date: "2024-04-11", pandora: 1027, sentiment: 77.2 },
-  { date: "2024-04-12", pandora: 996, sentiment: 77.2 },
-  { date: "2024-04-15", pandora: 1011, sentiment: 77.2 },
-  { date: "2024-04-16", pandora: 999, sentiment: 77.2 },
-  { date: "2024-04-17", pandora: 1010, sentiment: 77.2 },
-  { date: "2024-04-18", pandora: 1006, sentiment: 77.2 },
-  { date: "2024-04-19", pandora: 1013, sentiment: 77.2 },
-  { date: "2024-04-22", pandora: 1033, sentiment: 77.2 },
-  { date: "2024-04-23", pandora: 1029, sentiment: 77.2 },
-  { date: "2024-04-24", pandora: 1025, sentiment: 77.2 },
-  { date: "2024-04-25", pandora: 1009, sentiment: 77.2 },
-  { date: "2024-04-26", pandora: 1030, sentiment: 77.2 },
-  { date: "2024-04-29", pandora: 1017, sentiment: 77.2 },
-  { date: "2024-04-30", pandora: 1001, sentiment: 77.2 },
-  { date: "2024-05-01", pandora: 1014, sentiment: 69.1 },
-  { date: "2024-05-02", pandora: 1076, sentiment: 69.1 },
-  { date: "2024-05-03", pandora: 1048, sentiment: 69.1 },
-  { date: "2024-05-06", pandora: 1043, sentiment: 69.1 },
-  { date: "2024-05-07", pandora: 1041, sentiment: 69.1 },
-  { date: "2024-05-08", pandora: 1059, sentiment: 69.1 },
-  { date: "2024-05-13", pandora: 1088, sentiment: 69.1 },
-  { date: "2024-05-14", pandora: 1058, sentiment: 69.1 },
-  { date: "2024-05-15", pandora: 1074, sentiment: 69.1 },
-  { date: "2024-05-16", pandora: 1090, sentiment: 69.1 },
-  { date: "2024-05-17", pandora: 1095, sentiment: 69.1 },
-  { date: "2024-05-21", pandora: 1075, sentiment: 69.1 },
-  { date: "2024-05-22", pandora: 1043, sentiment: 69.1 },
-  { date: "2024-05-23", pandora: 1067, sentiment: 69.1 },
-  { date: "2024-05-24", pandora: 1067, sentiment: 69.1 },
-  { date: "2024-05-27", pandora: 1066, sentiment: 69.1 },
-  { date: "2024-05-28", pandora: 1043, sentiment: 69.1 },
-  { date: "2024-05-29", pandora: 1045, sentiment: 69.1 },
-  { date: "2024-05-30", pandora: 1044, sentiment: 69.1 },
-  { date: "2024-05-31", pandora: 1052, sentiment: 69.1 },
-  { date: "2024-06-03", pandora: 1035, sentiment: 68.2 },
-  { date: "2024-06-04", pandora: 1028, sentiment: 68.2 },
-  { date: "2024-06-06", pandora: 1025, sentiment: 68.2 },
-  { date: "2024-06-07", pandora: 1047, sentiment: 68.2 },
-  { date: "2024-06-10", pandora: 1045, sentiment: 68.2 },
-  { date: "2024-06-11", pandora: 1022, sentiment: 68.2 },
-  { date: "2024-06-12", pandora: 1031, sentiment: 68.2 },
-  { date: "2024-06-13", pandora: 1011, sentiment: 68.2 },
-  { date: "2024-06-14", pandora: 985, sentiment: 68.2 },
-  { date: "2024-06-17", pandora: 983, sentiment: 68.2 },
-  { date: "2024-06-18", pandora: 984, sentiment: 68.2 },
-  { date: "2024-06-19", pandora: 986, sentiment: 68.2 },
-  { date: "2024-06-20", pandora: 1009, sentiment: 68.2 },
-  { date: "2024-06-21", pandora: 997, sentiment: 68.2 },
-  { date: "2024-06-24", pandora: 999, sentiment: 68.2 },
-  { date: "2024-06-25", pandora: 994, sentiment: 68.2 },
-  { date: "2024-06-26", pandora: 999, sentiment: 68.2 },
-  { date: "2024-06-27", pandora: 990, sentiment: 68.2 },
-  { date: "2024-06-28", pandora: 984, sentiment: 68.2 },
-  { date: "2024-07-01", pandora: 945, sentiment: 66.4 },
-  { date: "2024-07-02", pandora: 936, sentiment: 66.4 },
-  { date: "2024-07-03", pandora: 934, sentiment: 66.4 },
-  { date: "2024-07-04", pandora: 919, sentiment: 66.4 },
-  { date: "2024-07-05", pandora: 932, sentiment: 66.4 },
-  { date: "2024-07-08", pandora: 949, sentiment: 66.4 },
-  { date: "2024-07-09", pandora: 955, sentiment: 66.4 },
-  { date: "2024-07-10", pandora: 954, sentiment: 66.4 },
-  { date: "2024-07-11", pandora: 962, sentiment: 66.4 },
-  { date: "2024-07-12", pandora: 990, sentiment: 66.4 },
-  { date: "2024-07-15", pandora: 987, sentiment: 66.4 },
-  { date: "2024-07-16", pandora: 1005, sentiment: 66.4 },
-  { date: "2024-07-17", pandora: 993, sentiment: 66.4 },
-  { date: "2024-07-18", pandora: 985, sentiment: 66.4 },
-  { date: "2024-07-19", pandora: 986, sentiment: 66.4 },
-  { date: "2024-07-22", pandora: 1008, sentiment: 66.4 },
-  { date: "2024-07-23", pandora: 999, sentiment: 66.4 },
-  { date: "2024-07-24", pandora: 1003, sentiment: 66.4 },
-  { date: "2024-07-25", pandora: 984, sentiment: 66.4 },
-  { date: "2024-07-26", pandora: 991, sentiment: 66.4 },
-  { date: "2024-07-29", pandora: 1007, sentiment: 66.4 },
-  { date: "2024-07-30", pandora: 1019, sentiment: 66.4 },
-  { date: "2024-07-31", pandora: 1012, sentiment: 66.4 },
-  { date: "2024-08-01", pandora: 1008, sentiment: 67.9 },
-  { date: "2024-08-02", pandora: 947, sentiment: 67.9 },
-  { date: "2024-08-05", pandora: 914, sentiment: 67.9 },
-  { date: "2024-08-06", pandora: 933, sentiment: 67.9 },
-  { date: "2024-08-07", pandora: 943, sentiment: 67.9 },
-  { date: "2024-08-08", pandora: 950, sentiment: 67.9 },
-  { date: "2024-08-09", pandora: 960, sentiment: 67.9 },
-  { date: "2024-08-12", pandora: 975, sentiment: 67.9 },
-  { date: "2024-08-13", pandora: 1010, sentiment: 67.9 },
-  { date: "2024-08-14", pandora: 993, sentiment: 67.9 },
-  { date: "2024-08-15", pandora: 994, sentiment: 67.9 },
-  { date: "2024-08-16", pandora: 999, sentiment: 67.9 },
-  { date: "2024-08-19", pandora: 1024, sentiment: 67.9 },
-  { date: "2024-08-20", pandora: 1043, sentiment: 67.9 },
-  { date: "2024-08-21", pandora: 1048, sentiment: 67.9 },
-  { date: "2024-08-22", pandora: 1061, sentiment: 67.9 },
-  { date: "2024-08-23", pandora: 1071, sentiment: 67.9 },
-  { date: "2024-08-26", pandora: 1074, sentiment: 67.9 },
-  { date: "2024-08-27", pandora: 1083, sentiment: 67.9 },
-  { date: "2024-08-28", pandora: 1085, sentiment: 67.9 },
-  { date: "2024-08-29", pandora: 1096, sentiment: 67.9 },
-  { date: "2024-08-30", pandora: 1106, sentiment: 67.9 },
-  { date: "2024-09-02", pandora: 1100, sentiment: 70.1 },
-  { date: "2024-09-03", pandora: 1104, sentiment: 70.1 },
-  { date: "2024-09-04", pandora: 1098, sentiment: 70.1 },
-  { date: "2024-09-05", pandora: 1084, sentiment: 70.1 },
-  { date: "2024-09-06", pandora: 1073, sentiment: 70.1 },
-  { date: "2024-09-09", pandora: 1080, sentiment: 70.1 },
-  { date: "2024-09-10", pandora: 1065, sentiment: 70.1 },
-  { date: "2024-09-11", pandora: 1084, sentiment: 70.1 },
-  { date: "2024-09-12", pandora: 1109, sentiment: 70.1 },
-  { date: "2024-09-13", pandora: 1127, sentiment: 70.1 },
-  { date: "2024-09-16", pandora: 1115, sentiment: 70.1 },
-  { date: "2024-09-17", pandora: 1092, sentiment: 70.1 },
-  { date: "2024-09-18", pandora: 1073, sentiment: 70.1 },
-  { date: "2024-09-19", pandora: 1100, sentiment: 70.1 },
-  { date: "2024-09-20", pandora: 1072, sentiment: 70.1 },
-  { date: "2024-09-23", pandora: 1072, sentiment: 70.1 },
-  { date: "2024-09-24", pandora: 1088, sentiment: 70.1 },
-  { date: "2024-09-25", pandora: 1048, sentiment: 70.1 },
-  { date: "2024-09-26", pandora: 1034, sentiment: 70.1 },
-  { date: "2024-09-27", pandora: 1029, sentiment: 70.1 },
-  { date: "2024-09-30", pandora: 1032, sentiment: 70.1 },
-  { date: "2024-10-01", pandora: 1000, sentiment: 70.5 },
-  { date: "2024-10-02", pandora: 996, sentiment: 70.5 },
-  { date: "2024-10-03", pandora: 984, sentiment: 70.5 },
-  { date: "2024-10-04", pandora: 988, sentiment: 70.5 },
-  { date: "2024-10-07", pandora: 978, sentiment: 70.5 },
-  { date: "2024-10-08", pandora: 999, sentiment: 70.5 },
-  { date: "2024-10-09", pandora: 992, sentiment: 70.5 },
-  { date: "2024-10-10", pandora: 1003, sentiment: 70.5 },
-  { date: "2024-10-11", pandora: 1009, sentiment: 70.5 },
-  { date: "2024-10-14", pandora: 997, sentiment: 70.5 },
-  { date: "2024-10-15", pandora: 995, sentiment: 70.5 },
-  { date: "2024-10-16", pandora: 995, sentiment: 70.5 },
-  { date: "2024-10-17", pandora: 1013, sentiment: 70.5 },
-  { date: "2024-10-18", pandora: 1005, sentiment: 70.5 },
-  { date: "2024-10-21", pandora: 983, sentiment: 70.5 },
-  { date: "2024-10-22", pandora: 965, sentiment: 70.5 },
-  { date: "2024-10-23", pandora: 959, sentiment: 70.5 },
-  { date: "2024-10-24", pandora: 981, sentiment: 70.5 },
-  { date: "2024-10-25", pandora: 974, sentiment: 70.5 },
-  { date: "2024-10-28", pandora: 982, sentiment: 70.5 },
-  { date: "2024-10-29", pandora: 999, sentiment: 70.5 },
-  { date: "2024-10-30", pandora: 988, sentiment: 70.5 },
-  { date: "2024-10-31", pandora: 968, sentiment: 70.5 },
-  { date: "2024-11-01", pandora: 992, sentiment: 71.8 },
-  { date: "2024-11-04", pandora: 993, sentiment: 71.8 },
-  { date: "2024-11-05", pandora: 992, sentiment: 71.8 },
-  { date: "2024-11-06", pandora: 975, sentiment: 71.8 },
-  { date: "2024-11-07", pandora: 987, sentiment: 71.8 },
-  { date: "2024-11-08", pandora: 997, sentiment: 71.8 },
-  { date: "2024-11-11", pandora: 1008, sentiment: 71.8 },
-  { date: "2024-11-12", pandora: 1025, sentiment: 71.8 },
-  { date: "2024-11-13", pandora: 1022, sentiment: 71.8 },
-  { date: "2024-11-14", pandora: 1027, sentiment: 71.8 },
-  { date: "2024-11-15", pandora: 1016, sentiment: 71.8 },
-  { date: "2024-11-18", pandora: 1025, sentiment: 71.8 },
-  { date: "2024-11-19", pandora: 1000, sentiment: 71.8 },
-  { date: "2024-11-20", pandora: 1011, sentiment: 71.8 },
-  { date: "2024-11-21", pandora: 1017, sentiment: 71.8 },
-  { date: "2024-11-22", pandora: 1049, sentiment: 71.8 },
-  { date: "2024-11-25", pandora: 1052, sentiment: 71.8 },
-  { date: "2024-11-26", pandora: 1046, sentiment: 71.8 },
-  { date: "2024-11-27", pandora: 1037, sentiment: 71.8 },
-  { date: "2024-11-28", pandora: 1046, sentiment: 71.8 },
-  { date: "2024-11-29", pandora: 1064, sentiment: 71.8 },
-  { date: "2024-12-02", pandora: 1090, sentiment: 74.0 },
-  { date: "2024-12-03", pandora: 1111, sentiment: 74.0 },
-  { date: "2024-12-04", pandora: 1112, sentiment: 74.0 },
-  { date: "2024-12-05", pandora: 1102, sentiment: 74.0 },
-  { date: "2024-12-06", pandora: 1138, sentiment: 74.0 },
-  { date: "2024-12-09", pandora: 1177, sentiment: 74.0 },
-  { date: "2024-12-10", pandora: 1182, sentiment: 74.0 },
-  { date: "2024-12-11", pandora: 1195, sentiment: 74.0 },
-  { date: "2024-12-12", pandora: 1185, sentiment: 74.0 },
-  { date: "2024-12-13", pandora: 1194, sentiment: 74.0 },
-  { date: "2024-12-16", pandora: 1198, sentiment: 74.0 },
-  { date: "2024-12-17", pandora: 1178, sentiment: 74.0 },
-  { date: "2024-12-18", pandora: 1190, sentiment: 74.0 },
-  { date: "2024-12-19", pandora: 1183, sentiment: 74.0 },
-  { date: "2024-12-20", pandora: 1193, sentiment: 74.0 },
-  { date: "2024-12-23", pandora: 1212, sentiment: 74.0 },
-  { date: "2024-12-27", pandora: 1244, sentiment: 74.0 },
-  { date: "2024-12-30", pandora: 1233, sentiment: 74.0 },
-  { date: "2025-01-02", pandora: 1236, sentiment: 71.1 },
-  { date: "2025-01-03", pandora: 1234, sentiment: 71.1 },
-  { date: "2025-01-06", pandora: 1230, sentiment: 71.1 },
-  { date: "2025-01-07", pandora: 1222, sentiment: 71.1 },
-  { date: "2025-01-08", pandora: 1227, sentiment: 71.1 },
-  { date: "2025-01-09", pandora: 1236, sentiment: 71.1 },
-  { date: "2025-01-10", pandora: 1247, sentiment: 71.1 },
-  { date: "2025-01-13", pandora: 1189, sentiment: 71.1 },
-  { date: "2025-01-14", pandora: 1162, sentiment: 71.1 },
-  { date: "2025-01-15", pandora: 1170, sentiment: 71.1 },
-  { date: "2025-01-16", pandora: 1187, sentiment: 71.1 },
-  { date: "2025-01-17", pandora: 1200, sentiment: 71.1 },
-  { date: "2025-01-20", pandora: 1199, sentiment: 71.1 },
-  { date: "2025-01-21", pandora: 1220, sentiment: 71.1 },
-  { date: "2025-01-22", pandora: 1237, sentiment: 71.1 },
-  { date: "2025-01-23", pandora: 1256, sentiment: 71.1 },
-  { date: "2025-01-24", pandora: 1244, sentiment: 71.1 },
-  { date: "2025-01-27", pandora: 1275, sentiment: 71.1 },
-  { date: "2025-01-28", pandora: 1268, sentiment: 71.1 },
-  { date: "2025-01-29", pandora: 1290, sentiment: 71.1 },
-  { date: "2025-01-30", pandora: 1311, sentiment: 71.1 },
-  { date: "2025-01-31", pandora: 1293, sentiment: 71.1 },
-  { date: "2025-02-03", pandora: 1292, sentiment: 64.7 },
-  { date: "2025-02-04", pandora: 1286, sentiment: 64.7 },
-  { date: "2025-02-05", pandora: 1256, sentiment: 64.7 },
-  { date: "2025-02-06", pandora: 1261, sentiment: 64.7 },
-  { date: "2025-02-07", pandora: 1235, sentiment: 64.7 },
-  { date: "2025-02-10", pandora: 1247, sentiment: 64.7 },
-  { date: "2025-02-11", pandora: 1238, sentiment: 64.7 },
-  { date: "2025-02-12", pandora: 1243, sentiment: 64.7 },
-  { date: "2025-02-13", pandora: 1235, sentiment: 64.7 },
-  { date: "2025-02-14", pandora: 1181, sentiment: 64.7 },
-  { date: "2025-02-17", pandora: 1177, sentiment: 64.7 },
-  { date: "2025-02-18", pandora: 1176, sentiment: 64.7 },
-  { date: "2025-02-19", pandora: 1168, sentiment: 64.7 },
-  { date: "2025-02-20", pandora: 1160, sentiment: 64.7 },
-  { date: "2025-02-21", pandora: 1196, sentiment: 64.7 },
-  { date: "2025-02-24", pandora: 1163, sentiment: 64.7 },
-  { date: "2025-02-25", pandora: 1183, sentiment: 64.7 },
-  { date: "2025-02-26", pandora: 1187, sentiment: 64.7 },
-  { date: "2025-02-27", pandora: 1161, sentiment: 64.7 },
-  { date: "2025-02-28", pandora: 1187, sentiment: 64.7 },
-  { date: "2025-03-03", pandora: 1165, sentiment: 57.0 },
-  { date: "2025-03-04", pandora: 1137, sentiment: 57.0 },
-  { date: "2025-03-05", pandora: 1121, sentiment: 57.0 },
-  { date: "2025-03-06", pandora: 1094, sentiment: 57.0 },
-  { date: "2025-03-07", pandora: 1087, sentiment: 57.0 },
-  { date: "2025-03-10", pandora: 1075, sentiment: 57.0 },
-  { date: "2025-03-11", pandora: 1055, sentiment: 57.0 },
-  { date: "2025-03-12", pandora: 1057, sentiment: 57.0 },
-  { date: "2025-03-13", pandora: 1059, sentiment: 57.0 },
-  { date: "2025-03-14", pandora: 1052, sentiment: 57.0 },
-  { date: "2025-03-17", pandora: 1053, sentiment: 57.0 },
-  { date: "2025-03-18", pandora: 1025, sentiment: 57.0 },
-  { date: "2025-03-19", pandora: 1065, sentiment: 57.0 },
-  { date: "2025-03-20", pandora: 1080, sentiment: 57.0 },
-  { date: "2025-03-21", pandora: 1063, sentiment: 57.0 },
-  { date: "2025-03-24", pandora: 1080, sentiment: 57.0 },
-  { date: "2025-03-25", pandora: 1057, sentiment: 57.0 },
-  { date: "2025-03-26", pandora: 1058, sentiment: 57.0 },
-  { date: "2025-03-27", pandora: 1038, sentiment: 57.0 },
-  { date: "2025-03-28", pandora: 1017, sentiment: 57.0 },
-  { date: "2025-03-31", pandora: 1005, sentiment: 57.0 },
-  { date: "2025-04-01", pandora: 1011, sentiment: 52.2 },
-  { date: "2025-04-02", pandora: 1013, sentiment: 52.2 },
-  { date: "2025-04-03", pandora: 905, sentiment: 52.2 },
-  { date: "2025-04-04", pandora: 832, sentiment: 52.2 },
-  { date: "2025-04-07", pandora: 862, sentiment: 52.2 },
-  { date: "2025-04-08", pandora: 878, sentiment: 52.2 },
-  { date: "2025-04-09", pandora: 842, sentiment: 52.2 },
-  { date: "2025-04-10", pandora: 905, sentiment: 52.2 },
-  { date: "2025-04-11", pandora: 889, sentiment: 52.2 },
-  { date: "2025-04-14", pandora: 905, sentiment: 52.2 },
-  { date: "2025-04-15", pandora: 910, sentiment: 52.2 },
-  { date: "2025-04-16", pandora: 878, sentiment: 52.2 },
-  { date: "2025-04-22", pandora: 894, sentiment: 52.2 },
-  { date: "2025-04-23", pandora: 937, sentiment: 52.2 },
-  { date: "2025-04-24", pandora: 914, sentiment: 52.2 },
-  { date: "2025-04-25", pandora: 919, sentiment: 52.2 },
-  { date: "2025-04-28", pandora: 932, sentiment: 52.2 },
-  { date: "2025-04-29", pandora: 931, sentiment: 52.2 },
-  { date: "2025-04-30", pandora: 927, sentiment: 52.2 },
-  { date: "2025-05-01", pandora: 938, sentiment: 50.8 },
-  { date: "2025-05-02", pandora: 957, sentiment: 50.8 },
-  { date: "2025-05-05", pandora: 957, sentiment: 50.8 },
-  { date: "2025-05-06", pandora: 936, sentiment: 50.8 },
-  { date: "2025-05-07", pandora: 952, sentiment: 50.8 },
-  { date: "2025-05-08", pandora: 959, sentiment: 50.8 },
-  { date: "2025-05-09", pandora: 984, sentiment: 50.8 },
-  { date: "2025-05-12", pandora: 1060, sentiment: 50.8 },
-  { date: "2025-05-13", pandora: 1083, sentiment: 50.8 },
-  { date: "2025-05-14", pandora: 1101, sentiment: 50.8 },
-  { date: "2025-05-15", pandora: 1101, sentiment: 50.8 },
-  { date: "2025-05-16", pandora: 1141, sentiment: 50.8 },
-  { date: "2025-05-19", pandora: 1154, sentiment: 50.8 },
-  { date: "2025-05-20", pandora: 1156, sentiment: 50.8 },
-  { date: "2025-05-21", pandora: 1156, sentiment: 50.8 },
-  { date: "2025-05-22", pandora: 1136, sentiment: 50.8 },
-  { date: "2025-05-23", pandora: 1130, sentiment: 50.8 },
-  { date: "2025-05-26", pandora: 1146, sentiment: 50.8 },
-  { date: "2025-05-27", pandora: 1161, sentiment: 50.8 },
-  { date: "2025-05-28", pandora: 1140, sentiment: 50.8 },
-  { date: "2025-06-02", pandora: 1123, sentiment: 50.0 },
-  { date: "2025-06-03", pandora: 1143, sentiment: 50.0 },
-  { date: "2025-06-04", pandora: 1162, sentiment: 50.0 },
-  { date: "2025-06-06", pandora: 1130, sentiment: 50.0 },
-  { date: "2025-06-10", pandora: 1128, sentiment: 50.0 },
-  { date: "2025-06-11", pandora: 1138, sentiment: 50.0 },
-  { date: "2025-06-12", pandora: 1123, sentiment: 50.0 },
-  { date: "2025-06-13", pandora: 1095, sentiment: 50.0 },
-  { date: "2025-06-16", pandora: 1143, sentiment: 50.0 },
-  { date: "2025-06-17", pandora: 1118, sentiment: 50.0 },
-  { date: "2025-06-18", pandora: 1119, sentiment: 50.0 },
-  { date: "2025-06-19", pandora: 1098, sentiment: 50.0 },
-  { date: "2025-06-20", pandora: 1113, sentiment: 50.0 },
-  { date: "2025-06-23", pandora: 1054, sentiment: 50.0 },
-  { date: "2025-06-24", pandora: 1082, sentiment: 50.0 },
-  { date: "2025-06-25", pandora: 1051, sentiment: 50.0 },
-  { date: "2025-06-26", pandora: 1032, sentiment: 50.0 },
-  { date: "2025-06-27", pandora: 1059, sentiment: 50.0 },
-  { date: "2025-06-30", pandora: 1060, sentiment: 50.0 },
-  { date: "2025-07-01", pandora: 1056, sentiment: 53.5 },
-  { date: "2025-07-02", pandora: 1055, sentiment: 53.5 },
-  { date: "2025-07-03", pandora: 1052, sentiment: 53.5 },
-  { date: "2025-07-04", pandora: 1035, sentiment: 53.5 },
-  { date: "2025-07-07", pandora: 1015, sentiment: 53.5 },
-  { date: "2025-07-08", pandora: 1016, sentiment: 53.5 },
-  { date: "2025-07-09", pandora: 1026, sentiment: 53.5 },
-  { date: "2025-07-10", pandora: 1019, sentiment: 53.5 },
-  { date: "2025-07-11", pandora: 1005, sentiment: 53.5 },
-  { date: "2025-07-14", pandora: 990, sentiment: 53.5 },
-  { date: "2025-07-15", pandora: 972, sentiment: 53.5 },
-  { date: "2025-07-16", pandora: 988, sentiment: 53.5 },
-  { date: "2025-07-17", pandora: 997, sentiment: 53.5 },
-  { date: "2025-07-18", pandora: 1000, sentiment: 53.5 },
-  { date: "2025-07-21", pandora: 988, sentiment: 53.5 },
-  { date: "2025-07-22", pandora: 990, sentiment: 53.5 },
-  { date: "2025-07-23", pandora: 1001, sentiment: 53.5 },
-  { date: "2025-07-24", pandora: 1015, sentiment: 53.5 },
-  { date: "2025-07-25", pandora: 1007, sentiment: 53.5 },
-  { date: "2025-07-28", pandora: 1026, sentiment: 53.5 },
-  { date: "2025-07-29", pandora: 1019, sentiment: 53.5 },
-  { date: "2025-07-30", pandora: 1025, sentiment: 53.5 },
-  { date: "2025-07-31", pandora: 1035, sentiment: 53.5 },
-  { date: "2025-08-01", pandora: 1024, sentiment: 58.2 },
-  { date: "2025-08-04", pandora: 1034, sentiment: 58.2 },
-  { date: "2025-08-05", pandora: 1023, sentiment: 58.2 },
-  { date: "2025-08-06", pandora: 988, sentiment: 58.2 },
-  { date: "2025-08-07", pandora: 989, sentiment: 58.2 },
-  { date: "2025-08-08", pandora: 984, sentiment: 58.2 },
-  { date: "2025-08-11", pandora: 981, sentiment: 58.2 },
-  { date: "2025-08-12", pandora: 966, sentiment: 58.2 },
-  { date: "2025-08-13", pandora: 988, sentiment: 58.2 },
-  { date: "2025-08-14", pandora: 987, sentiment: 58.2 },
-  { date: "2025-08-15", pandora: 805, sentiment: 58.2 },
-  { date: "2025-08-18", pandora: 803, sentiment: 58.2 },
-  { date: "2025-08-19", pandora: 834, sentiment: 58.2 },
-  { date: "2025-08-20", pandora: 854, sentiment: 58.2 },
-  { date: "2025-08-21", pandora: 848, sentiment: 58.2 },
-  { date: "2025-08-22", pandora: 869, sentiment: 58.2 },
-  { date: "2025-08-25", pandora: 845, sentiment: 58.2 },
-  { date: "2025-08-26", pandora: 858, sentiment: 58.2 },
-  { date: "2025-08-27", pandora: 858, sentiment: 58.2 },
-  { date: "2025-08-28", pandora: 857, sentiment: 58.2 },
-  { date: "2025-08-29", pandora: 840, sentiment: 58.2 },
-  { date: "2025-09-01", pandora: 822, sentiment: 55.1 },
-  { date: "2025-09-02", pandora: 802, sentiment: 55.1 },
-  { date: "2025-09-03", pandora: 805, sentiment: 55.1 },
-  { date: "2025-09-04", pandora: 819, sentiment: 55.1 },
-  { date: "2025-09-05", pandora: 819, sentiment: 55.1 },
-  { date: "2025-09-08", pandora: 820, sentiment: 55.1 },
-  { date: "2025-09-09", pandora: 818, sentiment: 55.1 },
-  { date: "2025-09-10", pandora: 820, sentiment: 55.1 },
-  { date: "2025-09-11", pandora: 826, sentiment: 55.1 },
-  { date: "2025-09-12", pandora: 830, sentiment: 55.1 },
-  { date: "2025-09-15", pandora: 830, sentiment: 55.1 },
-  { date: "2025-09-16", pandora: 825, sentiment: 55.1 },
-  { date: "2025-09-17", pandora: 826, sentiment: 55.1 },
-  { date: "2025-09-18", pandora: 844, sentiment: 55.1 },
-  { date: "2025-09-19", pandora: 834, sentiment: 55.1 },
-  { date: "2025-09-22", pandora: 816, sentiment: 55.1 },
-  { date: "2025-09-23", pandora: 814, sentiment: 55.1 },
-  { date: "2025-09-24", pandora: 795, sentiment: 55.1 },
-  { date: "2025-09-25", pandora: 791, sentiment: 55.1 },
-  { date: "2025-09-26", pandora: 798, sentiment: 55.1 },
-  { date: "2025-09-29", pandora: 811, sentiment: 55.1 },
-  { date: "2025-09-30", pandora: 790, sentiment: 55.1 },
-  { date: "2025-10-01", pandora: 803, sentiment: 53.6 },
-  { date: "2025-10-02", pandora: 792, sentiment: 53.6 },
-  { date: "2025-10-03", pandora: 782, sentiment: 53.6 },
-  { date: "2025-10-06", pandora: 786, sentiment: 53.6 },
-  { date: "2025-10-07", pandora: 787, sentiment: 53.6 },
-  { date: "2025-10-08", pandora: 801, sentiment: 53.6 },
-  { date: "2025-10-09", pandora: 788, sentiment: 53.6 },
-  { date: "2025-10-10", pandora: 773, sentiment: 53.6 },
-  { date: "2025-10-13", pandora: 761, sentiment: 53.6 },
-  { date: "2025-10-14", pandora: 758, sentiment: 53.6 },
-  { date: "2025-10-15", pandora: 775, sentiment: 53.6 },
-  { date: "2025-10-16", pandora: 784, sentiment: 53.6 },
-  { date: "2025-10-17", pandora: 785, sentiment: 53.6 },
-  { date: "2025-10-20", pandora: 794, sentiment: 53.6 },
-  { date: "2025-10-21", pandora: 827, sentiment: 53.6 },
-  { date: "2025-10-22", pandora: 824, sentiment: 53.6 },
-  { date: "2025-10-23", pandora: 842, sentiment: 53.6 },
-  { date: "2025-10-24", pandora: 848, sentiment: 53.6 },
-  { date: "2025-10-27", pandora: 848, sentiment: 53.6 },
-  { date: "2025-10-28", pandora: 840, sentiment: 53.6 },
-  { date: "2025-10-29", pandora: 838, sentiment: 53.6 },
-  { date: "2025-10-30", pandora: 830, sentiment: 53.6 },
-  { date: "2025-10-31", pandora: 827, sentiment: 53.6 },
-  { date: "2025-11-03", pandora: 788, sentiment: 51.0 },
-  { date: "2025-11-04", pandora: 774, sentiment: 51.0 },
-  { date: "2025-11-05", pandora: 732, sentiment: 51.0 },
-  { date: "2025-11-06", pandora: 742, sentiment: 51.0 },
-  { date: "2025-11-07", pandora: 734, sentiment: 51.0 },
-  { date: "2025-11-10", pandora: 760, sentiment: 51.0 },
-  { date: "2025-11-11", pandora: 767, sentiment: 51.0 },
-  { date: "2025-11-12", pandora: 763, sentiment: 51.0 },
-  { date: "2025-11-13", pandora: 745, sentiment: 51.0 },
-  { date: "2025-11-14", pandora: 752, sentiment: 51.0 },
-  { date: "2025-11-17", pandora: 726, sentiment: 51.0 },
-  { date: "2025-11-18", pandora: 705, sentiment: 51.0 },
-  { date: "2025-11-19", pandora: 718, sentiment: 51.0 },
-  { date: "2025-11-20", pandora: 711, sentiment: 51.0 },
-  { date: "2025-11-21", pandora: 726, sentiment: 51.0 },
-  { date: "2025-11-24", pandora: 716, sentiment: 51.0 },
-  { date: "2025-11-25", pandora: 725, sentiment: 51.0 },
-  { date: "2025-11-26", pandora: 730, sentiment: 51.0 },
-  { date: "2025-11-27", pandora: 734, sentiment: 51.0 },
-  { date: "2025-11-28", pandora: 733, sentiment: 51.0 },
-  { date: "2025-12-01", pandora: 733, sentiment: 52.9 },
-  { date: "2025-12-02", pandora: 708, sentiment: 52.9 },
-  { date: "2025-12-03", pandora: 692, sentiment: 52.9 },
-  { date: "2025-12-04", pandora: 702, sentiment: 52.9 },
-  { date: "2025-12-05", pandora: 705, sentiment: 52.9 },
-  { date: "2025-12-08", pandora: 694, sentiment: 52.9 },
-  { date: "2025-12-09", pandora: 688, sentiment: 52.9 },
-  { date: "2025-12-10", pandora: 674, sentiment: 52.9 },
-  { date: "2025-12-11", pandora: 674, sentiment: 52.9 },
-  { date: "2025-12-12", pandora: 666, sentiment: 52.9 },
-  { date: "2025-12-15", pandora: 660, sentiment: 52.9 },
-  { date: "2025-12-16", pandora: 680, sentiment: 52.9 },
-  { date: "2025-12-17", pandora: 662, sentiment: 52.9 },
-  { date: "2025-12-18", pandora: 667, sentiment: 52.9 },
-  { date: "2025-12-19", pandora: 666, sentiment: 52.9 },
-  { date: "2025-12-22", pandora: 669, sentiment: 52.9 },
-  { date: "2025-12-23", pandora: 670, sentiment: 52.9 },
-  { date: "2025-12-29", pandora: 670, sentiment: 52.9 },
-  { date: "2025-12-30", pandora: 674, sentiment: 52.9 },
-  { date: "2026-01-02", pandora: 663, sentiment: 53.1 },
-  { date: "2026-01-05", pandora: 645, sentiment: 53.1 },
-  { date: "2026-01-06", pandora: 649, sentiment: 53.1 },
-  { date: "2026-01-07", pandora: 631, sentiment: 53.1 },
-  { date: "2026-01-08", pandora: 645, sentiment: 53.1 },
-  { date: "2026-01-09", pandora: 561, sentiment: 53.1 },
-  { date: "2026-01-12", pandora: 544, sentiment: 53.1 },
-  { date: "2026-01-13", pandora: 545, sentiment: 53.1 },
-  { date: "2026-01-14", pandora: 530, sentiment: 53.1 },
-  { date: "2026-01-15", pandora: 520, sentiment: 53.1 },
-  { date: "2026-01-16", pandora: 524, sentiment: 53.1 },
-  { date: "2026-01-19", pandora: 495, sentiment: 53.1 },
-  { date: "2026-01-20", pandora: 492, sentiment: 53.1 },
-  { date: "2026-01-21", pandora: 493, sentiment: 53.1 },
-  { date: "2026-01-22", pandora: 486, sentiment: 53.1 },
-  { date: "2026-01-23", pandora: 481, sentiment: 53.1 },
-  { date: "2026-01-26", pandora: 464, sentiment: 53.1 },
-  { date: "2026-01-27", pandora: 470, sentiment: 53.1 },
-  { date: "2026-01-28", pandora: 464, sentiment: 53.1 },
-  { date: "2026-01-29", pandora: 462, sentiment: 53.1 },
-  { date: "2026-01-30", pandora: 485, sentiment: 53.1 },
-  { date: "2026-02-02", pandora: 530, sentiment: 55.0 },
-  { date: "2026-02-03", pandora: 481, sentiment: 55.0 },
-  { date: "2026-02-04", pandora: 489, sentiment: 55.0 },
-  { date: "2026-02-05", pandora: 516, sentiment: 55.0 },
-  { date: "2026-02-06", pandora: 543, sentiment: 55.0 },
-  { date: "2026-02-09", pandora: 511, sentiment: 55.0 },
-  { date: "2026-02-10", pandora: 530, sentiment: 55.0 },
-  { date: "2026-02-11", pandora: 509, sentiment: 55.0 },
-  { date: "2026-02-12", pandora: 511, sentiment: 55.0 },
-  { date: "2026-02-13", pandora: 515, sentiment: 55.0 },
-  { date: "2026-02-16", pandora: 514, sentiment: 55.0 },
-  { date: "2026-02-17", pandora: 510, sentiment: 55.0 },
-  { date: "2026-02-18", pandora: 510, sentiment: 55.0 },
-  { date: "2026-02-19", pandora: 501, sentiment: 55.0 },
-  { date: "2026-02-20", pandora: 522, sentiment: 55.0 },
-  { date: "2026-02-23", pandora: 495, sentiment: 55.0 },
-  { date: "2026-02-24", pandora: 501, sentiment: 55.0 },
-  { date: "2026-02-25", pandora: 477, sentiment: 55.0 },
-  { date: "2026-02-26", pandora: 492, sentiment: 55.0 },
-  { date: "2026-02-27", pandora: 477, sentiment: 55.0 },
-  { date: "2026-03-02", pandora: 463, sentiment: 53.3 },
-  { date: "2026-03-03", pandora: 460, sentiment: 53.3 },
-  { date: "2026-03-04", pandora: 463, sentiment: 53.3 },
-  { date: "2026-03-05", pandora: 475, sentiment: 53.3 },
-  { date: "2026-03-06", pandora: 470, sentiment: 53.3 },
-  { date: "2026-03-09", pandora: 464, sentiment: 53.3 },
-  { date: "2026-03-10", pandora: 457, sentiment: 53.3 },
-  { date: "2026-03-11", pandora: 448, sentiment: 53.3 },
+  { date: "2024-01-02", pandora: 936, sentiment: 79.0 },
+  { date: "2024-01-03", pandora: 922, sentiment: 79.0 },
+  { date: "2024-01-04", pandora: 930, sentiment: 79.0 },
+  { date: "2024-01-05", pandora: 947, sentiment: 79.0 },
+  { date: "2024-01-08", pandora: 980, sentiment: 79.0 },
+  { date: "2024-01-09", pandora: 977, sentiment: 79.0 },
+  { date: "2024-01-10", pandora: 998, sentiment: 79.0 },
+  { date: "2024-01-11", pandora: 986, sentiment: 79.0 },
+  { date: "2024-01-12", pandora: 978, sentiment: 79.0 },
+  { date: "2024-01-15", pandora: 977, sentiment: 79.0 },
+  { date: "2024-01-16", pandora: 987, sentiment: 79.0 },
+  { date: "2024-01-17", pandora: 985, sentiment: 79.0 },
+  { date: "2024-01-18", pandora: 969, sentiment: 79.0 },
+  { date: "2024-01-19", pandora: 959, sentiment: 79.0 },
+  { date: "2024-01-22", pandora: 974, sentiment: 79.0 },
+  { date: "2024-01-23", pandora: 973, sentiment: 79.0 },
+  { date: "2024-01-24", pandora: 989, sentiment: 79.0 },
+  { date: "2024-01-25", pandora: 1004, sentiment: 79.0 },
+  { date: "2024-01-26", pandora: 992, sentiment: 79.0 },
+  { date: "2024-01-29", pandora: 1012, sentiment: 79.0 },
+  { date: "2024-01-30", pandora: 1018, sentiment: 79.0 },
+  { date: "2024-01-31", pandora: 1009, sentiment: 79.0 },
+  { date: "2024-02-01", pandora: 1000, sentiment: 76.9 },
+  { date: "2024-02-02", pandora: 1016, sentiment: 76.9 },
+  { date: "2024-02-05", pandora: 1016, sentiment: 76.9 },
+  { date: "2024-02-06", pandora: 1030, sentiment: 76.9 },
+  { date: "2024-02-07", pandora: 1026, sentiment: 76.9 },
+  { date: "2024-02-08", pandora: 1078, sentiment: 76.9 },
+  { date: "2024-02-09", pandora: 1090, sentiment: 76.9 },
+  { date: "2024-02-12", pandora: 1098, sentiment: 76.9 },
+  { date: "2024-02-13", pandora: 1088, sentiment: 76.9 },
+  { date: "2024-02-14", pandora: 1104, sentiment: 76.9 },
+  { date: "2024-02-15", pandora: 1108, sentiment: 76.9 },
+  { date: "2024-02-16", pandora: 1134, sentiment: 76.9 },
+  { date: "2024-02-19", pandora: 1144, sentiment: 76.9 },
+  { date: "2024-02-20", pandora: 1142, sentiment: 76.9 },
+  { date: "2024-02-21", pandora: 1133, sentiment: 76.9 },
+  { date: "2024-02-22", pandora: 1142, sentiment: 76.9 },
+  { date: "2024-02-23", pandora: 1152, sentiment: 76.9 },
+  { date: "2024-02-26", pandora: 1152, sentiment: 76.9 },
+  { date: "2024-02-27", pandora: 1154, sentiment: 76.9 },
+  { date: "2024-02-28", pandora: 1150, sentiment: 76.9 },
+  { date: "2024-02-29", pandora: 1113, sentiment: 76.9 },
+  { date: "2024-03-01", pandora: 1147, sentiment: 79.4 },
+  { date: "2024-03-04", pandora: 1138, sentiment: 79.4 },
+  { date: "2024-03-05", pandora: 1126, sentiment: 79.4 },
+  { date: "2024-03-06", pandora: 1114, sentiment: 79.4 },
+  { date: "2024-03-07", pandora: 1136, sentiment: 79.4 },
+  { date: "2024-03-08", pandora: 1158, sentiment: 79.4 },
+  { date: "2024-03-11", pandora: 1141, sentiment: 79.4 },
+  { date: "2024-03-12", pandora: 1162, sentiment: 79.4 },
+  { date: "2024-03-13", pandora: 1163, sentiment: 79.4 },
+  { date: "2024-03-14", pandora: 1180, sentiment: 79.4 },
+  { date: "2024-03-15", pandora: 1146, sentiment: 79.4 },
+  { date: "2024-03-18", pandora: 1142, sentiment: 79.4 },
+  { date: "2024-03-19", pandora: 1149, sentiment: 79.4 },
+  { date: "2024-03-20", pandora: 1143, sentiment: 79.4 },
+  { date: "2024-03-21", pandora: 1164, sentiment: 79.4 },
+  { date: "2024-03-22", pandora: 1122, sentiment: 79.4 },
+  { date: "2024-03-25", pandora: 1124, sentiment: 79.4 },
+  { date: "2024-03-26", pandora: 1140, sentiment: 79.4 },
+  { date: "2024-03-27", pandora: 1114, sentiment: 79.4 },
+  { date: "2024-04-02", pandora: 1098, sentiment: 77.2 },
+  { date: "2024-04-03", pandora: 1110, sentiment: 77.2 },
+  { date: "2024-04-04", pandora: 1098, sentiment: 77.2 },
+  { date: "2024-04-05", pandora: 1096, sentiment: 77.2 },
+  { date: "2024-04-08", pandora: 1090, sentiment: 77.2 },
+  { date: "2024-04-09", pandora: 1074, sentiment: 77.2 },
+  { date: "2024-04-10", pandora: 1093, sentiment: 77.2 },
+  { date: "2024-04-11", pandora: 1097, sentiment: 77.2 },
+  { date: "2024-04-12", pandora: 1064, sentiment: 77.2 },
+  { date: "2024-04-15", pandora: 1080, sentiment: 77.2 },
+  { date: "2024-04-16", pandora: 1067, sentiment: 77.2 },
+  { date: "2024-04-17", pandora: 1078, sentiment: 77.2 },
+  { date: "2024-04-18", pandora: 1074, sentiment: 77.2 },
+  { date: "2024-04-19", pandora: 1082, sentiment: 77.2 },
+  { date: "2024-04-22", pandora: 1103, sentiment: 77.2 },
+  { date: "2024-04-23", pandora: 1099, sentiment: 77.2 },
+  { date: "2024-04-24", pandora: 1095, sentiment: 77.2 },
+  { date: "2024-04-25", pandora: 1078, sentiment: 77.2 },
+  { date: "2024-04-26", pandora: 1100, sentiment: 77.2 },
+  { date: "2024-04-29", pandora: 1086, sentiment: 77.2 },
+  { date: "2024-04-30", pandora: 1070, sentiment: 77.2 },
+  { date: "2024-05-01", pandora: 1082, sentiment: 69.1 },
+  { date: "2024-05-02", pandora: 1150, sentiment: 69.1 },
+  { date: "2024-05-03", pandora: 1120, sentiment: 69.1 },
+  { date: "2024-05-06", pandora: 1114, sentiment: 69.1 },
+  { date: "2024-05-07", pandora: 1112, sentiment: 69.1 },
+  { date: "2024-05-08", pandora: 1132, sentiment: 69.1 },
+  { date: "2024-05-13", pandora: 1162, sentiment: 69.1 },
+  { date: "2024-05-14", pandora: 1130, sentiment: 69.1 },
+  { date: "2024-05-15", pandora: 1148, sentiment: 69.1 },
+  { date: "2024-05-16", pandora: 1164, sentiment: 69.1 },
+  { date: "2024-05-17", pandora: 1170, sentiment: 69.1 },
+  { date: "2024-05-21", pandora: 1148, sentiment: 69.1 },
+  { date: "2024-05-22", pandora: 1114, sentiment: 69.1 },
+  { date: "2024-05-23", pandora: 1140, sentiment: 69.1 },
+  { date: "2024-05-24", pandora: 1140, sentiment: 69.1 },
+  { date: "2024-05-27", pandora: 1138, sentiment: 69.1 },
+  { date: "2024-05-28", pandora: 1114, sentiment: 69.1 },
+  { date: "2024-05-29", pandora: 1116, sentiment: 69.1 },
+  { date: "2024-05-30", pandora: 1115, sentiment: 69.1 },
+  { date: "2024-05-31", pandora: 1124, sentiment: 69.1 },
+  { date: "2024-06-03", pandora: 1105, sentiment: 68.2 },
+  { date: "2024-06-04", pandora: 1098, sentiment: 68.2 },
+  { date: "2024-06-06", pandora: 1094, sentiment: 68.2 },
+  { date: "2024-06-07", pandora: 1118, sentiment: 68.2 },
+  { date: "2024-06-10", pandora: 1116, sentiment: 68.2 },
+  { date: "2024-06-11", pandora: 1092, sentiment: 68.2 },
+  { date: "2024-06-12", pandora: 1102, sentiment: 68.2 },
+  { date: "2024-06-13", pandora: 1080, sentiment: 68.2 },
+  { date: "2024-06-14", pandora: 1052, sentiment: 68.2 },
+  { date: "2024-06-17", pandora: 1050, sentiment: 68.2 },
+  { date: "2024-06-18", pandora: 1050, sentiment: 68.2 },
+  { date: "2024-06-19", pandora: 1053, sentiment: 68.2 },
+  { date: "2024-06-20", pandora: 1078, sentiment: 68.2 },
+  { date: "2024-06-21", pandora: 1064, sentiment: 68.2 },
+  { date: "2024-06-24", pandora: 1067, sentiment: 68.2 },
+  { date: "2024-06-25", pandora: 1062, sentiment: 68.2 },
+  { date: "2024-06-26", pandora: 1068, sentiment: 68.2 },
+  { date: "2024-06-27", pandora: 1057, sentiment: 68.2 },
+  { date: "2024-06-28", pandora: 1051, sentiment: 68.2 },
+  { date: "2024-07-01", pandora: 1009, sentiment: 66.4 },
+  { date: "2024-07-02", pandora: 999, sentiment: 66.4 },
+  { date: "2024-07-03", pandora: 997, sentiment: 66.4 },
+  { date: "2024-07-04", pandora: 982, sentiment: 66.4 },
+  { date: "2024-07-05", pandora: 995, sentiment: 66.4 },
+  { date: "2024-07-08", pandora: 1014, sentiment: 66.4 },
+  { date: "2024-07-09", pandora: 1020, sentiment: 66.4 },
+  { date: "2024-07-10", pandora: 1019, sentiment: 66.4 },
+  { date: "2024-07-11", pandora: 1028, sentiment: 66.4 },
+  { date: "2024-07-12", pandora: 1058, sentiment: 66.4 },
+  { date: "2024-07-15", pandora: 1054, sentiment: 66.4 },
+  { date: "2024-07-16", pandora: 1073, sentiment: 66.4 },
+  { date: "2024-07-17", pandora: 1060, sentiment: 66.4 },
+  { date: "2024-07-18", pandora: 1052, sentiment: 66.4 },
+  { date: "2024-07-19", pandora: 1054, sentiment: 66.4 },
+  { date: "2024-07-22", pandora: 1076, sentiment: 66.4 },
+  { date: "2024-07-23", pandora: 1066, sentiment: 66.4 },
+  { date: "2024-07-24", pandora: 1071, sentiment: 66.4 },
+  { date: "2024-07-25", pandora: 1051, sentiment: 66.4 },
+  { date: "2024-07-26", pandora: 1059, sentiment: 66.4 },
+  { date: "2024-07-29", pandora: 1076, sentiment: 66.4 },
+  { date: "2024-07-30", pandora: 1088, sentiment: 66.4 },
+  { date: "2024-07-31", pandora: 1081, sentiment: 66.4 },
+  { date: "2024-08-01", pandora: 1076, sentiment: 67.9 },
+  { date: "2024-08-02", pandora: 1011, sentiment: 67.9 },
+  { date: "2024-08-05", pandora: 976, sentiment: 67.9 },
+  { date: "2024-08-06", pandora: 997, sentiment: 67.9 },
+  { date: "2024-08-07", pandora: 1008, sentiment: 67.9 },
+  { date: "2024-08-08", pandora: 1014, sentiment: 67.9 },
+  { date: "2024-08-09", pandora: 1025, sentiment: 67.9 },
+  { date: "2024-08-12", pandora: 1041, sentiment: 67.9 },
+  { date: "2024-08-13", pandora: 1079, sentiment: 67.9 },
+  { date: "2024-08-14", pandora: 1060, sentiment: 67.9 },
+  { date: "2024-08-15", pandora: 1062, sentiment: 67.9 },
+  { date: "2024-08-16", pandora: 1068, sentiment: 67.9 },
+  { date: "2024-08-19", pandora: 1094, sentiment: 67.9 },
+  { date: "2024-08-20", pandora: 1114, sentiment: 67.9 },
+  { date: "2024-08-21", pandora: 1119, sentiment: 67.9 },
+  { date: "2024-08-22", pandora: 1134, sentiment: 67.9 },
+  { date: "2024-08-23", pandora: 1144, sentiment: 67.9 },
+  { date: "2024-08-26", pandora: 1148, sentiment: 67.9 },
+  { date: "2024-08-27", pandora: 1156, sentiment: 67.9 },
+  { date: "2024-08-28", pandora: 1159, sentiment: 67.9 },
+  { date: "2024-08-29", pandora: 1171, sentiment: 67.9 },
+  { date: "2024-08-30", pandora: 1181, sentiment: 67.9 },
+  { date: "2024-09-02", pandora: 1174, sentiment: 70.1 },
+  { date: "2024-09-03", pandora: 1179, sentiment: 70.1 },
+  { date: "2024-09-04", pandora: 1173, sentiment: 70.1 },
+  { date: "2024-09-05", pandora: 1158, sentiment: 70.1 },
+  { date: "2024-09-06", pandora: 1146, sentiment: 70.1 },
+  { date: "2024-09-09", pandora: 1153, sentiment: 70.1 },
+  { date: "2024-09-10", pandora: 1138, sentiment: 70.1 },
+  { date: "2024-09-11", pandora: 1158, sentiment: 70.1 },
+  { date: "2024-09-12", pandora: 1184, sentiment: 70.1 },
+  { date: "2024-09-13", pandora: 1204, sentiment: 70.1 },
+  { date: "2024-09-16", pandora: 1190, sentiment: 70.1 },
+  { date: "2024-09-17", pandora: 1166, sentiment: 70.1 },
+  { date: "2024-09-18", pandora: 1146, sentiment: 70.1 },
+  { date: "2024-09-19", pandora: 1174, sentiment: 70.1 },
+  { date: "2024-09-20", pandora: 1146, sentiment: 70.1 },
+  { date: "2024-09-23", pandora: 1144, sentiment: 70.1 },
+  { date: "2024-09-24", pandora: 1162, sentiment: 70.1 },
+  { date: "2024-09-25", pandora: 1119, sentiment: 70.1 },
+  { date: "2024-09-26", pandora: 1104, sentiment: 70.1 },
+  { date: "2024-09-27", pandora: 1100, sentiment: 70.1 },
+  { date: "2024-09-30", pandora: 1102, sentiment: 70.1 },
+  { date: "2024-10-01", pandora: 1068, sentiment: 70.5 },
+  { date: "2024-10-02", pandora: 1064, sentiment: 70.5 },
+  { date: "2024-10-03", pandora: 1050, sentiment: 70.5 },
+  { date: "2024-10-04", pandora: 1055, sentiment: 70.5 },
+  { date: "2024-10-07", pandora: 1044, sentiment: 70.5 },
+  { date: "2024-10-08", pandora: 1067, sentiment: 70.5 },
+  { date: "2024-10-09", pandora: 1060, sentiment: 70.5 },
+  { date: "2024-10-10", pandora: 1071, sentiment: 70.5 },
+  { date: "2024-10-11", pandora: 1078, sentiment: 70.5 },
+  { date: "2024-10-14", pandora: 1064, sentiment: 70.5 },
+  { date: "2024-10-15", pandora: 1063, sentiment: 70.5 },
+  { date: "2024-10-16", pandora: 1063, sentiment: 70.5 },
+  { date: "2024-10-17", pandora: 1082, sentiment: 70.5 },
+  { date: "2024-10-18", pandora: 1074, sentiment: 70.5 },
+  { date: "2024-10-21", pandora: 1050, sentiment: 70.5 },
+  { date: "2024-10-22", pandora: 1030, sentiment: 70.5 },
+  { date: "2024-10-23", pandora: 1024, sentiment: 70.5 },
+  { date: "2024-10-24", pandora: 1048, sentiment: 70.5 },
+  { date: "2024-10-25", pandora: 1040, sentiment: 70.5 },
+  { date: "2024-10-28", pandora: 1048, sentiment: 70.5 },
+  { date: "2024-10-29", pandora: 1067, sentiment: 70.5 },
+  { date: "2024-10-30", pandora: 1056, sentiment: 70.5 },
+  { date: "2024-10-31", pandora: 1034, sentiment: 70.5 },
+  { date: "2024-11-01", pandora: 1060, sentiment: 71.8 },
+  { date: "2024-11-04", pandora: 1061, sentiment: 71.8 },
+  { date: "2024-11-05", pandora: 1060, sentiment: 71.8 },
+  { date: "2024-11-06", pandora: 1042, sentiment: 71.8 },
+  { date: "2024-11-07", pandora: 1054, sentiment: 71.8 },
+  { date: "2024-11-08", pandora: 1064, sentiment: 71.8 },
+  { date: "2024-11-11", pandora: 1076, sentiment: 71.8 },
+  { date: "2024-11-12", pandora: 1094, sentiment: 71.8 },
+  { date: "2024-11-13", pandora: 1092, sentiment: 71.8 },
+  { date: "2024-11-14", pandora: 1097, sentiment: 71.8 },
+  { date: "2024-11-15", pandora: 1085, sentiment: 71.8 },
+  { date: "2024-11-18", pandora: 1095, sentiment: 71.8 },
+  { date: "2024-11-19", pandora: 1068, sentiment: 71.8 },
+  { date: "2024-11-20", pandora: 1080, sentiment: 71.8 },
+  { date: "2024-11-21", pandora: 1086, sentiment: 71.8 },
+  { date: "2024-11-22", pandora: 1120, sentiment: 71.8 },
+  { date: "2024-11-25", pandora: 1124, sentiment: 71.8 },
+  { date: "2024-11-26", pandora: 1117, sentiment: 71.8 },
+  { date: "2024-11-27", pandora: 1108, sentiment: 71.8 },
+  { date: "2024-11-28", pandora: 1118, sentiment: 71.8 },
+  { date: "2024-11-29", pandora: 1136, sentiment: 71.8 },
+  { date: "2024-12-02", pandora: 1164, sentiment: 74.0 },
+  { date: "2024-12-03", pandora: 1186, sentiment: 74.0 },
+  { date: "2024-12-04", pandora: 1188, sentiment: 74.0 },
+  { date: "2024-12-05", pandora: 1178, sentiment: 74.0 },
+  { date: "2024-12-06", pandora: 1215, sentiment: 74.0 },
+  { date: "2024-12-09", pandora: 1257, sentiment: 74.0 },
+  { date: "2024-12-10", pandora: 1262, sentiment: 74.0 },
+  { date: "2024-12-11", pandora: 1276, sentiment: 74.0 },
+  { date: "2024-12-12", pandora: 1266, sentiment: 74.0 },
+  { date: "2024-12-13", pandora: 1275, sentiment: 74.0 },
+  { date: "2024-12-16", pandora: 1280, sentiment: 74.0 },
+  { date: "2024-12-17", pandora: 1258, sentiment: 74.0 },
+  { date: "2024-12-18", pandora: 1271, sentiment: 74.0 },
+  { date: "2024-12-19", pandora: 1264, sentiment: 74.0 },
+  { date: "2024-12-20", pandora: 1274, sentiment: 74.0 },
+  { date: "2024-12-23", pandora: 1294, sentiment: 74.0 },
+  { date: "2024-12-27", pandora: 1328, sentiment: 74.0 },
+  { date: "2024-12-30", pandora: 1317, sentiment: 74.0 },
+  { date: "2025-01-02", pandora: 1320, sentiment: 71.7 },
+  { date: "2025-01-03", pandora: 1318, sentiment: 71.7 },
+  { date: "2025-01-06", pandora: 1314, sentiment: 71.7 },
+  { date: "2025-01-07", pandora: 1305, sentiment: 71.7 },
+  { date: "2025-01-08", pandora: 1311, sentiment: 71.7 },
+  { date: "2025-01-09", pandora: 1320, sentiment: 71.7 },
+  { date: "2025-01-10", pandora: 1332, sentiment: 71.7 },
+  { date: "2025-01-13", pandora: 1270, sentiment: 71.7 },
+  { date: "2025-01-14", pandora: 1241, sentiment: 71.7 },
+  { date: "2025-01-15", pandora: 1250, sentiment: 71.7 },
+  { date: "2025-01-16", pandora: 1268, sentiment: 71.7 },
+  { date: "2025-01-17", pandora: 1282, sentiment: 71.7 },
+  { date: "2025-01-20", pandora: 1280, sentiment: 71.7 },
+  { date: "2025-01-21", pandora: 1304, sentiment: 71.7 },
+  { date: "2025-01-22", pandora: 1321, sentiment: 71.7 },
+  { date: "2025-01-23", pandora: 1342, sentiment: 71.7 },
+  { date: "2025-01-24", pandora: 1329, sentiment: 71.7 },
+  { date: "2025-01-27", pandora: 1362, sentiment: 71.7 },
+  { date: "2025-01-28", pandora: 1354, sentiment: 71.7 },
+  { date: "2025-01-29", pandora: 1378, sentiment: 71.7 },
+  { date: "2025-01-30", pandora: 1400, sentiment: 71.7 },
+  { date: "2025-01-31", pandora: 1380, sentiment: 71.7 },
+  { date: "2025-02-03", pandora: 1380, sentiment: 64.7 },
+  { date: "2025-02-04", pandora: 1374, sentiment: 64.7 },
+  { date: "2025-02-05", pandora: 1342, sentiment: 64.7 },
+  { date: "2025-02-06", pandora: 1347, sentiment: 64.7 },
+  { date: "2025-02-07", pandora: 1320, sentiment: 64.7 },
+  { date: "2025-02-10", pandora: 1332, sentiment: 64.7 },
+  { date: "2025-02-11", pandora: 1322, sentiment: 64.7 },
+  { date: "2025-02-12", pandora: 1328, sentiment: 64.7 },
+  { date: "2025-02-13", pandora: 1320, sentiment: 64.7 },
+  { date: "2025-02-14", pandora: 1261, sentiment: 64.7 },
+  { date: "2025-02-17", pandora: 1258, sentiment: 64.7 },
+  { date: "2025-02-18", pandora: 1256, sentiment: 64.7 },
+  { date: "2025-02-19", pandora: 1247, sentiment: 64.7 },
+  { date: "2025-02-20", pandora: 1240, sentiment: 64.7 },
+  { date: "2025-02-21", pandora: 1278, sentiment: 64.7 },
+  { date: "2025-02-24", pandora: 1242, sentiment: 64.7 },
+  { date: "2025-02-25", pandora: 1264, sentiment: 64.7 },
+  { date: "2025-02-26", pandora: 1268, sentiment: 64.7 },
+  { date: "2025-02-27", pandora: 1240, sentiment: 64.7 },
+  { date: "2025-02-28", pandora: 1268, sentiment: 64.7 },
+  { date: "2025-03-03", pandora: 1244, sentiment: 57.0 },
+  { date: "2025-03-04", pandora: 1214, sentiment: 57.0 },
+  { date: "2025-03-05", pandora: 1198, sentiment: 57.0 },
+  { date: "2025-03-06", pandora: 1168, sentiment: 57.0 },
+  { date: "2025-03-07", pandora: 1162, sentiment: 57.0 },
+  { date: "2025-03-10", pandora: 1148, sentiment: 57.0 },
+  { date: "2025-03-11", pandora: 1126, sentiment: 57.0 },
+  { date: "2025-03-12", pandora: 1128, sentiment: 57.0 },
+  { date: "2025-03-13", pandora: 1111, sentiment: 57.0 },
+  { date: "2025-03-14", pandora: 1104, sentiment: 57.0 },
+  { date: "2025-03-17", pandora: 1104, sentiment: 57.0 },
+  { date: "2025-03-18", pandora: 1075, sentiment: 57.0 },
+  { date: "2025-03-19", pandora: 1118, sentiment: 57.0 },
+  { date: "2025-03-20", pandora: 1133, sentiment: 57.0 },
+  { date: "2025-03-21", pandora: 1116, sentiment: 57.0 },
+  { date: "2025-03-24", pandora: 1133, sentiment: 57.0 },
+  { date: "2025-03-25", pandora: 1108, sentiment: 57.0 },
+  { date: "2025-03-26", pandora: 1110, sentiment: 57.0 },
+  { date: "2025-03-27", pandora: 1089, sentiment: 57.0 },
+  { date: "2025-03-28", pandora: 1068, sentiment: 57.0 },
+  { date: "2025-03-31", pandora: 1054, sentiment: 57.0 },
+  { date: "2025-04-01", pandora: 1061, sentiment: 52.2 },
+  { date: "2025-04-02", pandora: 1062, sentiment: 52.2 },
+  { date: "2025-04-03", pandora: 949, sentiment: 52.2 },
+  { date: "2025-04-04", pandora: 873, sentiment: 52.2 },
+  { date: "2025-04-07", pandora: 904, sentiment: 52.2 },
+  { date: "2025-04-08", pandora: 921, sentiment: 52.2 },
+  { date: "2025-04-09", pandora: 884, sentiment: 52.2 },
+  { date: "2025-04-10", pandora: 950, sentiment: 52.2 },
+  { date: "2025-04-11", pandora: 932, sentiment: 52.2 },
+  { date: "2025-04-14", pandora: 949, sentiment: 52.2 },
+  { date: "2025-04-15", pandora: 955, sentiment: 52.2 },
+  { date: "2025-04-16", pandora: 921, sentiment: 52.2 },
+  { date: "2025-04-22", pandora: 938, sentiment: 52.2 },
+  { date: "2025-04-23", pandora: 983, sentiment: 52.2 },
+  { date: "2025-04-24", pandora: 959, sentiment: 52.2 },
+  { date: "2025-04-25", pandora: 964, sentiment: 52.2 },
+  { date: "2025-04-28", pandora: 977, sentiment: 52.2 },
+  { date: "2025-04-29", pandora: 977, sentiment: 52.2 },
+  { date: "2025-04-30", pandora: 972, sentiment: 52.2 },
+  { date: "2025-05-01", pandora: 984, sentiment: 52.2 },
+  { date: "2025-05-02", pandora: 1004, sentiment: 52.2 },
+  { date: "2025-05-05", pandora: 1004, sentiment: 52.2 },
+  { date: "2025-05-06", pandora: 982, sentiment: 52.2 },
+  { date: "2025-05-07", pandora: 999, sentiment: 52.2 },
+  { date: "2025-05-08", pandora: 1006, sentiment: 52.2 },
+  { date: "2025-05-09", pandora: 1032, sentiment: 52.2 },
+  { date: "2025-05-12", pandora: 1112, sentiment: 52.2 },
+  { date: "2025-05-13", pandora: 1136, sentiment: 52.2 },
+  { date: "2025-05-14", pandora: 1155, sentiment: 52.2 },
+  { date: "2025-05-15", pandora: 1156, sentiment: 52.2 },
+  { date: "2025-05-16", pandora: 1197, sentiment: 52.2 },
+  { date: "2025-05-19", pandora: 1211, sentiment: 52.2 },
+  { date: "2025-05-20", pandora: 1212, sentiment: 52.2 },
+  { date: "2025-05-21", pandora: 1212, sentiment: 52.2 },
+  { date: "2025-05-22", pandora: 1192, sentiment: 52.2 },
+  { date: "2025-05-23", pandora: 1186, sentiment: 52.2 },
+  { date: "2025-05-26", pandora: 1202, sentiment: 52.2 },
+  { date: "2025-05-27", pandora: 1218, sentiment: 52.2 },
+  { date: "2025-05-28", pandora: 1196, sentiment: 52.2 },
+  { date: "2025-06-02", pandora: 1178, sentiment: 60.7 },
+  { date: "2025-06-03", pandora: 1200, sentiment: 60.7 },
+  { date: "2025-06-04", pandora: 1220, sentiment: 60.7 },
+  { date: "2025-06-06", pandora: 1186, sentiment: 60.7 },
+  { date: "2025-06-10", pandora: 1184, sentiment: 60.7 },
+  { date: "2025-06-11", pandora: 1194, sentiment: 60.7 },
+  { date: "2025-06-12", pandora: 1178, sentiment: 60.7 },
+  { date: "2025-06-13", pandora: 1149, sentiment: 60.7 },
+  { date: "2025-06-16", pandora: 1200, sentiment: 60.7 },
+  { date: "2025-06-17", pandora: 1172, sentiment: 60.7 },
+  { date: "2025-06-18", pandora: 1174, sentiment: 60.7 },
+  { date: "2025-06-19", pandora: 1152, sentiment: 60.7 },
+  { date: "2025-06-20", pandora: 1168, sentiment: 60.7 },
+  { date: "2025-06-23", pandora: 1106, sentiment: 60.7 },
+  { date: "2025-06-24", pandora: 1135, sentiment: 60.7 },
+  { date: "2025-06-25", pandora: 1103, sentiment: 60.7 },
+  { date: "2025-06-26", pandora: 1082, sentiment: 60.7 },
+  { date: "2025-06-27", pandora: 1111, sentiment: 60.7 },
+  { date: "2025-06-30", pandora: 1112, sentiment: 60.7 },
+  { date: "2025-07-01", pandora: 1108, sentiment: 61.7 },
+  { date: "2025-07-02", pandora: 1106, sentiment: 61.7 },
+  { date: "2025-07-03", pandora: 1104, sentiment: 61.7 },
+  { date: "2025-07-04", pandora: 1086, sentiment: 61.7 },
+  { date: "2025-07-07", pandora: 1064, sentiment: 61.7 },
+  { date: "2025-07-08", pandora: 1066, sentiment: 61.7 },
+  { date: "2025-07-09", pandora: 1076, sentiment: 61.7 },
+  { date: "2025-07-10", pandora: 1070, sentiment: 61.7 },
+  { date: "2025-07-11", pandora: 1054, sentiment: 61.7 },
+  { date: "2025-07-14", pandora: 1039, sentiment: 61.7 },
+  { date: "2025-07-15", pandora: 1020, sentiment: 61.7 },
+  { date: "2025-07-16", pandora: 1037, sentiment: 61.7 },
+  { date: "2025-07-17", pandora: 1046, sentiment: 61.7 },
+  { date: "2025-07-18", pandora: 1050, sentiment: 61.7 },
+  { date: "2025-07-21", pandora: 1037, sentiment: 61.7 },
+  { date: "2025-07-22", pandora: 1039, sentiment: 61.7 },
+  { date: "2025-07-23", pandora: 1050, sentiment: 61.7 },
+  { date: "2025-07-24", pandora: 1064, sentiment: 61.7 },
+  { date: "2025-07-25", pandora: 1057, sentiment: 61.7 },
+  { date: "2025-07-28", pandora: 1076, sentiment: 61.7 },
+  { date: "2025-07-29", pandora: 1069, sentiment: 61.7 },
+  { date: "2025-07-30", pandora: 1075, sentiment: 61.7 },
+  { date: "2025-07-31", pandora: 1086, sentiment: 61.7 },
+  { date: "2025-08-01", pandora: 1074, sentiment: 58.2 },
+  { date: "2025-08-04", pandora: 1084, sentiment: 58.2 },
+  { date: "2025-08-05", pandora: 1073, sentiment: 58.2 },
+  { date: "2025-08-06", pandora: 1036, sentiment: 58.2 },
+  { date: "2025-08-07", pandora: 1038, sentiment: 58.2 },
+  { date: "2025-08-08", pandora: 1032, sentiment: 58.2 },
+  { date: "2025-08-11", pandora: 1029, sentiment: 58.2 },
+  { date: "2025-08-12", pandora: 1014, sentiment: 58.2 },
+  { date: "2025-08-13", pandora: 1037, sentiment: 58.2 },
+  { date: "2025-08-14", pandora: 1035, sentiment: 58.2 },
+  { date: "2025-08-15", pandora: 845, sentiment: 58.2 },
+  { date: "2025-08-18", pandora: 843, sentiment: 58.2 },
+  { date: "2025-08-19", pandora: 875, sentiment: 58.2 },
+  { date: "2025-08-20", pandora: 896, sentiment: 58.2 },
+  { date: "2025-08-21", pandora: 889, sentiment: 58.2 },
+  { date: "2025-08-22", pandora: 912, sentiment: 58.2 },
+  { date: "2025-08-25", pandora: 887, sentiment: 58.2 },
+  { date: "2025-08-26", pandora: 900, sentiment: 58.2 },
+  { date: "2025-08-27", pandora: 900, sentiment: 58.2 },
+  { date: "2025-08-28", pandora: 899, sentiment: 58.2 },
+  { date: "2025-08-29", pandora: 881, sentiment: 58.2 },
+  { date: "2025-09-01", pandora: 862, sentiment: 55.1 },
+  { date: "2025-09-02", pandora: 841, sentiment: 55.1 },
+  { date: "2025-09-03", pandora: 845, sentiment: 55.1 },
+  { date: "2025-09-04", pandora: 859, sentiment: 55.1 },
+  { date: "2025-09-05", pandora: 860, sentiment: 55.1 },
+  { date: "2025-09-08", pandora: 861, sentiment: 55.1 },
+  { date: "2025-09-09", pandora: 859, sentiment: 55.1 },
+  { date: "2025-09-10", pandora: 860, sentiment: 55.1 },
+  { date: "2025-09-11", pandora: 866, sentiment: 55.1 },
+  { date: "2025-09-12", pandora: 871, sentiment: 55.1 },
+  { date: "2025-09-15", pandora: 871, sentiment: 55.1 },
+  { date: "2025-09-16", pandora: 866, sentiment: 55.1 },
+  { date: "2025-09-17", pandora: 866, sentiment: 55.1 },
+  { date: "2025-09-18", pandora: 885, sentiment: 55.1 },
+  { date: "2025-09-19", pandora: 875, sentiment: 55.1 },
+  { date: "2025-09-22", pandora: 856, sentiment: 55.1 },
+  { date: "2025-09-23", pandora: 854, sentiment: 55.1 },
+  { date: "2025-09-24", pandora: 834, sentiment: 55.1 },
+  { date: "2025-09-25", pandora: 830, sentiment: 55.1 },
+  { date: "2025-09-26", pandora: 837, sentiment: 55.1 },
+  { date: "2025-09-29", pandora: 851, sentiment: 55.1 },
+  { date: "2025-09-30", pandora: 828, sentiment: 55.1 },
+  { date: "2025-10-01", pandora: 842, sentiment: 53.6 },
+  { date: "2025-10-02", pandora: 831, sentiment: 53.6 },
+  { date: "2025-10-03", pandora: 820, sentiment: 53.6 },
+  { date: "2025-10-06", pandora: 825, sentiment: 53.6 },
+  { date: "2025-10-07", pandora: 826, sentiment: 53.6 },
+  { date: "2025-10-08", pandora: 840, sentiment: 53.6 },
+  { date: "2025-10-09", pandora: 826, sentiment: 53.6 },
+  { date: "2025-10-10", pandora: 811, sentiment: 53.6 },
+  { date: "2025-10-13", pandora: 798, sentiment: 53.6 },
+  { date: "2025-10-14", pandora: 796, sentiment: 53.6 },
+  { date: "2025-10-15", pandora: 813, sentiment: 53.6 },
+  { date: "2025-10-16", pandora: 822, sentiment: 53.6 },
+  { date: "2025-10-17", pandora: 824, sentiment: 53.6 },
+  { date: "2025-10-20", pandora: 833, sentiment: 53.6 },
+  { date: "2025-10-21", pandora: 867, sentiment: 53.6 },
+  { date: "2025-10-22", pandora: 865, sentiment: 53.6 },
+  { date: "2025-10-23", pandora: 883, sentiment: 53.6 },
+  { date: "2025-10-24", pandora: 889, sentiment: 53.6 },
+  { date: "2025-10-27", pandora: 890, sentiment: 53.6 },
+  { date: "2025-10-28", pandora: 882, sentiment: 53.6 },
+  { date: "2025-10-29", pandora: 879, sentiment: 53.6 },
+  { date: "2025-10-30", pandora: 871, sentiment: 53.6 },
+  { date: "2025-10-31", pandora: 868, sentiment: 53.6 },
+  { date: "2025-11-03", pandora: 826, sentiment: 51.0 },
+  { date: "2025-11-04", pandora: 812, sentiment: 51.0 },
+  { date: "2025-11-05", pandora: 768, sentiment: 51.0 },
+  { date: "2025-11-06", pandora: 778, sentiment: 51.0 },
+  { date: "2025-11-07", pandora: 770, sentiment: 51.0 },
+  { date: "2025-11-10", pandora: 797, sentiment: 51.0 },
+  { date: "2025-11-11", pandora: 805, sentiment: 51.0 },
+  { date: "2025-11-12", pandora: 800, sentiment: 51.0 },
+  { date: "2025-11-13", pandora: 781, sentiment: 51.0 },
+  { date: "2025-11-14", pandora: 789, sentiment: 51.0 },
+  { date: "2025-11-17", pandora: 762, sentiment: 51.0 },
+  { date: "2025-11-18", pandora: 739, sentiment: 51.0 },
+  { date: "2025-11-19", pandora: 754, sentiment: 51.0 },
+  { date: "2025-11-20", pandora: 746, sentiment: 51.0 },
+  { date: "2025-11-21", pandora: 762, sentiment: 51.0 },
+  { date: "2025-11-24", pandora: 751, sentiment: 51.0 },
+  { date: "2025-11-25", pandora: 761, sentiment: 51.0 },
+  { date: "2025-11-26", pandora: 766, sentiment: 51.0 },
+  { date: "2025-11-27", pandora: 770, sentiment: 51.0 },
+  { date: "2025-11-28", pandora: 769, sentiment: 51.0 },
+  { date: "2025-12-01", pandora: 769, sentiment: 52.9 },
+  { date: "2025-12-02", pandora: 743, sentiment: 52.9 },
+  { date: "2025-12-03", pandora: 726, sentiment: 52.9 },
+  { date: "2025-12-04", pandora: 736, sentiment: 52.9 },
+  { date: "2025-12-05", pandora: 740, sentiment: 52.9 },
+  { date: "2025-12-08", pandora: 728, sentiment: 52.9 },
+  { date: "2025-12-09", pandora: 722, sentiment: 52.9 },
+  { date: "2025-12-10", pandora: 707, sentiment: 52.9 },
+  { date: "2025-12-11", pandora: 707, sentiment: 52.9 },
+  { date: "2025-12-12", pandora: 699, sentiment: 52.9 },
+  { date: "2025-12-15", pandora: 692, sentiment: 52.9 },
+  { date: "2025-12-16", pandora: 714, sentiment: 52.9 },
+  { date: "2025-12-17", pandora: 694, sentiment: 52.9 },
+  { date: "2025-12-18", pandora: 700, sentiment: 52.9 },
+  { date: "2025-12-19", pandora: 699, sentiment: 52.9 },
+  { date: "2025-12-22", pandora: 702, sentiment: 52.9 },
+  { date: "2025-12-23", pandora: 703, sentiment: 52.9 },
+  { date: "2025-12-29", pandora: 703, sentiment: 52.9 },
+  { date: "2025-12-30", pandora: 708, sentiment: 52.9 },
+  { date: "2026-01-02", pandora: 696, sentiment: 56.4 },
+  { date: "2026-01-05", pandora: 677, sentiment: 56.4 },
+  { date: "2026-01-06", pandora: 681, sentiment: 56.4 },
+  { date: "2026-01-07", pandora: 662, sentiment: 56.4 },
+  { date: "2026-01-08", pandora: 676, sentiment: 56.4 },
+  { date: "2026-01-09", pandora: 588, sentiment: 56.4 },
+  { date: "2026-01-12", pandora: 571, sentiment: 56.4 },
+  { date: "2026-01-13", pandora: 572, sentiment: 56.4 },
+  { date: "2026-01-14", pandora: 556, sentiment: 56.4 },
+  { date: "2026-01-15", pandora: 546, sentiment: 56.4 },
+  { date: "2026-01-16", pandora: 550, sentiment: 56.4 },
+  { date: "2026-01-19", pandora: 520, sentiment: 56.4 },
+  { date: "2026-01-20", pandora: 516, sentiment: 56.4 },
+  { date: "2026-01-21", pandora: 517, sentiment: 56.4 },
+  { date: "2026-01-22", pandora: 510, sentiment: 56.4 },
+  { date: "2026-01-23", pandora: 505, sentiment: 56.4 },
+  { date: "2026-01-26", pandora: 487, sentiment: 56.4 },
+  { date: "2026-01-27", pandora: 494, sentiment: 56.4 },
+  { date: "2026-01-28", pandora: 487, sentiment: 56.4 },
+  { date: "2026-01-29", pandora: 485, sentiment: 56.4 },
+  { date: "2026-01-30", pandora: 509, sentiment: 56.4 },
+  { date: "2026-02-02", pandora: 556, sentiment: 56.6 },
+  { date: "2026-02-03", pandora: 504, sentiment: 56.6 },
+  { date: "2026-02-04", pandora: 513, sentiment: 56.6 },
+  { date: "2026-02-05", pandora: 541, sentiment: 56.6 },
+  { date: "2026-02-06", pandora: 570, sentiment: 56.6 },
+  { date: "2026-02-09", pandora: 537, sentiment: 56.6 },
+  { date: "2026-02-10", pandora: 556, sentiment: 56.6 },
+  { date: "2026-02-11", pandora: 534, sentiment: 56.6 },
+  { date: "2026-02-12", pandora: 537, sentiment: 56.6 },
+  { date: "2026-02-13", pandora: 540, sentiment: 56.6 },
+  { date: "2026-02-16", pandora: 539, sentiment: 56.6 },
+  { date: "2026-02-17", pandora: 535, sentiment: 56.6 },
+  { date: "2026-02-18", pandora: 535, sentiment: 56.6 },
+  { date: "2026-02-19", pandora: 526, sentiment: 56.6 },
+  { date: "2026-02-20", pandora: 547, sentiment: 56.6 },
+  { date: "2026-02-23", pandora: 520, sentiment: 56.6 },
+  { date: "2026-02-24", pandora: 526, sentiment: 56.6 },
+  { date: "2026-02-25", pandora: 500, sentiment: 56.6 },
+  { date: "2026-02-26", pandora: 516, sentiment: 56.6 },
+  { date: "2026-02-27", pandora: 500, sentiment: 56.6 },
+  { date: "2026-03-02", pandora: 486, sentiment: 53.3 },
+  { date: "2026-03-03", pandora: 483, sentiment: 53.3 },
+  { date: "2026-03-04", pandora: 486, sentiment: 53.3 },
+  { date: "2026-03-05", pandora: 498, sentiment: 53.3 },
+  { date: "2026-03-06", pandora: 494, sentiment: 53.3 },
+  { date: "2026-03-09", pandora: 486, sentiment: 53.3 },
+  { date: "2026-03-10", pandora: 480, sentiment: 53.3 },
+  { date: "2026-03-11", pandora: 470, sentiment: 53.3 },
   { date: "2026-03-12", pandora: 445, sentiment: 53.3 },
   { date: "2026-03-13", pandora: 443, sentiment: 53.3 },
   { date: "2026-03-16", pandora: 444, sentiment: 53.3 },
@@ -1227,7 +1227,7 @@ const SENTIMENT_DATA: SentimentPoint[] = [
   { date: "2026-05-22", pandora: 556, sentiment: 44.8 },
 ];
 
-// Scatter data: Silver price vs. Pandora stock price (all months)
+// Scatter data: Silver price vs. Pandora share price (all months)
 const CORRELATION_DATA: CorrelationPoint[] = PRICE_DATA.map((d) => ({
   silver: d.silver,
   pandora: d.pandora,
@@ -1321,12 +1321,12 @@ function ScatterTooltip({ active, payload }: TooltipContentProps<ValueType, Name
 }
 
 // ─── main component ─────────────────────────────────────────────────────────
-const PandoraSilverAnalysisPageEn: React.FC = () => {
+const PandoraSilverAnalysisPage: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
   useEffect(() => {
-    trackPageView("/analyse/pandora/soelv", "pandora_silver_analysis");
+    trackPageView("/analyse/pandora/soelv", "pandora_silver_analysis_en");
     fetch(`${HOST}/stats/visit/pandora-silver-analysis/`).catch(() => {});
   }, []);
 
@@ -1358,7 +1358,7 @@ const PandoraSilverAnalysisPageEn: React.FC = () => {
   const silverStart = PRICE_DATA[0].silver;
   const silverEnd = PRICE_DATA[PRICE_DATA.length - 1].silver;
   const silverChange = ((silverEnd - silverStart) / silverStart * 100).toFixed(0);
-  const pandoraATH = 1415; // Intraday ATH January 31, 2025
+  const pandoraATH = 1415; // Intraday ATH 31 January 2025
 
   // Correlation coefficient
   const n = CORRELATION_DATA.length;
@@ -1375,8 +1375,8 @@ const PandoraSilverAnalysisPageEn: React.FC = () => {
   const [hedgedPrice, setHedgedPrice] = useState(32);
 
   const MODEL_REVENUE = 32.5;
-  const MODEL_SHARES = 75.0;
-  const MODEL_TAX = 0.245;
+  const MODEL_SHARES = 74.8;
+  const MODEL_TAX = 0.25;
   const MODEL_REF_BLENDED = 33;
   const MODEL_REF_MARGIN = 21.5;
   const MODEL_SENSITIVITY = 0.50;
@@ -1403,21 +1403,21 @@ const PandoraSilverAnalysisPageEn: React.FC = () => {
 
   return (
     <PageTemplate>
-      <title>Zirium | Pandora A/S (PNDORA) - Silver price impact</title>
-      <meta name="description" content="Analysis of the relationship between silver prices, US consumer sentiment and the Pandora stock price. From 930 DKK in January 2024 to 556 DKK in May 2026, while silver more than tripled." />
-      <meta property="og:title" content="Pandora and the silver price: How commodities and consumer sentiment affect the stock" />
-      <meta property="og:description" content="Analysis of the relationship between silver prices, US consumer sentiment and the Pandora stock price." />
+      <title>Zirium | Pandora A/S (PNDORA) - The Silver Price Impact</title>
+      <meta name="description" content="An analysis of the relationship between the silver price, US consumer sentiment, and Pandora's share price performance. From around DKK 940 in January 2024 to DKK 556 in May 2026, while the silver price more than tripled." />
+      <meta property="og:title" content="Pandora and the silver price: How commodities and consumer sentiment are driving the stock" />
+      <meta property="og:description" content="An analysis of the relationship between the silver price, US consumer sentiment, and Pandora's share price performance. From around DKK 940 in January 2024 to DKK 556 in May 2026, while the silver price more than tripled." />
       <meta property="og:type" content="article" />
       <meta property="og:url" content="https://www.zirium.dk/analyse/pandora/soelv/2026-05-23" />
       <meta property="og:site_name" content="Zirium" />
       <meta name="twitter:card" content="summary" />
-      <meta name="twitter:title" content="Pandora and the silver price: How commodities and consumer sentiment affect the stock" />
-      <meta name="twitter:description" content="Analysis of the relationship between silver prices, US consumer sentiment and the Pandora stock price." />
+      <meta name="twitter:title" content="Pandora and the silver price: How commodities and consumer sentiment are driving the stock" />
+      <meta name="twitter:description" content="An analysis of the relationship between the silver price, US consumer sentiment, and Pandora's share price performance." />
       <script type="application/ld+json">{JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Article",
-        "headline": "Pandora and the silver price: How commodities and consumer sentiment affect the stock",
-        "description": "Analysis of the relationship between silver prices, US consumer sentiment and the Pandora stock price.",
+        "headline": "Pandora and the silver price: How commodities and consumer sentiment are driving the stock",
+        "description": "An analysis of the relationship between the silver price, US consumer sentiment, and Pandora's share price performance.",
         "author": { "@type": "Person", "name": "Araz Bayat Makoo" },
         "publisher": { "@type": "Organization", "name": "Zirium", "url": "https://www.zirium.dk" },
         "datePublished": "2026-05-23",
@@ -1450,92 +1450,91 @@ const PandoraSilverAnalysisPageEn: React.FC = () => {
         <header className="mb-10 mt-4">
           <p className="text-base text-gray-600 dark:text-gray-300 mb-4">Analysis by Araz Bayat Makoo (Zirium) - May 23, 2026</p>
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-white mb-3 leading-tight">
-            Pandora and the silver price: How commodities and consumer sentiment affect the stock
+            Pandora and the silver price: How commodities and consumer sentiment are driving the stock
           </h1>
           <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
             Pandora A/S (PNDORA)
           </p>
           <p className="text-gray-600 dark:text-gray-300 mt-3 leading-relaxed">
-            This analysis examines the relationship between the silver price, US
-            consumer sentiment (University of Michigan Consumer Sentiment Index) and
-            the Pandora stock price over the past two years. Silver is Pandora's
-            primary raw material, and the US is the company's largest single market.
-            Both factors are considered to have been significant drivers of the stock's performance during this period.
+            This analysis examines the relationship between the silver price, US consumer
+            sentiment (University of Michigan Consumer Sentiment Index), and Pandora's share
+            price performance from January 2024 to May 2026 (about 2.5 years). Silver is the
+            primary metal in most of Pandora's jewellery, and the US is the company's largest
+            single market. The analysis explores how these two factors have shaped the share
+            price during this period.
           </p>
         </header>
 
         {/* KPIs */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-12">
-          <KPI value={`${pandoraChange}%`} label="Pandora stock (Jan '24 - May '26)" highlight />
+          <KPI value={`${pandoraChange}%`} label="Pandora share (Jan '24 - May '26)" highlight />
           <KPI value={`+${silverChange}%`} label="Silver price (Jan '24 - May '26)" />
-          <KPI value={correlation.toFixed(2)} label="Correlation (silver vs. stock)" />
+          <KPI value={correlation.toFixed(2)} label="Correlation (silver vs. share)" />
           <KPI value={`${pandoraATH.toLocaleString("en-US")} DKK`} label="ATH intraday (Jan 31, 2025)" />
         </div>
 
-        {/* 1. Overview */}
+        {/* 1. Introduction */}
         <section className="mb-12">
-          <SectionHeader n={1} title="Overview" />
+          <SectionHeader n={1} title="The big picture" />
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            Pandora A/S is one of the world's largest jewelry brands by number of
-            pieces sold. The company uses silver as its primary raw material in the
-            majority of its products. Silver constitutes the bulk of Pandora's
-            metal-based material consumption, and although Pandora hedges its silver
-            exposure 9-12 months ahead, rising silver prices ultimately impact the
-            EBIT margin with a delay.
+            Pandora A/S is one of the world's largest jewellery brands by units sold. Silver
+            is the primary raw material in most of its products and accounts for the bulk of
+            the metals Pandora uses. Even though Pandora hedges on a rolling 12-month basis
+            (with a 5-10 month lag before purchases hit the income statement), a sustained
+            rise in the silver price eventually feeds through to the EBIT margin.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            From January 2024 to May 2026, the silver price has risen from
-            approximately $23/oz to approximately $76/oz, more than tripling in
-            value. During the same period, the Pandora stock has fallen from
-            approximately 930 DKK to approximately 556 DKK, a decline of roughly
-            40%. A strong negative relationship is observed between the two
-            (correlation: {correlation.toFixed(2)} based on daily closing prices),
-            although correlation does not prove causation.
+            From January 2024 to May 2026, the silver price has risen from around $23/oz
+            to around $76/oz, a gain of more than 200%. Over the same period, the Pandora
+            share has fallen from around DKK 940 to around DKK 556, a decline of about 41%.
+            There is a strong negative relationship between the two (correlation:
+            {correlation.toFixed(2)} based on daily close prices), though correlation does
+            not prove causation.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-            But the silver price is not the only factor. The US is Pandora's largest
-            single market with approximately 28% of revenue, and US consumer
-            sentiment has fallen from 79 in January 2024 to 44.8 in May 2026, a
-            very low level by historical standards. For a company selling jewelry
-            to consumers, both factors are highly relevant.
+            But silver is not the only factor. The US is Pandora's largest single market with
+            about 32% of revenue, and the broader North America region accounted for 36% in
+            2025. US consumer sentiment has fallen from 79 in January 2024 to 44.8 in May
+            2026, a historically low reading. For a consumer-facing jewellery brand, both
+            factors matter.
           </p>
         </section>
 
         {/* 2. Why silver surged */}
         <section className="mb-12">
-          <SectionHeader n={2} title="Why has silver surged so much?" />
+          <SectionHeader n={2} title="Why has the silver price risen so much?" />
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            The silver price rose from approximately $23/oz in January 2024 to over $120/oz intraday in January 2026,
-            before falling back to around $76/oz. The surge was driven by several simultaneous factors:
+            The silver price has risen from around $23/oz in January 2024 to over $120/oz intraday in January 2026,
+            before falling back and today trading around $76/oz. The rally has been driven by several simultaneous factors:
           </p>
           <ul className="space-y-3 text-gray-600 dark:text-gray-300 text-[15px] leading-relaxed mb-4">
             <li className="flex gap-2">
               <span className="text-pink-500 mt-0.5 font-bold">1.</span>
-              <span><strong>Structural deficit:</strong> The global silver market has been in deficit for five consecutive years (2021-2025). In 2021-2024 alone, the cumulative deficit reached 678 million ounces, equivalent to 10 months of global mine production.</span>
+              <span><strong>Structural deficit:</strong> The global silver market has run a deficit for five years in a row (2021-2025). For 2021-2024 alone, the cumulative deficit was 678 million ounces, equivalent to about 10 months of global mine production.</span>
             </li>
             <li className="flex gap-2">
               <span className="text-pink-500 mt-0.5 font-bold">2.</span>
-              <span><strong>Record industrial demand:</strong> In 2024, industrial silver demand reached a record 680.5 million ounces. Solar panels alone accounted for approximately 29% of industrial demand, up from 11% in 2014. Electric vehicles and AI data centers also contribute.</span>
+              <span><strong>Industrial demand at record levels:</strong> In 2024, industrial silver demand reached a record 680.5 million ounces. Solar panels alone accounted for about 29% of industrial demand (197.6 million ounces), up from around 13% in 2015. Electric vehicles and AI data centres are also contributing.</span>
             </li>
             <li className="flex gap-2">
               <span className="text-pink-500 mt-0.5 font-bold">3.</span>
-              <span><strong>Supply cannot keep up:</strong> Approximately 70% of all silver is produced as a byproduct from copper, lead and zinc mines. Producers therefore cannot quickly ramp up production, even when prices rise.</span>
+              <span><strong>Supply cannot keep up:</strong> About 72% of all silver is produced as a by-product from lead, zinc, copper, and gold mines (only around 28% comes from primary silver mines). Miners therefore cannot quickly ramp up output, even when the silver price rises.</span>
             </li>
             <li className="flex gap-2">
               <span className="text-pink-500 mt-0.5 font-bold">4.</span>
-              <span><strong>Investment demand:</strong> Silver ETFs saw net inflows of 61.6 million ounces in 2024, a sharp reversal from prior years' outflows. Rate cuts and geopolitical uncertainty have increased interest in precious metals as a safe haven.</span>
+              <span><strong>Investor demand:</strong> Silver ETFs saw net inflows of 61.6 million ounces in 2024, a reversal from prior years' outflows (2022: -117.4M oz; 2023: -37.6M oz). Interest rate cuts and geopolitical uncertainty have boosted appetite for precious metals as a safe haven.</span>
             </li>
           </ul>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-            The combination of record demand, constrained supply and strong investor interest created the rally that has significantly pushed up Pandora's material costs.
+            The combination of record demand, constrained supply, and strong investor interest has fuelled the rally that pushed Pandora's material costs sharply higher.
           </p>
         </section>
 
         {/* 3. Chart: Pandora vs Silver */}
         <section className="mb-12">
-          <SectionHeader n={3} title="Pandora stock vs. silver price" />
-          <p className="text-sm text-gray-500 dark:text-gray-300 mb-4">Daily closing prices. Pink = Pandora (DKK, left axis), grey = silver price (USD/oz, right axis).</p>
-          <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-3 sm:p-5" role="img" aria-label="Chart: Pandora stock price vs. silver price from January 2024 to May 2026">
+          <SectionHeader n={3} title="Pandora share vs. silver price" />
+          <p className="text-sm text-gray-500 dark:text-gray-300 mb-4">Daily close prices. Pink = Pandora (DKK, left axis), grey = silver price (USD/oz, right axis).</p>
+          <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-3 sm:p-5" role="img" aria-label="Chart: Pandora share price vs. silver price from January 2024 to May 2026">
             <ResponsiveContainer width="100%" height={chartHeight}>
               <ComposedChart data={PRICE_DATA} margin={{ top: 5, right: 5, left: 0, bottom: 5 }}>
                 <defs>
@@ -1559,7 +1558,7 @@ const PandoraSilverAnalysisPageEn: React.FC = () => {
             </ResponsiveContainer>
             <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-300 mt-2 px-2">
               <span className="flex items-center gap-1.5"><span className="w-3 h-[3px] rounded-full bg-[#ec4899] inline-block" />Pandora (DKK)</span>
-              <span className="flex items-center gap-1.5"><span className="w-3 h-[3px] rounded-full bg-[#9ca3af] inline-block" />Silver (USD/oz)</span>
+              <span className="flex items-center gap-1.5"><span className="w-3 h-[3px] rounded-full bg-[#9ca3af] inline-block" />Silver price (USD/oz)</span>
             </div>
           </div>
         </section>
@@ -1568,24 +1567,41 @@ const PandoraSilverAnalysisPageEn: React.FC = () => {
         <section className="mb-12">
           <SectionHeader n={4} title="Correlation: Silver up, Pandora down" />
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            The Pearson correlation coefficient between the two time series is <strong>{correlation.toFixed(2)}</strong> (calculated
-            on daily closing prices in levels across 579 data points, which may amplify the observed relationship). This is a strong
-            negative correlation, but it is important to emphasize that correlation does not
-            prove causation, and the result may vary with time resolution and methodology.
-            Several factors are at play: Tariffs, currency fluctuations (DKK/USD), weaker
-            US and European markets and general risk appetite all contribute to the price development.
+            Measured on a daily basis over the past 2.5 years, the silver price and the Pandora
+            share show a correlation of {correlation.toFixed(2)}. On a scale from -1 to +1,
+            where 0 means "no relationship" and ±1 means "perfect relationship", that is a
+            very strong link. The negative sign means the two move in opposite directions:
+            When the silver price rises, the Pandora share falls, and vice versa.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            However, there is a plausible economic mechanism behind the relationship. Silver constitutes a large
-            portion of Pandora's material costs. Although the company hedges a
-            significant share of its silver consumption 9-12 months ahead, a sustained
-            rise in the silver price means rising costs gradually affect the unhedged
-            portion, while future hedge levels are reset higher. In Q1 2026, commodities, FX and tariffs
-            combined for a total headwind of 440 basis points on the EBIT margin.
+            That is a strong relationship, but it would be premature to conclude that one
+            <em>causes</em> the other. Two prices can move in parallel for many reasons.
+            Several other factors are simultaneously influencing the Pandora share: US
+            tariffs on imports from Thailand, currency movements (particularly USD, GBP, and
+            TRY against the Danish krone), weaker demand in the US and Europe, and broader
+            market risk appetite.
+          </p>
+          <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
+            There is, however, a clear economic explanation. Silver is the main raw material
+            in the majority of Pandora's jewellery, so rising silver prices mean rising
+            costs. Pandora tries to dampen the impact by <em>hedging</em>, essentially
+            locking in the purchase price in advance through agreements with its suppliers
+            at a guaranteed price. Specifically, Pandora hedges continuously against its
+            production plan for the next 12 months, and there is typically a 5-10 month lag
+            from a hedge purchase to when the cost flows through the income statement
+            (the jewellery first has to be produced and sold).
+          </p>
+          <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
+            Hedging therefore defers the impact of a silver price rise but does not eliminate
+            it. When the next year's hedges are set, they lock in the higher market prices,
+            and the increase gradually filters through to the income statement. In the first
+            quarter of 2026, the combined effect of higher commodity prices, currency
+            movements, and tariffs cost Pandora the equivalent of 4.4 percentage points on
+            its operating margin (or, in industry parlance, "440 basis points").
           </p>
 
-          <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-3 sm:p-5" role="img" aria-label="Scatter plot: Silver price vs. Pandora stock price">
-            <p className="text-sm text-gray-500 dark:text-gray-300 mb-3">Each dot is one trading day. X-axis = silver price (USD/oz), Y-axis = Pandora (DKK).</p>
+          <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-3 sm:p-5" role="img" aria-label="Scatter plot: Silver price vs. Pandora share price">
+            <p className="text-sm text-gray-500 dark:text-gray-300 mb-3">Each dot is a trading day. X-axis = silver price (USD/oz), Y-axis = Pandora (DKK).</p>
             <ResponsiveContainer width="100%" height={chartHeight}>
               <ScatterChart margin={{ top: 10, right: 10, left: 0, bottom: 10 }}>
                 <CartesianGrid stroke={gridColor} strokeWidth={1} />
@@ -1603,37 +1619,48 @@ const PandoraSilverAnalysisPageEn: React.FC = () => {
         <section className="mb-12">
           <SectionHeader n={5} title="Pandora's silver hedging and margin pressure" />
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            Pandora hedges a significant portion of its expected silver and gold
-            consumption typically 9-12 months ahead. This creates a delay before a
-            change in the spot price flows through to the income statement. In practice:
+            Pandora's official policy is to hedge at least 70% of expected silver and gold
+            consumption based on a rolling 12-month production plan. From hedge to income
+            statement there is typically a 5-10 month lag, because the jewellery first has
+            to be produced and sold.
+          </p>
+          <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
+            When the table below shows that, for example, 95-100% of the 2026 income statement
+            is hedged, that may look inconsistent with the 70% policy. It is not: the 70%
+            target applies to the next 12 months of <em>future purchases</em>, whereas the
+            table reflects coverage of the <em>income statement</em>. Because of the 5-10
+            month lag between purchase and recognition, most of the current year's purchases
+            have already been made and hedged at any given point. As a result, the share of
+            the year's income statement that is hedged can exceed the rolling 70% target
+            applied to future purchases.
           </p>
 
           <div className="overflow-x-auto rounded-2xl border border-gray-100 dark:border-gray-800 mb-6">
             <table className="w-full text-left">
-              <caption className="sr-only">Pandora silver hedging over time</caption>
+              <caption className="sr-only">Pandora's silver hedging over time</caption>
               <thead>
                 <tr className="bg-pink-500 text-white">
-                  <th scope="col" className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">P&L year</th>
-                  <th scope="col" className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">Hedged share</th>
+                  <th scope="col" className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">Year</th>
+                  <th scope="col" className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">% of year's P&amp;L hedged</th>
                   <th scope="col" className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">Hedged silver price</th>
-                  <th scope="col" className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">EBIT margin headwind (Y/Y)</th>
+                  <th scope="col" className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">External headwind on EBIT (Y/Y)</th>
                 </tr>
               </thead>
               <tbody>
                 <tr className="bg-white dark:bg-[#19191f]">
-                  <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">2025</td>
-                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">91%</td>
-                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">~$29/oz</td>
-                  <td className="px-4 py-3 text-sm tabular-nums text-red-500">-210 bp (commodities + FX)</td>
+                  <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">2025 (realised)</td>
+                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">~100%</td>
+                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">~$28/oz</td>
+                  <td className="px-4 py-3 text-sm tabular-nums text-red-500">-300 bp (commodities + FX + tariffs)</td>
                 </tr>
                 <tr className="bg-gray-50/50 dark:bg-[#15151a]">
-                  <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">2026</td>
+                  <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">2026 (expected)</td>
                   <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">95-100%</td>
                   <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">~$32/oz</td>
-                  <td className="px-4 py-3 text-sm tabular-nums text-red-500">-150-200 bp (commodities)</td>
+                  <td className="px-4 py-3 text-sm tabular-nums text-red-500">-150-200 bp (commodities only)</td>
                 </tr>
                 <tr className="bg-white dark:bg-[#19191f]">
-                  <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">Q1 2026 (actual)</td>
+                  <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">Q1 2026 (realised)</td>
                   <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">-</td>
                   <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">-</td>
                   <td className="px-4 py-3 text-sm tabular-nums text-red-500">-440 bp (commodities + FX + tariffs)</td>
@@ -1643,16 +1670,19 @@ const PandoraSilverAnalysisPageEn: React.FC = () => {
           </div>
 
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            The EBIT margin has fallen from approximately 25.2% in 2024 to a guidance
-            of 21-22% for 2026. Product price increases have partially offset the
-            pressure from rising commodity prices, but the combined effect of the
-            silver price surge, tariffs and currency changes is significant.
+            The EBIT margin has fallen from around 25.2% in 2024 to a guidance of 21-22% for
+            2026. Price increases have partially offset the pressure from rising commodity
+            prices, but the combined effect of silver, tariffs, and currency movements is
+            substantial.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-            <strong>Strategic response:</strong> Pandora has begun introducing
-            platinum-plated jewelry to reduce its dependence on silver. This is a
-            long-term strategy that has not yet materially changed the overall
-            material mix.
+            <strong>Strategic response:</strong> Pandora has announced a strategy to transition
+            most of its silver assortment to platinum-plated jewellery (branded EVERSHINE)
+            to reduce silver dependency. The first "Design Variations" are planned for
+            launch later in 2026, with the goal of transitioning at least 50% of the
+            relevant silver assortment by end-2027 and around 80% by end-2028. As of Q1
+            2026, the transition has not yet materially changed Pandora's overall material
+            mix.
           </p>
         </section>
 
@@ -1660,10 +1690,10 @@ const PandoraSilverAnalysisPageEn: React.FC = () => {
         <section className="mb-12">
           <SectionHeader n={6} title="Interactive model: Silver price and margin" />
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            This model estimates how different silver prices affect Pandora's EBIT
-            margin and earnings per share (EPS). Adjust the silver spot price to see
-            the effect. The model is a simplification and does not account for other
-            factors such as exchange rates, tariffs and volume growth.
+            This model estimates how different silver prices affect Pandora's EBIT margin
+            and earnings per share (EPS). Adjust the silver spot price to see the effect.
+            The model is a simplification and does not account for other factors such as
+            currency movements, tariffs, and volume growth.
           </p>
           <div className="bg-gray-50 dark:bg-[#15151a] rounded-2xl border border-gray-100 dark:border-gray-800 p-4 mb-6">
             <p className="text-sm font-semibold text-gray-900 dark:text-white mb-2">How the model is calculated</p>
@@ -1671,16 +1701,16 @@ const PandoraSilverAnalysisPageEn: React.FC = () => {
               <li><strong>Blended silver price</strong> = (hedged share × hedged price) + (unhedged share × spot price)</li>
               <li><strong>Margin change</strong> = (blended price - reference price $33/oz) × -0.50 percentage points per $1/oz</li>
               <li><strong>Estimated EBIT margin</strong> = 21.5% (2026 guidance) + margin change</li>
-              <li><strong>EBIT</strong> = revenue DKK 32.5 billion × EBIT margin</li>
-              <li><strong>Net income</strong> = EBIT × (1 - 24.5% tax rate)</li>
-              <li><strong>EPS</strong> = net income / 75 million shares</li>
-              <li><strong>Implied P/E</strong> = stock price 556 DKK / EPS</li>
+              <li><strong>EBIT</strong> = revenue DKK 32.5bn × EBIT margin</li>
+              <li><strong>Net income</strong> = EBIT × (1 - 25% tax rate)</li>
+              <li><strong>EPS</strong> = net income / 74.8 million shares</li>
+              <li><strong>Implied P/E</strong> = share price DKK 556 / EPS</li>
             </ol>
           </div>
 
           <div className="flex flex-wrap gap-2 mb-6">
             {([
-              { label: "Silver drops ($40)", spot: 40 },
+              { label: "Silver falls ($40)", spot: 40 },
               { label: "Status quo ($76)", spot: 76 },
               { label: "Silver rises ($120)", spot: 120 },
             ] as const).map((preset) => (
@@ -1699,9 +1729,9 @@ const PandoraSilverAnalysisPageEn: React.FC = () => {
             <AssumptionSlider label="Silver spot price" value={silverSpot} min={20} max={150} step={1}
               onChange={setSilverSpot} hint="Current spot price: ~$76/oz (May 2026)" />
             <AssumptionSlider label="Hedged share" value={hedgedShare} min={50} max={100} step={5} unit="%"
-              onChange={setHedgedShare} hint="Pandora hedges a significant portion of consumption 9-12 months ahead" />
+              onChange={setHedgedShare} hint="Share of the year's P&amp;L that is hedged (typically 95-100% per Pandora's reports)" />
             <AssumptionSlider label="Hedged silver price" value={hedgedPrice} min={20} max={80} step={1}
-              onChange={setHedgedPrice} hint="2026 P&L hedged at ~$32/oz" />
+              onChange={setHedgedPrice} hint="2026 P&amp;L is hedged at ~$32/oz" />
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
@@ -1711,7 +1741,7 @@ const PandoraSilverAnalysisPageEn: React.FC = () => {
             <KPI value={`${Math.round(estEps)} DKK`} label="Estimated EPS"
               highlight={estEps < 70} />
             <KPI value={impliedPE > 0 && impliedPE < 100 ? `${impliedPE.toFixed(1)}x` : "-"}
-              label={`P/E at ${CURRENT_PRICE} DKK`} />
+              label={`P/E at DKK ${CURRENT_PRICE}`} />
           </div>
 
           <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-2">Sensitivity analysis</h3>
@@ -1757,10 +1787,10 @@ const PandoraSilverAnalysisPageEn: React.FC = () => {
 
           <div className="bg-gray-50 dark:bg-[#15151a] rounded-2xl border border-gray-100 dark:border-gray-800 p-4 mt-4">
             <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
-              <strong>Model assumptions:</strong> Revenue: DKK 32.5 billion (2025 level).
-              Tax rate: 24.5%. Shares: 75 million. Reference: 21.5% EBIT margin at $33/oz blended (2026 guidance).
-              Sensitivity: ~50 bp per $1/oz change in blended silver price (based on Pandora's disclosed commodity headwinds).
-              The model does not account for exchange rates, tariffs, volume growth or other factors.
+              <strong>Model assumptions:</strong> Revenue: DKK 32.5bn (2025 level).
+              Tax rate: ~25% (Pandora's 2026 expectation, up from 24.2% in 2025). Shares: 74.8 million outstanding (after share capital reduction on April 10, 2026). Reference: 21.5% EBIT margin at $33/oz blended (2026 guidance).
+              Sensitivity: ~50 bp per $1/oz change in blended silver price (based on Pandora's disclosed commodity headwind).
+              The model does not include currency movements, tariffs, volume growth, or other factors.
             </p>
           </div>
         </section>
@@ -1769,21 +1799,33 @@ const PandoraSilverAnalysisPageEn: React.FC = () => {
         <section className="mb-12">
           <SectionHeader n={7} title="US consumer sentiment and Pandora" />
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            The US is Pandora's largest single market with approximately 28% of total
-            revenue in 2025. In Q1 2025, the US market grew +11% like-for-like,
-            but by Q1 2026 North America had declined to -2% like-for-like, while
-            global LFL growth landed at 0%. The US slowdown appears to be a key driver behind the
-            flat overall growth. This coincides with a significant decline in US
+            The US is Pandora's largest single market and accounted for about 32% of revenue
+            in the first nine months of 2025 (Pandora has stopped reporting US-specific
+            revenue from Q4 2025 onwards). North America accounted for 36% of full-year
+            2025, while EMEA is Pandora's largest region at around 50%. In Q1 2025, the US
+            grew +11% like-for-like, but by Q1 2026 North America as a whole had slowed to
+            -2% LFL, with global LFL at 0%. The North America slowdown looks like the main
+            reason for the flat overall growth, and it coincides with a sharp drop in US
             consumer sentiment.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            The University of Michigan Consumer Sentiment Index fell from 79.0 in
-            January 2024 to 44.8 in May 2026, a very low level by historical standards. The
-            decline accelerated from March 2025, in an environment marked by, among other things, inflation concerns,
-            higher energy prices and geopolitical uncertainty.
+            US consumer sentiment (University of Michigan Consumer Sentiment Index) fell from
+            79.0 in January 2024 to 44.8 in May 2026. It is the lowest reading the index
+            has recorded since records began in 1952, below both the 2008-2009 financial
+            crisis trough and the previous low of 50.0 in June 2022. The decline accelerated
+            from February 2025 and continued through 2025-2026, driven by concerns about
+            cost of living, persistently high prices, and tariffs.
+          </p>
+          <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
+            Jewellery is a discretionary purchase, the kind consumers typically defer or
+            cut back on when the economy tightens. A sharp drop in consumer sentiment
+            therefore tends to weigh on demand for non-essential spending. This may help
+            explain why Pandora's North America LFL has gone from +6% in FY 2025 (slowing
+            to +2% by Q4 2025) to -2% in Q1 2026, though consumer sentiment is unlikely
+            to be the only driver.
           </p>
 
-          <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-3 sm:p-5" role="img" aria-label="Chart: Pandora stock price vs. US Consumer Sentiment Index">
+          <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-3 sm:p-5" role="img" aria-label="Chart: Pandora share price vs. US consumer sentiment">
             <ResponsiveContainer width="100%" height={chartHeight}>
               <ComposedChart data={SENTIMENT_DATA} margin={{ top: 5, right: 5, left: 0, bottom: 5 }}>
                 <defs>
@@ -1804,44 +1846,43 @@ const PandoraSilverAnalysisPageEn: React.FC = () => {
             </ResponsiveContainer>
             <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-300 mt-2 px-2">
               <span className="flex items-center gap-1.5"><span className="w-3 h-[3px] rounded-full bg-[#ec4899] inline-block" />Pandora (DKK)</span>
-              <span className="flex items-center gap-1.5"><span className="w-3 h-[3px] rounded-full bg-[#f59e0b] inline-block" />Consumer Sentiment</span>
+              <span className="flex items-center gap-1.5"><span className="w-3 h-[3px] rounded-full bg-[#f59e0b] inline-block" />US consumer sentiment</span>
             </div>
           </div>
         </section>
 
         {/* 7. Double pressure */}
         <section className="mb-12">
-          <SectionHeader n={8} title="Double squeeze: Costs and demand" />
+          <SectionHeader n={8} title="Double pressure: Costs and demand" />
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            What makes Pandora's situation particularly challenging is that the company
-            is being squeezed from both sides simultaneously:
+            What makes Pandora's situation unusual is that the company is being hit from two
+            sides at once:
           </p>
           <div className="grid sm:grid-cols-2 gap-4 mb-6">
             <div className="bg-red-50 dark:bg-red-500/10 rounded-2xl border border-red-100 dark:border-red-500/20 p-5">
               <h4 className="font-semibold text-red-700 dark:text-red-400 mb-3 text-sm uppercase tracking-wide">Cost side (silver)</h4>
               <ul className="space-y-2 text-[15px] text-gray-700 dark:text-gray-300">
-                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Silver price has more than tripled over 29 months</li>
-                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Hedging delays but does not eliminate the effect</li>
-                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>EBIT margin guidance cut from "at least 24%" to 21-22%</li>
-                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Higher US tariffs on Thai imports add further pressure</li>
+                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>The silver price has more than tripled in 29 months</li>
+                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Hedging defers but does not eliminate the impact</li>
+                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>EBIT margin guidance lowered from around 24% (2025) to 21-22% (2026)</li>
+                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Higher US tariffs on imports from Thailand are adding to the pressure</li>
               </ul>
             </div>
             <div className="bg-amber-50 dark:bg-amber-500/10 rounded-2xl border border-amber-100 dark:border-amber-500/20 p-5">
               <h4 className="font-semibold text-amber-700 dark:text-amber-400 mb-3 text-sm uppercase tracking-wide">Demand side (sentiment)</h4>
               <ul className="space-y-2 text-[15px] text-gray-700 dark:text-gray-300">
-                <li className="flex gap-2"><span className="text-amber-500 mt-0.5">&#x25BC;</span>Consumer Sentiment at a very low level historically (44.8)</li>
-                <li className="flex gap-2"><span className="text-amber-500 mt-0.5">&#x25BC;</span>US like-for-like growth declined from +11% to -2%</li>
+                <li className="flex gap-2"><span className="text-amber-500 mt-0.5">&#x25BC;</span>US consumer sentiment at 44.8 (lowest reading since 1952)</li>
+                <li className="flex gap-2"><span className="text-amber-500 mt-0.5">&#x25BC;</span>North America LFL has slowed from +6% in FY 2025 to -2% in Q1 2026</li>
                 <li className="flex gap-2"><span className="text-amber-500 mt-0.5">&#x25BC;</span>Europe weak: UK -8%, France -7% LFL in Q3 2025</li>
-                <li className="flex gap-2"><span className="text-amber-500 mt-0.5">&#x25BC;</span>Organic growth slowed to -1% to 2% (guidance) from prior levels of 8-13%</li>
+                <li className="flex gap-2"><span className="text-amber-500 mt-0.5">&#x25BC;</span>Organic growth guided at -1% to +2% in 2026 (2025 ended at 6%, 2024 was 13%)</li>
               </ul>
             </div>
           </div>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-            Jewelry is a discretionary consumer category. When consumer confidence
-            falls, jewelry is among the first categories to be deprioritized. Pandora
-            is therefore caught in a situation where costs rise (silver) while demand
-            weakens (sentiment). The combination of rising input costs and weaker demand
-            may be a key explanation for the negative share price development.
+            Pandora is caught between rising costs (silver, currency, tariffs) and weakening
+            demand (softer US and European consumer spending). The combination of higher
+            input costs and weaker demand may be a key driver behind the share price
+            decline.
           </p>
         </section>
 
@@ -1849,35 +1890,38 @@ const PandoraSilverAnalysisPageEn: React.FC = () => {
         <section className="mb-12">
           <SectionHeader n={9} title="Timeline: Key events" />
           <div className="ml-2">
-            <TimelineEvent date="January 2024" title="Pandora starts the year at 930 DKK" color="#ec4899">
-              <p>Silver price is $23/oz. Pandora has just delivered strong Q4 2023 results with 12% organic growth. Consumer Sentiment at 79.</p>
+            <TimelineEvent date="January 2024" title="Pandora starts the year at DKK 936" color="#ec4899">
+              <p>Silver trades at $23/oz. Pandora is on track to close a strong 2023 (Q4 2023 results, released on February 7, will show 12% organic growth). US consumer sentiment stands at 79.</p>
             </TimelineEvent>
-            <TimelineEvent date="August 2024" title="Pandora reaches 1,106 DKK" color="#2a9d8f">
-              <p>Strong US growth (+5% LFL) and solid Q2 report drive the stock higher. Silver price still relatively stable around $29/oz.</p>
+            <TimelineEvent date="August 2024" title="Pandora reaches DKK 1,181" color="#2a9d8f">
+              <p>Strong growth in the US (+5% LFL) and a solid Q2 report drive the share up. The silver price remains relatively stable around $29/oz.</p>
             </TimelineEvent>
-            <TimelineEvent date="December 2024" title="Pandora rises to 1,233 DKK" color="#2a9d8f">
-              <p>Q4 organic growth of 11%. The stock approaches its all-time high. Market is optimistic despite emerging tariff concerns.</p>
+            <TimelineEvent date="December 2024" title="Pandora rises to DKK 1,317" color="#2a9d8f">
+              <p>The Q3 2024 report shows 11% organic growth, marking Pandora's fifth straight quarter of double-digit growth. The share is approaching its all-time high. Silver remains stable around $29-31/oz.</p>
             </TimelineEvent>
-            <TimelineEvent date="January 2025" title="All-time high: 1,415 DKK intraday" color="#ec4899">
-              <p>Pandora reaches its highest-ever price on January 31, 2025. Silver price at $32/oz, and Consumer Sentiment has started declining (71.1).</p>
+            <TimelineEvent date="January 2025" title="All-time high: DKK 1,415 intraday" color="#ec4899">
+              <p>Pandora hits its highest share price ever on January 31, 2025. The silver price is $32/oz, and US consumer sentiment has started to decline (71.7).</p>
             </TimelineEvent>
-            <TimelineEvent date="March-April 2025" title="Decline begins: Tariffs, silver and sentiment" color="#e63946">
-              <p>The stock falls from 1,187 DKK to 927 DKK. Consumer Sentiment drops significantly to 52-57. US tariffs on imports from Thailand and China announced. Silver price rises to $34/oz.</p>
+            <TimelineEvent date="February-April 2025" title="Decline begins: Tariffs, silver, and sentiment" color="#e63946">
+              <p>The share falls from DKK 1,268 (end of February) to DKK 972 (end of April). US consumer sentiment falls sharply to 52-57. US tariffs on imports from Thailand and China are announced. The silver price rises to $34/oz.</p>
             </TimelineEvent>
             <TimelineEvent date="August-September 2025" title="Silver explodes above $40/oz" color="#e63946">
-              <p>Silver price breaks higher from $36 to $46/oz. Pandora falls to 790 DKK. Q3 report shows 380 bp total margin headwind from commodities, FX and tariffs. On September 30, CEO Alexander Lacik announces his retirement, and the board appoints CMO Berta de Pablos-Barbier as successor from the AGM in March 2026.</p>
+              <p>Silver surges from $36 to $46/oz. Pandora falls to DKK 828. On September 30, CEO Alexander Lacik announces his retirement, and the board appoints CMO Berta de Pablos-Barbier as his successor, effective from the AGM in March 2026.</p>
             </TimelineEvent>
-            <TimelineEvent date="November-December 2025" title="Silver above $56-70/oz, Pandora below 700 DKK" color="#e63946">
-              <p>Silver price accelerates toward $70/oz. Pandora stock falls to 675 DKK. Consumer Sentiment declines to 51-53. 2026 EBIT margin target lowered to 21-22%.</p>
+            <TimelineEvent date="November-December 2025" title="Silver rises to $77/oz, Pandora below DKK 700" color="#e63946">
+              <p>Silver accelerates from around $48 in early November to a peak of around $77/oz on December 30. The Pandora share falls to around DKK 700. US consumer sentiment falls to 51-53. In its Q3 2025 report (November 5), Pandora reports 380 bp of margin pressure from commodities, currency, and tariffs in Q3, and lowers its 2026 EBIT margin target from "at least 24%" to "around 23%" on the back of new external headwinds.</p>
             </TimelineEvent>
-            <TimelineEvent date="January 2026" title="Silver reaches all-time high: ~$122/oz intraday" color="#e63946">
-              <p>Pandora stock falls to 485 DKK, its lowest level since 2022. Silver price hits its historical peak of approximately $122/oz intraday on January 29 (daily close around $114/oz), before falling sharply back to $76-78/oz.</p>
+            <TimelineEvent date="January 2026" title="Silver hits all-time high: ~$122/oz intraday" color="#e63946">
+              <p>The Pandora share falls to DKK 485 (intraday low DKK 469 on January 29), its lowest level since 2022. Silver hits an all-time high of around $122/oz intraday on January 29 (daily close around $114/oz), before crashing more than 30% the next day (January 30) to close around $78/oz, and then stabilising around $76/oz through February.</p>
             </TimelineEvent>
             <TimelineEvent date="January 1, 2026" title="Berta de Pablos-Barbier takes over as CEO" color="#4361ee">
-              <p>The former CMO officially takes over as CEO on January 1, 2026, two months ahead of schedule. Alexander Lacik continues as Special Advisor until the AGM on March 11. She brings over 30 years of experience from LVMH, Mars Wrigley and Lacoste.</p>
+              <p>The former CMO officially takes over as CEO on January 1, 2026, about two and a half months earlier than planned. Alexander Lacik continues as Special Advisor until the AGM on March 11. She brings around 30 years of senior experience across LVMH (Moët &amp; Chandon), Mars Wrigley, Lacoste, and Kering-owned Boucheron.</p>
+            </TimelineEvent>
+            <TimelineEvent date="February-March 2026" title="Annual Report 2025, new guidance, and local low" color="#e63946">
+              <p>On February 4, Pandora publishes its Q4 2025 / FY 2025 Annual Report. FY 2025 organic growth ended at 6% (below guidance of 7-8%) and the EBIT margin at 23.9% (below guidance of "around 24%"). 2026 guidance is set at -1% to +2% organic growth and 21-22% EBIT margin, further lowered from the "around 23%" Pandora had signalled in Q3 2025. Pandora also unveils its EVERSHINE platinum-plating strategy, aiming to transition at least 50% of the silver assortment by end-2027 and around 80% by end-2028, in order to reduce silver dependency. The share hits a local low of DKK 435 on March 17, shortly after the dividend ex-date on March 12, when the DKK 22/share dividend was paid.</p>
             </TimelineEvent>
             <TimelineEvent date="May 2026" title="Bottom or bounce?" color="#f59e0b">
-              <p>Pandora delivers Q1 2026 with 2% organic growth (0% LFL globally) and 20.9% EBIT margin. Stock jumps 11% on the day. Consumer Sentiment falls to 44.8, a very low level historically. Silver price has stabilized around $76/oz. Stock trades at 556 DKK with P/E of 8.3.</p>
+              <p>Pandora delivers Q1 2026 with 2% organic growth (0% LFL globally) and 20.9% EBIT margin. The share rises 14% on the day (from DKK 498 to DKK 569). US consumer sentiment falls to 44.8, the lowest level since 1952. The silver price has stabilised around $76/oz. The share trades at DKK 556 with a P/E of 8.3.</p>
             </TimelineEvent>
           </div>
         </section>
@@ -1890,22 +1934,22 @@ const PandoraSilverAnalysisPageEn: React.FC = () => {
               <caption className="sr-only">Key figures for Pandora A/S</caption>
               <thead>
                 <tr className="bg-pink-500 text-white">
-                  <th scope="col" className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">Key figure</th>
+                  <th scope="col" className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">Metric</th>
                   <th scope="col" className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">Value</th>
                 </tr>
               </thead>
               <tbody>
                 <tr className="bg-white dark:bg-[#19191f]">
                   <td className="px-4 py-3 text-sm text-gray-900 dark:text-white">Revenue (2025)</td>
-                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">DKK 32.5 billion</td>
+                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">DKK 32.5bn</td>
                 </tr>
                 <tr className="bg-gray-50/50 dark:bg-[#15151a]">
                   <td className="px-4 py-3 text-sm text-gray-900 dark:text-white">EBIT margin (Q1 2026)</td>
                   <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">20.9%</td>
                 </tr>
                 <tr className="bg-white dark:bg-[#19191f]">
-                  <td className="px-4 py-3 text-sm text-gray-900 dark:text-white">Stock price (May 22, 2026)</td>
-                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">556 DKK</td>
+                  <td className="px-4 py-3 text-sm text-gray-900 dark:text-white">Share price (May 22, 2026)</td>
+                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">DKK 556</td>
                 </tr>
                 <tr className="bg-gray-50/50 dark:bg-[#15151a]">
                   <td className="px-4 py-3 text-sm text-gray-900 dark:text-white">P/E (trailing)</td>
@@ -1913,15 +1957,23 @@ const PandoraSilverAnalysisPageEn: React.FC = () => {
                 </tr>
                 <tr className="bg-white dark:bg-[#19191f]">
                   <td className="px-4 py-3 text-sm text-gray-900 dark:text-white">Market cap</td>
-                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">DKK 39.3 billion</td>
+                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">~DKK 41.6bn</td>
                 </tr>
                 <tr className="bg-gray-50/50 dark:bg-[#15151a]">
                   <td className="px-4 py-3 text-sm text-gray-900 dark:text-white">Dividend</td>
-                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">22 DKK/share (3.96%)</td>
+                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">DKK 22/share (3.96%)</td>
                 </tr>
                 <tr className="bg-white dark:bg-[#19191f]">
-                  <td className="px-4 py-3 text-sm text-gray-900 dark:text-white">North America revenue (share)</td>
-                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">~34%</td>
+                  <td className="px-4 py-3 text-sm text-gray-900 dark:text-white">US revenue (9M 2025)</td>
+                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">DKK 6.6bn (~32%)</td>
+                </tr>
+                <tr className="bg-gray-50/50 dark:bg-[#15151a]">
+                  <td className="px-4 py-3 text-sm text-gray-900 dark:text-white">North America revenue (FY 2025)</td>
+                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">DKK 11.8bn (36%)</td>
+                </tr>
+                <tr className="bg-white dark:bg-[#19191f]">
+                  <td className="px-4 py-3 text-sm text-gray-900 dark:text-white">EMEA revenue (FY 2025)</td>
+                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">DKK 16.1bn (50%)</td>
                 </tr>
                 <tr className="bg-gray-50/50 dark:bg-[#15151a]">
                   <td className="px-4 py-3 text-sm text-gray-900 dark:text-white">Primary metal in products</td>
@@ -1934,28 +1986,28 @@ const PandoraSilverAnalysisPageEn: React.FC = () => {
 
         {/* 10. Bull/Bear */}
         <section className="mb-12">
-          <SectionHeader n={11} title="Arguments for and against" />
+          <SectionHeader n={11} title="Bull and bear case" />
           <div className="grid sm:grid-cols-2 gap-4 mb-4">
             <div className="bg-red-50 dark:bg-red-500/10 rounded-2xl border border-red-100 dark:border-red-500/20 p-5">
-              <h4 className="font-semibold text-red-700 dark:text-red-400 mb-3 text-sm uppercase tracking-wide">Risk factors</h4>
+              <h4 className="font-semibold text-red-700 dark:text-red-400 mb-3 text-sm uppercase tracking-wide">Bear case</h4>
               <ul className="space-y-2 text-[15px] text-gray-700 dark:text-gray-300">
-                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Silver price may remain elevated or rise further</li>
-                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>US consumer sentiment at a very low level historically</li>
-                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Higher tariffs on imports from Thailand, China and others</li>
-                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>CEO transition on January 1, 2026 (Berta de Pablos-Barbier) creates uncertainty</li>
-                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Europe weak with negative LFL in several key markets</li>
+                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Silver up more than 200% since January 2024 (from $23 to $76/oz) and still volatile</li>
+                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>US consumer sentiment at 44.8 (lowest reading since 1952)</li>
+                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>19% US tariff on Thailand-made imports (Pandora ships its US products from Thailand)</li>
+                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>CEO transition on January 1, 2026: Berta de Pablos-Barbier replaces Alexander Lacik (after nearly 7 years in the role)</li>
+                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Europe weak: UK -8% and France -7% LFL in Q3 2025, EMEA -2% in Q1 2026</li>
               </ul>
             </div>
             <div className="bg-blue-50 dark:bg-blue-500/10 rounded-2xl border border-blue-100 dark:border-blue-500/20 p-5">
-              <h4 className="font-semibold text-blue-700 dark:text-blue-400 mb-3 text-sm uppercase tracking-wide">Positive factors</h4>
+              <h4 className="font-semibold text-blue-700 dark:text-blue-400 mb-3 text-sm uppercase tracking-wide">Bull case</h4>
               <ul className="space-y-2 text-[15px] text-gray-700 dark:text-gray-300">
-                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>P/E of 8.3 is historically low for Pandora</li>
-                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>3.96% dividend yield provides return while waiting</li>
-                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>DKK 1.5 billion in share buybacks in Q3 2025 alone</li>
-                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Asia-Pacific growing +12% LFL in Q1 2026</li>
-                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Gross margin at 79.5% remains very high</li>
-                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Platinum-plating strategy could reduce silver dependency</li>
-                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Smaller competitors lack capital for large hedging programs and are hit harder by silver prices, potentially allowing Pandora to gain market share over time</li>
+                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>P/E (trailing 12 months) at 8.3 with share price DKK 556 (TTM EPS around DKK 67 as of Q1 2026)</li>
+                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Dividend of DKK 22/share (3.96% yield at share price DKK 556)</li>
+                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>DKK 4.4bn in share buybacks in 2025; no new 2026 programme announced yet, but Pandora has signalled it will resume buybacks once the platinum-plating transition is further along</li>
+                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Asia-Pacific grew +12% LFL in Q1 2026</li>
+                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Q1 2026 gross margin of 79.5%, only 90 bp below Q1 2025 despite 370 bp of external headwinds</li>
+                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>EVERSHINE platinum-plating strategy could reduce silver dependency over time</li>
+                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>ROIC of 41% in 2025 (Pandora's own characterisation: "structurally strong")</li>
               </ul>
             </div>
           </div>
@@ -1965,39 +2017,41 @@ const PandoraSilverAnalysisPageEn: React.FC = () => {
         <section className="mb-12">
           <SectionHeader n={12} title="Conclusion" />
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            The Pandora stock has fallen 40% from January 2024 to May 2026, while the
-            silver price has more than tripled over the same period. The correlation
-            of {correlation.toFixed(2)} shows a strong negative relationship, but it
-            doesn't tell the whole story.
+            The Pandora share has fallen about 41% from January 2024 to May 2026, while silver
+            has more than tripled in the same period. The correlation of
+            {correlation.toFixed(2)} signals a strong inverse relationship, but it does not
+            tell the whole story.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            The silver price is the most direct factor. It affects Pandora's material
-            costs and thereby the EBIT margin. Although hedging delays the effect,
-            the sustained rally in silver from $23 to $76/oz has forced Pandora to
-            lower its margin targets from "at least 24%" to 21-22%.
+            The silver price drives Pandora's material costs and therefore the EBIT margin.
+            Although hedging defers the impact, the rally from $23 to $76/oz has been a
+            significant part of the external headwind (totalling 300 bp for full-year 2025
+            and 440 bp in Q1 2026, per Pandora's own disclosures) that has pushed Pandora
+            to cut its EBIT margin guidance from "around 24%" (2025) to 21-22% (2026).
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            US consumer sentiment is the secondary but important factor. With 28% of
-            revenue in the US and a Consumer Sentiment Index at a very low 44.8,
-            the demand side is under pressure. Jewelry is a discretionary category,
-            and Pandora has already seen US growth decline from +11% to -2% LFL.
+            On the demand side, US consumer sentiment has fallen to 44.8 in May 2026, the
+            lowest reading since the survey began in 1952. The US is Pandora's largest
+            single market (about 32% of revenue in 9M 2025), and jewellery is a discretionary
+            purchase. Pandora has already seen North America LFL fall from +6% in FY 2025
+            (slowing to +2% by Q4 2025) to -2% in Q1 2026.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            The central question for investors is whether the current price (556 DKK,
-            P/E 8.3) already reflects these challenges, or whether there is further
-            downside. The answer depends primarily on two things: Where the silver
-            price stabilizes, and when US consumer sentiment begins to turn.
+            The central question for investors is whether the current price (DKK 556, P/E 8.3)
+            already reflects these challenges, or whether there is more downside. Two
+            variables are key to watch: where the silver price stabilises, and when US
+            consumer sentiment begins to turn.
           </p>
 
           <div className="bg-gray-50 dark:bg-[#15151a] rounded-2xl border border-gray-100 dark:border-gray-800 p-5 mt-6">
             <h4 className="font-semibold text-gray-900 dark:text-white mb-3">What to watch</h4>
             <ul className="space-y-1.5 text-[15px] text-gray-600 dark:text-gray-300">
-              <li>&#x2022; Silver price: A sustained drop below $60/oz would significantly ease margin pressure</li>
-              <li>&#x2022; Consumer Sentiment: A turning point in consumer confidence would signal improved demand</li>
-              <li>&#x2022; US tariffs: Potential easing of tariff regime for Thai imports</li>
-              <li>&#x2022; Pandora's hedging strategy: 2027 hedging levels will indicate expected silver exposure</li>
-              <li>&#x2022; New CEO Berta de Pablos-Barbier: Strategic direction from January 2026</li>
-              <li>&#x2022; Platinum-plating strategy: Could change material exposure over time</li>
+              <li>&#x2022; <strong>Silver spot price:</strong> Pandora's 2026 silver exposure is hedged at ~$32/oz, but the spot level through 2026 will determine where the 2027 hedges are struck (disclosed in upcoming quarterly reports). Pandora states in Q1 2026 that 1,100 bp of external headwind is expected in 2027 if silver spot holds at $82/oz</li>
+              <li>&#x2022; <strong>US consumer sentiment:</strong> Pandora itself cites "weak consumer sentiment" as the driver behind North America's weakness (Q4 2025 report); a turning point in the UMich index would remove this specific headwind</li>
+              <li>&#x2022; <strong>US tariffs:</strong> The 19% Thailand tariff contributed 210 bp of Q1 2026's total 440 bp external headwind (Pandora Q1 2026); any easing would remove a meaningful chunk</li>
+              <li>&#x2022; <strong>2027 hedge level:</strong> Pandora publishes forward hedge prices in each report; the Q1 2026 table shows, for example, Q1 2027 estimated cost-of-sales price of ~$46/oz (which includes new hedges added in April 2026, when silver spot was historically elevated)</li>
+              <li>&#x2022; <strong>New CEO Berta de Pablos-Barbier (since January 1, 2026):</strong> Implementation of EVERSHINE and the next strategic cycle to be announced on November 4, 2026 (replacing the current 2024-2026 strategy)</li>
+              <li>&#x2022; <strong>EVERSHINE platinum-plating:</strong> Pandora targets transitioning at least 50% of its silver assortment by end-2027 and around 80% by end-2028 (Q1 2026 report)</li>
             </ul>
           </div>
         </section>
@@ -2007,10 +2061,10 @@ const PandoraSilverAnalysisPageEn: React.FC = () => {
         {/* Disclaimer */}
         <footer className="border-t border-gray-100 dark:border-gray-800 pt-6">
           <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed text-center">
-            <strong>Disclaimer:</strong> This analysis is for informational purposes only and does not
-            constitute investment advice. Data sourced from Yahoo Finance, University of Michigan Surveys of Consumers, Pandora Annual Report 2025 and Q1 2026 Report. Past performance is not a guarantee of future
-            returns. Always do your own research and seek professional advice before making investment
-            decisions.
+            <strong>Disclaimer:</strong> This analysis is for informational purposes only and does not constitute
+            investment advice. Data is sourced from Yahoo Finance, the University of
+            Michigan Surveys of Consumers, Pandora's Q4 2025 Interim Report (February 4, 2026) for FY 2025 figures and the regional breakdown, Pandora's Q3 2025 Interim Report (November 5, 2025) for US-specific revenue (9M 2025), Pandora's Q1 2026 Interim Report, Pandora's CEO succession press release (September 30, 2025), and the Silver Institute (World Silver Survey 2025). Past performance is no guarantee of future returns.
+            Always do your own research and seek professional advice before investing.
           </p>
           <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-3">
             Generated by Zirium  |  May 23, 2026
@@ -2034,4 +2088,4 @@ function TimelineEvent({ date, title, children, color }: { date: string; title: 
   );
 }
 
-export default PandoraSilverAnalysisPageEn;
+export default PandoraSilverAnalysisPage;
