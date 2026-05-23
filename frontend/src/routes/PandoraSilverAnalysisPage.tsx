@@ -1479,9 +1479,10 @@ const PandoraSilverAnalysisPage: React.FC = () => {
             Pandora A/S er et af verdens største smykkebrands målt på antal solgte
             smykker. Selskabet bruger sølv som primær råvare i størstedelen af sine
             produkter. Sølv udgør hovedparten af Pandoras metalbaserede
-            materialeforbrug, og selvom Pandora hedger sin sølveksponering 9-12
-            måneder frem, rammer stigende sølvpriser i sidste ende EBIT-marginen med
-            en forsinkelse.
+            materialeforbrug, og selvom Pandora løbende
+            hedger op til ca. 12 måneder frem (med 5-10 måneders forsinkelse
+            før det rammer regnskabet), siver stigende sølvpriser i sidste ende
+            ind i EBIT-marginen.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             I perioden januar 2024 til maj 2026 er sølvprisen steget fra ca. $23/oz
@@ -1568,20 +1569,42 @@ const PandoraSilverAnalysisPage: React.FC = () => {
         <section className="mb-12">
           <SectionHeader n={4} title="Korrelation: Sølv op, Pandora ned" />
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            Pearsons korrelationskoefficient mellem de to tidsserier er <strong>{correlation.toFixed(2)}</strong> (beregnet
-            på daglige lukkekurser i niveauer over 579 datapunkter, hvilket kan forstærke den observerede sammenhæng). Det er en stærk negativ
-            korrelation, men det er vigtigt at understrege, at korrelation ikke beviser kausalitet,
-            og at resultatet kan variere med tidsopløsning og beregningsmetode. Der er flere
-            faktorer i spil: Toldsatser, valutaudsving (DKK/USD), svagere amerikanske og europæiske markeder
-            og generel risikoapetit bidrager alle til kursudviklingen.
+            Når man måler hvor tæt sølvprisen og Pandora-aktien har fulgt hinanden
+            dagligt over de sidste ca. 2,5 år, får man en korrelation på{' '}
+            {correlation.toFixed(2)}. På en skala fra -1 til +1, hvor
+            0 betyder "ingen sammenhæng" og ±1 betyder "perfekt sammenhæng",
+            er det meget tæt. Det negative fortegn betyder at
+            de to bevæger sig modsat: Når sølvprisen stiger, falder
+            Pandora-aktien, og omvendt.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            Der er dog en plausibel økonomisk mekanisme bag sammenhængen. Sølv udgør en stor del af Pandoras
-            materialeomkostninger. Selvom selskabet hedger en stor del af sit
-            sølvforbrug 9-12 måneder frem, betyder en vedvarende stigning i
-            sølvprisen, at stigende priser gradvist påvirker de uhedgede omkostninger,
-            samtidig med at fremtidige hedge-niveauer fastsættes højere. I Q1 2026 bidrog råvarer, valuta og told med en samlet
-            modvind på 440 basispunkter til EBIT-marginen.
+            Det er en stærk sammenhæng, men man skal være forsigtig med at
+            konkludere at det ene <em>forårsager</em> det andet. To kurser kan
+            bevæge sig parallelt af andre grunde. Flere ting påvirker også
+            Pandora-kursen samtidig: Amerikanske toldsatser på import fra
+            Thailand, valutakurssvingninger (især USD, GBP og TRY mod kronen),
+            svagere efterspørgsel i USA og Europa, og generel risikovillighed
+            på markederne.
+          </p>
+          <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
+            Der er dog en oplagt økonomisk forklaring på sammenhængen. Sølv er
+            hovedråvaren i størstedelen af Pandoras smykker, så stigende
+            sølvpriser betyder stigende omkostninger. Pandora prøver at dæmpe
+            effekten ved at <em>hedge</em>, altså låse købsprisen fast i
+            forvejen, som en aftale med leverandøren om en garanteret pris.
+            Konkret hedger Pandora løbende ud fra deres produktionsplan for de
+            næste 12 måneder, og der går typisk 5-10 måneder fra et hedge-køb
+            til omkostningen rammer regnskabet (smykkerne skal først
+            produceres og sælges).
+          </p>
+          <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
+            Det betyder at hedging udskyder effekten af en
+            sølvprisstigning, men ikke fjerner den. Når de næste års
+            prislåse skal sættes, sker det til de højere markedspriser, og
+            stigningen siver gradvist ind i regnskabet. I første kvartal 2026
+            kostede den samlede effekt af højere råvarepriser, valutakursudsving
+            og told Pandora hvad der svarer til 4,4 procentpoint på
+            driftsmarginen (i fagsprog: "440 basispunkter").
           </p>
 
           <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-3 sm:p-5" role="img" aria-label="Scatterplot: Sølvpris vs. Pandora aktiekurs">
@@ -1603,9 +1626,10 @@ const PandoraSilverAnalysisPage: React.FC = () => {
         <section className="mb-12">
           <SectionHeader n={5} title="Pandoras sølvhedging og margintryk" />
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            Pandora hedger en stor del af sit forventede sølv- og guldforbrug typisk
-            9-12 måneder frem. Det skaber en forsinkelse, før en ændring i spotprisen
-            slår igennem i regnskabet. I praksis betyder det:
+            Pandoras officielle politik er at hedge mindst 70% af det forventede
+            sølv- og guldforbrug ud fra en rullende 12-måneders produktionsplan.
+            Der går herefter typisk 5-10 måneder fra et hedge-køb til omkostningen
+            rammer regnskabet (smykkerne skal først produceres og sælges). I praksis betyder det:
           </p>
 
           <div className="overflow-x-auto rounded-2xl border border-gray-100 dark:border-gray-800 mb-6">
@@ -1699,7 +1723,7 @@ const PandoraSilverAnalysisPage: React.FC = () => {
             <AssumptionSlider label="Sølv spotpris" value={silverSpot} min={20} max={150} step={1}
               onChange={setSilverSpot} hint="Nuværende spotpris: ~$76/oz (maj 2026)" />
             <AssumptionSlider label="Hedget andel" value={hedgedShare} min={50} max={100} step={5} unit="%"
-              onChange={setHedgedShare} hint="Pandora hedger en stor del af forbruget 9-12 måneder frem" />
+              onChange={setHedgedShare} hint="Pandora hedger ud fra en rullende 12-måneders produktionsplan" />
             <AssumptionSlider label="Hedget sølvpris" value={hedgedPrice} min={20} max={80} step={1}
               onChange={setHedgedPrice} hint="2026 P&L er hedget til ~$32/oz" />
           </div>
