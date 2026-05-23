@@ -38,7 +38,11 @@ export type AnalyticsEvent =
   | "analysis_link_click"
   | "analysis_panel_open"
   | "homepage_card_click"
-  | "dcf_share_click";
+  | "dcf_share_click"
+  | "email_click"
+  | "contact_form_view"
+  | "contact_form_submit"
+  | "contact_form_error";
 
 type EventParams = Record<string, string | number | boolean | undefined>;
 

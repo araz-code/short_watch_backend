@@ -1,7 +1,14 @@
+import json
+from datetime import timedelta
+
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpRequest, HttpResponse, JsonResponse
+from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 
 from request_logging import service
+from request_logging.models import ContactSubmission
 
 COLOR_PRIMARY = 'rgba(33, 97, 140, 0.9)'
 COLOR_SECONDARY = 'rgba(161, 202, 193, 0.9)'
@@ -351,3 +358,59 @@ def clicked(_: HttpRequest, code: str) -> HttpResponse:
 def track_visit(_: HttpRequest, page: str) -> HttpResponse:
     """No-op endpoint hit by the SPA to log a page visit via request_logging middleware."""
     return HttpResponse(status=204)
+
+
+# --- Contact form -----------------------------------------------------------
+
+VALID_CONTACT_CATEGORIES = {'bug', 'feedback', 'idea', 'other'}
+CONTACT_RATE_LIMIT_HOURS = 1
+CONTACT_RATE_LIMIT_MAX = 3
+
+
+@csrf_exempt
+@require_POST
+def submit_contact(request: HttpRequest) -> HttpResponse:
+    try:
+        data = json.loads(request.body)
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'invalid_json'}, status=400)
+
+    # Honeypot: bots fill the hidden 'website' field, humans never see it.
+    if data.get('website'):
+        return JsonResponse({'ok': True})
+
+    category = (data.get('category') or '').strip()
+    message = (data.get('message') or '').strip()
+    email = (data.get('email') or '').strip()
+
+    if category not in VALID_CONTACT_CATEGORIES:
+        return JsonResponse({'error': 'invalid_category'}, status=400)
+    if not (10 <= len(message) <= 2000):
+        return JsonResponse({'error': 'invalid_message_length'}, status=400)
+    if email and ('@' not in email or len(email) > 254):
+        return JsonResponse({'error': 'invalid_email'}, status=400)
+
+    client_ip = (request.META.get('HTTP_X_FORWARDED_FOR') or
+                 request.META.get('REMOTE_ADDR') or '')
+    if ',' in client_ip:
+        client_ip = client_ip.split(',')[0].strip()
+    client_ip = client_ip or None
+
+    if client_ip:
+        cutoff = timezone.now() - timedelta(hours=CONTACT_RATE_LIMIT_HOURS)
+        recent = ContactSubmission.objects.filter(
+            client_ip=client_ip, created_at__gte=cutoff
+        ).count()
+        if recent >= CONTACT_RATE_LIMIT_MAX:
+            return JsonResponse({'error': 'rate_limited'}, status=429)
+
+    user_agent = (request.META.get('HTTP_USER_AGENT') or '')[:255]
+
+    ContactSubmission.objects.create(
+        category=category,
+        message=message,
+        email=email,
+        client_ip=client_ip,
+        user_agent=user_agent,
+    )
+    return JsonResponse({'ok': True})

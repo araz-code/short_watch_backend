@@ -37,3 +37,26 @@ class Visitor(models.Model):
 class VisitorLock(models.Model):
     singleton_enforcer = models.CharField(max_length=1, unique=True, default='X')
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+class ContactSubmission(models.Model):
+    CATEGORY_CHOICES = [
+        ('bug', 'Bug rapport'),
+        ('feedback', 'Feedback'),
+        ('idea', 'Idé'),
+        ('other', 'Andet'),
+    ]
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
+    message = models.TextField()
+    email = models.EmailField(blank=True, default='')
+    client_ip = models.GenericIPAddressField(null=True, blank=True)
+    user_agent = models.CharField(max_length=255, blank=True, default='')
+    read = models.BooleanField(default=False, db_index=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        sender = self.email or '(anonymous)'
+        return f'{self.created_at:%Y-%m-%d %H:%M} - {self.get_category_display()} - {sender}'

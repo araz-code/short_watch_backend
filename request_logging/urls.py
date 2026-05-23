@@ -28,4 +28,7 @@ urlpatterns = [
     # Tracking
     path('clicked/<str:code>', views.clicked),
     path('visit/<path:page>/', views.track_visit),
+
+    # Contact form
+    path('contact/', views.submit_contact),
 ]

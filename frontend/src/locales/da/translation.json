@@ -412,6 +412,26 @@
     "Each row shows the publication date and the disclosed short position as a percentage of the company's issued capital.": "Hver række viser offentliggørelsesdatoen og den indberettede shortposition som en procentdel af selskabets udstedte aktiekapital.",
     "A green \"Current\" badge means this is the most recently reported position for that stock and it is still above the 0.5% threshold. A red badge means this was the last known announcement and the position has since fallen below the reporting level or been closed entirely.": "Et grønt \"Nuværende\"-mærke betyder, at dette er den senest indberettede position for den pågældende aktie, og at den stadig er over 0,5%-grænsen. Et rødt mærke betyder, at dette var den seneste kendte indberetning, og at positionen siden er faldet under indberetningsgrænsen eller er lukket helt.",
     "Navigate to the stock": "Gå til aktien",
-    "Tap the ticker symbol link above each group to go to the full details page for that stock, where you can see the aggregate short interest chart, all other short sellers, and historic data.": "Tryk på ticker-symbollinket over hver gruppe for at åbne den fulde detaljeside for aktien, hvor du kan se den samlede shortinteresse-graf, alle øvrige shortsælgere og historisk data."
+    "Tap the ticker symbol link above each group to go to the full details page for that stock, where you can see the aggregate short interest chart, all other short sellers, and historic data.": "Tryk på ticker-symbollinket over hver gruppe for at åbne den fulde detaljeside for aktien, hvor du kan se den samlede shortinteresse-graf, alle øvrige shortsælgere og historisk data.",
+    "Send a quick message. I usually reply within 24 hours.": "Send en hurtig besked. Jeg svarer typisk inden 24 timer.",
+    "Thanks! I'll get back to you soon.": "Tak! Jeg vender tilbage hurtigst muligt.",
+    "I'll reply to your email when I can.": "Jeg svarer på din email så snart jeg kan.",
+    "You didn't leave an email, so I can't reply directly. But I read every message.": "Du har ikke angivet en email, så jeg kan ikke svare direkte. Men jeg læser hver eneste besked.",
+    "What is it about?": "Hvad drejer det sig om?",
+    "Feedback": "Feedback",
+    "Bug": "Fejl",
+    "Idea": "Idé",
+    "Other": "Andet",
+    "Your message": "Din besked",
+    "What would you like to share?": "Hvad vil du gerne fortælle?",
+    "At least 10 characters": "Mindst 10 tegn",
+    "Email (optional, if you want a reply)": "Email (valgfri, hvis du vil have svar)",
+    "Send message": "Send besked",
+    "Sending...": "Sender...",
+    "Prefer email?": "Foretrækker du email?",
+    "Something went wrong. Please try again.": "Noget gik galt. Prøv venligst igen.",
+    "Too many requests. Please try again later.": "For mange forespørgsler. Prøv igen senere.",
+    "Message must be between 10 and 2000 characters.": "Beskeden skal være mellem 10 og 2000 tegn.",
+    "Please enter a valid email address.": "Indtast venligst en gyldig emailadresse."
   }
 }

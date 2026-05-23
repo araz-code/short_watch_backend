@@ -309,6 +309,26 @@
     "Each row shows the publication date and the disclosed short position as a percentage of the company's issued capital.": "Each row shows the publication date and the disclosed short position as a percentage of the company's issued capital.",
     "A green \"Current\" badge means this is the most recently reported position for that stock and it is still above the 0.5% threshold. A red badge means this was the last known announcement and the position has since fallen below the reporting level or been closed entirely.": "A green \"Current\" badge means this is the most recently reported position for that stock and it is still above the 0.5% threshold. A red badge means this was the last known announcement and the position has since fallen below the reporting level or been closed entirely.",
     "Navigate to the stock": "Navigate to the stock",
-    "Tap the ticker symbol link above each group to go to the full details page for that stock, where you can see the aggregate short interest chart, all other short sellers, and historic data.": "Tap the ticker symbol link above each group to go to the full details page for that stock, where you can see the aggregate short interest chart, all other short sellers, and historic data."
+    "Tap the ticker symbol link above each group to go to the full details page for that stock, where you can see the aggregate short interest chart, all other short sellers, and historic data.": "Tap the ticker symbol link above each group to go to the full details page for that stock, where you can see the aggregate short interest chart, all other short sellers, and historic data.",
+    "Send a quick message. I usually reply within 24 hours.": "Send a quick message. I usually reply within 24 hours.",
+    "Thanks! I'll get back to you soon.": "Thanks! I'll get back to you soon.",
+    "I'll reply to your email when I can.": "I'll reply to your email when I can.",
+    "You didn't leave an email, so I can't reply directly. But I read every message.": "You didn't leave an email, so I can't reply directly. But I read every message.",
+    "What is it about?": "What is it about?",
+    "Feedback": "Feedback",
+    "Bug": "Bug",
+    "Idea": "Idea",
+    "Other": "Other",
+    "Your message": "Your message",
+    "What would you like to share?": "What would you like to share?",
+    "At least 10 characters": "At least 10 characters",
+    "Email (optional, if you want a reply)": "Email (optional, if you want a reply)",
+    "Send message": "Send message",
+    "Sending...": "Sending...",
+    "Prefer email?": "Prefer email?",
+    "Something went wrong. Please try again.": "Something went wrong. Please try again.",
+    "Too many requests. Please try again later.": "Too many requests. Please try again later.",
+    "Message must be between 10 and 2000 characters.": "Message must be between 10 and 2000 characters.",
+    "Please enter a valid email address.": "Please enter a valid email address."
   }
 }
