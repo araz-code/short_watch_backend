@@ -19,7 +19,6 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ReferenceLine,
 } from "recharts";
 
 import { trackEvent, trackPageView } from "../analytics";
@@ -41,7 +40,6 @@ const SellerChart: React.FC<{ announcements: Announcement[] }> = ({ announcement
   const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
   const sorted = [...announcements].sort((a, b) => a.publishedDate.localeCompare(b.publishedDate));
   const data = sorted.map((a) => ({ date: a.publishedDate.slice(0, 10), value: a.value }));
-  const latest = data[data.length - 1]?.value;
   const minY = Math.max(0, Math.min(...data.map((d) => d.value)) - 0.2);
   const maxY = Math.max(...data.map((d) => d.value)) + 0.3;
 
@@ -63,9 +61,6 @@ const SellerChart: React.FC<{ announcements: Announcement[] }> = ({ announcement
             formatter={(v) => [`${Number(v).toFixed(2)}%`, ""]}
             labelFormatter={(label) => fmtDate(String(label))}
           />
-          {latest != null && (
-            <ReferenceLine y={latest} stroke="#eab308" strokeDasharray="4 4" strokeWidth={1.5} yAxisId={0} />
-          )}
           <Area type="step" dataKey="value" stroke="#007AFF" strokeWidth={2.5} fill="url(#sellerGrad)" dot={{ r: 3, fill: "#007AFF", strokeWidth: 0 }} activeDot={{ r: 5, stroke: "#fff", strokeWidth: 2 }} />
         </ComposedChart>
       </ResponsiveContainer>
