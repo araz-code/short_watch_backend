@@ -1515,11 +1515,11 @@ const PandoraSilverAnalysisPage: React.FC = () => {
             </li>
             <li className="flex gap-2">
               <span className="text-pink-500 mt-0.5 font-bold">2.</span>
-              <span><strong>Industriel efterspørgsel på rekordniveau:</strong> I 2024 nåede industriel sølvefterspørgsel et rekordniveau på 680,5 mio. ounces. Solceller alene stod for ca. 34% af den industrielle efterspørgsel (232 mio. ounces), op fra ca. 11% i 2014. Elbiler og datacentre til AI bidrager også.</span>
+              <span><strong>Industriel efterspørgsel på rekordniveau:</strong> I 2024 nåede industriel sølvefterspørgsel et rekordniveau på 680,5 mio. ounces. Solceller alene stod for ca. 29% af den industrielle efterspørgsel (197,6 mio. ounces), op fra ca. 13% i 2015. Elbiler og datacentre til AI bidrager også.</span>
             </li>
             <li className="flex gap-2">
               <span className="text-pink-500 mt-0.5 font-bold">3.</span>
-              <span><strong>Udbuddet kan ikke følge med:</strong> Ca. 70% af alt sølv produceres som biprodukt fra kobber-, bly- og zinkminer. Mineproducenterne kan derfor ikke hurtigt øge produktionen, selv når prisen stiger.</span>
+              <span><strong>Udbuddet kan ikke følge med:</strong> Ca. 72% af alt sølv produceres som biprodukt fra bly-, zink-, kobber- og guldminer (kun ca. 28% kommer fra rene sølvminer). Mineproducenterne kan derfor ikke hurtigt øge produktionen, selv når sølvprisen stiger.</span>
             </li>
             <li className="flex gap-2">
               <span className="text-pink-500 mt-0.5 font-bold">4.</span>
