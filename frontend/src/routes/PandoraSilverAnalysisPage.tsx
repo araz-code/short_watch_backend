@@ -1458,9 +1458,10 @@ const PandoraSilverAnalysisPage: React.FC = () => {
           <p className="text-gray-600 dark:text-gray-300 mt-3 leading-relaxed">
             Denne analyse undersøger sammenhængen mellem sølvprisen, den amerikanske
             forbrugertillid (University of Michigan Consumer Sentiment Index) og
-            Pandora-aktiens kursudvikling over de seneste to år. Sølv er Pandoras
-            vigtigste råvare, og USA er selskabets største enkeltmarked. Begge faktorer
-            vurderes at have haft betydelig betydning for kursudviklingen i perioden.
+            Pandora-aktiens kursudvikling fra januar 2024 til maj 2026 (ca. 2,5 år). Sølv
+            indgår som hovedmetal i størstedelen af Pandoras smykker, og USA er selskabets største
+            enkeltmarked. Analysen ser på, hvordan disse to faktorer har spillet sammen med
+            kursudviklingen i perioden.
           </p>
         </header>
 
@@ -1524,7 +1525,7 @@ const PandoraSilverAnalysisPage: React.FC = () => {
             </li>
             <li className="flex gap-2">
               <span className="text-pink-500 mt-0.5 font-bold">4.</span>
-              <span><strong>Investorefterspørgsel:</strong> Sølv-ETF'er havde nettotilstrømning på 61,6 mio. ounces i 2024, en markant vending fra tidligere års udstrømning. Rentenedsættelser og geopolitisk usikkerhed har øget interessen for ædelmetaller som sikker havn.</span>
+              <span><strong>Investorefterspørgsel:</strong> Sølv-ETF'er havde nettotilstrømning på 61,6 mio. ounces i 2024, en vending fra tidligere års udstrømning (2022: -117,4 mio oz; 2023: -37,6 mio oz). Rentenedsættelser og geopolitisk usikkerhed har øget interessen for ædelmetaller som sikker havn.</span>
             </li>
           </ul>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
