@@ -37,6 +37,8 @@ const BAVAAnalysisPageDa = lazy(() => import("./routes/BAVAAnalysisPage.tsx"));
 const BAVAAnalysisPageEn = lazy(() => import("./routes/BAVAAnalysisPage.en.tsx"));
 const NovoDCFPageDa = lazy(() => import("./routes/NovoDCFPage.tsx"));
 const NovoDCFPageEn = lazy(() => import("./routes/NovoDCFPage.en.tsx"));
+const PandoraSilverPageDa = lazy(() => import("./routes/PandoraSilverAnalysisPage.tsx"));
+const PandoraSilverPageEn = lazy(() => import("./routes/PandoraSilverAnalysisPage.en.tsx"));
 const AnalysisPage = lazy(() => import("./routes/AnalysisPage.tsx"));
 
 function ZealAnalysisPage() {
@@ -58,6 +60,10 @@ function ZealCostAnalysisPage() {
 function NovoDCFPage() {
   const lng = localStorage.getItem("i18nextLng") || navigator.language;
   return lng.startsWith("da") ? <NovoDCFPageDa /> : <NovoDCFPageEn />;
+}
+function PandoraSilverPage() {
+  const lng = localStorage.getItem("i18nextLng") || navigator.language;
+  return lng.startsWith("da") ? <PandoraSilverPageDa /> : <PandoraSilverPageEn />;
 }
 
 type ConsentButtonProps = {
@@ -179,6 +185,14 @@ const router = createBrowserRouter([
   {
     path: "analyse/bava",
     element: <ErrorBoundary><BAVAAnalysisPage /></ErrorBoundary>,
+  },
+  {
+    path: "analyse/pandora/soelv/2026-05-23",
+    element: <ErrorBoundary><PandoraSilverPage /></ErrorBoundary>,
+  },
+  {
+    path: "analyse/pandora/soelv",
+    element: <ErrorBoundary><PandoraSilverPage /></ErrorBoundary>,
   },
   {
     path: "analyse/novo/dcf/2026-05-19",

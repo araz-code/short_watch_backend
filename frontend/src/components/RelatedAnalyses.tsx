@@ -9,7 +9,8 @@ const gradients: Record<string, string> = {
   BAVA: "from-emerald-500 to-teal-600",
   ZEAL: "from-violet-500 to-indigo-600",
   GN: "from-amber-500 to-orange-600",
-    NOVO: "from-sky-500 to-blue-600",
+  NOVO: "from-sky-500 to-blue-600",
+  PNDORA: "from-pink-500 to-rose-600",
 };
 
 function tickerFromTitle(title: string): string {

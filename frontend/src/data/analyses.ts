@@ -8,6 +8,16 @@ export interface Analysis {
 
 export const analyses: Analysis[] = [
   {
+    slug: "pandora/soelv/2026-05-23",
+    title: "Pandora A/S (PNDORA)",
+    subtitle: {
+      da: "Pandora og sølvprisen: Hvordan råvarer og forbrugertillid påvirker aktien",
+      en: "Pandora and the silver price: How commodities and consumer sentiment affect the stock",
+    },
+    date: { da: "23. maj 2026", en: "May 23, 2026" },
+    code: "DK0060252690",
+  },
+  {
     slug: "novo/dcf/2026-05-19",
     title: "Novo Nordisk A/S (NOVO)",
     subtitle: {
