@@ -2002,23 +2002,23 @@ const PandoraSilverAnalysisPage: React.FC = () => {
             <div className="bg-red-50 dark:bg-red-500/10 rounded-2xl border border-red-100 dark:border-red-500/20 p-5">
               <h4 className="font-semibold text-red-700 dark:text-red-400 mb-3 text-sm uppercase tracking-wide">Risikofaktorer</h4>
               <ul className="space-y-2 text-[15px] text-gray-700 dark:text-gray-300">
-                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Sølvprisen kan forblive høj eller stige yderligere</li>
-                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>US-forbrugertillid er på et meget lavt niveau historisk set</li>
-                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Højere toldsatser på import fra bl.a. Thailand og Kina</li>
-                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>CEO-skifte den 1. januar 2026 (Berta de Pablos-Barbier) skaber overgangsusikkerhed</li>
-                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Europa er svagt med negativ LFL i flere nøglemarkeder</li>
+                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Sølvprisen er steget over 200% siden januar 2024 (fra $23 til $76/oz) og forbliver volatil</li>
+                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Amerikansk forbrugertillid på 44,8 (laveste niveau siden 1952)</li>
+                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>19% amerikansk told på import fra Thailand (Pandora-produkter sendes til USA fra Thailand)</li>
+                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>CEO-skifte den 1. januar 2026: Berta de Pablos-Barbier overtager fra Alexander Lacik (knap 7 års anciennitet)</li>
+                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Europa svagt: UK -8% og Frankrig -7% LFL i Q3 2025, EMEA -2% i Q1 2026</li>
               </ul>
             </div>
             <div className="bg-blue-50 dark:bg-blue-500/10 rounded-2xl border border-blue-100 dark:border-blue-500/20 p-5">
               <h4 className="font-semibold text-blue-700 dark:text-blue-400 mb-3 text-sm uppercase tracking-wide">Positive faktorer</h4>
               <ul className="space-y-2 text-[15px] text-gray-700 dark:text-gray-300">
-                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>P/E på 8,3 er historisk lavt for Pandora</li>
-                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Udbytte på 3,96% giver afkast mens man venter</li>
-                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Aktietilbagekøb for 1,5 mia. DKK i Q3 2025 alene</li>
+                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>P/E (trailing 12 måneder) på 8,3 ved kurs 556 DKK (TTM EPS ca. 67 DKK pr. Q1 2026)</li>
+                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Udbytte på 22 DKK/aktie (3,96% yield ved kurs 556 DKK)</li>
+                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Aktietilbagekøb for 4,4 mia. DKK i 2025; intet nyt 2026-program annonceret, men Pandora signalerer at de vil genoptage tilbagekøb når platinbelægnings-transitionen er længere fremme</li>
                 <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Asien-Pacific vokser +12% LFL i Q1 2026</li>
-                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Bruttomargin på 79,5% er stadig meget høj</li>
+                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Bruttomargin på 79,5% i Q1 2026 (kun 90 bp under Q1 2025 trods 370 bp ekstern modvind)</li>
                 <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Platinbelægningstrategi kan reducere sølvafhængighed over tid</li>
-                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Mindre konkurrenter har ikke kapital til store hedging-programmer og rammes hårdere af sølvprisen, hvilket kan give Pandora markedsandele på sigt</li>
+                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>ROIC på 41% i 2025 (Pandoras egen karakteristik: "structurally strong")</li>
               </ul>
             </div>
           </div>
