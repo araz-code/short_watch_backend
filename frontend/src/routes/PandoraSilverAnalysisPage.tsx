@@ -1448,7 +1448,7 @@ const PandoraSilverAnalysisPage: React.FC = () => {
 
         {/* Header */}
         <header className="mb-10 mt-4">
-          <p className="text-base text-gray-600 dark:text-gray-300 mb-4">Analyse lavet af Araz Bayat Makoo (Zirium) - 23. maj 2026</p>
+          <p className="text-lg text-gray-700 dark:text-gray-200 font-medium mb-4">Analyse lavet af Araz Bayat Makoo (Zirium) - 23. maj 2026</p>
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-white mb-3 leading-tight">
             Pandora og sølvprisen: Hvordan råvarer og forbrugertillid påvirker aktien
           </h1>
@@ -2081,7 +2081,7 @@ const PandoraSilverAnalysisPage: React.FC = () => {
             Foretag altid din egen analyse, og søg professionel rådgivning før du handler.
           </p>
           <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-3">
-            Genereret af Zirium  |  23. maj 2026
+            Copyright Zirium  |  23. maj 2026
           </p>
         </footer>
       </article>
