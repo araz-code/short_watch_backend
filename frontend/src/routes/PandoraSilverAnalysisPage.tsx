@@ -1882,19 +1882,19 @@ const PandoraSilverAnalysisPage: React.FC = () => {
             <div className="bg-amber-50 dark:bg-amber-500/10 rounded-2xl border border-amber-100 dark:border-amber-500/20 p-5">
               <h4 className="font-semibold text-amber-700 dark:text-amber-400 mb-3 text-sm uppercase tracking-wide">Efterspørgselssiden (sentiment)</h4>
               <ul className="space-y-2 text-[15px] text-gray-700 dark:text-gray-300">
-                <li className="flex gap-2"><span className="text-amber-500 mt-0.5">&#x25BC;</span>Consumer Sentiment på et meget lavt niveau historisk set (44,8)</li>
+                <li className="flex gap-2"><span className="text-amber-500 mt-0.5">&#x25BC;</span>Consumer Sentiment på 44,8 (laveste niveau siden 1952)</li>
                 <li className="flex gap-2"><span className="text-amber-500 mt-0.5">&#x25BC;</span>USA-LFL +11% i Q1 2025 → Nordamerika-LFL -2% i Q1 2026</li>
                 <li className="flex gap-2"><span className="text-amber-500 mt-0.5">&#x25BC;</span>Europa svagt: UK -8%, Frankrig -7% LFL i Q3 2025</li>
-                <li className="flex gap-2"><span className="text-amber-500 mt-0.5">&#x25BC;</span>Organisk vækst bremset til -1% til 2% (guidance) fra tidligere niveauer på 8-13%</li>
+                <li className="flex gap-2"><span className="text-amber-500 mt-0.5">&#x25BC;</span>Organisk vækst guidet til -1% til 2% i 2026 (2025 endte på 6%, 2024 var 13%)</li>
               </ul>
             </div>
           </div>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-            Smykker er en diskretionær forbrugerkategori. Når forbrugertilliden falder,
-            er smykker blandt de første kategorier, der bliver nedprioriteret. Pandora
-            er dermed fanget i en situation, hvor omkostningerne stiger (sølv), mens
-            efterspørgslen svækkes (sentiment). Kombinationen af stigende inputomkostninger
-            og svagere efterspørgsel kan være en væsentlig forklaring på den negative kursudvikling.
+            Pandora er fanget i et dobbelt pres: Omkostningerne stiger (sølv,
+            valuta, told) samtidig med at efterspørgslen svækkes (svag amerikansk
+            og europæisk forbruger). Kombinationen af stigende inputomkostninger
+            og svagere efterspørgsel kan være en væsentlig forklaring på den
+            negative kursudvikling.
           </p>
         </section>
 
