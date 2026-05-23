@@ -177,7 +177,7 @@ const Navigation: React.FC = () => {
                   <NavLink
                     to="/analyse"
                     className={({ isActive }) =>
-                      `${isActive || isAnalysisActive ? activeLinkClasses : linkClasses} inline-flex items-center gap-1.5`
+                      isActive || isAnalysisActive ? activeLinkClasses : linkClasses
                     }
                     onClick={() => {
                       trackEvent("analysis_link_click", { source: "nav" });
@@ -185,9 +185,6 @@ const Navigation: React.FC = () => {
                     }}
                   >
                     {t("Analysis")}
-                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-amber-400 text-[#0d1b4c] leading-none">
-                      {t("New")}
-                    </span>
                   </NavLink>
                 </li>
                 <li className="relative">
