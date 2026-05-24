@@ -46,7 +46,10 @@ export type AnalyticsEvent =
   | "contact_form_error"
   | "feedback_thumbs_click"
   | "feedback_comment_submit"
-  | "feedback_contact_click";
+  | "feedback_contact_click"
+  | "quick_feedback_open"
+  | "quick_feedback_submit"
+  | "quick_feedback_error";
 
 type EventParams = Record<string, string | number | boolean | undefined>;
 

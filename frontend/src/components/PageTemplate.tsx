@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Navigation from "./Navigation";
 import RecentlyVisitedSidebar from "./RecentlyVisitedSidebar";
+import QuickFeedbackWidget from "./QuickFeedbackWidget";
 import { recordVisit } from "../utils/recentlyVisited";
 import { analyses } from "../data/analyses";
 
@@ -39,6 +40,8 @@ const PageTemplate: React.FC<React.PropsWithChildren<PageTemplateProps>> = ({
     }
   }, [location.pathname, isDa]);
 
+  const showQuickFeedback = location.pathname !== "/contact";
+
   return (
     <div className="flex flex-col text-gray-800 flex-1 min-h-0">
       <Navigation />
@@ -59,6 +62,7 @@ const PageTemplate: React.FC<React.PropsWithChildren<PageTemplateProps>> = ({
           </div>
         </main>
       )}
+      {showQuickFeedback && <QuickFeedbackWidget />}
     </div>
   );
 };
