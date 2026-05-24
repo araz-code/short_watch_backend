@@ -143,10 +143,6 @@ const ShortSellersPage: React.FC = () => {
               <h1 className="text-2xl lg:text-3xl dark:text-white text-center">
                 {t("Short sellers")}
               </h1>
-              <p className="text-xs text-gray-600 dark:text-gray-400 text-center mt-2">
-                {t("The Danish FSA only publishes the names of short")}{" "}
-                {t("sellers with a position of 0.5% or greater.")}
-              </p>
             </div>
 
             <section className="w-full flex flex-col flex-1 min-h-0">
