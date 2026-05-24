@@ -11,8 +11,13 @@ import ShortSeller from "../models/ShortSeller";
 import ShortSellerRow from "../components/ShortSellerRow";
 import DropDownMenu from "../components/UI/DropDownMenu";
 import ShortSellersHelpDialog from "../components/ShortSellersHelpDialog";
+import RecentUpdatesSidebar from "../components/RecentUpdatesSidebar";
+import AnalysesSidebar from "../components/AnalysesSidebar";
 
-const options = ["Name", "Date"];
+const options = ["Name", "Date", "Size", "Activity"];
+
+const maxCurrentValue = (s: ShortSeller): number =>
+  s.current.length > 0 ? Math.max(...s.current.map((p) => p.value)) : 0;
 
 const sort = (list: ShortSeller[], selectedSorting: string) => {
   return list.sort((a, b) => {
@@ -23,6 +28,10 @@ const sort = (list: ShortSeller[], selectedSorting: string) => {
         return (
           new Date(b.lastUpdated).getTime() - new Date(a.lastUpdated).getTime()
         );
+      case "Size":
+        return maxCurrentValue(b) - maxCurrentValue(a);
+      case "Activity":
+        return b.current.length - a.current.length;
       default:
         return a.name.localeCompare(b.name);
     }
@@ -123,7 +132,12 @@ const ShortSellersPage: React.FC = () => {
       <meta name="description" content="See which hedge funds and institutions hold large short positions in Danish stocks. Positions of 0.5% or greater reported by the Danish FSA." />
       <PageTemplate>
         <div className="w-screen lg:justify-center lg:gap-4 m-auto flex flex-col flex-1 min-h-0 lg:flex-row">
-          <div className="w-1/3 justify-start items-center hidden"></div>
+          <div className="hidden xl:block xl:flex-1 relative">
+            <div className="absolute inset-0 flex flex-col items-center pt-[88px] px-4 overflow-y-auto gap-4">
+              <RecentUpdatesSidebar days={30} />
+              <AnalysesSidebar source="sidebar_short_sellers" />
+            </div>
+          </div>
           <div className="lg:w-[900px] flex flex-col flex-1 min-h-0 lg:flex-initial">
             <div className="pt-6 pb-4 px-2 shrink-0">
               <h1 className="text-2xl lg:text-3xl dark:text-white text-center">
@@ -228,7 +242,7 @@ const ShortSellersPage: React.FC = () => {
               </div>
             </section>
           </div>
-          <div className="w-1/3 justify-end items-center hidden"></div>
+          <div className="hidden xl:block xl:flex-1" aria-hidden="true"></div>
         </div>
       </PageTemplate>
 

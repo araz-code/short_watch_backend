@@ -5,8 +5,9 @@ import {
   Link,
   useLocation,
 } from "react-router-dom";
-import { fetchLargeShortSellerDetails, HOST } from "../apis/ShortPositionAPI";
-import { useEffect, useState } from "react";
+import { fetchLargeShortSellerDetails, fetchLargestShortSellers, HOST } from "../apis/ShortPositionAPI";
+import { useEffect, useMemo, useState } from "react";
+import ShortSeller from "../models/ShortSeller";
 import PageTemplate from "../components/PageTemplate";
 import ErrorBlock from "../components/UI/ErrorBlock";
 import LoadingIndicator from "../components/UI/LoadingIndicator";
@@ -89,6 +90,31 @@ const ShortSellerDetailsPage: React.FC = () => {
       }),
   });
 
+  // Genbruger samme queryKey som ShortSellersPage — react-query dedupliker.
+  const { data: allSellers } = useQuery<ShortSeller[]>({
+    queryKey: ["shortSellers"],
+    staleTime: 30000,
+    queryFn: ({ signal }) => fetchLargestShortSellers({ signal }),
+  });
+
+  // Map: stockCode → liste af ANDRE sellers (ikke den aktuelle) med current position i denne aktie.
+  const otherSellersByStock = useMemo(() => {
+    const map: Record<string, Array<{ id: string; name: string; value: number }>> = {};
+    if (!allSellers || !data) return map;
+    for (const other of allSellers) {
+      if (other.id === data.id) continue;
+      for (const pos of other.current) {
+        const code = pos.stockCode;
+        if (!map[code]) map[code] = [];
+        map[code].push({ id: other.id, name: other.name, value: pos.value });
+      }
+    }
+    for (const code in map) {
+      map[code].sort((a, b) => b.value - a.value);
+    }
+    return map;
+  }, [allSellers, data?.id]);
+
   useEffect(() => {
     trackEvent("seller_details_view", { seller: seller ?? "" });
     trackPageView(`/short-seller-details`, "short seller details");
@@ -141,6 +167,52 @@ const ShortSellerDetailsPage: React.FC = () => {
         return acc;
       }, {});
 
+    // Aggregeret oversigt: hver gruppes første announcement er den seneste.
+    // isHistoric = true betyder positionen er lukket (faldet under 0,5%).
+    const stockSummaries = Object.entries(groupedAnnouncements).map(([symbol, list]) => {
+      const latest = list[0];
+      const oldest = list[list.length - 1];
+      return {
+        symbol,
+        stockCode: latest.stockCode,
+        latestValue: latest.value,
+        latestDate: latest.publishedDate,
+        firstDate: oldest.publishedDate,
+        isActive: !latest.isHistoric,
+        announcementCount: list.length,
+      };
+    });
+
+    const active = stockSummaries.filter((s) => s.isActive);
+    const closed = stockSummaries.filter((s) => !s.isActive);
+    const totalExposure = active.reduce((sum, s) => sum + s.latestValue, 0);
+    const biggest = active.length > 0
+      ? active.reduce((max, s) => (s.latestValue > max.latestValue ? s : max), active[0])
+      : null;
+    const latestActivity = stockSummaries.length > 0
+      ? stockSummaries.reduce((max, s) => (s.latestDate > max.latestDate ? s : max), stockSummaries[0]).latestDate
+      : null;
+
+    const fmtNumComma = (n: number, decimals: number) =>
+      n.toFixed(decimals).replace(".", ",");
+
+    const fmtRelative = (iso: string | null): string => {
+      if (!iso) return "—";
+      const then = new Date(iso);
+      const now = new Date();
+      const diffDays = Math.round(
+        (Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) -
+          Date.UTC(then.getFullYear(), then.getMonth(), then.getDate())) / 86_400_000
+      );
+      if (diffDays <= 0) return t("today");
+      if (diffDays === 1) return "1d";
+      if (diffDays < 30) return `${diffDays}d`;
+      const months = Math.round(diffDays / 30);
+      if (months < 12) return `${months}mo`;
+      const years = (diffDays / 365).toFixed(1).replace(".", ",");
+      return `${years} år`;
+    };
+
     content = (
       <>
         <div className="text-center pb-4 dark:text-white shrink-0">
@@ -150,8 +222,71 @@ const ShortSellerDetailsPage: React.FC = () => {
             {t("Danish FSA updates only positions above 0.5%.")}
           </p>
         </div>
+
         <div className="flex-1 min-h-0 [@media(max-height:900px)_and_(orientation:landscape)]:flex-none">
           <div className="overflow-y-auto h-full [@media(max-height:900px)_and_(orientation:landscape)]:overflow-visible [@media(max-height:900px)_and_(orientation:landscape)]:h-auto">
+            {/* Fund-profile aggregeret oversigt (inde i scroll så det også scroller på små skærme) */}
+            <div className="mx-2 mb-4">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
+                <div className="bg-white dark:bg-[#19191f] border border-gray-100 dark:border-gray-800 rounded-lg px-3 py-2.5 text-center">
+                      <p className="text-[10px] uppercase tracking-wide text-gray-600 dark:text-gray-300 font-semibold">
+                    {t("Active positions")}
+                  </p>
+                  <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white tabular-nums mt-1">
+                    {active.length}
+                  </p>
+                  <p className="text-[11px] text-gray-600 dark:text-gray-300">
+                    {active.length === 1 ? t("stock") : t("stocks")}
+                  </p>
+                </div>
+                <div className="bg-white dark:bg-[#19191f] border border-gray-100 dark:border-gray-800 rounded-lg px-3 py-2.5 text-center">
+                      <p className="text-[10px] uppercase tracking-wide text-gray-600 dark:text-gray-300 font-semibold">
+                    {t("Total exposure")}
+                  </p>
+                  <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white tabular-nums mt-1">
+                    {fmtNumComma(totalExposure, 2)}%
+                  </p>
+                  <p className="text-[11px] text-gray-600 dark:text-gray-300">{t("combined")}</p>
+                </div>
+                <div className="bg-white dark:bg-[#19191f] border border-gray-100 dark:border-gray-800 rounded-lg px-3 py-2.5 text-center">
+                      <p className="text-[10px] uppercase tracking-wide text-gray-600 dark:text-gray-300 font-semibold">
+                    {t("Biggest position")}
+                  </p>
+                  {biggest ? (
+                    <>
+                      <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white tabular-nums mt-1">
+                        {biggest.symbol}
+                      </p>
+                      <p className="text-[11px] text-gray-600 dark:text-gray-300 tabular-nums">
+                        {fmtNumComma(biggest.latestValue, 2)}%
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <p className="text-xl sm:text-2xl font-bold text-gray-400 dark:text-gray-500 tabular-nums mt-1">
+                        —
+                      </p>
+                      <p className="text-[11px] text-gray-600 dark:text-gray-300">{t("none")}</p>
+                    </>
+                  )}
+                </div>
+                <div className="bg-white dark:bg-[#19191f] border border-gray-100 dark:border-gray-800 rounded-lg px-3 py-2.5 text-center">
+                      <p className="text-[10px] uppercase tracking-wide text-gray-600 dark:text-gray-300 font-semibold">
+                    {t("Last activity")}
+                  </p>
+                  <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white tabular-nums mt-1">
+                    {fmtRelative(latestActivity)}
+                  </p>
+                  <p className="text-[11px] text-gray-600 dark:text-gray-300">{t("ago")}</p>
+                </div>
+              </div>
+
+              {closed.length > 0 && (
+                <p className="text-xs text-gray-600 dark:text-gray-300 text-center mt-2.5">
+                  {closed.length} {closed.length === 1 ? t("closed position") : t("closed positions")}
+                </p>
+              )}
+            </div>
             <ul className="mx-4">
               {Object.keys(groupedAnnouncements).map((symbol) => (
                 <div key={symbol}>
@@ -186,6 +321,46 @@ const ShortSellerDetailsPage: React.FC = () => {
                       </li>
                     ))}
                   </ul>
+                  {(() => {
+                    const stockCode = groupedAnnouncements[symbol][0].stockCode;
+                    const others = otherSellersByStock[stockCode] || [];
+                    if (others.length === 0) return null;
+                    const visible = others.slice(0, 5);
+                    const remaining = others.length - visible.length;
+                    return (
+                      <p className="mx-4 mt-2 text-xs text-gray-600 dark:text-gray-300 leading-relaxed">
+                        <span className="text-gray-500 dark:text-gray-400">
+                          {t("Also shorted by")}:{" "}
+                        </span>
+                        {visible.map((o, i) => (
+                          <span key={o.id}>
+                            <Link
+                              to={`/short-seller-details?seller=${o.id}#${symbol}`}
+                              onClick={() =>
+                                trackEvent("seller_link_click", {
+                                  source: "overlap",
+                                  from_seller: data.name,
+                                  to_seller: o.name,
+                                  symbol,
+                                })
+                              }
+                              className="text-blue-600 dark:text-blue-400 hover:underline"
+                            >
+                              {o.name}
+                            </Link>
+                            {i < visible.length - 1 && (
+                              <span className="text-gray-400 dark:text-gray-500"> · </span>
+                            )}
+                          </span>
+                        ))}
+                        {remaining > 0 && (
+                          <span className="text-gray-500 dark:text-gray-400">
+                            {" "}+{remaining} {t("more")}
+                          </span>
+                        )}
+                      </p>
+                    );
+                  })()}
                 </div>
               ))}
             </ul>

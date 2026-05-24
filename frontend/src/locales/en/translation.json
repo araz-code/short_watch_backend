@@ -21,6 +21,8 @@
     "Name": "Name",
     "Date": "Date",
     "Value": "Value",
+    "Size": "Size",
+    "Activity": "Activity",
     "Search": "Search",
     "Remove from my list": "Remove from my list",
     "Add to my list": "Add to my list",
@@ -194,9 +196,9 @@
     "We are not responsible for loss on the user or any indirect losses incurred.": "We are not responsible for loss on the user or any indirect losses incurred.",
     "Current": "Current",
     "Previous": "Previous",
+    "Last published position": "Last published position",
     "The Danish FSA only publishes the names of short": "The Danish FSA only publishes the names of short",
     "sellers with a position of 0.5% or greater.": "sellers with a position of 0.5% or greater.",
-    "Last published position": "Last published position",
     "Data on this page comes from announcements.": "Data on this page comes from announcements.",
     "Danish FSA updates only positions above 0.5%.": "Danish FSA updates only positions above 0.5%.",
     "Below 0.5%, updates occur only once it exceeds 0.5% again.": "Below 0.5%, updates occur only once it exceeds 0.5% again.",
@@ -343,6 +345,17 @@
     "Skip": "Skip",
     "No thanks": "No thanks",
     "Thanks for your feedback!": "Thanks for your feedback!",
-    "Want to say more? Contact us": "Want to say more? Contact us"
+    "Want to say more? Contact us": "Want to say more? Contact us",
+    "Active positions": "Active positions",
+    "Total exposure": "Total exposure",
+    "Biggest position": "Biggest position",
+    "Last activity": "Last activity",
+    "stock": "stock",
+    "none": "none",
+    "ago": "ago",
+    "closed position": "closed position",
+    "closed positions": "closed positions",
+    "Also shorted by": "Also shorted by",
+    "more": "more"
   }
 }

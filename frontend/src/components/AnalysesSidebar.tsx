@@ -42,7 +42,7 @@ export default function AnalysesSidebar({ code, source = "sidebar" }: { code?: s
         </p>
       </div>
 
-      <ul role="list">
+      <ul role="list" className="overflow-y-auto max-h-[300px]">
         {filtered.map((a) => {
           const colour = codeColourMap[a.code] ?? PALETTE[0];
           return (

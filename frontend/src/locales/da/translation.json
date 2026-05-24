@@ -21,6 +21,8 @@
     "Name": "Navn",
     "Date": "Dato",
     "Value": "Værdi",
+    "Size": "Størrelse",
+    "Activity": "Aktivitet",
     "Search": "Søg",
     "Remove from my list": "Fjern fra min liste",
     "Add to my list": "Tilføj til min liste",
@@ -195,9 +197,9 @@
     "We are not responsible for loss on the user or any indirect losses incurred.": "Vi er ikke ansvarlige for tab hos brugeren eller eventuelle indirekte tab, der måtte opstå.",
     "Current": "Aktual",
     "Previous": "Tidligere",
+    "Last published position": "Sidst offentliggjorte position",
     "The Danish FSA only publishes the names of short": "Finanstilsynet offentliggøre kun navnene på shortsælgere,",
     "sellers with a position of 0.5% or greater.": "som har haft en position på 0.5% eller større.",
-    "Last published position": "Sidst offentliggjorte position",
     "Data on this page comes from announcements.": "Data på denne side stammer fra indberetninger.",
     "Danish FSA updates only positions above 0.5%.": "Finanstilsynet opdaterer kun positioner over 0,5%.",
     "Below 0.5%, updates occur only once it exceeds 0.5% again.": "Under 0,5% opdateres kun, når det igen overstiger 0,5%.",
@@ -446,6 +448,17 @@
     "Skip": "Spring over",
     "No thanks": "Nej tak",
     "Thanks for your feedback!": "Tak for din feedback!",
-    "Want to say more? Contact us": "Vil du sige mere? Kontakt os"
+    "Want to say more? Contact us": "Vil du sige mere? Kontakt os",
+    "Active positions": "Aktive positioner",
+    "Total exposure": "Samlet eksponering",
+    "Biggest position": "Største position",
+    "Last activity": "Sidste aktivitet",
+    "stock": "aktie",
+    "none": "ingen",
+    "ago": "siden",
+    "closed position": "lukket position",
+    "closed positions": "lukkede positioner",
+    "Also shorted by": "Også shortet af",
+    "more": "flere"
   }
 }
