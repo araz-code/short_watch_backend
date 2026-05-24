@@ -13,6 +13,8 @@ import FavoriteToggleButton from "../components/UI/FavoriteToggleButton";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import { recordVisit } from "../utils/recentlyVisited";
 import RecentlyVisitedSidebar from "../components/RecentlyVisitedSidebar";
+import RecentUpdatesSidebar from "../components/RecentUpdatesSidebar";
+import AnalysesSidebar from "../components/AnalysesSidebar";
 
 function typeBadgeCls(category: string): string {
   if (category === "buy") return "bg-green-100 text-green-700 dark:bg-green-500/15 dark:text-green-400";
@@ -223,7 +225,12 @@ const InsiderTransactionDetailsPage: React.FC = () => {
     <div className="h-dvh min-h-[620px] flex flex-col overflow-hidden [@media(max-height:900px)_and_(orientation:landscape)]:overflow-auto [@media(max-height:900px)_and_(orientation:landscape)]:h-auto [@media(max-height:900px)_and_(orientation:landscape)]:min-h-dvh">
       <PageTemplate customLayout={true}>
         <div className="w-screen lg:justify-center lg:gap-4 m-auto flex flex-col flex-1 min-h-0 lg:flex-row">
-          <div className="hidden xl:block xl:flex-1" aria-hidden="true"></div>
+          <div className="hidden xl:block xl:flex-1 relative">
+            <div className="absolute inset-0 flex flex-col items-center pt-[88px] px-4 overflow-y-auto gap-4">
+              <RecentUpdatesSidebar days={30} types="insider" />
+              <AnalysesSidebar source="sidebar_insider_detail" />
+            </div>
+          </div>
           <div className="lg:w-[900px] flex flex-col flex-1 min-h-0 lg:flex-initial">
 
             {/* Back button */}

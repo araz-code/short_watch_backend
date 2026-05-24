@@ -28,6 +28,8 @@ import ShortSellerDetails from "../models/ShortSellerDetails";
 import ShortSellerAnnouncementRow from "../components/ShortSellerAnnouncementRow";
 import ShortSellerDetailsHelpDialog from "../components/ShortSellerDetailsHelpDialog";
 import RecentlyVisitedSidebar from "../components/RecentlyVisitedSidebar";
+import RecentUpdatesSidebar from "../components/RecentUpdatesSidebar";
+import AnalysesSidebar from "../components/AnalysesSidebar";
 import { recordVisit } from "../utils/recentlyVisited";
 
 interface GroupedAnnouncements {
@@ -387,7 +389,12 @@ const ShortSellerDetailsPage: React.FC = () => {
       )}
       <PageTemplate customLayout={true}>
         <div className="w-screen lg:justify-center lg:gap-4 m-auto flex flex-col flex-1 min-h-0 lg:flex-row">
-          <div className="hidden xl:block xl:flex-1" aria-hidden="true"></div>
+          <div className="hidden xl:block xl:flex-1 relative">
+            <div className="absolute inset-0 flex flex-col items-center pt-[88px] px-4 overflow-y-auto gap-4">
+              <RecentUpdatesSidebar days={30} />
+              <AnalysesSidebar source="sidebar_seller_detail" />
+            </div>
+          </div>
 
           <div className="lg:w-[900px] flex flex-col flex-1 min-h-0 lg:flex-initial">
             <div className="flex items-center justify-between pr-2 shrink-0">
