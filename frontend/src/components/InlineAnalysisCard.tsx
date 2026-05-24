@@ -35,7 +35,7 @@ export default function InlineAnalysisCard({ analysis, source, position }: Props
       to={`/analyse/${analysis.slug}`}
       onClick={() =>
         trackEvent("analysis_link_click", {
-          source,
+          click_source: source,
           slug: analysis.slug,
           ...(position !== undefined && { position }),
         })

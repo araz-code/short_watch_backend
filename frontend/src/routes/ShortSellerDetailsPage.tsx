@@ -348,7 +348,7 @@ const ShortSellerDetailsPage: React.FC = () => {
                               to={`/short-seller-details?seller=${o.id}#${symbol}`}
                               onClick={() =>
                                 trackEvent("seller_link_click", {
-                                  source: "overlap",
+                                  click_source: "overlap",
                                   from_seller: data.name,
                                   to_seller: o.name,
                                   symbol,

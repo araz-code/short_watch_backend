@@ -49,7 +49,7 @@ export default function AnalysesSidebar({ code, source = "sidebar" }: { code?: s
             <li key={a.slug} role="listitem">
               <Link
                 to={`/analyse/${a.slug}`}
-                onClick={() => trackEvent("analysis_link_click", { source, slug: a.slug })}
+                onClick={() => trackEvent("analysis_link_click", { click_source: source, slug: a.slug })}
                   className={`block px-3 py-2.5 border-b border-gray-100 dark:border-gray-800 last:border-b-0 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors duration-150 border-l-[3px] ${filtered.indexOf(a) % 2 === 0 ? "bg-white dark:bg-[#19191f]" : "bg-gray-50 dark:bg-[#131318]"}`}
                 style={{ borderLeftColor: colour }}
               >

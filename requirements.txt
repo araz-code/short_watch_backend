@@ -9,7 +9,8 @@ django-cors-headers==4.9.0
 
 pytz~=2023.3.post1
 requests~=2.31.0
-firebase-admin==6.5.0
+firebase-admin==7.4.0
+google-analytics-data==0.22.0
 
 yfinance==0.2.66
 anthropic>=0.40.0

@@ -52,7 +52,7 @@ export default function RelatedAnalyses({ currentSlug, max = 3 }: Props) {
               to={`/analyse/${a.slug}`}
               onClick={() =>
                 trackEvent("analysis_link_click", {
-                  source: "related_analyses",
+                  click_source: "related_analyses",
                   slug: a.slug,
                   from_slug: currentSlug,
                 })

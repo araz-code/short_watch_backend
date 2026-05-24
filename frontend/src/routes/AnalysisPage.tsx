@@ -73,7 +73,7 @@ const AnalysisPage: React.FC = () => {
           <Link
             to={`/analyse/${featured.slug}`}
             onClick={() =>
-              trackEvent("analysis_link_click", { source: "analysis_index_featured", slug: featured.slug })
+              trackEvent("analysis_link_click", { click_source: "analysis_index_featured", slug: featured.slug })
             }
             className="group block mb-10 sm:mb-12 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#19191f] hover:shadow-xl hover:border-gray-300 dark:hover:border-gray-600 hover:-translate-y-0.5 transition-all duration-200"
           >
@@ -147,7 +147,7 @@ const AnalysisPage: React.FC = () => {
                     key={a.slug}
                     to={`/analyse/${a.slug}`}
                     onClick={() =>
-                      trackEvent("analysis_link_click", { source: "analysis_index", slug: a.slug })
+                      trackEvent("analysis_link_click", { click_source: "analysis_index", slug: a.slug })
                     }
                     className="group relative flex flex-col rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#19191f] hover:shadow-lg hover:border-gray-300 dark:hover:border-gray-600 hover:-translate-y-0.5 transition-all duration-200"
                   >

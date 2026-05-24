@@ -1,0 +1,410 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block content_title %}{{ title }}{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+.ga-kpi .ga-label { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; opacity: .7; }
+.ga-kpi .ga-value { font-size: 24px; font-weight: 700; font-variant-numeric: tabular-nums; margin-top: 4px; }
+.ga-range a { margin-right: 4px; }
+.ga-chart-wrap { position: relative; height: 280px; }
+.ga-chart-wrap.tall { height: 360px; }
+.ga-table-card { max-height: 480px; overflow-y: auto; }
+.ga-table-card table { margin-bottom: 0; }
+.ga-table-card code { font-size: 12px; word-break: break-all; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-0">
+
+  <p class="text-muted small mb-3">
+    {{ display_start }} til {{ display_end }} &middot; Genereret {{ generated_at }} &middot; Data cachet i op til 15 min
+  </p>
+
+  <div class="ga-range mb-4">
+    <a href="?range=7d" class="btn btn-sm {% if range_key == '7d' %}btn-primary{% else %}btn-secondary{% endif %}">7 dage</a>
+    <a href="?range=30d" class="btn btn-sm {% if range_key == '30d' %}btn-primary{% else %}btn-secondary{% endif %}">30 dage</a>
+    <a href="?range=90d" class="btn btn-sm {% if range_key == '90d' %}btn-primary{% else %}btn-secondary{% endif %}">90 dage</a>
+    <a href="?range=365d" class="btn btn-sm {% if range_key == '365d' %}btn-primary{% else %}btn-secondary{% endif %}">365 dage</a>
+  </div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+      <div class="card ga-kpi h-100"><div class="card-body">
+        <div class="ga-label">Brugere</div>
+        <div class="ga-value">{{ overview.totalUsers|default:0|floatformat:0 }}</div>
+      </div></div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="card ga-kpi h-100"><div class="card-body">
+        <div class="ga-label">Nye brugere</div>
+        <div class="ga-value">{{ overview.newUsers|default:0|floatformat:0 }}</div>
+      </div></div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="card ga-kpi h-100"><div class="card-body">
+        <div class="ga-label">Returnerende</div>
+        <div class="ga-value text-primary">{{ new_vs_returning.returning.totalUsers|default:0|floatformat:0 }}</div>
+      </div></div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="card ga-kpi h-100"><div class="card-body">
+        <div class="ga-label">Sessioner</div>
+        <div class="ga-value">{{ overview.sessions|default:0|floatformat:0 }}</div>
+      </div></div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="card ga-kpi h-100"><div class="card-body">
+        <div class="ga-label">Sidevisninger</div>
+        <div class="ga-value">{{ overview.screenPageViews|default:0|floatformat:0 }}</div>
+      </div></div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="card ga-kpi h-100"><div class="card-body">
+        <div class="ga-label">Sessioner/bruger</div>
+        <div class="ga-value">{{ overview.sessionsPerUser|default:0|floatformat:2 }}</div>
+      </div></div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="card ga-kpi h-100"><div class="card-body">
+        <div class="ga-label">Sider/session</div>
+        <div class="ga-value">{{ overview.screenPageViewsPerSession|default:0|floatformat:2 }}</div>
+      </div></div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="card ga-kpi h-100"><div class="card-body">
+        <div class="ga-label">Engagement-rate</div>
+        <div class="ga-value">{{ overview.engagementRate_display }}</div>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-header"><h5 class="mb-0">Daglig trafik</h5></div>
+    <div class="card-body">
+      <p class="text-muted small mb-2">Brugere, sessioner og sidevisninger pr. dag</p>
+      <div class="ga-chart-wrap tall"><canvas id="chart-daily"></canvas></div>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-md-6">
+      <div class="card h-100">
+        <div class="card-header"><h5 class="mb-0">Trafikkilder</h5></div>
+        <div class="card-body">
+          <p class="text-muted small mb-2">Sessioner fordelt på kanaler</p>
+          {% if channels %}<div class="ga-chart-wrap"><canvas id="chart-channels"></canvas></div>{% else %}<div class="text-center text-muted py-4">Ingen data</div>{% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card h-100">
+        <div class="card-header"><h5 class="mb-0">Enheder</h5></div>
+        <div class="card-body">
+          <p class="text-muted small mb-2">Brugere efter enhedstype</p>
+          {% if devices %}<div class="ga-chart-wrap"><canvas id="chart-devices"></canvas></div>{% else %}<div class="text-center text-muted py-4">Ingen data</div>{% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-md-6">
+      <div class="card h-100">
+        <div class="card-header"><h5 class="mb-0">Top kilder/medier</h5></div>
+        <div class="card-body p-0 ga-table-card">
+          <table class="table table-sm table-hover mb-0">
+            <thead><tr><th>Kilde</th><th>Medium</th><th class="text-end">Sess.</th><th class="text-end">Brugere</th></tr></thead>
+            <tbody>
+              {% for s in sources %}
+              <tr><td>{{ s.sessionSource }}</td><td>{{ s.sessionMedium }}</td><td class="text-end">{{ s.sessions|floatformat:0 }}</td><td class="text-end">{{ s.totalUsers|floatformat:0 }}</td></tr>
+              {% empty %}<tr><td colspan="4" class="text-center text-muted py-3">Ingen data</td></tr>{% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card h-100">
+        <div class="card-header"><h5 class="mb-0">Geografi - top lande</h5></div>
+        <div class="card-body p-0 ga-table-card">
+          <table class="table table-sm table-hover mb-0">
+            <thead><tr><th>Land</th><th class="text-end">Brugere</th><th class="text-end">Sess.</th></tr></thead>
+            <tbody>
+              {% for c in countries %}
+              <tr><td>{{ c.country }}</td><td class="text-end">{{ c.totalUsers|floatformat:0 }}</td><td class="text-end">{{ c.sessions|floatformat:0 }}</td></tr>
+              {% empty %}<tr><td colspan="3" class="text-center text-muted py-3">Ingen data</td></tr>{% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-md-6">
+      <div class="card h-100">
+        <div class="card-header"><h5 class="mb-0">Top byer</h5></div>
+        <div class="card-body p-0 ga-table-card">
+          <table class="table table-sm table-hover mb-0">
+            <thead><tr><th>By</th><th class="text-end">Brugere</th><th class="text-end">Sess.</th></tr></thead>
+            <tbody>
+              {% for c in cities %}
+              <tr><td>{{ c.city }}</td><td class="text-end">{{ c.totalUsers|floatformat:0 }}</td><td class="text-end">{{ c.sessions|floatformat:0 }}</td></tr>
+              {% empty %}<tr><td colspan="3" class="text-center text-muted py-3">Ingen data</td></tr>{% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card h-100">
+        <div class="card-header"><h5 class="mb-0">Skærmopløsninger</h5></div>
+        <div class="card-body p-0 ga-table-card">
+          <table class="table table-sm table-hover mb-0">
+            <thead><tr><th>Opløsning</th><th class="text-end">Brugere</th><th class="text-end">Sess.</th></tr></thead>
+            <tbody>
+              {% for s in screens %}
+              <tr><td><code>{{ s.screenResolution }}</code></td><td class="text-end">{{ s.totalUsers|floatformat:0 }}</td><td class="text-end">{{ s.sessions|floatformat:0 }}</td></tr>
+              {% empty %}<tr><td colspan="3" class="text-center text-muted py-3">Ingen data</td></tr>{% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-md-6">
+      <div class="card h-100">
+        <div class="card-header"><h5 class="mb-0">Browsere</h5></div>
+        <div class="card-body p-0 ga-table-card">
+          <table class="table table-sm table-hover mb-0">
+            <thead><tr><th>Browser</th><th class="text-end">Brugere</th></tr></thead>
+            <tbody>
+              {% for b in browsers %}
+              <tr><td>{{ b.browser }}</td><td class="text-end">{{ b.totalUsers|floatformat:0 }}</td></tr>
+              {% empty %}<tr><td colspan="2" class="text-center text-muted py-3">Ingen data</td></tr>{% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card h-100">
+        <div class="card-header"><h5 class="mb-0">Operativsystemer</h5></div>
+        <div class="card-body p-0 ga-table-card">
+          <table class="table table-sm table-hover mb-0">
+            <thead><tr><th>OS</th><th class="text-end">Brugere</th></tr></thead>
+            <tbody>
+              {% for o in operating_systems %}
+              <tr><td>{{ o.operatingSystem }}</td><td class="text-end">{{ o.totalUsers|floatformat:0 }}</td></tr>
+              {% empty %}<tr><td colspan="2" class="text-center text-muted py-3">Ingen data</td></tr>{% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-header"><h5 class="mb-0">Mest besøgte sider</h5></div>
+    <div class="card-body p-0 ga-table-card">
+      <table class="table table-sm table-hover mb-0">
+        <thead><tr><th>Side</th><th class="text-end">Visn.</th><th class="text-end">Brugere</th><th class="text-end">Tid/bruger</th><th class="text-end">Engagement</th></tr></thead>
+        <tbody>
+          {% for p in top_pages %}
+          <tr>
+            <td><code>{{ p.pagePath }}</code></td>
+            <td class="text-end">{{ p.screenPageViews|floatformat:0 }}</td>
+            <td class="text-end">{{ p.activeUsers|floatformat:0 }}</td>
+            <td class="text-end">{{ p.time_per_user_display }}</td>
+            <td class="text-end">{{ p.engagementRate_display }}</td>
+          </tr>
+          {% empty %}<tr><td colspan="5" class="text-center text-muted py-3">Ingen data</td></tr>{% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <h4 class="mt-4 mb-2">Sådan finder folk analyserne</h4>
+  <p class="text-muted small mb-3">
+    Trafik der specifikt rammer <code>/analyse/*</code>-sider.
+    {{ analyses_summary.total_views|floatformat:0 }} visninger fra {{ analyses_summary.total_users|floatformat:0 }} unikke brugere,
+    {{ analyses_summary.total_landing_sessions|floatformat:0 }} sessioner landede direkte på en analyse-side,
+    og <code>analysis_link_click</code> blev udløst {{ analyses_summary.total_link_clicks|floatformat:0 }} gange af {{ analyses_summary.total_link_click_users|floatformat:0 }} unikke brugere.
+  </p>
+
+  <div class="row g-3 mb-4">
+    <div class="col-md-6">
+      <div class="card h-100">
+        <div class="card-header"><h5 class="mb-0">Top analyse-sider</h5></div>
+        <div class="card-body p-0 ga-table-card">
+          <table class="table table-sm table-hover mb-0">
+            <thead><tr><th>Side</th><th class="text-end">Visn.</th><th class="text-end">Brugere</th><th class="text-end">Tid/bruger</th></tr></thead>
+            <tbody>
+              {% for p in analyses_pages %}
+              <tr>
+                <td><code>{{ p.pagePath }}</code></td>
+                <td class="text-end">{{ p.screenPageViews|floatformat:0 }}</td>
+                <td class="text-end">{{ p.activeUsers|floatformat:0 }}</td>
+                <td class="text-end">{{ p.time_per_user_display }}</td>
+              </tr>
+              {% empty %}<tr><td colspan="4" class="text-center text-muted py-3">Ingen data</td></tr>{% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card h-100">
+        <div class="card-header"><h5 class="mb-0">Kanaler der sender til analyser</h5></div>
+        <div class="card-body p-0 ga-table-card">
+          <table class="table table-sm table-hover mb-0">
+            <thead><tr><th>Kanal</th><th>Kilde</th><th class="text-end">Sess.</th><th class="text-end">Brugere</th></tr></thead>
+            <tbody>
+              {% for s in analyses_sources %}
+              <tr>
+                <td>{{ s.sessionDefaultChannelGroup }}</td>
+                <td>{{ s.sessionSource }}</td>
+                <td class="text-end">{{ s.sessions|floatformat:0 }}</td>
+                <td class="text-end">{{ s.totalUsers|floatformat:0 }}</td>
+              </tr>
+              {% empty %}<tr><td colspan="4" class="text-center text-muted py-3">Ingen data</td></tr>{% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-header"><h5 class="mb-0">Landingsider for analyser</h5></div>
+    <div class="card-body p-0 ga-table-card">
+      <table class="table table-sm table-hover mb-0">
+        <thead><tr><th>Landingsside</th><th>Kilde</th><th>Medium</th><th class="text-end">Sess.</th><th class="text-end">Brugere</th><th class="text-end">Nye</th><th class="text-end">Engag.</th></tr></thead>
+        <tbody>
+          {% for l in analyses_landing %}
+          <tr>
+            <td><code>{{ l.landingPagePlusQueryString }}</code></td>
+            <td>{{ l.sessionSource }}</td>
+            <td>{{ l.sessionMedium }}</td>
+            <td class="text-end">{{ l.sessions|floatformat:0 }}</td>
+            <td class="text-end">{{ l.totalUsers|floatformat:0 }}</td>
+            <td class="text-end">{{ l.newUsers|floatformat:0 }}</td>
+            <td class="text-end">{{ l.engagementRate_display }}</td>
+          </tr>
+          {% empty %}<tr><td colspan="7" class="text-center text-muted py-3">Ingen data</td></tr>{% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-md-8">
+      <div class="card h-100">
+        <div class="card-header"><h5 class="mb-0">Hvor folk klikker på analyse-links</h5></div>
+        <div class="card-body p-0 ga-table-card">
+          <p class="text-muted small px-3 pt-2 mb-2">Sider hvorfra <code>analysis_link_click</code> blev udløst</p>
+          <table class="table table-sm table-hover mb-0">
+            <thead><tr><th>Side</th><th class="text-end">Klik</th><th class="text-end">Brugere</th></tr></thead>
+            <tbody>
+              {% for c in analysis_clicks %}
+              <tr>
+                <td><code>{{ c.pagePath }}</code></td>
+                <td class="text-end">{{ c.eventCount|floatformat:0 }}</td>
+                <td class="text-end">{{ c.totalUsers|floatformat:0 }}</td>
+              </tr>
+              {% empty %}<tr><td colspan="3" class="text-center text-muted py-3">Ingen data</td></tr>{% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card h-100">
+        <div class="card-header"><h5 class="mb-0">Klik efter click_source</h5></div>
+        <div class="card-body p-0 ga-table-card">
+          <p class="text-muted small px-3 pt-2 mb-2"><code>click_source</code>-param på event'et (registrér som custom dim. i GA4)</p>
+          <table class="table table-sm table-hover mb-0">
+            <thead><tr><th>Source</th><th class="text-end">Klik</th><th class="text-end">Brugere</th></tr></thead>
+            <tbody>
+              {% for c in analysis_clicks_by_source %}
+              <tr>
+                <td><code>{{ c.source }}</code></td>
+                <td class="text-end">{{ c.eventCount|floatformat:0 }}</td>
+                <td class="text-end">{{ c.totalUsers|floatformat:0 }}</td>
+              </tr>
+              {% empty %}<tr><td colspan="3" class="text-center text-muted py-3">Ingen data</td></tr>{% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="text-muted small">Data fra Google Analytics 4. Tabeller og diagrammer cachet i 15 min for at undgå API-quota-forbrug.</p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4"></script>
+{{ chart_data_json|json_script:"chart-data" }}
+<script>
+(function() {
+  const dataEl = document.getElementById("chart-data");
+  if (!dataEl) return;
+  const data = JSON.parse(dataEl.textContent);
+  // Pull actual colors from the page's CSS variables so charts match whatever
+  // theme is active (Jazzmin light/dark, Bootstrap theme, custom CSS, etc.).
+  const rootStyles = getComputedStyle(document.documentElement);
+  const bodyStyles = getComputedStyle(document.body);
+  const textColor = rootStyles.getPropertyValue('--bs-body-color').trim()
+    || bodyStyles.color
+    || '#212529';
+  const gridColor = rootStyles.getPropertyValue('--bs-border-color').trim()
+    || 'rgba(128,128,128,.2)';
+  Chart.defaults.color = textColor;
+  Chart.defaults.borderColor = gridColor;
+  Chart.defaults.font.family = 'inherit';
+
+  if (data.daily && data.daily.length > 0) {
+    new Chart(document.getElementById("chart-daily"), {
+      type: 'line',
+      data: {
+        labels: data.daily.map(d => d.label),
+        datasets: [
+          { label: 'Brugere', data: data.daily.map(d => d.totalUsers), borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,.1)', fill: true, tension: .3, pointRadius: 2 },
+          { label: 'Sessioner', data: data.daily.map(d => d.sessions), borderColor: '#10b981', backgroundColor: 'transparent', tension: .3, pointRadius: 2 },
+          { label: 'Sidevisninger', data: data.daily.map(d => d.screenPageViews), borderColor: '#f59e0b', backgroundColor: 'transparent', tension: .3, pointRadius: 2 },
+        ]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true, grid: { color: gridColor } }, x: { grid: { display: false } } } }
+    });
+  }
+
+  if (data.channels && data.channels.length > 0) {
+    new Chart(document.getElementById("chart-channels"), {
+      type: 'doughnut',
+      data: {
+        labels: data.channels.map(c => c.sessionDefaultChannelGroup),
+        datasets: [{ data: data.channels.map(c => c.sessions), backgroundColor: ['#3b82f6', '#10b981', '#8b5cf6', '#f59e0b', '#ef4444', '#6b7280'] }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+    });
+  }
+
+  if (data.devices && data.devices.length > 0) {
+    new Chart(document.getElementById("chart-devices"), {
+      type: 'doughnut',
+      data: {
+        labels: data.devices.map(d => d.deviceCategory),
+        datasets: [{ data: data.devices.map(d => d.totalUsers), backgroundColor: ['#3b82f6', '#10b981', '#f59e0b'] }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+    });
+  }
+})();
+</script>
+{% endblock %}

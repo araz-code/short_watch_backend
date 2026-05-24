@@ -28,6 +28,10 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 FCM_SERVICE_ACCOUNT_FILE = os.path.join(BASE_DIR, 'service-account.json')
 
+# Google Analytics 4 - reuses the Firebase service account (must be added
+# as Viewer in GA Admin → Property Access Management).
+GA_PROPERTY_ID = os.environ.get('GA_PROPERTY_ID', '452913122')
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -192,8 +196,14 @@ JAZZMIN_SETTINGS = {
     "welcome_sign": "Welcome to the Danish Short Watch Admin",
     "copyright": "Zirium",
     "hide_apps": ['auth'],
-    "order_with_respect_to": ["accounts", "shorts"],
+    "order_with_respect_to": ["dashboard", "accounts", "shorts"],
+    "topmenu_links": [
+        {"name": "GA Dashboard", "url": "admin:ga_dashboard", "permissions": ["auth.view_user"], "icon": "fas fa-chart-line"},
+    ],
     "icons": {
+        # Dashboard
+        "dashboard.gadashboard": "fas fa-chart-line",
+
         # Users
         "accounts.shortwatchuser": "fas fa-user-shield",
         "users.appuser": "fas fa-mobile-screen",

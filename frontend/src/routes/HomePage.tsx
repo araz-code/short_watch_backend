@@ -318,7 +318,7 @@ const HomePage: React.FC = () => {
                 to={item.to}
                 onClick={() => {
                   if (item.slug === "analysis") {
-                    trackEvent("analysis_link_click", { source: "homepage_card" });
+                    trackEvent("analysis_link_click", { click_source: "homepage_card" });
                   } else {
                     trackEvent("homepage_card_click", { card: item.slug });
                   }

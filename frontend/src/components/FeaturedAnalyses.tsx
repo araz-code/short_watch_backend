@@ -34,7 +34,7 @@ export default function FeaturedAnalyses() {
         </h2>
         <Link
           to="/analyse"
-          onClick={() => trackEvent("analysis_link_click", { source: "homepage_featured_seeall" })}
+          onClick={() => trackEvent("analysis_link_click", { click_source: "homepage_featured_seeall" })}
           className="inline-flex items-center gap-1.5 text-xs font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 shrink-0"
         >
           {t("See all")} <FontAwesomeIcon icon={faArrowRight} className="text-[10px]" />
@@ -49,7 +49,7 @@ export default function FeaturedAnalyses() {
             <Link
               key={a.slug}
               to={`/analyse/${a.slug}`}
-              onClick={() => trackEvent("analysis_link_click", { source: "homepage_featured", slug: a.slug })}
+              onClick={() => trackEvent("analysis_link_click", { click_source: "homepage_featured", slug: a.slug })}
               className="group block rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#19191f] hover:shadow-md hover:border-gray-300 dark:hover:border-gray-600 transition-all"
             >
               <div className={`relative bg-gradient-to-br ${gradient} h-9 flex items-center px-3`}>

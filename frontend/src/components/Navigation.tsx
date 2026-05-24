@@ -206,7 +206,7 @@ const Navigation: React.FC = () => {
                       isActive || isAnalysisActive ? activeLinkClasses : linkClasses
                     }
                     onClick={() => {
-                      trackEvent("analysis_link_click", { source: "nav" });
+                      trackEvent("analysis_link_click", { click_source: "nav" });
                       setCollapseMenu(defaultCollapseMenu);
                     }}
                   >

@@ -181,7 +181,7 @@ export default function MobileSidePanel({ code, codes, feedTypes, feedDays }: Pr
                       <Link
                         to={`/analyse/${a.slug}`}
                         onClick={() => {
-                          trackEvent("analysis_link_click", { source: "mobile_panel" });
+                          trackEvent("analysis_link_click", { click_source: "mobile_panel" });
                           setOpen(false);
                         }}
                         className="block px-3 py-3 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
