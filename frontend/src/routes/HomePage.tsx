@@ -221,10 +221,14 @@ const HomePage: React.FC = () => {
         {stats && (
           <section className="py-10 sm:py-12">
             <div className="max-w-[900px] mx-auto px-6">
-              <div className="grid grid-cols-3 gap-y-8 gap-x-4 sm:gap-x-6">
+              <div className="grid grid-cols-3 gap-y-8 gap-x-2 sm:gap-x-4">
                 {stats.shortedCount > 0 && (
-                  <div className="text-center">
-                    <p className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white tabular-nums">
+                  <Link
+                    to="/short-watch"
+                    onClick={() => trackEvent("homepage_stat_click", { stat: "stocks_shorted" })}
+                    className="text-center rounded-lg p-2 sm:p-3 -mx-1 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors group"
+                  >
+                    <p className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white tabular-nums group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                       {stats.shortedCount}
                     </p>
                     <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 mt-1">
@@ -242,11 +246,15 @@ const HomePage: React.FC = () => {
                         {stats.shortedCountDelta} {t("vs. 7d")}
                       </p>
                     )}
-                  </div>
+                  </Link>
                 )}
                 {stats.mostShorted && (
-                  <div className="text-center">
-                    <p className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white tabular-nums">
+                  <Link
+                    to={`/short-watch-details?code=${stats.mostShorted.code}`}
+                    onClick={() => trackEvent("homepage_stat_click", { stat: "most_shorted", code: stats.mostShorted!.code })}
+                    className="text-center rounded-lg p-2 sm:p-3 -mx-1 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors group"
+                  >
+                    <p className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white tabular-nums group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                       {formatNum(stats.mostShorted.value, 2)}%
                     </p>
                     <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 mt-1">
@@ -266,17 +274,21 @@ const HomePage: React.FC = () => {
                         </p>
                       );
                     })()}
-                  </div>
+                  </Link>
                 )}
                 {stats.mostViewed && (
-                  <div className="text-center">
-                    <p className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
+                  <Link
+                    to={`/short-watch-details?code=${stats.mostViewed.code}`}
+                    onClick={() => trackEvent("homepage_stat_click", { stat: "most_viewed", code: stats.mostViewed!.code })}
+                    className="text-center rounded-lg p-2 sm:p-3 -mx-1 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors group"
+                  >
+                    <p className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                       {stats.mostViewed.symbol}
                     </p>
                     <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 mt-1">
                       {t("Most viewed")}
                     </p>
-                  </div>
+                  </Link>
                 )}
               </div>
               {stats.updatedAt && (

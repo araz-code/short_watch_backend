@@ -38,6 +38,7 @@ export type AnalyticsEvent =
   | "analysis_link_click"
   | "analysis_panel_open"
   | "homepage_card_click"
+  | "homepage_stat_click"
   | "dcf_share_click"
   | "email_click"
   | "contact_form_view"

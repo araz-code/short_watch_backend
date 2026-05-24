@@ -357,7 +357,23 @@ const ShortPositionDetailsPage: React.FC = () => {
     <div className="h-dvh dark:bg-[#0d0d12] flex flex-col overflow-hidden [@media(max-height:900px)_and_(orientation:landscape)]:overflow-auto [@media(max-height:900px)_and_(orientation:landscape)]:h-auto [@media(max-height:900px)_and_(orientation:landscape)]:min-h-dvh">
       <title>{stockName ? `Zirium | ${stockSymbol} – ${stockName}` : "Zirium | Stock Details"}</title>
       {stockName && (
-        <meta name="description" content={`View short position data, charts, and largest sellers for ${stockName} (${stockSymbol}).`} />
+        <>
+          <meta name="description" content={`View short position data, charts, and largest sellers for ${stockName} (${stockSymbol}).`} />
+          <meta property="og:title" content={`${stockSymbol} – ${stockName} | Zirium`} />
+          <meta property="og:description" content={`Se short-positioner, største short-sellere og historisk udvikling for ${stockName} (${stockSymbol}) på Zirium.`} />
+          <meta property="og:type" content="website" />
+          <meta property="og:url" content={`https://www.zirium.dk/short-watch-details?code=${code}`} />
+          <meta property="og:image" content="https://www.zirium.dk/og-images/zirium-default.png" />
+          <meta property="og:image:width" content="1200" />
+          <meta property="og:image:height" content="630" />
+          <meta property="og:image:type" content="image/png" />
+          <meta property="og:site_name" content="Zirium" />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:title" content={`${stockSymbol} – ${stockName} | Zirium`} />
+          <meta name="twitter:description" content={`Se short-positioner, største short-sellere og historisk udvikling for ${stockName} (${stockSymbol}) på Zirium.`} />
+          <meta name="twitter:image" content="https://www.zirium.dk/og-images/zirium-default.png" />
+          <link rel="canonical" href={`https://www.zirium.dk/short-watch-details?code=${code}`} />
+        </>
       )}
       <PageTemplate>
         <div className="w-screen lg:justify-center lg:gap-4 m-auto flex flex-col flex-1 min-h-0 lg:flex-row">
