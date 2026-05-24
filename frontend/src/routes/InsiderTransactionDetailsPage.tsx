@@ -11,6 +11,8 @@ import ToggleSwitch from "../components/UI/RadioButtonToggle";
 import InsiderHelpDialog from "../components/InsiderHelpDialog";
 import FavoriteToggleButton from "../components/UI/FavoriteToggleButton";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { recordVisit } from "../utils/recentlyVisited";
+import RecentlyVisitedSidebar from "../components/RecentlyVisitedSidebar";
 
 function typeBadgeCls(category: string): string {
   if (category === "buy") return "bg-green-100 text-green-700 dark:bg-green-500/15 dark:text-green-400";
@@ -134,6 +136,16 @@ const InsiderTransactionDetailsPage: React.FC = () => {
     }
   }, [data, t, cvr]);
 
+  useEffect(() => {
+    if (cvr && data?.name) {
+      recordVisit({
+        path: `/insider-details?cvr=${cvr}`,
+        title: data.name,
+        type: "insider_detail",
+      });
+    }
+  }, [cvr, data?.name]);
+
   const getRole = (tx: { person_role: string; person_role_da: string }) =>
     locale === "da-DK" ? (tx.person_role_da || tx.person_role) : tx.person_role;
 
@@ -209,9 +221,10 @@ const InsiderTransactionDetailsPage: React.FC = () => {
 
   return (
     <div className="h-dvh min-h-[620px] flex flex-col overflow-hidden [@media(max-height:900px)_and_(orientation:landscape)]:overflow-auto [@media(max-height:900px)_and_(orientation:landscape)]:h-auto [@media(max-height:900px)_and_(orientation:landscape)]:min-h-dvh">
-      <PageTemplate>
-        <div className="w-screen lg:justify-center m-auto flex flex-col flex-1 min-h-0">
-          <div className="lg:max-w-[900px] lg:mx-auto w-full flex flex-col flex-1 min-h-0">
+      <PageTemplate customLayout={true}>
+        <div className="w-screen lg:justify-center lg:gap-4 m-auto flex flex-col flex-1 min-h-0 lg:flex-row">
+          <div className="hidden xl:block xl:flex-1" aria-hidden="true"></div>
+          <div className="lg:w-[900px] flex flex-col flex-1 min-h-0 lg:flex-initial">
 
             {/* Back button */}
             <div className="flex items-center justify-between shrink-0">
@@ -596,6 +609,11 @@ const InsiderTransactionDetailsPage: React.FC = () => {
                 </div>
               </>
             )}
+          </div>
+          <div className="hidden xl:block xl:flex-1 relative">
+            <div className="absolute inset-0 flex flex-col items-center pt-[88px] px-4 overflow-y-auto gap-4">
+              <RecentlyVisitedSidebar />
+            </div>
           </div>
         </div>
       </PageTemplate>

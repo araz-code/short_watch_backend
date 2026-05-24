@@ -207,7 +207,7 @@ const FAQPage: React.FC = () => {
     <PageTemplate>
       <title>Zirium | FAQ</title>
       <meta name="description" content="Frequently asked questions about EU short selling rules: reporting thresholds, public disclosure, and who has to report." />
-      <div className="w-full max-w-[760px] mx-auto px-5 sm:px-8 py-10 sm:py-16 dark:text-white">
+      <div className="w-full max-w-[860px] mx-auto px-5 sm:px-8 py-10 sm:py-16 dark:text-white">
         <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight mb-2">
           {t("Frequently asked questions")}
         </h1>

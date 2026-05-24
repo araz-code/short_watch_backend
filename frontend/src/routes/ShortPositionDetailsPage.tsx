@@ -22,6 +22,8 @@ import RecentUpdatesSidebar from "../components/RecentUpdatesSidebar";
 import AnalysesSidebar from "../components/AnalysesSidebar";
 import MobileSidePanel from "../components/MobileSidePanel";
 import { analyses } from "../data/analyses";
+import { recordVisit } from "../utils/recentlyVisited";
+import RecentlyVisitedSidebar from "../components/RecentlyVisitedSidebar";
 
 const detailOptions = ["Historic data", "Largest sellers", "Price flow"];
 const periodOptions = ["1W", "1M", "3M", "6M", "YTD", "Max"];
@@ -186,6 +188,17 @@ const ShortPositionDetailsPage: React.FC = () => {
     trackEvent("position_details_view", { position_code: code ?? "" });
     trackPageView(`/short-watch-details`, "short watch details");
   }, [code]);
+
+  useEffect(() => {
+    if (code && stockSymbol && stockName) {
+      recordVisit({
+        path: `/short-watch-details?code=${code}`,
+        title: stockSymbol,
+        subtitle: stockName,
+        type: "stock_detail",
+      });
+    }
+  }, [code, stockSymbol, stockName]);
 
   useEffect(() => {
     trackEvent("period_change", { page: "position_details", period: selectedPeriod });
@@ -375,7 +388,7 @@ const ShortPositionDetailsPage: React.FC = () => {
           <link rel="canonical" href={`https://www.zirium.dk/short-watch-details?code=${code}`} />
         </>
       )}
-      <PageTemplate>
+      <PageTemplate customLayout={true}>
         <div className="w-screen lg:justify-center lg:gap-4 m-auto flex flex-col flex-1 min-h-0 lg:flex-row">
           <div className="hidden xl:block xl:flex-1 relative">
             <div className="absolute inset-0 flex flex-col items-center pt-[88px] px-4 overflow-y-auto gap-4">
@@ -433,7 +446,11 @@ const ShortPositionDetailsPage: React.FC = () => {
             {content}
           </div>
 
-          <div className="hidden xl:block xl:flex-1" aria-hidden="true"></div>
+          <div className="hidden xl:block xl:flex-1 relative">
+            <div className="absolute inset-0 flex flex-col items-center pt-[88px] px-4 overflow-y-auto gap-4">
+              <RecentlyVisitedSidebar />
+            </div>
+          </div>
         </div>
       </PageTemplate>
       {showHelp && (

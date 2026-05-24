@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchTopLists, TopLists, TopListStock, TopListShortedStock, TopListActiveStock, TopListDeltaStock, TopListDaysToCoverStock, TopListShortSellersStock } from "../apis/ShortPositionAPI";
 import PageTemplate from "../components/PageTemplate";
 import RecentUpdatesSidebar from "../components/RecentUpdatesSidebar";
+import RecentlyVisitedSidebar from "../components/RecentlyVisitedSidebar";
 import AnalysesSidebar from "../components/AnalysesSidebar";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
@@ -180,7 +181,7 @@ const TopListsPage: React.FC = () => {
     <div className="min-h-screen dark:bg-[#0d0d12]">
       <title>Zirium | Top Lists</title>
       <meta name="description" content="Discover the top 10 most shorted, most viewed, and most followed Danish stocks. Updated daily." />
-      <PageTemplate>
+      <PageTemplate customLayout={true}>
         <div className="w-screen lg:flex lg:justify-center lg:gap-4 m-auto">
           <aside className="hidden xl:block xl:flex-1">
             <div className="sticky top-0 flex flex-col items-center pt-6 px-4 gap-4 max-h-screen overflow-y-auto">
@@ -197,7 +198,11 @@ const TopListsPage: React.FC = () => {
             {content}
             <div className="h-8"></div>
           </div>
-          <aside className="hidden xl:block xl:flex-1" aria-hidden="true"></aside>
+          <aside className="hidden xl:block xl:flex-1">
+            <div className="flex flex-col items-center pt-[88px] px-4 gap-4">
+              <RecentlyVisitedSidebar />
+            </div>
+          </aside>
         </div>
       </PageTemplate>
     </div>

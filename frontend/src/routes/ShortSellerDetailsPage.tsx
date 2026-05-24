@@ -27,6 +27,8 @@ import Announcement from "../models/Announcement";
 import ShortSellerDetails from "../models/ShortSellerDetails";
 import ShortSellerAnnouncementRow from "../components/ShortSellerAnnouncementRow";
 import ShortSellerDetailsHelpDialog from "../components/ShortSellerDetailsHelpDialog";
+import RecentlyVisitedSidebar from "../components/RecentlyVisitedSidebar";
+import { recordVisit } from "../utils/recentlyVisited";
 
 interface GroupedAnnouncements {
   [key: string]: Announcement[];
@@ -119,6 +121,16 @@ const ShortSellerDetailsPage: React.FC = () => {
     trackEvent("seller_details_view", { seller: seller ?? "" });
     trackPageView(`/short-seller-details`, "short seller details");
   }, [seller]);
+
+  useEffect(() => {
+    if (seller && data?.name) {
+      recordVisit({
+        path: `/short-seller-details?seller=${seller}`,
+        title: data.name,
+        type: "seller_detail",
+      });
+    }
+  }, [seller, data?.name]);
 
   useEffect(() => {
     if (!data || !location.hash) return;
@@ -373,9 +385,9 @@ const ShortSellerDetailsPage: React.FC = () => {
       {data?.name && (
         <meta name="description" content={`View all short selling positions held by ${data.name} in Danish stocks.`} />
       )}
-      <PageTemplate>
+      <PageTemplate customLayout={true}>
         <div className="w-screen lg:justify-center lg:gap-4 m-auto flex flex-col flex-1 min-h-0 lg:flex-row">
-          <div className="w-1/3 justify-end items-center hidden"></div>
+          <div className="hidden xl:block xl:flex-1" aria-hidden="true"></div>
 
           <div className="lg:w-[900px] flex flex-col flex-1 min-h-0 lg:flex-initial">
             <div className="flex items-center justify-between pr-2 shrink-0">
@@ -412,7 +424,11 @@ const ShortSellerDetailsPage: React.FC = () => {
             {content}
           </div>
 
-          <div className="w-1/3 justify-end items-center hidden"></div>
+          <div className="hidden xl:block xl:flex-1 relative">
+            <div className="absolute inset-0 flex flex-col items-center pt-[88px] px-4 overflow-y-auto gap-4">
+              <RecentlyVisitedSidebar />
+            </div>
+          </div>
         </div>
       </PageTemplate>
 

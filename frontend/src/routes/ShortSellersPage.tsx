@@ -12,6 +12,7 @@ import ShortSellerRow from "../components/ShortSellerRow";
 import DropDownMenu from "../components/UI/DropDownMenu";
 import ShortSellersHelpDialog from "../components/ShortSellersHelpDialog";
 import RecentUpdatesSidebar from "../components/RecentUpdatesSidebar";
+import RecentlyVisitedSidebar from "../components/RecentlyVisitedSidebar";
 import AnalysesSidebar from "../components/AnalysesSidebar";
 
 const options = ["Name", "Date", "Size", "Activity"];
@@ -130,7 +131,7 @@ const ShortSellersPage: React.FC = () => {
     <div className="h-dvh min-h-[620px] flex flex-col overflow-hidden [@media(max-height:900px)_and_(orientation:landscape)]:overflow-auto [@media(max-height:900px)_and_(orientation:landscape)]:h-auto [@media(max-height:900px)_and_(orientation:landscape)]:min-h-dvh">
       <title>Zirium | Short Sellers</title>
       <meta name="description" content="See which hedge funds and institutions hold large short positions in Danish stocks. Positions of 0.5% or greater reported by the Danish FSA." />
-      <PageTemplate>
+      <PageTemplate customLayout={true}>
         <div className="w-screen lg:justify-center lg:gap-4 m-auto flex flex-col flex-1 min-h-0 lg:flex-row">
           <div className="hidden xl:block xl:flex-1 relative">
             <div className="absolute inset-0 flex flex-col items-center pt-[88px] px-4 overflow-y-auto gap-4">
@@ -238,7 +239,11 @@ const ShortSellersPage: React.FC = () => {
               </div>
             </section>
           </div>
-          <div className="hidden xl:block xl:flex-1" aria-hidden="true"></div>
+          <div className="hidden xl:block xl:flex-1 relative">
+            <div className="absolute inset-0 flex flex-col items-center pt-[88px] px-4 overflow-y-auto gap-4">
+              <RecentlyVisitedSidebar />
+            </div>
+          </div>
         </div>
       </PageTemplate>
 

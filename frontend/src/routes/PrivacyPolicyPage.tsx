@@ -15,7 +15,7 @@ const PrivacyPolicyPage: React.FC = () => {
 
   return (
     <PageTemplate>
-      <div className="max-w-[760px] mx-auto px-5 sm:px-8 py-10 sm:py-16 dark:text-white">
+      <div className="max-w-[860px] mx-auto px-5 sm:px-8 py-10 sm:py-16 dark:text-white">
         <header className="mb-10 sm:mb-14 text-center">
           <h1 className="text-3xl sm:text-5xl font-semibold tracking-tight text-gray-900 dark:text-white">
             {t("Privacy policy")}
