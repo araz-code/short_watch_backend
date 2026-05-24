@@ -209,6 +209,15 @@ JAZZMIN_SETTINGS = {
         "shorts.announcement": "fas fa-bullhorn",
         "shorts.runstatus": "fas fa-clipboard-check",
 
+        # Insider transactions
+        "insider_transactions.insiderissuer": "fas fa-landmark",
+        "insider_transactions.insidertransaction": "fas fa-money-bill-transfer",
+        "insider_transactions.processedannouncement": "fas fa-check-double",
+
+        # User feedback
+        "request_logging.contactsubmission": "fas fa-envelope",
+        "request_logging.pagefeedback": "fas fa-thumbs-up",
+
         # Ops / logs
         "errors.error": "fas fa-triangle-exclamation",
         "request_logging.requestlog": "fas fa-code",
