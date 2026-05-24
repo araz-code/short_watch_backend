@@ -431,6 +431,7 @@
     "Too many requests. Please try again later.": "For mange forespørgsler. Prøv igen senere.",
     "Message must be between 10 and 2000 characters.": "Beskeden skal være mellem 10 og 2000 tegn.",
     "Please enter a valid email address.": "Indtast venligst en gyldig emailadresse.",
+    "feedback_intro": "Dit klik hjælper os forstå, hvilke analyser læserne efterspørger, og hvilke emner vi bør prioritere fremover. Det tager kun et øjeblik, og det værdsætter vi.",
     "Was this helpful?": "Var dette nyttigt?",
     "Yes, helpful": "Ja, nyttigt",
     "No, not helpful": "Nej, ikke nyttigt",

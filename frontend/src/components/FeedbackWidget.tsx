@@ -88,11 +88,17 @@ export default function FeedbackWidget({ pageType, pageId, compact = false }: Pr
   return (
     <section className={sectionClass}>
       {stage === "idle" && (
-        <div className="flex items-center gap-x-4 gap-y-2 flex-wrap">
-          <div className="flex items-center gap-3 flex-wrap">
-            <span className={promptClass}>
-              {t("Was this helpful?")}
-            </span>
+        <div className="space-y-3">
+          {!compact && (
+            <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+              {t("feedback_intro")}
+            </p>
+          )}
+          <div className="flex items-center gap-x-4 gap-y-2 flex-wrap">
+            <div className="flex items-center gap-3 flex-wrap">
+              <span className={promptClass}>
+                {t("Was this helpful?")}
+              </span>
             <div className="flex gap-2">
               <button
                 type="button"
@@ -112,17 +118,18 @@ export default function FeedbackWidget({ pageType, pageId, compact = false }: Pr
               </button>
             </div>
           </div>
-          {!compact && (
-            <Link
-              to={`/contact?category=${pageType === "analysis" ? "analysis" : "feedback"}`}
-              onClick={() =>
-                trackEvent("feedback_contact_click", { page_type: pageType, page_id: pageId })
-              }
-              className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:underline underline-offset-2 transition-colors"
-            >
-              {t("Want to say more? Contact us")} →
-            </Link>
-          )}
+            {!compact && (
+              <Link
+                to={`/contact?category=${pageType === "analysis" ? "analysis" : "feedback"}`}
+                onClick={() =>
+                  trackEvent("feedback_contact_click", { page_type: pageType, page_id: pageId })
+                }
+                className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:underline underline-offset-2 transition-colors"
+              >
+                {t("Want to say more? Contact us")} →
+              </Link>
+            )}
+          </div>
         </div>
       )}
 

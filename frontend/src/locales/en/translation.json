@@ -328,6 +328,7 @@
     "Too many requests. Please try again later.": "Too many requests. Please try again later.",
     "Message must be between 10 and 2000 characters.": "Message must be between 10 and 2000 characters.",
     "Please enter a valid email address.": "Please enter a valid email address.",
+    "feedback_intro": "Your click helps us understand which analyses readers want, and which topics we should prioritize going forward. It only takes a moment, and we truly appreciate it.",
     "Was this helpful?": "Was this helpful?",
     "Yes, helpful": "Yes, helpful",
     "No, not helpful": "No, not helpful",
