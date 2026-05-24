@@ -356,6 +356,12 @@
     "closed position": "closed position",
     "closed positions": "closed positions",
     "Also shorted by": "Also shorted by",
-    "more": "more"
+    "more": "more",
+    "active": "active",
+    "active_plural": "active",
+    "total": "total",
+    "biggest": "biggest",
+    "Only historic positions": "Only historic positions",
+    "Previously": "Previously"
   }
 }

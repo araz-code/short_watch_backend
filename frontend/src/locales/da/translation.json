@@ -459,6 +459,12 @@
     "closed position": "lukket position",
     "closed positions": "lukkede positioner",
     "Also shorted by": "Også shortet af",
-    "more": "flere"
+    "more": "flere",
+    "active": "aktiv",
+    "active_plural": "aktive",
+    "total": "total",
+    "biggest": "største",
+    "Only historic positions": "Kun historiske positioner",
+    "Previously": "Tidligere"
   }
 }
