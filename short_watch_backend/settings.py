@@ -266,3 +266,13 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
 # CSRF_TRUSTED_ORIGINS = ["https://www.zirium.dk/", "https://www.zirium.dk", "http://localhost"]
 
+
+# ─── ntfy push notifications ────────────────────────────────────────────────
+# Sends a push notification on contact form submissions and page feedback.
+# Set NTFY_TOPIC to a hard-to-guess string (topics are public on the public ntfy.sh server).
+# Subscribe to the same topic in the ntfy iOS/Android app or in a browser.
+# Leave NTFY_TOPIC empty to disable notifications entirely.
+import os as _os
+NTFY_URL = _os.environ.get('ZIRIUM_NTFY_URL', 'https://ntfy.sh')
+NTFY_TOPIC = _os.environ.get('ZIRIUM_NTFY_TOPIC', '')
+

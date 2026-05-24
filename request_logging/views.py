@@ -9,6 +9,7 @@ from django.views.decorators.http import require_POST
 
 from request_logging import service
 from request_logging.models import ContactSubmission, PageFeedback
+from request_logging.notifications import send_ntfy
 
 COLOR_PRIMARY = 'rgba(33, 97, 140, 0.9)'
 COLOR_SECONDARY = 'rgba(161, 202, 193, 0.9)'
@@ -413,6 +414,16 @@ def submit_contact(request: HttpRequest) -> HttpResponse:
         client_ip=client_ip,
         user_agent=user_agent,
     )
+
+    # Push notification (best-effort, swallows failures).
+    sender = email or '(anonymous)'
+    preview = message if len(message) <= 500 else message[:500] + '…'
+    send_ntfy(
+        title=f'New contact: {category}',
+        message=f'From: {sender}\n\n{preview}',
+        tags=['incoming_envelope'],
+    )
+
     return JsonResponse({'ok': True})
 
 
@@ -472,4 +483,25 @@ def submit_page_feedback(request: HttpRequest) -> HttpResponse:
         client_ip=client_ip,
         user_agent=user_agent,
     )
+
+    # Always notify; use lower priority for thumbs without a comment so the
+    # user can mute them in the ntfy app if they get too noisy.
+    tag = 'thumbsup' if sentiment == 'positive' else 'thumbsdown'
+    sentiment_label = 'Positive' if sentiment == 'positive' else 'Negative'
+    if comment:
+        preview = comment if len(comment) <= 500 else comment[:500] + '…'
+        send_ntfy(
+            title=f'{sentiment_label} feedback on {page_type}',
+            message=f'Page: {page_id}\n\n{preview}',
+            tags=[tag],
+            priority='default',
+        )
+    else:
+        send_ntfy(
+            title=f'{sentiment_label} vote on {page_type}',
+            message=f'Page: {page_id}\n(no comment)',
+            tags=[tag],
+            priority='default',
+        )
+
     return JsonResponse({'ok': True})
