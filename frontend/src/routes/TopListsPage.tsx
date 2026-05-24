@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchTopLists, TopLists, TopListStock, TopListShortedStock, TopListActiveStock, TopListDeltaStock, TopListDaysToCoverStock, TopListShortSellersStock } from "../apis/ShortPositionAPI";
 import PageTemplate from "../components/PageTemplate";
+import RecentUpdatesSidebar from "../components/RecentUpdatesSidebar";
+import AnalysesSidebar from "../components/AnalysesSidebar";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import ErrorBlock from "../components/UI/ErrorBlock";
@@ -180,6 +182,12 @@ const TopListsPage: React.FC = () => {
       <meta name="description" content="Discover the top 10 most shorted, most viewed, and most followed Danish stocks. Updated daily." />
       <PageTemplate>
         <div className="w-screen lg:flex lg:justify-center lg:gap-4 m-auto">
+          <aside className="hidden xl:block xl:flex-1">
+            <div className="sticky top-0 flex flex-col items-center pt-6 px-4 gap-4 max-h-screen overflow-y-auto">
+              <RecentUpdatesSidebar days={30} />
+              <AnalysesSidebar source="sidebar_top_lists" />
+            </div>
+          </aside>
           <div className="lg:w-[900px]">
             <div className="pt-6 pb-6 px-2 text-center">
               <h1 className="text-2xl lg:text-3xl dark:text-white">
@@ -189,6 +197,7 @@ const TopListsPage: React.FC = () => {
             {content}
             <div className="h-8"></div>
           </div>
+          <aside className="hidden xl:block xl:flex-1" aria-hidden="true"></aside>
         </div>
       </PageTemplate>
     </div>

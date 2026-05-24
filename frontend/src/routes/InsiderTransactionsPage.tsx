@@ -7,6 +7,8 @@ import { trackEvent } from "../analytics";
 import ErrorBlock from "../components/UI/ErrorBlock";
 import LoadingIndicator from "../components/UI/LoadingIndicator";
 import PageTemplate from "../components/PageTemplate";
+import RecentUpdatesSidebar from "../components/RecentUpdatesSidebar";
+import AnalysesSidebar from "../components/AnalysesSidebar";
 import DropDownMenu from "../components/UI/DropDownMenu";
 import InsiderHelpDialog from "../components/InsiderHelpDialog";
 
@@ -157,6 +159,12 @@ const InsiderTransactionsPage: React.FC = () => {
     <div className="h-dvh min-h-[620px] flex flex-col overflow-hidden [@media(max-height:900px)_and_(orientation:landscape)]:overflow-auto [@media(max-height:900px)_and_(orientation:landscape)]:h-auto [@media(max-height:900px)_and_(orientation:landscape)]:min-h-dvh">
       <PageTemplate>
         <div className="w-screen lg:justify-center lg:gap-4 m-auto flex flex-col flex-1 min-h-0 lg:flex-row">
+          <div className="hidden xl:block xl:flex-1 relative">
+            <div className="absolute inset-0 flex flex-col items-center pt-[88px] px-4 overflow-y-auto gap-4">
+              <RecentUpdatesSidebar days={30} />
+              <AnalysesSidebar source="sidebar_insider" />
+            </div>
+          </div>
           <div className="lg:w-[900px] flex flex-col flex-1 min-h-0 lg:flex-initial">
             <div className="pt-6 pb-4 px-2 shrink-0">
               <div className="flex items-center justify-center gap-2">
@@ -265,6 +273,7 @@ const InsiderTransactionsPage: React.FC = () => {
               </div>
             </section>
           </div>
+          <div className="hidden xl:block xl:flex-1" aria-hidden="true"></div>
         </div>
       </PageTemplate>
       {showHelp && <InsiderHelpDialog page="list" onClose={() => setShowHelp(false)} />}

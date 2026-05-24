@@ -137,10 +137,10 @@ const ShortWatchPage: React.FC = () => {
                 </Link>
               </li>,
             ];
-            if (index === 5 && analyses[0]) {
+            if (index === 4 && analyses[0]) {
               items.push(
                 <li key="inline-analysis-top" className="xl:hidden">
-                  <InlineAnalysisCard analysis={analyses[0]} source="inline_short_list_card" position={6} />
+                  <InlineAnalysisCard analysis={analyses[0]} source="inline_short_list_card" position={5} />
                 </li>
               );
             }
@@ -165,7 +165,7 @@ const ShortWatchPage: React.FC = () => {
         <div className="w-screen lg:justify-center lg:gap-4 m-auto flex flex-col flex-1 min-h-0 lg:flex-row">
           <div className="hidden xl:block xl:flex-1 relative">
             <div className="absolute inset-0 flex flex-col items-center pt-[88px] px-4 overflow-y-auto gap-4">
-              <RecentUpdatesSidebar codes={showMyList ? myList : undefined} types="insider" days={30} />
+              <RecentUpdatesSidebar codes={showMyList ? myList : undefined} days={30} />
               <AnalysesSidebar source="sidebar_short_watch" />
             </div>
           </div>
