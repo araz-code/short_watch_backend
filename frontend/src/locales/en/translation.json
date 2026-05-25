@@ -77,6 +77,7 @@
     "Got it": "Got it",
     "Maybe later": "Maybe later",
     "days to cover": "days to cover",
+    "current rate": "at daily volume",
     "Days to cover": "Days to cover",
     "Days to cover shows how many trading days it would take all short sellers to exit their positions if they traded at the 30-day average daily volume. A higher number means shorts are more trapped — covering quickly would move the market against them.": "Days to cover shows how many trading days it would take all short sellers to exit their positions if they traded at the 30-day average daily volume. A higher number means shorts are more trapped: Covering quickly would move the market against them.",
     "All prices are estimates. The actual execution price is never publicly disclosed.": "All prices are estimates. The actual execution price is never publicly disclosed.",

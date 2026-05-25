@@ -247,76 +247,154 @@ const ShortPositionDetailsPage: React.FC = () => {
     const filteredChartValues = processChartValues(data.chartValues, selectedPeriod);
     const filteredPriceFlow = computePriceFlow(filteredChartValues, data.sharesOutstanding ?? null);
 
+    const totalSellerPct = (data.sellers as { value: number }[] | null | undefined)?.reduce((sum, s) => sum + (s.value ?? 0), 0) ?? 0;
+    const sellerCount = data.sellers?.length ?? 0;
+    const analysisForStock = code ? analyses.find((a) => a.code === code) : undefined;
+
     content = (
       <>
-        <div className="text-center pb-1 sm:pb-2 dark:text-white shrink-0">
-          {data.historic.length > 0 && (
-            <>
-              <div className="flex items-center justify-center gap-4 mt-1">
-                <span className="text-4xl sm:text-5xl font-bold tabular-nums leading-none">
-                  {formatNum(data.historic[0].value, 2)}%
-                </span>
-                <div className="flex flex-col gap-1">
-                  {data.historic.length > 1 && (
-                    <ChangeIndicator
-                      value={data.historic[0].value}
-                      prevValue={data.historic[1].value}
-                      small
-                    />
-                  )}
-                  {data.velocity7d != null && (
-                    <span className={`text-[11px] rounded px-1 py-px font-medium tabular-nums w-full text-center ${
-                      data.velocity7d > 0
-                        ? "bg-red-500/10 dark:bg-red-500/25 text-red-600 dark:text-red-400"
-                        : data.velocity7d < 0
-                        ? "bg-emerald-500/10 dark:bg-emerald-500/25 text-emerald-600 dark:text-emerald-400"
-                        : "bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400"
-                    }`}>
-                      {data.velocity7d >= 0 ? "+" : ""}{formatNum(data.velocity7d, 2)}% 7d
-                    </span>
-                  )}
-                </div>
-              </div>
-              {(data.percentileAllTime != null || data.daysToCover != null) && (
-                <div className="flex items-center justify-center gap-2 mt-1.5 flex-wrap text-xs sm:text-sm tabular-nums text-gray-600 dark:text-gray-300">
-                  {data.percentileAllTime != null && (
-                    <span className="rounded px-1.5 py-px font-medium bg-amber-500/10 dark:bg-amber-500/25 text-amber-600 dark:text-amber-400">
-                      {formatOrdinal(Math.floor(data.percentileAllTime), i18n.language)} {t("percentile")}
-                    </span>
-                  )}
-                  {data.percentileAllTime != null && data.daysToCover != null && (
-                    <span aria-hidden="true">·</span>
-                  )}
-                  {data.daysToCover != null && (
-                    <span>{formatNum(data.daysToCover, 1)} {t("days to cover")}</span>
-                  )}
-                </div>
-              )}
-            </>
-          )}
-          <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mt-0.5 tabular-nums">
-            {data.sellers ? data.sellers.length : 0} {(data.sellers?.length ?? 0) === 1 ? t("large seller") : t("large sellers")}
-            {(data.sellers?.length ?? 0) > 0 && (
-              <>
-                {" · "}
-                {formatNum((data.sellers as { value: number }[]).reduce((sum, s) => sum + (s.value ?? 0), 0), 2)}% {t("combined")}
-              </>
-            )}
-          </p>
-          {(() => {
-            const analysis = code ? analyses.find((a) => a.code === code) : undefined;
-            if (!analysis) return null;
-            return (
+        {/* Mobile/tablet: 3 compact KPI cards (big number lives in the table below) */}
+        <div className="lg:hidden pb-1 sm:pb-2 dark:text-white shrink-0">
+          <div className="grid grid-cols-3 gap-2 px-3">
+            <dl className="bg-white dark:bg-[#19191f] border border-gray-100 dark:border-gray-800 rounded-lg px-2 py-1.5 text-center m-0">
+              <dt className="text-[11px] uppercase tracking-wide text-gray-600 dark:text-gray-300 font-semibold leading-tight">
+                {t("percentile")}
+              </dt>
+              <dd className="ml-0 text-base sm:text-lg font-bold text-amber-600 dark:text-amber-400 tabular-nums mt-0.5 leading-tight">
+                {data.percentileAllTime != null
+                  ? formatOrdinal(Math.floor(data.percentileAllTime), i18n.language)
+                  : "—"}
+              </dd>
+              <dd className="ml-0 text-[11px] text-gray-600 dark:text-gray-300 leading-tight">
+                {t("all-time")}
+              </dd>
+            </dl>
+
+            <dl className="bg-white dark:bg-[#19191f] border border-gray-100 dark:border-gray-800 rounded-lg px-2 py-1.5 text-center m-0">
+              <dt className="text-[11px] uppercase tracking-wide text-gray-600 dark:text-gray-300 font-semibold leading-tight">
+                {t("days to cover")}
+              </dt>
+              <dd className="ml-0 text-base sm:text-lg font-bold text-gray-900 dark:text-white tabular-nums mt-0.5 leading-tight">
+                {data.daysToCover != null ? formatNum(data.daysToCover, 1) : "—"}
+              </dd>
+              <dd className="ml-0 text-[11px] text-gray-600 dark:text-gray-300 leading-tight">
+                {t("current rate")}
+              </dd>
+            </dl>
+
+            <dl className="bg-white dark:bg-[#19191f] border border-gray-100 dark:border-gray-800 rounded-lg px-2 py-1.5 text-center m-0">
+              <dt className="text-[11px] uppercase tracking-wide text-gray-600 dark:text-gray-300 font-semibold leading-tight">
+                {sellerCount === 1 ? t("large seller") : t("large sellers")}
+              </dt>
+              <dd className="ml-0 text-base sm:text-lg font-bold text-gray-900 dark:text-white tabular-nums mt-0.5 leading-tight">
+                {sellerCount}
+              </dd>
+              <dd className="ml-0 text-[11px] text-gray-600 dark:text-gray-300 tabular-nums leading-tight">
+                {sellerCount > 0 ? `${formatNum(totalSellerPct, 2)}% ${t("combined")}` : "—"}
+              </dd>
+            </dl>
+          </div>
+
+          {analysisForStock && (
+            <div className="text-center mt-2">
               <a
-                href={`/analyse/${analysis.slug}`}
-                onClick={() => trackEvent("analysis_link_click", { click_source: "stock_detail", slug: analysis.slug })}
-                className="inline-flex items-center gap-1.5 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 mt-2 transition-colors"
+                href={`/analyse/${analysisForStock.slug}`}
+                onClick={() => trackEvent("analysis_link_click", { click_source: "stock_detail", slug: analysisForStock.slug })}
+                className="inline-flex items-center gap-1.5 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
                 {t("Læs seneste analyse")} →
               </a>
-            );
-          })()}
+            </div>
+          )}
+        </div>
+
+        {/* Desktop KPI cards */}
+        <div className="hidden lg:block pb-3 shrink-0 dark:text-white">
+          <div className="flex gap-3">
+            {/* Hero block: Short Interest */}
+            <div className="basis-1/2 bg-blue-50/40 dark:bg-blue-950/20 border border-gray-100 dark:border-gray-800 rounded-lg px-5 py-4 text-center flex flex-col justify-center">
+              <p className="text-5xl font-bold text-gray-900 dark:text-white tabular-nums leading-none">
+                {data.historic.length > 0 ? `${formatNum(data.historic[0].value, 2)}%` : "—"}
+              </p>
+              <div className="flex items-center justify-center gap-1.5 mt-2.5 flex-wrap min-h-[24px]">
+                {data.historic.length > 1 && (
+                  <ChangeIndicator
+                    value={data.historic[0].value}
+                    prevValue={data.historic[1].value}
+                  />
+                )}
+                {data.velocity7d != null && (
+                  <span className={`text-xs rounded-md px-1.5 py-0.5 font-medium tabular-nums ${
+                    data.velocity7d > 0
+                      ? "bg-red-500/10 dark:bg-red-500/25 text-red-600 dark:text-red-400"
+                      : data.velocity7d < 0
+                      ? "bg-emerald-500/10 dark:bg-emerald-500/25 text-emerald-600 dark:text-emerald-400"
+                      : "bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400"
+                  }`}>
+                    {data.velocity7d >= 0 ? "+" : ""}{formatNum(data.velocity7d, 2)}% 7d
+                  </span>
+                )}
+              </div>
+              <p className="text-xs uppercase tracking-wide text-gray-600 dark:text-gray-300 font-semibold mt-3">
+                {t("Short interest")}
+              </p>
+            </div>
+
+            {/* Right side: 3 mini KPIs */}
+            <div className="basis-1/2 grid grid-cols-3 gap-3">
+              <dl className="bg-white dark:bg-[#19191f] border border-gray-100 dark:border-gray-800 rounded-lg px-3 py-2.5 text-center flex flex-col justify-center m-0">
+                <dt className="text-[11px] uppercase tracking-wide text-gray-600 dark:text-gray-300 font-semibold">
+                  {t("percentile")}
+                </dt>
+                <dd className="ml-0 text-2xl font-bold text-amber-600 dark:text-amber-400 tabular-nums mt-1">
+                  {data.percentileAllTime != null
+                    ? formatOrdinal(Math.floor(data.percentileAllTime), i18n.language)
+                    : "—"}
+                </dd>
+                <dd className="ml-0 text-[11px] text-gray-600 dark:text-gray-300">
+                  {t("all-time")}
+                </dd>
+              </dl>
+
+              <dl className="bg-white dark:bg-[#19191f] border border-gray-100 dark:border-gray-800 rounded-lg px-3 py-2.5 text-center flex flex-col justify-center m-0">
+                <dt className="text-[11px] uppercase tracking-wide text-gray-600 dark:text-gray-300 font-semibold">
+                  {t("days to cover")}
+                </dt>
+                <dd className="ml-0 text-2xl font-bold text-gray-900 dark:text-white tabular-nums mt-1">
+                  {data.daysToCover != null ? formatNum(data.daysToCover, 1) : "—"}
+                </dd>
+                <dd className="ml-0 text-[11px] text-gray-600 dark:text-gray-300">
+                  {t("current rate")}
+                </dd>
+              </dl>
+
+              <dl className="bg-white dark:bg-[#19191f] border border-gray-100 dark:border-gray-800 rounded-lg px-3 py-2.5 text-center flex flex-col justify-center m-0">
+                <dt className="text-[11px] uppercase tracking-wide text-gray-600 dark:text-gray-300 font-semibold">
+                  {sellerCount === 1 ? t("large seller") : t("large sellers")}
+                </dt>
+                <dd className="ml-0 text-2xl font-bold text-gray-900 dark:text-white tabular-nums mt-1">
+                  {sellerCount}
+                </dd>
+                <dd className="ml-0 text-[11px] text-gray-600 dark:text-gray-300 tabular-nums">
+                  {sellerCount > 0 ? `${formatNum(totalSellerPct, 2)}% ${t("combined")}` : "—"}
+                </dd>
+              </dl>
+            </div>
+          </div>
+
+          {analysisForStock && (
+            <div className="text-center mt-2.5">
+              <a
+                href={`/analyse/${analysisForStock.slug}`}
+                onClick={() => trackEvent("analysis_link_click", { click_source: "stock_detail", slug: analysisForStock.slug })}
+                className="inline-flex items-center gap-1.5 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                {t("Læs seneste analyse")} →
+              </a>
+            </div>
+          )}
         </div>
         <div className="flex flex-col flex-1 min-h-0">
           <div className="mb-3 shrink-0">
