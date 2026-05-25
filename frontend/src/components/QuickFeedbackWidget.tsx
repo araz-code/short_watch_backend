@@ -97,11 +97,11 @@ export default function QuickFeedbackWidget() {
     <div
       role="dialog"
       aria-labelledby="quick-feedback-title"
-      className="hidden xl:block fixed bottom-4 right-4 z-40 w-[340px] bg-white dark:bg-[#19191f] rounded-xl border border-gray-200 dark:border-gray-700 shadow-2xl"
+      className="hidden xl:block fixed bottom-4 right-4 z-40 w-[440px] bg-white dark:bg-[#19191f] rounded-xl border border-gray-200 dark:border-gray-700 shadow-2xl"
     >
-      <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700">
-        <p id="quick-feedback-title" className="font-semibold text-sm text-gray-900 dark:text-white">
-          {isDa ? "Send mig en besked" : "Send me a message"}
+      <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-200 dark:border-gray-700">
+        <p id="quick-feedback-title" className="font-semibold text-base text-gray-900 dark:text-white">
+          {isDa ? "Send en besked" : "Send a message"}
         </p>
         <button
           type="button"
@@ -125,7 +125,7 @@ export default function QuickFeedbackWidget() {
           </p>
         </div>
       ) : (
-        <form onSubmit={submit} className="p-4 space-y-3">
+        <form onSubmit={submit} className="p-5 space-y-4">
           <div>
             <label htmlFor="qf-category" className="block text-xs font-medium text-gray-700 dark:text-gray-200 mb-1">
               {isDa ? "Kategori" : "Category"}
@@ -151,7 +151,7 @@ export default function QuickFeedbackWidget() {
               id="qf-message"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              rows={4}
+              rows={6}
               maxLength={2000}
               placeholder={isDa ? "Skriv din besked her..." : "Write your message here..."}
               className="w-full px-2.5 py-1.5 text-sm bg-white dark:bg-[#0f0f12] border border-gray-300 dark:border-gray-600 rounded-md text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-blue-400 focus:outline-none resize-none"
