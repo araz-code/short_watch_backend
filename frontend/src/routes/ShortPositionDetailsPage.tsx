@@ -265,9 +265,7 @@ const ShortPositionDetailsPage: React.FC = () => {
                   ? formatOrdinal(Math.floor(data.percentileAllTime), i18n.language)
                   : "—"}
               </dd>
-              <dd className="ml-0 text-[11px] text-gray-600 dark:text-gray-300 leading-tight">
-                {t("all-time")}
-              </dd>
+              <dd className="ml-0 text-[11px] leading-tight invisible" aria-hidden="true">·</dd>
             </dl>
 
             <dl className="bg-white dark:bg-[#19191f] border border-gray-100 dark:border-gray-800 rounded-lg px-2 py-1.5 text-center m-0">
@@ -277,9 +275,7 @@ const ShortPositionDetailsPage: React.FC = () => {
               <dd className="ml-0 text-base sm:text-lg font-bold text-gray-900 dark:text-white tabular-nums mt-0.5 leading-tight">
                 {data.daysToCover != null ? formatNum(data.daysToCover, 1) : "—"}
               </dd>
-              <dd className="ml-0 text-[11px] text-gray-600 dark:text-gray-300 leading-tight">
-                {t("current rate")}
-              </dd>
+              <dd className="ml-0 text-[11px] leading-tight invisible" aria-hidden="true">·</dd>
             </dl>
 
             <dl className="bg-white dark:bg-[#19191f] border border-gray-100 dark:border-gray-800 rounded-lg px-2 py-1.5 text-center m-0">
@@ -352,9 +348,7 @@ const ShortPositionDetailsPage: React.FC = () => {
                     ? formatOrdinal(Math.floor(data.percentileAllTime), i18n.language)
                     : "—"}
                 </dd>
-                <dd className="ml-0 text-[11px] text-gray-600 dark:text-gray-300">
-                  {t("all-time")}
-                </dd>
+                <dd className="ml-0 text-[11px] invisible" aria-hidden="true">·</dd>
               </dl>
 
               <dl className="bg-white dark:bg-[#19191f] border border-gray-100 dark:border-gray-800 rounded-lg px-3 py-2.5 text-center flex flex-col justify-center m-0">
@@ -364,9 +358,7 @@ const ShortPositionDetailsPage: React.FC = () => {
                 <dd className="ml-0 text-2xl font-bold text-gray-900 dark:text-white tabular-nums mt-1">
                   {data.daysToCover != null ? formatNum(data.daysToCover, 1) : "—"}
                 </dd>
-                <dd className="ml-0 text-[11px] text-gray-600 dark:text-gray-300">
-                  {t("current rate")}
-                </dd>
+                <dd className="ml-0 text-[11px] invisible" aria-hidden="true">·</dd>
               </dl>
 
               <dl className="bg-white dark:bg-[#19191f] border border-gray-100 dark:border-gray-800 rounded-lg px-3 py-2.5 text-center flex flex-col justify-center m-0">

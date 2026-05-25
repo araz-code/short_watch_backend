@@ -15,7 +15,7 @@ const DetailsHelpDialog: React.FC<{ onClose: () => void; sharesOutstanding: numb
       <div className="space-y-6">
         <section>
           <h2 className="text-sm font-semibold uppercase tracking-wider text-blue-500 dark:text-blue-400 mb-2">
-            {t("The big number")}
+            {t("The big number")} ({t("Desktop")})
           </h2>
           <p>
             {t(
