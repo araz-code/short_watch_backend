@@ -33,10 +33,12 @@ export default function AnalysesSidebar({ code, source = "sidebar" }: { code?: s
   // across re-renders but changes on each fresh page load.
   const [randomSeed] = useState<number>(() => Math.random());
 
-  // When viewing a stock-specific list, suggest 2 additional analyses below:
-  // the most recent one not already shown, plus a random other one.
+  // When viewing a stock-specific page, always suggest 2 additional analyses:
+  // the most recent one not already shown, plus a random other one. This also
+  // covers stock pages with NO stock-specific analyses, so the sidebar still
+  // appears with discovery suggestions.
   const extras = useMemo<Analysis[]>(() => {
-    if (!code || filtered.length === 0) return [];
+    if (!code) return [];
     const shown = new Set(filtered.map((a) => a.slug));
     const remaining = analyses.filter((a) => !shown.has(a.slug));
     if (remaining.length === 0) return [];
@@ -47,7 +49,13 @@ export default function AnalysesSidebar({ code, source = "sidebar" }: { code?: s
     return [mostRecent, randomOne];
   }, [code, filtered, randomSeed]);
 
-  if (filtered.length === 0) return null;
+  if (filtered.length === 0 && extras.length === 0) return null;
+
+  // When the stock has no relevant analyses, the "extras" become the only
+  // items shown. Tag those clicks differently so the dashboard can tell
+  // discovery-fallback clicks apart from "below the relevant ones" clicks.
+  const extrasSource =
+    filtered.length === 0 ? `${source}_fallback` : `${source}_other`;
 
   const renderItem = (a: Analysis, stripeIndex: number, itemSource: string) => {
     const colour = codeColourMap[a.code] ?? PALETTE[0];
@@ -88,17 +96,23 @@ export default function AnalysesSidebar({ code, source = "sidebar" }: { code?: s
       </div>
 
       <ul role="list" className="overflow-y-auto max-h-[300px]">
-        {filtered.map((a, i) => renderItem(a, i, source))}
+        {filtered.length > 0
+          ? filtered.map((a, i) => renderItem(a, i, source))
+          : code && (
+              <li role="presentation" className="px-3 py-3 border-b border-gray-100 dark:border-gray-800">
+                <p className="text-xs italic text-gray-500 dark:text-gray-400">
+                  {t("No analysis for this stock yet")}
+                </p>
+              </li>
+            )}
         {extras.length > 0 && (
-          <>
-            <li role="presentation" className="px-3 py-1.5 bg-gray-100 dark:bg-[#131318] border-y border-gray-200 dark:border-gray-700">
-              <p className="text-[10px] font-bold uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                {t("More short selling analyses")}
-              </p>
-            </li>
-            {extras.map((a, i) => renderItem(a, filtered.length + i, `${source}_other`))}
-          </>
+          <li role="presentation" className="px-3 py-1.5 bg-gray-100 dark:bg-[#131318] border-y border-gray-200 dark:border-gray-700">
+            <p className="text-[10px] font-bold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+              {t("More short selling analyses")}
+            </p>
+          </li>
         )}
+        {extras.map((a, i) => renderItem(a, filtered.length + i, extrasSource))}
       </ul>
     </div>
   );
