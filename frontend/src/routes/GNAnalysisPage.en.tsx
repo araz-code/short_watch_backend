@@ -324,7 +324,8 @@ const GNAnalysisPageEn: React.FC = () => {
 
         {/* ── Header ── */}
         <header className="mb-10 mt-4">
-          <p className="text-lg text-gray-700 dark:text-gray-200 font-medium mb-4">Analysis by Araz Bayat Makoo (Zirium) - May 14, 2026</p>
+          <p className="text-lg text-gray-700 dark:text-gray-200 font-medium mb-1">Analysis by Araz Bayat Makoo (Zirium) - May 14, 2026</p>
+          <p className="text-sm italic text-gray-500 dark:text-gray-400 mb-4">(References to insider trading were removed on May 26, 2026, because the data from Finanstilsynet has not been updated.)</p>
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-white mb-3 leading-tight">
             Short selling analysis: Short sellers hold firm despite Amplifon sale
           </h1>
@@ -612,7 +613,7 @@ const GNAnalysisPageEn: React.FC = () => {
               <p>Organic growth of 1% for the entire group. Enterprise fell 3%, while Gaming grew 16% in Q4. Free cash flow of DKK 1.1 billion. The market was positively surprised by the cash flow, but the stock only rose briefly.</p>
             </TimelineEvent>
             <TimelineEvent date="April 2025" title="3-year low: DKK 82.60" color="#e63946">
-              <p>The stock hit its floor on April 9, 2025 at DKK 82.60, a decline of 63% from the 3-year high in June 2024. Short interest was around 9.6%. In the following weeks, six insiders purchased shares for a combined total of approximately DKK 4.9 million, led by CEO Peter Karlstromer (DKK 2.4 million) and CFO Soeren Jelert (DKK 738,000).</p>
+              <p>The stock hit its floor on April 9, 2025 at DKK 82.60, a decline of 63% from the 3-year high in June 2024. Short interest was around 9.6%.</p>
             </TimelineEvent>
             <TimelineEvent date="March 16, 2026" title="Hearing sold to Amplifon: +36% in one day" color="#2a9d8f">
               <p>GN announced the sale of the Hearing division (ReSound, Beltone, approximately 5,500 employees) to Amplifon for DKK 17 billion (DKK 12.6 billion cash + 56 million Amplifon shares). The stock rose 36% to DKK 118 on massive volume. Short interest fell from 13.12% to 10.85% in two days.</p>
@@ -623,90 +624,9 @@ const GNAnalysisPageEn: React.FC = () => {
           </div>
         </section>
 
-        {/* ── Insider section ── */}
-        <section className="mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">10. Insider transactions</h2>
-          <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            In the period from March to May 2025, six insiders purchased GN shares on the open market with their own funds.
-            The total amount is approximately DKK 4.9 million, spread across seven separate purchases. No
-            insider sales have been recorded in the available period.
-          </p>
-
-          <div className="overflow-x-auto rounded-2xl border border-gray-100 dark:border-gray-800 mb-6">
-            <table className="w-full text-left">
-              <caption className="sr-only">Insider transactions in GN Store Nord</caption>
-              <thead>
-                <tr className="bg-blue-500 text-white">
-                  <th scope="col" className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">Person</th>
-                  <th scope="col" className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">Date</th>
-                  <th scope="col" className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">Shares</th>
-                  <th scope="col" className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">Price</th>
-                  <th scope="col" className="px-4 py-3 text-xs font-semibold uppercase tracking-wide hidden sm:table-cell">Amount</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="bg-white dark:bg-[#19191f]">
-                  <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">Peter Karlstromer (CEO)</td>
-                  <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-300">May 28</td>
-                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">25,000</td>
-                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">94.84 DKK</td>
-                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white hidden sm:table-cell">2,371,000 DKK</td>
-                </tr>
-                <tr className="bg-gray-50/50 dark:bg-[#15151a]">
-                  <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">Soeren Jelert (CFO)</td>
-                  <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-300">May 2</td>
-                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">8,200</td>
-                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">90.05 DKK</td>
-                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white hidden sm:table-cell">738,410 DKK</td>
-                </tr>
-                <tr className="bg-white dark:bg-[#19191f]">
-                  <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">Joergen Bundgaard Hansen</td>
-                  <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-300">May 15-16</td>
-                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">7,000</td>
-                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">93.66-98.34 DKK</td>
-                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white hidden sm:table-cell">656,323 DKK</td>
-                </tr>
-                <tr className="bg-gray-50/50 dark:bg-[#15151a]">
-                  <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">Lise Skaarup Mortensen</td>
-                  <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-300">Mar 12</td>
-                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">4,000</td>
-                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">118.77 DKK</td>
-                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white hidden sm:table-cell">475,080 DKK</td>
-                </tr>
-                <tr className="bg-white dark:bg-[#19191f]">
-                  <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">Charlotte Johs</td>
-                  <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-300">Mar 18</td>
-                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">3,270</td>
-                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">118.98 DKK</td>
-                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white hidden sm:table-cell">388,920 DKK</td>
-                </tr>
-                <tr className="bg-gray-50/50 dark:bg-[#15151a]">
-                  <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">Jukka Pekka Pertola</td>
-                  <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-300">May 16</td>
-                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">2,354</td>
-                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white">94.55 DKK</td>
-                  <td className="px-4 py-3 text-sm tabular-nums text-gray-900 dark:text-white hidden sm:table-cell">222,521 DKK</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            Most notable is CEO Peter Karlstromer's purchase on May 28, 2025 for DKK 2.4 million. It is a
-            significant amount and a clear signal of management's belief in the company's future. CFO Soeren Jelert
-            also purchased shares for DKK 738,000 shortly before.
-          </p>
-          <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-            Overall, the picture is unambiguous: Six different insiders have all purchased shares on the open market
-            during a period of high short interest, and none have sold. It is a positive signal, but it should
-            be seen in the context that the stock currently trades at approximately DKK 94, close to the prices the insiders
-            purchased at in May 2025.
-          </p>
-        </section>
-
         {/* ── The core question ── */}
         <section className="mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">11. The central question: Can the remaining business stand on its own?</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">10. The central question: Can the remaining business stand on its own?</h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             After the sale of Hearing, GN Store Nord is left with two divisions: Enterprise (Jabra professional
             equipment for meeting rooms and offices) and Gaming (SteelSeries). Together, they generated approximately
@@ -722,7 +642,6 @@ const GNAnalysisPageEn: React.FC = () => {
                 <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>SteelSeries growing 7-13% organically (2026 guidance)</li>
                 <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Enterprise video conferencing growing double digits</li>
                 <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Cost-savings program of DKK 200 million from 2027</li>
-                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Six insiders (incl. CEO and CFO) have purchased shares</li>
               </ul>
             </div>
             <div className="bg-red-50 dark:bg-red-500/10 rounded-2xl border border-red-100 dark:border-red-500/20 p-5">
@@ -740,7 +659,7 @@ const GNAnalysisPageEn: React.FC = () => {
 
         {/* ── Conclusion ── */}
         <section className="mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">12. Conclusion</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">11. Conclusion</h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             GN Store Nord is in the midst of the most comprehensive transformation in the company's recent history.
             Over two years, the company has shut down its consumer division, sold its hearing aid business, and lowered expectations
