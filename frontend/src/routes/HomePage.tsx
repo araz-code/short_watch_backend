@@ -6,7 +6,6 @@ import {
   faClockRotateLeft,
   faPerson,
   faArrowRight,
-  faUserTie,
   faFileLines,
   faTrophy,
 } from "@fortawesome/free-solid-svg-icons";
@@ -60,14 +59,6 @@ const cards: HomeCard[] = [
       "See which stocks are most shorted, trending, and most viewed.",
     to: "/top-lists",
     slug: "top_lists",
-  },
-  {
-    icon: faUserTie,
-    title: "Insider Trades",
-    content:
-      "Track when CEOs, board members, and other insiders buy or sell shares in Danish companies.",
-    to: "/insider-transactions",
-    slug: "insider_trades",
   },
   {
     icon: faFileLines,

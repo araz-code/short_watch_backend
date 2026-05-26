@@ -54,13 +54,18 @@ export default function RecentUpdatesSidebar({ code, codes, types, days }: Props
   // When filtering by my list but list is empty, skip the fetch and show nothing
   const isEmptyList = codes !== undefined && codes.length === 0;
 
-  const { data, isLoading } = useQuery({
+  const { data: rawData, isLoading } = useQuery({
     queryKey: ["recent-feed", code ?? null, codes?.join(",") ?? null, types ?? null, days ?? null],
     staleTime: 30_000,
     refetchInterval: 60_000,
     enabled: !isEmptyList,
     queryFn: ({ signal }) => fetchRecentFeed({ signal, code, codes, types, days }),
   });
+
+  // Insider trades temporarily hidden until Finanstilsynet data is reliable
+  // across all stocks. Re-enable by removing this filter and the disabled
+  // header text below.
+  const data = rawData?.filter((item) => item.type !== "insider");
 
   const todayLabel = t("today");
 
@@ -76,9 +81,7 @@ export default function RecentUpdatesSidebar({ code, codes, types, days }: Props
           {t("Recent updates")}
         </p>
         <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-          {types === 'insider'
-            ? (isDa ? "Insiderhandler" : "Insider trades")
-            : (isDa ? "Store sælgere & Insiderhandler" : "Large sellers & Insider trades")}
+          {isDa ? "Store sælgere" : "Large sellers"}
         </p>
       </div>
 

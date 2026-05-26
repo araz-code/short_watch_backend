@@ -29,8 +29,12 @@ function formatRelative(ts: number, isDa: boolean): string {
 
 export default function RecentlyVisitedSidebar() {
   const { i18n } = useTranslation();
-  const entries = useRecentlyVisited();
+  const allEntries = useRecentlyVisited();
   const isDa = i18n.language.startsWith("da");
+
+  // Insider trades temporarily disabled - filter out old insider entries from
+  // localStorage so they don't dead-link to removed routes.
+  const entries = allEntries.filter((entry) => entry.type !== "insider_detail");
 
   if (entries.length === 0) return null;
 

@@ -65,13 +65,16 @@ export default function MobileSidePanel({ code, codes, feedTypes, feedDays }: Pr
   const todayLabel = t("today");
 
   const isEmptyList = codes !== undefined && codes.length === 0;
-  const { data: feed, isLoading } = useQuery({
+  const { data: rawFeed, isLoading } = useQuery({
     queryKey: ["recent-feed-mobile", code ?? null, codes?.join(",") ?? null, feedTypes ?? null, feedDays ?? null],
     staleTime: 30_000,
     refetchInterval: 60_000,
     enabled: open && !isEmptyList,
     queryFn: ({ signal }) => fetchRecentFeed({ signal, code, codes, types: feedTypes, days: feedDays }),
   });
+
+  // Insider trades temporarily hidden until Finanstilsynet data is reliable.
+  const feed = rawFeed?.filter((item) => item.type !== "insider");
 
   return (
     <>

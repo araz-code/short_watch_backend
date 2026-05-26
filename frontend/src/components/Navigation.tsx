@@ -179,17 +179,6 @@ const Navigation: React.FC = () => {
                 </li>
                 <li>
                   <NavLink
-                    to="/insider-transactions"
-                    className={({ isActive }) =>
-                      isActive ? activeLinkClasses : linkClasses
-                    }
-                    onClick={() => setCollapseMenu(defaultCollapseMenu)}
-                  >
-                    {t("Insider Trades")}
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink
                     to="/top-lists"
                     className={({ isActive }) =>
                       isActive ? activeLinkClasses : linkClasses

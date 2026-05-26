@@ -25,8 +25,9 @@ const PrivacyPolicyPage = lazy(() => import("./routes/PrivacyPolicyPage.tsx"));
 const TermsOfAgreementPage = lazy(() => import("./routes/TermsOfAgreementPage.tsx"));
 const CookiePolicyPage = lazy(() => import("./routes/CookiePolicyPage.tsx"));
 const FAQPage = lazy(() => import("./routes/FAQPage.tsx"));
-const InsiderTransactionsPage = lazy(() => import("./routes/InsiderTransactionsPage.tsx"));
-const InsiderTransactionDetailsPage = lazy(() => import("./routes/InsiderTransactionDetailsPage.tsx"));
+// Insider trading routes temporarily disabled (Finanstilsynet data is not
+// reliable across all stocks). To re-enable: restore the two lazy imports
+// above and the route entries in the router below.
 const ZealAnalysisPageDa = lazy(() => import("./routes/ZealAnalysisPage.tsx"));
 const ZealAnalysisPageEn = lazy(() => import("./routes/ZealAnalysisPage.en.tsx"));
 const GNAnalysisPageDa = lazy(() => import("./routes/GNAnalysisPage.tsx"));
@@ -141,14 +142,6 @@ const router = createBrowserRouter([
   {
     path: "faq",
     element: <ErrorBoundary><FAQPage /></ErrorBoundary>,
-  },
-  {
-    path: "insider-transactions",
-    element: <ErrorBoundary><InsiderTransactionsPage /></ErrorBoundary>,
-  },
-  {
-    path: "insider-details",
-    element: <ErrorBoundary><InsiderTransactionDetailsPage /></ErrorBoundary>,
   },
   {
     path: "analyse",
