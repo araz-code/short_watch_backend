@@ -17,7 +17,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 
 from errors.models import Error
-from request_logging.service import delete_old_logs, process_visits
+from request_logging.service import delete_old_logs
 from short_watch_backend.settings import ANNOUNCEMENT_API_KEY, FCM_SERVICE_ACCOUNT_FILE, DEBUG
 from shorts.models import ShortPosition, RunStatus, LargeShortSelling, ShortPositionChart, Stock, Announcement, \
     CompanyMap, ShortSeller
@@ -122,7 +122,6 @@ class Command(BaseCommand):
         driver.quit()
 
         delete_old_logs()
-        process_visits()
 
     @staticmethod
     def is_within_range_around_whole_hour(minutes_around=4):

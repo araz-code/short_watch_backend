@@ -15,7 +15,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 
 from errors.models import Error
-from request_logging.service import delete_old_logs, process_visits
+from request_logging.service import delete_old_logs
 from short_watch_backend.settings import ANNOUNCEMENT_API_KEY, FCM_SERVICE_ACCOUNT_FILE, DEBUG
 from shorts.models import ShortPosition, RunStatus, LargeShortSelling, ShortPositionChart, Stock
 from shorts.utils import parse_headline, parse_publication_date, get_stock_for_issuer, get_or_create_seller
@@ -90,7 +90,6 @@ class Command(BaseCommand):
         RunStatus.objects.filter(executed_at__lt=timezone.now() - timedelta(days=3)).delete()
 
         delete_old_logs()
-        process_visits()
 
     def fetch_large_short_selling(self):
         try:
