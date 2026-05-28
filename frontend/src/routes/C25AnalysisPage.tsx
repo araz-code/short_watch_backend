@@ -103,7 +103,7 @@ const COMPARISON_DATA: ComparisonPoint[] = [
   { date: "2026-02", c25: 95.9, sp500: 163.6, nasdaq: 164.9, stoxx: 141.9, omx: 143.8 },
   { date: "2026-03", c25: 93.1, sp500: 155.3, nasdaq: 157.0, stoxx: 130.5, omx: 130.7 },
   { date: "2026-04", c25: 96.4, sp500: 171.5, nasdaq: 181.1, stoxx: 136.8, omx: 136.5 },
-  { date: "2026-05", c25: 99.0, sp500: 178.9, nasdaq: 193.9, stoxx: 140.6, omx: 141.1 },
+  { date: "2026-05", c25: 98.4, sp500: 178.9, nasdaq: 194.0, stoxx: 140.6, omx: 140.8 },
 ];
 
 // Sektorvægte fra officielle Nasdaq Index factsheets.
@@ -187,21 +187,21 @@ const C25AnalysisPage: React.FC = () => {
       <title>Hvorfor C25 har stået stille i 5 år | Zirium</title>
       <meta
         name="description"
-        content="C25 har tabt 1% over 5 år, mens S&P 500 er steget 78% og europæiske peers cirka 41%. Vi ser på sektorforskydningen, de største vindere og tabere, og hvad der forklarer det danske efterslæb."
+        content="C25 har tabt 2% over 5 år, mens S&P 500 er steget 79% og europæiske peers cirka 41%. Vi ser på sektorforskydningen, de største vindere og tabere, og hvad der forklarer det danske efterslæb."
       />
       <meta property="og:title" content="Hvorfor C25 har stået stille i 5 år" />
-      <meta property="og:description" content="C25 -1% mens peers steg 40-78%. Sektorforskydninger og enkelt-aktie-kollaps forklarer det danske efterslæb." />
+      <meta property="og:description" content="C25 -2% mens peers steg 40-79%. Sektorforskydninger og enkelt-aktie-kollaps forklarer det danske efterslæb." />
       <meta property="og:type" content="article" />
       <meta property="og:url" content={`https://www.zirium.dk/analyse/${SLUG}`} />
       <meta property="og:site_name" content="Zirium" />
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content="Hvorfor C25 har stået stille i 5 år" />
-      <meta name="twitter:description" content="C25 -1% mens peers steg 40-78%. Sektorforskydninger og enkelt-aktie-kollaps forklarer det danske efterslæb." />
+      <meta name="twitter:description" content="C25 -2% mens peers steg 40-79%. Sektorforskydninger og enkelt-aktie-kollaps forklarer det danske efterslæb." />
       <script type="application/ld+json">{JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Article",
         "headline": "Hvorfor C25 har stået stille i 5 år",
-        "description": "C25 har tabt 1% over 5 år, mens S&P 500 er steget 78% og europæiske peers cirka 41%.",
+        "description": "C25 har tabt 2% over 5 år, mens S&P 500 er steget 79% og europæiske peers cirka 41%.",
         "author": { "@type": "Person", "name": "Araz Bayat Makoo" },
         "publisher": { "@type": "Organization", "name": "Zirium", "url": "https://www.zirium.dk" },
         "datePublished": "2026-05-28",
@@ -236,9 +236,9 @@ const C25AnalysisPage: React.FC = () => {
             OMX Copenhagen 25 (C25)
           </p>
           <p className="text-gray-600 dark:text-gray-300 mt-3 leading-relaxed">
-            Målt på prisindeks i lokal valuta har C25 tabt 1,1% over de sidste
-            5 år (25. maj 2021 til 26. maj 2026), mens S&P 500 er steget 78,4%,
-            STOXX Europe 600 er steget 41,6% og OMX Stockholm 30 er steget 41,2%.
+            Målt på prisindeks i lokal valuta har C25 tabt 1,6% over de sidste
+            5 år (25. maj 2021 til 27. maj 2026), mens S&P 500 er steget 78,9%,
+            STOXX Europe 600 er steget 40,6% og OMX Stockholm 30 er steget 40,8%.
             Selv det nære nordiske marked har leveret cirka 42 procentpoint mere
             end det danske. Kilde: Yahoo Finance (tickerne ^OMXC25, ^GSPC,
             ^STOXX og ^OMX).
@@ -265,17 +265,17 @@ const C25AnalysisPage: React.FC = () => {
 
         {/* KPIs */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-12">
-          <KPI value="+78,4%" label="S&P 500 (5 år)" highlight tone="green" />
-          <KPI value="+41,2%" label="OMX Stockholm 30 (5 år)" />
-          <KPI value="+41,6%" label="STOXX 600 (5 år)" />
-          <KPI value="-1,1%" label="OMX C25 (5 år)" highlight tone="red" />
+          <KPI value="+78,9%" label="S&P 500 (5 år)" highlight tone="green" />
+          <KPI value="+40,8%" label="OMX Stockholm 30 (5 år)" />
+          <KPI value="+40,6%" label="STOXX 600 (5 år)" />
+          <KPI value="-1,6%" label="OMX C25 (5 år)" highlight tone="red" />
         </div>
 
         {/* Section 1: Hvor sløvt er det? */}
         <section className="mb-12">
           <SectionHeader n={1} title="Hvor sløvt er det egentlig?" />
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            Lad os sætte tal på. C25 har tabt cirka 1% over de seneste fem år,
+            Lad os sætte tal på. C25 har tabt cirka 2% over de seneste fem år,
             mens Nasdaq Composite er steget 94% og S&P 500 er steget 79%. Også
             tættere på Danmark har gabet været stort: både STOXX Europe 600 og
             OMX Stockholm 30 har leveret cirka 41%. Selv det nære nordiske
@@ -326,7 +326,7 @@ const C25AnalysisPage: React.FC = () => {
         <section className="mb-12">
           <SectionHeader n={2} title="Sektorforskydningen" />
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            Hvis man kun ser på indeksværdien (-1,1% på 5 år), kan det virke
+            Hvis man kun ser på indeksværdien (-1,6% på 5 år), kan det virke
             som om intet er sket i C25. Det er forkert. Under overfladen er
             sammensætningen af indekset blevet markant omflyttet. Den klareste
             historie er ikke om enkelte aktier, men om hvilke sektorer der er
@@ -395,7 +395,7 @@ const C25AnalysisPage: React.FC = () => {
 
           <StockBlock name="Ørsted" returnLabel="-82%">
             Det største fald i C25. Aktien ramte sin all-time high på 1.355 DKK
-            den 7. januar 2021 og handler i dag omkring 170 DKK - cirka 87%
+            den 7. januar 2021 og handler i dag omkring 165 DKK - cirka 88%
             under toppen. Tabet skyldes en kombination af stigende renter (der
             ramte alle long-duration grønne aktier hårdt), eksploderende
             komponentpriser, forsinkelser i amerikanske offshore-projekter, og
@@ -449,7 +449,7 @@ const C25AnalysisPage: React.FC = () => {
 
           <p className="text-xs text-gray-500 dark:text-gray-400 italic leading-relaxed mt-4">
             Kilde: Yahoo Finance via yfinance, dividend-justerede priser fra
-            26. maj 2021 til 26. maj 2026.
+            26. maj 2021 til 27. maj 2026.
           </p>
         </section>
 
@@ -541,7 +541,7 @@ const C25AnalysisPage: React.FC = () => {
 
           <p className="text-xs text-gray-500 dark:text-gray-400 italic leading-relaxed mt-4">
             Kilde: Yahoo Finance via yfinance, dividend-justerede priser fra
-            26. maj 2021 til 26. maj 2026. Sydbank, der også er i C25, er
+            26. maj 2021 til 27. maj 2026. Sydbank, der også er i C25, er
             ikke tilgængelig på Yahoo Finance og indgår derfor ikke i listen.
           </p>
         </section>
@@ -553,7 +553,7 @@ const C25AnalysisPage: React.FC = () => {
             En udbredt fortælling blandt analytikere er, at udenlandske
             investorer har solgt danske aktier i stor stil siden Novo Nordisk
             toppede i sommeren 2024 (aktien er faldet 72% fra toppen på 1.028
-            DKK den 25. juni 2024 til 287 DKK den 26. maj 2026). Det er en
+            DKK den 25. juni 2024 til 290 DKK den 27. maj 2026). Det er en
             umiddelbart indlysende forklaring på C25's stilstand. Men
             Nationalbankens egne tal viser en mere nuanceret historie.
           </p>
@@ -737,8 +737,8 @@ const C25AnalysisPage: React.FC = () => {
         <section className="mb-12">
           <SectionHeader n={8} title="Konklusion" />
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-3">
-            C25 er endt cirka 1% lavere over 5 år, mens peer-indekser har
-            leveret 40-78%. Det er ikke ét enkelt selskabs skyld. Det er
+            C25 er endt cirka 2% lavere over 5 år, mens peer-indekser har
+            leveret 40-79%. Det er ikke ét enkelt selskabs skyld. Det er
             kombinationen af et par store enkelt-aktie-kollaps (Ørsted, GN,
             Ambu, Coloplast), en sundhedssektor der bredt er blevet ramt af
             re-rating, og en sektor-sammensætning der mangler de
