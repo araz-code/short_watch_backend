@@ -240,12 +240,11 @@ const C25AnalysisPage: React.FC = () => {
             5 år (25. maj 2021 til 27. maj 2026), mens S&P 500 er steget 78,9%,
             STOXX Europe 600 er steget 40,6% og OMX Stockholm 30 er steget 40,8%.
             Selv det nære nordiske marked har leveret cirka 42 procentpoint mere
-            end det danske. Kilde: Yahoo Finance (tickerne ^OMXC25, ^GSPC,
-            ^STOXX og ^OMX).
+            end det danske.
           </p>
           <p className="text-gray-600 dark:text-gray-300 mt-3 leading-relaxed">
             Danske aktier har i mange år ofte været betragtet som et europæisk
-            kvalitetsmarked: dominans i sundhedssektoren, eksportstærke globale
+            kvalitetsmarked: Dominans i sundhedssektoren, eksportstærke globale
             brands, høj corporate governance og stabile udbytter. Over de sidste
             5 år er den status blevet udfordret af store sektorforskydninger og
             enkelt-aktie-kollaps, der har trukket det samlede afkast under nul.
@@ -258,8 +257,7 @@ const C25AnalysisPage: React.FC = () => {
             16,9%. Danske Bank alene er gået fra 3,4% af indekset til 10,8%
             i samme periode. Og strukturelt: C25 har ingen mega-cap
             tech-eksponering i stil med amerikanske hyperscalers eller
-            platformsselskaber - Nasdaq klassificerer teknologisektoren til
-            0,0% af indekset i seneste factsheet.
+            platformsselskaber.
           </p>
         </header>
 
@@ -277,7 +275,7 @@ const C25AnalysisPage: React.FC = () => {
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             Lad os sætte tal på. C25 har tabt cirka 2% over de seneste fem år,
             mens Nasdaq Composite er steget 94% og S&P 500 er steget 79%. Også
-            tættere på Danmark har gabet været stort: både STOXX Europe 600 og
+            tættere på Danmark har gabet været stort: Både STOXX Europe 600 og
             OMX Stockholm 30 har leveret cirka 41%. Selv det nære nordiske
             marked har leveret cirka 42 procentpoint mere end det danske.
           </p>
@@ -468,7 +466,7 @@ const C25AnalysisPage: React.FC = () => {
             kabler til offshore vindprojekter. Den globale udbygning af
             elnettet og elektrificeringen af industri og transport har skabt
             en ordrebog i historisk størrelse. Det er den klassiske "picks
-            and shovels"-historie: mens udviklere som Ørsted har lidt, har
+            and shovels"-historie: Mens udviklere som Ørsted har lidt, har
             leverandører som NKT profiteret af den samme grønne omstilling.
           </StockBlock>
 
@@ -503,7 +501,7 @@ const C25AnalysisPage: React.FC = () => {
           </StockBlock>
 
           <StockBlock name="A.P. Møller-Mærsk" returnLabel="+70% / +75%">
-            Mærsk B endte +70%, Mærsk A +75%. Vild ride: aktien fordoblede
+            Mærsk B endte +70%, Mærsk A +75%. Vild ride: Aktien fordoblede
             sig i 2021-2022 under COVID-shipping-boomet, kollapsede i 2023
             da fragtraterne normaliserede, og er siden steget igen drevet af
             Rødehavet-omdirigeringen (Houthi-angreb), der har holdt rater oppe.
@@ -527,7 +525,7 @@ const C25AnalysisPage: React.FC = () => {
           </StockBlock>
 
           <StockBlock name="Tryg" returnLabel="+30%">
-            Forsikring er ikke bank, men har samme rente-medvind: højere
+            Forsikring er ikke bank, men har samme rente-medvind: Højere
             renter på reserver giver bedre investerings-resultat. Stabilt
             udbytte og en defensiv profil har også hjulpet i et uroligt marked.
           </StockBlock>
@@ -607,7 +605,7 @@ const C25AnalysisPage: React.FC = () => {
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-3">
             Den større flow-historie er endda omvendt af det, man hører i
-            medierne: danske pensions- og forsikringsselskaber har roteret ud
+            medierne: Danske pensions- og forsikringsselskaber har roteret ud
             af danske aktier og ind i globale, med en størrelse (131 mia. DKK)
             der overskygger udlændinges Novo-salg.
           </p>
@@ -710,7 +708,7 @@ const C25AnalysisPage: React.FC = () => {
             Ørsted handler nu til mere end 80% under sin top. Hvis renterne
             falder, og hvis offshore-vind-økonomien bedrer sig (større
             turbiner, bedre placeringer), kan aktien levere et stort comeback.
-            Men en del af tabet er reelt: nogle US-projekter er væk for altid.
+            Men en del af tabet er reelt: Nogle US-projekter er væk for altid.
             Vestas er i bedre form, men også sårbar.
           </p>
 
@@ -722,7 +720,7 @@ const C25AnalysisPage: React.FC = () => {
             yderligere cuts ind i 2026 - reelt en mulig ny stigning i 2027.
             Bank-tailwind'en fra rentehævningerne er allerede høstet, og det
             er svært at se Danske Bank levere endnu +299% fra her. Mere
-            realistisk: bank-bidraget bliver fladt fremover.
+            realistisk: Bank-bidraget bliver fladt fremover.
           </p>
 
           <InfoBox>
@@ -762,7 +760,7 @@ const C25AnalysisPage: React.FC = () => {
             aktiemarked.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-            Det positive: aktier handler altid på fremtidige forventninger,
+            Det positive: Aktier handler altid på fremtidige forventninger,
             ikke historiske tabeller. Hvis sundhedsaktierne er overdrevet ramt,
             hvis Ørsted finder bunden, og hvis bank-renterne ikke kollapser
             brutalt, kan C25 sagtens levere de næste 5 år bedre end de seneste
