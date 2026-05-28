@@ -43,6 +43,7 @@ const PandoraSilverPageEn = lazy(() => import("./routes/PandoraSilverAnalysisPag
 const AnalysisPage = lazy(() => import("./routes/AnalysisPage.tsx"));
 const C25AnalysisPageDa = lazy(() => import("./routes/C25AnalysisPage.tsx"));
 const C25AnalysisPageEn = lazy(() => import("./routes/C25AnalysisPage.en.tsx"));
+const AmbuAnalysisPage = lazy(() => import("./routes/AmbuAnalysisPage.tsx"));
 
 function ZealAnalysisPage() {
   const lng = localStorage.getItem("i18nextLng") || navigator.language;
@@ -192,6 +193,14 @@ const router = createBrowserRouter([
   {
     path: "analyse/c25",
     element: <ErrorBoundary><C25AnalysisPage /></ErrorBoundary>,
+  },
+  {
+    path: "analyse/ambu/2026-05-28",
+    element: <ErrorBoundary><AmbuAnalysisPage /></ErrorBoundary>,
+  },
+  {
+    path: "analyse/ambu",
+    element: <ErrorBoundary><AmbuAnalysisPage /></ErrorBoundary>,
   },
   {
     path: "analyse/pandora/2026-05-23",

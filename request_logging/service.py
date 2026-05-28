@@ -362,6 +362,7 @@ def analysis_all_time_unique_ips() -> dict:
     novo_dcf_share = set()
     pandora_silver_analysis = set()
     c25_analysis = set()
+    ambu_analysis = set()
     analysis_overview = set()
 
     for entry in queryset:
@@ -390,6 +391,8 @@ def analysis_all_time_unique_ips() -> dict:
             pandora_silver_analysis.add(ip)
         if "/stats/visit/c25-analysis" in url:
             c25_analysis.add(ip)
+        if "/stats/visit/ambu-analysis" in url:
+            ambu_analysis.add(ip)
         if "/stats/visit/analysis/" in url:
             analysis_overview.add(ip)
 
@@ -402,6 +405,7 @@ def analysis_all_time_unique_ips() -> dict:
         'novo_dcf_share': novo_dcf_share,
         'pandora_silver_analysis': pandora_silver_analysis,
         'c25_analysis': c25_analysis,
+        'ambu_analysis': ambu_analysis,
         'analysis_overview': analysis_overview,
     }
 
@@ -431,6 +435,7 @@ def today_visit_buckets(for_date=None) -> dict:
     novo_dcf_share = set()
     pandora_silver_analysis = set()
     c25_analysis = set()
+    ambu_analysis = set()
     analysis_overview = set()
     bots = set()
     bots_by_name = {}  # fragment -> set of IPs
@@ -513,6 +518,8 @@ def today_visit_buckets(for_date=None) -> dict:
             pandora_silver_analysis.add(ip)
         if "/stats/visit/c25-analysis" in url:
             c25_analysis.add(ip)
+        if "/stats/visit/ambu-analysis" in url:
+            ambu_analysis.add(ip)
         if "/stats/visit/analysis/" in url:
             analysis_overview.add(ip)
 
@@ -536,6 +543,7 @@ def today_visit_buckets(for_date=None) -> dict:
         'novo_dcf_share': novo_dcf_share,
         'pandora_silver_analysis': pandora_silver_analysis,
         'c25_analysis': c25_analysis,
+        'ambu_analysis': ambu_analysis,
         'analysis_overview': analysis_overview,
         'bots': bots, 'bots_by_name': bots_by_name,
     }

@@ -10,6 +10,21 @@ export interface Analysis {
 
 export const analyses: Analysis[] = [
   {
+    slug: "ambu/2026-05-28",
+    title: "Ambu A/S (AMBU-B)",
+    subtitle: {
+      da: "Ambu: 5 års fald trods en succesfuld transformation",
+      en: "Ambu: 5 years of decline despite a successful transformation",
+    },
+    excerpt: {
+      da: "Ambu er faldet 71% over 5 år trods en firedoblet EBIT-margin under ny ledelse. Hedgefondene har historisk høj shortinteresse. Vi forklarer paradokset.",
+      en: "Ambu has fallen 71% over 5 years despite quadrupled EBIT margins under new leadership. Hedge funds hold record-high short interest. We unpack the paradox.",
+    },
+    date: { da: "28. maj 2026", en: "May 28, 2026" },
+    readingMinutes: 9,
+    code: "DK0060946788",
+  },
+  {
     slug: "c25/2026-05-28",
     title: "OMX Copenhagen 25 (C25)",
     subtitle: {

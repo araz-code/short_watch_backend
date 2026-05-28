@@ -340,6 +340,7 @@ def get_visits_by_analysis_table(_: HttpRequest) -> JsonResponse:
         row('GN analysis', 'gn_analysis'),
         row('Pandora silver analysis', 'pandora_silver_analysis'),
         row('C25 analysis', 'c25_analysis'),
+        row('Ambu analysis', 'ambu_analysis'),
     ]
 
     return JsonResponse({
