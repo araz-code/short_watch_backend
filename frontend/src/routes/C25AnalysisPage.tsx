@@ -130,8 +130,8 @@ const formatDate = (ym: string): string => {
 function KPI({ value, label, highlight, tone = "blue" }: { value: string; label: string; highlight?: boolean; tone?: "blue" | "red" | "green" }) {
   const toneClasses = {
     blue:  { bg: "bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800",       text: "text-blue-600 dark:text-blue-400" },
-    red:   { bg: "bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800",           text: "text-red-600 dark:text-red-400" },
-    green: { bg: "bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800", text: "text-emerald-600 dark:text-emerald-400" },
+    red:   { bg: "bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800",           text: "text-red-700 dark:text-red-400" },
+    green: { bg: "bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800", text: "text-emerald-700 dark:text-emerald-400" },
   };
   const t = toneClasses[tone];
   return (
@@ -156,7 +156,7 @@ function StockBlock({ name, returnLabel, children }: { name: string; returnLabel
     <div className="mb-6">
       <div className="flex flex-wrap items-baseline justify-between gap-2 mb-2 pb-2 border-b border-gray-100 dark:border-gray-800">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{name}</h3>
-        <span className={`text-base font-bold tabular-nums ${isPositive ? "text-emerald-600 dark:text-emerald-400" : "text-red-600 dark:text-red-400"}`}>
+        <span className={`text-base font-bold tabular-nums ${isPositive ? "text-emerald-700 dark:text-emerald-400" : "text-red-600 dark:text-red-400"}`}>
           {returnLabel}
         </span>
       </div>
@@ -211,7 +211,7 @@ const C25AnalysisPage: React.FC = () => {
 
       <article className="w-full max-w-[900px] mx-auto px-5 sm:px-8 pb-10 sm:pb-16">
         <button
-          className="text-blue-500 hover:text-blue-700 bg-transparent border-none text-base inline-flex items-center gap-1.5 focus:ring-2 focus:ring-blue-300 rounded-sm min-h-[44px] min-w-[44px]"
+          className="text-blue-600 hover:text-blue-700 bg-transparent border-none text-base inline-flex items-center gap-1.5 focus:ring-2 focus:ring-blue-300 rounded-sm min-h-[44px] min-w-[44px]"
           onClick={() => {
             if (window.history.length > 1 && window.history.state?.idx > 0) {
               navigate(-1);
@@ -574,11 +574,11 @@ const C25AnalysisPage: React.FC = () => {
                 </tr>
                 <tr className="border-b border-gray-100 dark:border-gray-800">
                   <td className="py-2 pr-3">Udlændinges køb af Ørsted</td>
-                  <td className="py-2 text-right tabular-nums text-emerald-600 dark:text-emerald-400 font-semibold">+38</td>
+                  <td className="py-2 text-right tabular-nums text-emerald-700 dark:text-emerald-400 font-semibold">+38</td>
                 </tr>
                 <tr className="border-b border-gray-100 dark:border-gray-800">
                   <td className="py-2 pr-3 font-semibold">Udlændinges samlede nettokøb af danske aktier</td>
-                  <td className="py-2 text-right tabular-nums text-emerald-600 dark:text-emerald-400 font-semibold">+6</td>
+                  <td className="py-2 text-right tabular-nums text-emerald-700 dark:text-emerald-400 font-semibold">+6</td>
                 </tr>
                 <tr className="border-b border-gray-100 dark:border-gray-800">
                   <td className="py-2 pr-3">Danske investorers køb af udenlandske aktier</td>
