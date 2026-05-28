@@ -41,7 +41,8 @@ const NovoDCFPageEn = lazy(() => import("./routes/NovoDCFPage.en.tsx"));
 const PandoraSilverPageDa = lazy(() => import("./routes/PandoraSilverAnalysisPage.tsx"));
 const PandoraSilverPageEn = lazy(() => import("./routes/PandoraSilverAnalysisPage.en.tsx"));
 const AnalysisPage = lazy(() => import("./routes/AnalysisPage.tsx"));
-const C25AnalysisPage = lazy(() => import("./routes/C25AnalysisPage.tsx"));
+const C25AnalysisPageDa = lazy(() => import("./routes/C25AnalysisPage.tsx"));
+const C25AnalysisPageEn = lazy(() => import("./routes/C25AnalysisPage.en.tsx"));
 
 function ZealAnalysisPage() {
   const lng = localStorage.getItem("i18nextLng") || navigator.language;
@@ -66,6 +67,10 @@ function NovoDCFPage() {
 function PandoraSilverPage() {
   const lng = localStorage.getItem("i18nextLng") || navigator.language;
   return lng.startsWith("da") ? <PandoraSilverPageDa /> : <PandoraSilverPageEn />;
+}
+function C25AnalysisPage() {
+  const lng = localStorage.getItem("i18nextLng") || navigator.language;
+  return lng.startsWith("da") ? <C25AnalysisPageDa /> : <C25AnalysisPageEn />;
 }
 
 type ConsentButtonProps = {
