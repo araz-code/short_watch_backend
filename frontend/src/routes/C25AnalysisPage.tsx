@@ -484,13 +484,6 @@ const C25AnalysisPage: React.FC = () => {
             (-26%), Vestas (-24%), Demant (-23%), Pandora (-16%), Novonesis B
             (-11%), Carlsberg B (-7%).
           </p>
-
-          <p className="text-xs text-gray-500 dark:text-gray-400 italic leading-relaxed mt-4">
-            Kilde: Yahoo Finance via yfinance, dividend-justerede priser fra
-            26. maj 2021 til 27. maj 2026. Novonesis blev dannet ved fusion af
-            Chr. Hansen og Novozymes 29. januar 2024; afkastet sammenligner
-            pre-merger Novozymes-aktien med post-merger Novonesis.
-          </p>
         </section>
 
         {/* Section 4: Vindere */}
