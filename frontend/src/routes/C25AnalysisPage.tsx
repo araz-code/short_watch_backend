@@ -237,7 +237,7 @@ const C25AnalysisPage: React.FC = () => {
           </p>
           <p className="text-gray-600 dark:text-gray-300 mt-3 leading-relaxed">
             Målt på prisindeks i lokal valuta har C25 tabt 1,6% over de sidste
-            5 år (25. maj 2021 til 27. maj 2026), mens S&P 500 er steget 78,9%,
+            5 år (28. maj 2021 til 27. maj 2026), mens S&P 500 er steget 78,9%,
             STOXX Europe 600 er steget 40,6% og OMX Stockholm 30 er steget 40,8%.
             Selv det nære nordiske marked har leveret cirka 42 procentpoint mere
             end det danske.
@@ -280,8 +280,8 @@ const C25AnalysisPage: React.FC = () => {
             marked har leveret cirka 42 procentpoint mere end det danske.
           </p>
 
-          <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-3 sm:p-5 mb-4" role="img" aria-label="Graf: Sammenligning af C25, S&P 500, STOXX 600 og OMX Stockholm 30 over 5 år">
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-1">Sammenligning af 4 indekser (maj 2021 = 100)</h3>
+          <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-3 sm:p-5 mb-4" role="img" aria-label="Graf: Sammenligning af C25, S&P 500, Nasdaq Composite, STOXX 600 og OMX Stockholm 30 over 5 år">
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-1">Sammenligning af 5 indekser (maj 2021 = 100)</h3>
             <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">Månedsslut, prisindeks (uden udbytter)</p>
             <ResponsiveContainer width="100%" height={320}>
               <LineChart data={COMPARISON_DATA} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
@@ -311,9 +311,9 @@ const C25AnalysisPage: React.FC = () => {
 
           <p className="text-xs text-gray-500 dark:text-gray-400 italic leading-relaxed">
             Note: Sammenligningen bruger prisindekser uden reinvesterede udbytter
-            for at sikre sammenlignelighed mellem de fire indekser. Afkast er
+            for at sikre sammenlignelighed mellem de fem indekser. Afkast er
             målt i lokal valuta (USD, EUR, SEK, DKK) og er ikke valuta-justeret.
-            Da DKK er fastlåst til EUR via ERM II, er C25 vs. STOXX 600 reelt
+            Da DKK er fastlåst til EUR, er C25 vs. STOXX 600 reelt
             valutaneutral; for S&P 500 og OMX Stockholm 30 ville en valutajustering
             kunne flytte tal med nogle procentpoint, men ikke lukke det store gab
             til C25.
