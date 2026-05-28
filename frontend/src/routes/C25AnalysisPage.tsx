@@ -343,41 +343,66 @@ const C25AnalysisPage: React.FC = () => {
                   contentStyle={{ backgroundColor: "#fff", border: "1px solid #e5e7eb", borderRadius: 8, fontSize: 12 }}
                   formatter={(v) => `${Number(v).toFixed(2).replace(".", ",")}%`}
                 />
-                <Legend wrapperStyle={{ fontSize: 12 }} />
-                <Bar dataKey="y2020" name="sept 2020" fill="#cbd5e1" radius={[3, 3, 0, 0]} />
-                <Bar dataKey="y2021" name="dec 2021" fill="#60a5fa" radius={[3, 3, 0, 0]} />
-                <Bar dataKey="y2026" name="marts 2026" fill="#1d4ed8" radius={[3, 3, 0, 0]} />
+                <Legend
+                  wrapperStyle={{ fontSize: 12 }}
+                  content={() => (
+                    <ul className="flex flex-wrap justify-center gap-x-4 gap-y-1 pt-2 text-xs text-gray-700 dark:text-gray-300">
+                      {[
+                        { label: "sept 2020", color: "#64748b" },
+                        { label: "dec 2021", color: "#0284c7" },
+                        { label: "marts 2026", color: "#2563eb" },
+                      ].map((item) => (
+                        <li key={item.label} className="flex items-center gap-1.5">
+                          <span className="inline-block w-3 h-3 rounded-sm" style={{ backgroundColor: item.color }} />
+                          {item.label}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                />
+                <Bar dataKey="y2020" name="sept 2020" fill="#64748b" radius={[3, 3, 0, 0]} />
+                <Bar dataKey="y2021" name="dec 2021" fill="#0284c7" radius={[3, 3, 0, 0]} />
+                <Bar dataKey="y2026" name="marts 2026" fill="#2563eb" radius={[3, 3, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
 
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-3">
             Den mest påfaldende bevægelse er finanssektoren. Fra 5% af C25 i
-            2020 og 7% ved udgangen af 2021 udgør Financials nu 17% af indekset
-            - en tredobling på fem år. Det er en ren markedsdrevet stigning:
-            bankerne fik et historisk boost da Nationalbanken og ECB hævede
+            2020 og 7% ved udgangen af 2021 udgør Financials nu 17% af indekset,
+            en tredobling på fem år. Det er en ren markedsdrevet stigning:
+            Bankerne fik et historisk boost da Nationalbanken og ECB hævede
             renterne fra negativ rente i 2022, og deres aktiekurser steg massivt.
-            Danske Bank alene er gået fra 3% af indekset i 2021 til 11% nu.
+            For Danske Bank kom samtidig en re-rating efter hvidvask-skandalen
+            blev afsluttet med et forlig på 15,3 mia. DKK med amerikanske og
+            danske myndigheder i december 2022, hvilket fjernede en stor juridisk
+            usikkerhed der havde tynget aktien siden 2018. Banken er gået fra 3%
+            af indekset i 2021 til 11% nu.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-3">
-            Modsat har sundhedssektoren skrumpet fra 47% til 33% - en bred
-            udvanding drevet af Coloplast (-53%), GN Store Nord (-82%), Ambu
-            (-71%) og Genmab (-29%), mens Novo Nordisk trods medieopmærksomheden
-            kun har leveret +31% over 5 år.
+            Modsat har sundhedssektoren skrumpet fra 47% til 33%. Det er en bred
+            udvanding drevet af GN Store Nord (-81%), Ambu (-71%), Coloplast
+            (-52%) og Genmab (-29%), mens Novo Nordisk trods medieopmærksomheden
+            kun har leveret +32% over 5 år (aktien toppede på 1.028 DKK i juni
+            2024 og er siden faldet 72%). Bemærk at C25 har en 20% cap på
+            enkelt-aktier, som var aktiv mens Novo toppede. Nu er Novo nede på
+            12% af indekset, så cap'en er ikke længere bindende.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
             Tech-eksponeringen var aldrig stor, men er nu 0%. Netcompany, den
             sidste danske tech-aktie i C25, faldt ud af indekset i løbet af
-            perioden. Til sammenligning udgør tech-sektoren cirka 32% af S&P 500
-            - en strukturel forskel der alene forklarer en stor del af det
+            perioden. Til sammenligning udgør tech-sektoren cirka 32% af S&P 500,
+            en strukturel forskel der alene forklarer en stor del af det
             amerikanske forspring.
           </p>
 
           <p className="text-xs text-gray-500 dark:text-gray-400 italic leading-relaxed mt-4">
-            Kilde: Nasdaq Index factsheets dateret 30/9/2020, 30/12/2021 og
-            31/3/2026. Nasdaq omklassificerede sit sektor-system mellem 2020 og
-            2021; ovenstående er konsolideret til sammenlignelige kategorier.
-            S&P 500 tech-vægt fra S&P Dow Jones Indices, maj 2026.
+            Kilder: Nasdaq Index factsheets dateret 30/9/2020, 30/12/2021 og
+            31/3/2026 (sektorvægte og enkelt-aktie indeks-vægte). Nasdaq
+            omklassificerede sit sektor-system mellem 2020 og 2021; ovenstående
+            er konsolideret til sammenlignelige kategorier. Aktieafkast: Yahoo
+            Finance via yfinance, dividend-justerede priser, 26. maj 2021 til
+            27. maj 2026. S&P 500 tech-vægt: S&P Dow Jones Indices, maj 2026.
           </p>
         </section>
 
@@ -393,7 +418,7 @@ const C25AnalysisPage: React.FC = () => {
 
           <StockBlock name="Ørsted" returnLabel="-82%">
             Det største fald i C25. Aktien ramte sin all-time high på 1.355 DKK
-            den 7. januar 2021 og handler i dag omkring 165 DKK - cirka 88%
+            den 7. januar 2021 og handler i dag omkring 165 DKK, cirka 88%
             under toppen. Tabet skyldes en kombination af stigende renter (der
             ramte alle long-duration grønne aktier hårdt), eksploderende
             komponentpriser, forsinkelser i amerikanske offshore-projekter, og
@@ -433,8 +458,8 @@ const C25AnalysisPage: React.FC = () => {
           </StockBlock>
 
           <StockBlock name="Genmab" returnLabel="-29%">
-            Patentfrygt omkring Darzalex - US-patentet udløber i 2029 og
-            royalty-stream'en udfases gradvist over de tidlige 2030'ere - plus
+            Patentfrygt omkring Darzalex (US-patentet udløber i 2029 og
+            royalty-stream'en udfases gradvist over de tidlige 2030'ere), plus
             skuffende launch af nye produkter har sat aktien under pres trods
             stadigt voksende royaltyindtægter.
           </StockBlock>
@@ -461,7 +486,7 @@ const C25AnalysisPage: React.FC = () => {
           </p>
 
           <StockBlock name="NKT" returnLabel="+320%">
-            Den klart største vinder i C25 over 5 år - større end nogen bank.
+            Den klart største vinder i C25 over 5 år, større end nogen bank.
             NKT producerer høj-spændings-strømkabler, herunder undersøiske
             kabler til offshore vindprojekter. Den globale udbygning af
             elnettet og elektrificeringen af industri og transport har skabt
@@ -474,7 +499,7 @@ const C25AnalysisPage: React.FC = () => {
             Den næststørste stigning i C25. Tre samtidige drivere:
             rente-margins eksploderede efter ECB hævede sin deposit-rente fra
             -0,5% i 2022 til 4,0% i september 2023 (MRO-renten op til 4,5%),
-            og Nationalbanken fulgte med op til 3,6% - bankerne fik dermed en
+            og Nationalbanken fulgte med op til 3,6%. Bankerne fik dermed en
             stor spread mellem indlån og udlån; historisk aggressive
             aktietilbagekøb; og re-rating efter at hvidvask-skandalen er
             blevet gradvist glemt af markedet. Aktien handlede til 0,5x P/B i
@@ -496,7 +521,7 @@ const C25AnalysisPage: React.FC = () => {
           <StockBlock name="FLSmidth" returnLabel="+117%">
             Cement- og mineindustri-leverandøren har profiteret af det globale
             infrastruktur- og rå-vare-tema. Selskabet har solgt sin
-            cement-forretning fra og fokuseret 100% på mining - en
+            cement-forretning fra og fokuseret 100% på mining, en
             transformation markedet har belønnet.
           </StockBlock>
 
@@ -511,7 +536,7 @@ const C25AnalysisPage: React.FC = () => {
             Den eneste sundhedsaktie i toppen. Drevet af klinisk fremgang i
             selskabets pipeline (GLP-1 og glucagon-baserede behandlinger) -
             bl.a. survodutide (BI 456906), som udvikles sammen med Boehringer
-            Ingelheim - der har valideret forretningen.
+            Ingelheim, hvilket har valideret forretningen.
           </StockBlock>
 
           <StockBlock name="Novo Nordisk" returnLabel="+32%">
@@ -532,7 +557,7 @@ const C25AnalysisPage: React.FC = () => {
 
           <StockBlock name="DSV" returnLabel="+9%">
             Den største enkelt-vægt i C25 i dag (15,5% per Nasdaq-factsheet
-            31. marts 2026) - men på 5 år har den kun leveret +9%. På en
+            31. marts 2026), men på 5 år har den kun leveret +9%. På en
             periode hvor S&P 500 er steget 79%, er det reelt en
             undervægtshistorie der gemmer sig i toppen af tabellen.
           </StockBlock>
@@ -558,7 +583,7 @@ const C25AnalysisPage: React.FC = () => {
 
           <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-4 sm:p-5 mb-4 overflow-x-auto">
             <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
-              Kapitalflows januar - oktober 2025 (10 måneder)
+              Kapitalflows januar til oktober 2025 (10 måneder)
             </h3>
             <table className="w-full text-sm">
               <thead>
@@ -599,7 +624,7 @@ const C25AnalysisPage: React.FC = () => {
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-3">
             Det er ikke en bred udenlandsk flugt fra det danske aktiemarked.
             Det er et koncentreret Novo-frasalg kombineret med massivt køb af
-            Ørsted - faktisk så meget, at Ørsted-købet på 38 mia. DKK alene
+            Ørsted, faktisk så meget at Ørsted-købet på 38 mia. DKK alene
             opvejer Novo-salget på 36 mia. DKK. Trods salget ejer udlændinge
             stadig 77% af Novo Nordisk.
           </p>
@@ -626,7 +651,7 @@ const C25AnalysisPage: React.FC = () => {
             findes endnu ikke offentlig statistik for perioden. Bloomberg har
             rapporteret, at den danske krone svækkedes i februar 2026 efter
             Novo Nordisks skuffende fase 3-resultater, hvilket antyder
-            fortsat udgangspres - men konkrete flow-data foreligger ikke.
+            fortsat udgangspres, men konkrete flow-data foreligger ikke.
           </p>
         </section>
 
@@ -659,7 +684,7 @@ const C25AnalysisPage: React.FC = () => {
             </li>
             <li>
               <strong>Healthcare-overvægt giver koncentrationsrisiko.</strong>{" "}
-              Sundhedssektoren udgør cirka 33% af C25 i dag - og var 47% for
+              Sundhedssektoren udgør cirka 33% af C25 i dag, og var 47% for
               5 år siden. Når denne sektor presses (som i 2023-2024), presses
               hele indekset. Det er bygget ind i indekset, ikke et midlertidigt
               forhold.
@@ -717,7 +742,7 @@ const C25AnalysisPage: React.FC = () => {
             Bankerne har båret en stor del af indekset i 5 år drevet af
             rentestigningen fra -0,5% til 4% i 2022-2023. Cyklen er nu vendt:
             ECB har skåret deposit-renten ned til 2%, og markedet priser ingen
-            yderligere cuts ind i 2026 - reelt en mulig ny stigning i 2027.
+            yderligere cuts ind i 2026, reelt en mulig ny stigning i 2027.
             Bank-tailwind'en fra rentehævningerne er allerede høstet, og det
             er svært at se Danske Bank levere endnu +299% fra her. Mere
             realistisk: Bank-bidraget bliver fladt fremover.
@@ -746,7 +771,7 @@ const C25AnalysisPage: React.FC = () => {
             Den dramatiske skift i indeksets vægte fortæller historien:
             finanssektoren er tredoblet i indeks-vægt fra 5% til 17%,
             sundhedssektoren er skrumpet fra 47% til 33%, og
-            tech-eksponeringen er forsvundet helt. Det er ikke design - det
+            tech-eksponeringen er forsvundet helt. Det er ikke design. Det
             er resultatet af at bankerne har leveret massive afkast mens
             andet er kollapset.
           </p>
