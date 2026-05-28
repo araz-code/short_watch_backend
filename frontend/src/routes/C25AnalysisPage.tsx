@@ -185,10 +185,15 @@ const C25AnalysisPage: React.FC = () => {
       <meta property="og:description" content="C25 -2% mens peers steg 40-79%. Sektorforskydninger og enkelt-aktie-kollaps forklarer det danske efterslæb." />
       <meta property="og:type" content="article" />
       <meta property="og:url" content={`https://www.zirium.dk/analyse/${SLUG}`} />
+      <meta property="og:image" content="https://www.zirium.dk/og-images/c25-2026-05-28.png" />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:image:type" content="image/png" />
       <meta property="og:site_name" content="Zirium" />
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content="Hvorfor C25 har stået stille i 5 år" />
       <meta name="twitter:description" content="C25 -2% mens peers steg 40-79%. Sektorforskydninger og enkelt-aktie-kollaps forklarer det danske efterslæb." />
+      <meta name="twitter:image" content="https://www.zirium.dk/og-images/c25-2026-05-28.png" />
       <script type="application/ld+json">{JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Article",
