@@ -572,102 +572,11 @@ const C25AnalysisPage: React.FC = () => {
             undervægtshistorie der gemmer sig i toppen af tabellen.
           </StockBlock>
 
-          <p className="text-xs text-gray-500 dark:text-gray-400 italic leading-relaxed mt-4">
-            Kilde: Yahoo Finance via yfinance, dividend-justerede priser fra
-            26. maj 2021 til 27. maj 2026. Sydbank, der også er i C25, er
-            ikke tilgængelig på Yahoo Finance og indgår derfor ikke i listen.
-          </p>
         </section>
 
-        {/* Section 5: Kapitalflows */}
+        {/* Section 5: Strukturelle årsager */}
         <section className="mb-12">
-          <SectionHeader n={5} title="Var det udlændinge der dumpede danske aktier?" />
-          <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            En udbredt fortælling blandt analytikere er, at udenlandske
-            investorer har solgt danske aktier i stor stil siden Novo Nordisk
-            toppede i sommeren 2024 (aktien er faldet 72% fra toppen på 1.028
-            DKK den 25. juni 2024 til 290 DKK den 27. maj 2026). Det er en
-            umiddelbart indlysende forklaring på C25's stilstand. Men
-            Nationalbankens egne tal viser en mere nuanceret historie.
-          </p>
-
-          <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-4 sm:p-5 mb-4 overflow-x-auto">
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
-              Kapitalflows januar til oktober 2025 (10 måneder)
-            </h3>
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="text-left text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
-                  <th className="pb-2 pr-3">Strøm</th>
-                  <th className="pb-2 text-right">Beløb (mia. DKK)</th>
-                </tr>
-              </thead>
-              <tbody className="text-gray-700 dark:text-gray-300">
-                <tr className="border-b border-gray-100 dark:border-gray-800">
-                  <td className="py-2 pr-3">Udlændinges salg af Novo Nordisk B</td>
-                  <td className="py-2 text-right tabular-nums text-red-600 dark:text-red-400 font-semibold">-36</td>
-                </tr>
-                <tr className="border-b border-gray-100 dark:border-gray-800">
-                  <td className="py-2 pr-3">Udlændinges køb af Ørsted</td>
-                  <td className="py-2 text-right tabular-nums text-emerald-700 dark:text-emerald-400 font-semibold">+38</td>
-                </tr>
-                <tr className="border-b border-gray-100 dark:border-gray-800">
-                  <td className="py-2 pr-3 font-semibold">Udlændinges samlede nettokøb af danske aktier</td>
-                  <td className="py-2 text-right tabular-nums text-emerald-700 dark:text-emerald-400 font-semibold">+6</td>
-                </tr>
-                <tr className="border-b border-gray-100 dark:border-gray-800">
-                  <td className="py-2 pr-3">Danske investorers køb af udenlandske aktier</td>
-                  <td className="py-2 text-right tabular-nums text-gray-700 dark:text-gray-300 font-semibold">+131</td>
-                </tr>
-                <tr>
-                  <td className="py-2 pr-3 text-xs text-gray-500 dark:text-gray-400">Udlændinges samlede beholdning af danske aktier (okt 2025)</td>
-                  <td className="py-2 text-right tabular-nums text-xs text-gray-500 dark:text-gray-400">2.049</td>
-                </tr>
-              </tbody>
-            </table>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-3 leading-relaxed">
-              Kilde: Nationalbanken, "Store køb af udenlandske aktier i 2025",
-              publiceret 28. november 2025.
-            </p>
-          </div>
-
-          <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-3">
-            Det er ikke en bred udenlandsk flugt fra det danske aktiemarked.
-            Det er et koncentreret Novo-frasalg kombineret med massivt køb af
-            Ørsted, faktisk så meget at Ørsted-købet på 38 mia. DKK alene
-            opvejer Novo-salget på 36 mia. DKK. Trods salget ejer udlændinge
-            stadig 77% af Novo Nordisk.
-          </p>
-          <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-3">
-            Den større flow-historie er endda omvendt af det, man hører i
-            medierne: Danske pensions- og forsikringsselskaber har roteret ud
-            af danske aktier og ind i globale, med en størrelse (131 mia. DKK)
-            der overskygger udlændinges Novo-salg.
-          </p>
-          <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-3">
-            Det er en vigtig korrektion af den populære fortælling. C25's
-            underperformance er ikke i hovedsagen et flow-problem. Det er et
-            struktur-problem (sektorsammensætning, koncentration, manglende
-            mega-cap tech) og et pris-problem på enkelt-aktier (Novo, Ørsted
-            og et par sundheds-tabere har leveret store kurs-fald). Hvis
-            udlændinge generelt havde dumpet danske aktier, ville vindere
-            som NKT (+320%) og Danske Bank (+299%) være ramt af samme flow.
-            Det har de ikke været.
-          </p>
-
-          <p className="text-xs text-gray-500 dark:text-gray-400 italic leading-relaxed">
-            Forbehold: Datadækningen er kun de første 10 måneder af 2025.
-            Tallene for Q4 2025 og 2026 kan have set anderledes ud, men der
-            findes endnu ikke offentlig statistik for perioden. Bloomberg har
-            rapporteret, at den danske krone svækkedes i februar 2026 efter
-            Novo Nordisks skuffende fase 3-resultater, hvilket antyder
-            fortsat udgangspres, men konkrete flow-data foreligger ikke.
-          </p>
-        </section>
-
-        {/* Section 6: Strukturelle årsager */}
-        <section className="mb-12">
-          <SectionHeader n={6} title="Hvorfor er C25 strukturelt fanget?" />
+          <SectionHeader n={5} title="Hvorfor er C25 strukturelt fanget?" />
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             Selv hvis vi tager den 5-årige underperformance med et gran salt
             (timing er aldrig perfekt), er der strukturelle grunde til, at C25
@@ -708,12 +617,6 @@ const C25AnalysisPage: React.FC = () => {
               NKT-stigning kan ikke kompensere for vægten i Ørsted.
             </li>
             <li>
-              <strong>Eksport-tung sammensætning.</strong> Mange C25-selskaber
-              afhænger af globale slutmarkeder (Pandora, Mærsk, Coloplast, GN,
-              Carlsberg). Det betyder, at DKK-styrke gør produkter dyrere ude
-              og spiser margins.
-            </li>
-            <li>
               <strong>Koncentration på få sektorer.</strong> Sundhed + Industri
               + Finans udgør 78% af indekset. Tre sektorer afgør hele markedets
               retning.
@@ -721,9 +624,9 @@ const C25AnalysisPage: React.FC = () => {
           </ol>
         </section>
 
-        {/* Section 7: Hvad skal der til */}
+        {/* Section 6: Hvad skal der til */}
         <section className="mb-12">
-          <SectionHeader n={7} title="Hvad skal der til, for at C25 stiger igen?" />
+          <SectionHeader n={6} title="Hvad skal der til, for at C25 stiger igen?" />
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             Tre ting kan vende billedet, hver med forskellige sandsynligheder.
           </p>
@@ -766,9 +669,9 @@ const C25AnalysisPage: React.FC = () => {
           </InfoBox>
         </section>
 
-        {/* Section 8: Konklusion */}
+        {/* Section 7: Konklusion */}
         <section className="mb-12">
-          <SectionHeader n={8} title="Konklusion" />
+          <SectionHeader n={7} title="Konklusion" />
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-3">
             C25 er endt cirka 2% lavere over 5 år, mens peer-indekser har
             leveret 40-79%. Det er ikke ét enkelt selskabs skyld. Det er
@@ -813,8 +716,8 @@ const C25AnalysisPage: React.FC = () => {
         <footer className="border-t border-gray-100 dark:border-gray-800 pt-6">
           <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed text-center">
             <strong>Kilder:</strong> Yahoo Finance via yfinance (aktie- og
-            indeks-afkast), officielle Nasdaq Index factsheets (sektor-vægte),
-            Nationalbanken (kapitalflows). <strong>Ansvarsfraskrivelse:</strong>{" "}
+            indeks-afkast), officielle Nasdaq Index factsheets (sektor-vægte).{" "}
+            <strong>Ansvarsfraskrivelse:</strong>{" "}
             Denne analyse er alene til informationsformål og udgør ikke
             investeringsrådgivning. Historisk afkast er ikke en garanti for
             fremtidigt afkast. Foretag altid din egen analyse, og søg
