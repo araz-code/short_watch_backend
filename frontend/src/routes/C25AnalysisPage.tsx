@@ -621,35 +621,27 @@ const C25AnalysisPage: React.FC = () => {
           <SectionHeader n={6} title="Konklusion" />
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-3">
             C25 er endt cirka 2% lavere over 5 år, mens peer-indekser har
-            leveret 40-79%. Det er ikke ét enkelt selskabs skyld. Det er
-            kombinationen af et par store enkelt-aktie-kollaps (Ørsted, GN,
+            leveret 40-79%. Det er ikke et enkelt selskabs skyld, men
+            kombinationen af nogle få store enkelt-aktie-kollaps (Ørsted, GN,
             Ambu, Coloplast), en sundhedssektor der bredt er blevet ramt af
-            re-rating, og en sektor-sammensætning der mangler de
-            vækst-segmenter (tech) der har drevet andre markeder.
+            re-rating, og en sektorsammensætning der mangler de
+            vækstsegmenter (tech) der har drevet andre markeder.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-3">
-            Den dramatiske skift i indeksets vægte fortæller historien:
-            finanssektoren er tredoblet i indeks-vægt fra 5% til 17%,
-            sundhedssektoren er skrumpet fra 47% til 33%, og
-            tech-eksponeringen er forsvundet helt. Det er ikke design. Det
-            er resultatet af at bankerne har leveret massive afkast mens
-            andet er kollapset.
+            Det dramatiske skift i indeksets vægte fortæller historien:
+            Finanssektoren er tredoblet fra 5% til 17%, sundhedssektoren er
+            skrumpet fra 47% til 33%, og tech-eksponeringen er forsvundet
+            helt. Det er ikke et resultat af design, men af at bankerne har
+            leveret massive afkast, mens andre dele har skuffet.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-3">
-            Hvis du har haft eksponering til C25 (via passiv indeksinvestering
-            eller danske enkelt-aktier) primært, er det værd at spørge: Hvor
-            kompenserer din portefølje for de strukturelle skævheder her? Hvis
-            ikke, kan det give mening at supplere med en global aktiefond. Der
-            er ingen lov der siger at hjemmemarkedet skal være kernen i ens
-            portefølje, slet ikke når det udgør cirka 0,5% af det globale
-            aktiemarked.
-          </p>
-          <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-            Det positive: Aktier handler altid på fremtidige forventninger,
-            ikke historiske tabeller. Hvis sundhedsaktierne er overdrevet ramt,
-            hvis Ørsted finder bunden, og hvis bank-renterne ikke kollapser
-            brutalt, kan C25 sagtens levere de næste 5 år bedre end de seneste
-            5. Det er den tese, du som investor må vurdere.
+            Hvis du primært har eksponering til C25 (via passiv
+            indeksinvestering eller danske enkelt-aktier), er det værd at
+            spørge: Hvor i din portefølje opvejer du de strukturelle
+            skævheder? Hvis ikke, kan det give mening at supplere med en
+            global aktiefond. Der findes ingen regel om, at hjemmemarkedet
+            skal være kernen i porteføljen, slet ikke når det udgør cirka
+            0,5% af det globale aktiemarked.
           </p>
         </section>
 
