@@ -165,14 +165,6 @@ function StockBlock({ name, returnLabel, children }: { name: string; returnLabel
   );
 }
 
-function InfoBox({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="bg-blue-50 dark:bg-blue-900/15 border border-blue-100 dark:border-blue-800 rounded-xl p-4 text-sm text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
-      {children}
-    </div>
-  );
-}
-
 // ─── main page ───────────────────────────────────────────────────────────────
 const C25AnalysisPage: React.FC = () => {
   const navigate = useNavigate();
@@ -624,54 +616,9 @@ const C25AnalysisPage: React.FC = () => {
           </ol>
         </section>
 
-        {/* Section 6: Hvad skal der til */}
+        {/* Section 6: Konklusion */}
         <section className="mb-12">
-          <SectionHeader n={6} title="Hvad skal der til, for at C25 stiger igen?" />
-          <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            Tre ting kan vende billedet, hver med forskellige sandsynligheder.
-          </p>
-
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mt-6 mb-2">Sundheds-recovery (mest sandsynligt)</h3>
-          <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-3">
-            Coloplast, GN, Demant og Ambu handler alle til historisk lave
-            multipler. En genopretning til 2021-vurderinger ville flytte
-            indekset materielt. Drivere kunne være: Kina-stabilisering for
-            Coloplast, OTC-konkurrence der viser sig mindre alvorlig end
-            frygtet, eller bare basis-effekter når sammenligningerne bliver
-            lettere.
-          </p>
-
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mt-6 mb-2">Grøn comeback (mellem-sandsynligt)</h3>
-          <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-3">
-            Ørsted handler nu til mere end 80% under sin top. Hvis renterne
-            falder, og hvis offshore-vind-økonomien bedrer sig (større
-            turbiner, bedre placeringer), kan aktien levere et stort comeback.
-            Men en del af tabet er reelt: Nogle US-projekter er væk for altid.
-            Vestas er i bedre form, men også sårbar.
-          </p>
-
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mt-6 mb-2">Bank-fortsættelse (usandsynligt)</h3>
-          <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            Bankerne har båret en stor del af indekset i 5 år drevet af
-            rentestigningen fra -0,5% til 4% i 2022-2023. Cyklen er nu vendt:
-            ECB har skåret deposit-renten ned til 2%, og markedet priser ingen
-            yderligere cuts ind i 2026, reelt en mulig ny stigning i 2027.
-            Bank-tailwind'en fra rentehævningerne er allerede høstet, og det
-            er svært at se Danske Bank levere endnu +299% fra her. Mere
-            realistisk: Bank-bidraget bliver fladt fremover.
-          </p>
-
-          <InfoBox>
-            <strong>Den ærlige risiko:</strong> hvis bankernes rente-tema
-            vender til modvind, og sundheds-recovery udebliver, kan C25 godt
-            have endnu 2-3 år med negativt afkast foran sig. Det er ikke et
-            katastrofescenarie, det er bare matematik.
-          </InfoBox>
-        </section>
-
-        {/* Section 7: Konklusion */}
-        <section className="mb-12">
-          <SectionHeader n={7} title="Konklusion" />
+          <SectionHeader n={6} title="Konklusion" />
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-3">
             C25 er endt cirka 2% lavere over 5 år, mens peer-indekser har
             leveret 40-79%. Det er ikke ét enkelt selskabs skyld. Det er
