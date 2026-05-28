@@ -408,7 +408,7 @@ const C25AnalysisPage: React.FC = () => {
 
         {/* Section 3: Tabere */}
         <section className="mb-12">
-          <SectionHeader n={3} title="De individuelle aktiehistorier - bunden" />
+          <SectionHeader n={3} title="De individuelle aktiehistorier i bunden" />
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
             Bag det flade indeks-tal gemmer sig nogle af de største enkelt-aktie
             fald set i et stort dansk indeks i nyere tid. Her er aktierne i C25
@@ -488,7 +488,7 @@ const C25AnalysisPage: React.FC = () => {
 
         {/* Section 4: Vindere */}
         <section className="mb-12">
-          <SectionHeader n={4} title="De individuelle aktiehistorier - toppen" />
+          <SectionHeader n={4} title="De individuelle aktiehistorier i toppen" />
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
             Selv om indekset er fladt, har en håndfuld aktier leveret massive
             afkast. Modsat tabene er de store stigninger meget koncentrerede:
@@ -507,13 +507,13 @@ const C25AnalysisPage: React.FC = () => {
 
           <StockBlock name="Danske Bank" returnLabel="+299%">
             Den næststørste stigning i C25. Tre samtidige drivere:
-            rente-margins eksploderede efter ECB hævede sin deposit-rente fra
+            Rente-margins eksploderede efter ECB hævede sin deposit-rente fra
             -0,5% i 2022 til 4,0% i september 2023 (MRO-renten op til 4,5%),
             og Nationalbanken fulgte med op til 3,6%. Bankerne fik dermed en
             stor spread mellem indlån og udlån; historisk aggressive
             aktietilbagekøb; og re-rating efter at hvidvask-skandalen er
             blevet gradvist glemt af markedet. Aktien handlede til 0,5x P/B i
-            2020, nu omkring 1,2x.
+            2020, nu omkring 1,6x.
           </StockBlock>
 
           <StockBlock name="Jyske Bank" returnLabel="+214%">
@@ -543,9 +543,9 @@ const C25AnalysisPage: React.FC = () => {
           </StockBlock>
 
           <StockBlock name="Zealand Pharma" returnLabel="+69%">
-            Den eneste sundhedsaktie i toppen. Drevet af klinisk fremgang i
-            selskabets pipeline (GLP-1 og glucagon-baserede behandlinger) -
-            bl.a. survodutide (BI 456906), som udvikles sammen med Boehringer
+            Sundhedssektorens stærkeste vinder i C25 over perioden. Drevet af klinisk fremgang i
+            selskabets pipeline (GLP-1 og glucagon-baserede behandlinger),
+            bl.a. survodutide, som udvikles sammen med Boehringer
             Ingelheim, hvilket har valideret forretningen.
           </StockBlock>
 
