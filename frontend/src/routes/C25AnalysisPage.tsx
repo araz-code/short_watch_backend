@@ -171,7 +171,7 @@ const C25AnalysisPage: React.FC = () => {
 
   useEffect(() => {
     trackPageView(`/analyse/${SLUG}`, "C25 analyse");
-    fetch(`${HOST}/stats/visit/c25_analysis/`).catch(() => {});
+    fetch(`${HOST}/stats/visit/c25-analysis/`).catch(() => {});
   }, []);
 
   return (
