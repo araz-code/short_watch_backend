@@ -10,6 +10,21 @@ export interface Analysis {
 
 export const analyses: Analysis[] = [
   {
+    slug: "c25/2026-05-28",
+    title: "OMX Copenhagen 25 (C25)",
+    subtitle: {
+      da: "Hvorfor C25 har stået stille i 5 år: Anatomien af et indeks der ikke vil stige",
+      en: "Why C25 has stood still for 5 years: Anatomy of an index that won't rise",
+    },
+    excerpt: {
+      da: "C25 er fladt over 5 år mens S&P 500 er steget 74%. Vi dekomponerer indekset aktie for aktie: Ørsted alene kostede 12pp, bankerne reddede +15pp.",
+      en: "C25 is flat over 5 years while S&P 500 has risen 74%. We decompose the index stock by stock: Ørsted alone cost 12pp, banks saved +15pp.",
+    },
+    date: { da: "28. maj 2026", en: "May 28, 2026" },
+    readingMinutes: 10,
+    code: "",
+  },
+  {
     slug: "pandora/2026-05-23",
     title: "Pandora A/S (PNDORA)",
     subtitle: {

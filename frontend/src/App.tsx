@@ -41,6 +41,7 @@ const NovoDCFPageEn = lazy(() => import("./routes/NovoDCFPage.en.tsx"));
 const PandoraSilverPageDa = lazy(() => import("./routes/PandoraSilverAnalysisPage.tsx"));
 const PandoraSilverPageEn = lazy(() => import("./routes/PandoraSilverAnalysisPage.en.tsx"));
 const AnalysisPage = lazy(() => import("./routes/AnalysisPage.tsx"));
+const C25AnalysisPage = lazy(() => import("./routes/C25AnalysisPage.tsx"));
 
 function ZealAnalysisPage() {
   const lng = localStorage.getItem("i18nextLng") || navigator.language;
@@ -178,6 +179,14 @@ const router = createBrowserRouter([
   {
     path: "analyse/bava",
     element: <ErrorBoundary><BAVAAnalysisPage /></ErrorBoundary>,
+  },
+  {
+    path: "analyse/c25/2026-05-28",
+    element: <ErrorBoundary><C25AnalysisPage /></ErrorBoundary>,
+  },
+  {
+    path: "analyse/c25",
+    element: <ErrorBoundary><C25AnalysisPage /></ErrorBoundary>,
   },
   {
     path: "analyse/pandora/2026-05-23",
