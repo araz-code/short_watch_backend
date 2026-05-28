@@ -423,24 +423,36 @@ const C25AnalysisPage: React.FC = () => {
             ramte alle long-duration grønne aktier hårdt), eksploderende
             komponentpriser, forsinkelser i amerikanske offshore-projekter, og
             en stor nedskrivning på 28,4 mia. DKK i oktober 2023, da Ørsted
-            måtte trække sig fra Ocean Wind 1 og 2 ud for New Jersey. Det var
-            ikke et selskab i krise. Det var hele forretningsmodellen for
-            offshore vind, der pludselig så uattraktiv ud.
+            måtte trække sig fra Ocean Wind 1 og 2 ud for New Jersey. Presset
+            fortsatte i 2025, hvor Ørsted måtte gennemføre en kapitaludvidelse
+            på cirka 60 mia. DKK fordi USA's regulatoriske usikkerhed gjorde det
+            umuligt at finansiere Sunrise Wind via en planlagt delvis divestment.
+            Det medførte betydelig aktiefortyndelse. Det var ikke et selskab i
+            krise på driftssiden. Det var hele forretningsmodellen for offshore
+            vind, der pludselig så uattraktiv ud.
           </StockBlock>
 
           <StockBlock name="GN Store Nord" returnLabel="-81%">
-            Lige så slemt som Ørsted, bare mindre kendt i offentligheden. To
-            samtidige problemer: et post-COVID kollaps i headset-segmentet
-            (folk og virksomheder købte for meget under pandemien, derefter
-            ingen genkøb), og pres på høreapparat-segmentet i USA fra
-            over-the-counter konkurrenter solgt via Amazon og apoteker til en
-            brøkdel af prisen.
+            Lige så slemt som Ørsted, bare mindre kendt i offentligheden. Tre
+            samtidige problemer ramte selskabet: et post-COVID kollaps i
+            Jabra-headset-forretningen (folk og virksomheder købte for meget
+            under pandemien, derefter ingen genkøb), pres på ReSound-høreapparater
+            i USA fra over-the-counter konkurrenter solgt via Amazon og apoteker
+            til en brøkdel af prisen, og en dyr SteelSeries-overtagelse for 8
+            mia. DKK i januar 2022 der ikke har leveret de forventede
+            gaming-synergier. GN har siden annonceret salg af Hearing-divisionen
+            til italienske Amplifon for at omdanne sig til en Audio + Gaming
+            pure play.
           </StockBlock>
 
           <StockBlock name="Ambu" returnLabel="-71%">
             Samme post-COVID mønster som GN. Ambus engangsendoskoper var hot
             under pandemien hvor genbrugsudstyr blev set som smitterisiko. Den
             strukturelle vækst er aldrig vendt tilbage til pre-COVID niveau.
+            Britt Meelby Jensen overtog CEO-posten i maj 2022 og har eksekveret
+            et omfattende program for fokusering og besparelser, hvilket
+            gradvist har forbedret marginerne i 2024 og 2025. Aktien har dog
+            ikke genvundet pandemi-niveauerne.
           </StockBlock>
 
           <StockBlock name="Coloplast" returnLabel="-52%">
@@ -461,7 +473,10 @@ const C25AnalysisPage: React.FC = () => {
             Patentfrygt omkring Darzalex (US-patentet udløber i 2029 og
             royalty-stream'en udfases gradvist over de tidlige 2030'ere), plus
             skuffende launch af nye produkter har sat aktien under pres trods
-            stadigt voksende royaltyindtægter.
+            stadigt voksende royaltyindtægter. Genmab har forsøgt at brede
+            pipelinen ud med deres største M&A til dato, ProfoundBio-overtagelsen
+            for USD 1,8 mia. i maj 2024 (ADC-platform mod blandt andet ovariekræft),
+            men det fulde værdi-løft ligger stadig flere år ude i fremtiden.
           </StockBlock>
 
           <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mt-4">
@@ -472,7 +487,9 @@ const C25AnalysisPage: React.FC = () => {
 
           <p className="text-xs text-gray-500 dark:text-gray-400 italic leading-relaxed mt-4">
             Kilde: Yahoo Finance via yfinance, dividend-justerede priser fra
-            26. maj 2021 til 27. maj 2026.
+            26. maj 2021 til 27. maj 2026. Novonesis blev dannet ved fusion af
+            Chr. Hansen og Novozymes 29. januar 2024; afkastet sammenligner
+            pre-merger Novozymes-aktien med post-merger Novonesis.
           </p>
         </section>
 
