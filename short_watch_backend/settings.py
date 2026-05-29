@@ -185,15 +185,15 @@ AUTH_USER_MODEL = 'accounts.ShortWatchUser'
 
 
 JAZZMIN_SETTINGS = {
-    "site_title": "Danish Short Watch Admin",
-    "site_header": "Danish Short Watch",
-    "site_brand": "Danish Short Watch",
+    "site_title": "Zirium Admin",
+    "site_header": "Zirium Admin",
+    "site_brand": "Zirium Admin",
     "site_logo": "images/logo.png",
     "login_logo": "images/login_logo.png",
     "site_icon": "images/favicon.png",
     "site_logo_classes": "img-square",
     "custom_css": "css/jazzmin_tweaks.css",
-    "welcome_sign": "Welcome to the Danish Short Watch Admin",
+    "welcome_sign": "Welcome to the Zirium Admin",
     "copyright": "Zirium",
     "hide_apps": ['auth'],
     "order_with_respect_to": ["dashboard", "accounts", "shorts"],
