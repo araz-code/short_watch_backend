@@ -21,6 +21,7 @@ from django.views.generic import TemplateView
 from django.views.static import serve
 
 from short_watch_backend import settings
+from home_page import og_views
 
 import os
 
@@ -101,6 +102,10 @@ urlpatterns = [
         '</urlset>\n',
         content_type="application/xml"
     )),
+    # Analysis routes get server-side Open Graph injection so social crawlers
+    # (Slack/Facebook/LinkedIn/X), which do not run JS, see the correct per-page
+    # preview instead of the generic index.html tags. Must precede the catch-all.
+    re_path(r'^analyse(?:/(?P<subpath>.*?))?/?$', og_views.analysis_page),
     path('', TemplateView.as_view(template_name="index.html")),
     re_path(r'^(?:.*)/?$', TemplateView.as_view(template_name="index.html")),
 ]
