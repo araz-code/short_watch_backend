@@ -22,6 +22,7 @@ from django.views.static import serve
 
 from short_watch_backend import settings
 from home_page import og_views
+from home_page.views import analyses_view
 
 import os
 
@@ -61,6 +62,7 @@ urlpatterns = [
     path('v18/users/', include('users.urls')),
     path('v18/insider/', include('insider_transactions.urls')),
     path('stats/', include('request_logging.urls')),
+    path('v18/analyses', analyses_view),
     path('favicon.svg', serve, {'path': 'favicon.svg', 'document_root': FRONTEND_DIST}),
     path('favicon.png', serve, {'path': 'favicon.png', 'document_root': FRONTEND_DIST}),
     path('manifest.json', serve, {'path': 'manifest.json', 'document_root': FRONTEND_DIST}),

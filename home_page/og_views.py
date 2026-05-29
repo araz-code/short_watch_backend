@@ -2,13 +2,15 @@
 
 The SPA is served as a single static dist/index.html for every route. Social
 crawlers (Slack, Facebook, LinkedIn, X) do not execute JavaScript, so the
-per-analysis OG tags that React sets client-side never reach them - they only
+per-analysis OG tags that React sets client-side never reach them; they only
 see the generic tags baked into index.html.
 
 This view intercepts /analyse/... routes, reads the same dist/index.html, and
-rewrites the OG/Twitter/title tags server-side based on a slug -> metadata map.
-Real users still get the full SPA (the #root div and JS bundle are untouched);
-crawlers get the correct per-analysis preview.
+rewrites the OG/Twitter/title tags server-side. The metadata comes from the
+shared analyses.json (see home_page.analyses_data), the same file the web build
+and the /v18/analyses API use, so there is a single source of truth. Real users
+still get the full SPA (the #root div and JS bundle are untouched); crawlers get
+the correct per-analysis preview.
 """
 import os
 import re
@@ -17,76 +19,50 @@ from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import render
 
+from home_page.analyses_data import load_analyses
+
 INDEX_PATH = os.path.join(settings.FRONTEND_DIR, "dist", "index.html")
 SITE = "https://www.zirium.dk"
 OG = f"{SITE}/og-images"
 
-# Keyed by the normalised path (no leading/trailing slash). Both the dated and
-# the short route for each analysis map to the same metadata. Mirrors the OG
-# tags defined in the React analysis pages.
-ANALYSIS_META = {
-    "analyse": {
-        "title": "Analyser af danske aktier",
-        "description": "Dybdegående analyser af danske aktier: short-positioner, "
-                       "værdiansættelser og markedsbevægelser fra Zirium.",
-        "image": f"{OG}/analyse-index.png",
-    },
-    "analyse/gn/2026-05-14": {
-        "title": "Shortanalyse: Shorterne holder fast trods Amplifon-salget",
-        "description": "Dybdegående analyse af short-positioner i GN Store Nord (GN). "
-                       "Shorterne holder fast trods Amplifon-salget.",
-        "image": f"{OG}/gn-2026-05-14.png",
-    },
-    "analyse/bava/2026-05-17": {
-        "title": "Shortanalyse: Da BAVA sad øverst på shortlisten",
-        "description": "Analyse af short-positioner i Bavarian Nordic (BAVA). Fra 9,40% i "
-                       "oktober 2023 til under 2% i dag, gennem et overtagelsesbud og et "
-                       "kursfald på 54% fra toppen.",
-        "image": f"{OG}/bava-2026-05-17.png",
-    },
-    "analyse/pandora/2026-05-23": {
-        "title": "Pandora og sølvprisen: Hvordan råvarer og forbrugertillid påvirker aktien",
-        "description": "Analyse af sammenhængen mellem sølvprisen, amerikansk forbrugertillid "
-                       "og Pandora-aktiens kursudvikling. Fra ca. 940 DKK i januar 2024 til "
-                       "556 DKK i maj 2026, mens sølvprisen mere end tredobledes.",
-        "image": f"{OG}/pandora-2026-05-23.png",
-    },
-    "analyse/novo/dcf/2026-05-19": {
-        "title": "Novo Nordisk (NOVO B) DCF: Beregn din egen fair value",
-        "description": "Interaktiv DCF-model for Novo Nordisk. Juster dine antagelser om vækst, "
-                       "margin og WACC og se kursmål og fair value i realtid.",
-        "image": f"{OG}/novo-dcf-2026-05-19.png",
-    },
-    "analyse/zeal/2026-05-13": {
-        "title": "Shortanalyse: Hvem vædder imod Zealand Pharma?",
-        "description": "Dybdegående analyse af short-positioner i Zealand Pharma (ZEAL). "
-                       "Hvem shorter, hvor meget, og hvorfor?",
-        "image": f"{OG}/zeal-2026-05-13.png",
-    },
-    "analyse/zeal/gennemsnitspris/2026-05-14": {
-        "title": "Til hvilken kurs har de shortet Zealand Pharma?",
-        "description": "Fire beregningsmetoder sammenlignet. Estimeret indgangspris per "
-                       "short-sælger og analyse af hvem der tjener penge.",
-        "image": f"{OG}/zeal-gennemsnitspris-2026-05-14.png",
-    },
-    "analyse/c25/2026-05-28": {
-        "title": "Hvorfor C25 har stået stille i 5 år",
-        "description": "C25 -2% mens peers steg 40-79%. Sektorforskydninger og "
-                       "enkelt-aktie-kollaps forklarer det danske efterslæb.",
-        "image": f"{OG}/c25-2026-05-28.png",
-    },
-}
+_DATE_SUFFIX = re.compile(r"/\d{4}-\d{2}-\d{2}$")
+_meta_cache = None
 
-# Short (undated) routes resolve to the same metadata as the dated route.
-_ALIASES = {
-    "analyse/gn": "analyse/gn/2026-05-14",
-    "analyse/bava": "analyse/bava/2026-05-17",
-    "analyse/pandora": "analyse/pandora/2026-05-23",
-    "analyse/novo/dcf": "analyse/novo/dcf/2026-05-19",
-    "analyse/zeal": "analyse/zeal/2026-05-13",
-    "analyse/zeal/gennemsnitspris": "analyse/zeal/gennemsnitspris/2026-05-14",
-    "analyse/c25": "analyse/c25/2026-05-28",
-}
+
+def _build_meta():
+    """Build the path -> OG metadata map from analyses.json. Both the dated route
+    (analyse/c25/2026-05-28) and the undated stem (analyse/c25) map to the same
+    analysis; 'canonical' holds the dated path used for og:url."""
+    data = load_analyses()
+    idx = data.get("index", {})
+    meta = {
+        "analyse": {
+            "title": idx.get("ogTitle", "Analyser af danske aktier"),
+            "description": idx.get("ogDescription", ""),
+            "image": f"{OG}/{idx.get('ogImage', 'analyse-index')}.png",
+            "canonical": "analyse",
+        }
+    }
+    for a in data.get("analyses", []):
+        slug = a["slug"]
+        canonical = "analyse/" + slug
+        entry = {
+            "title": a["ogTitle"],
+            "description": a["ogDescription"],
+            "image": f"{OG}/{a['ogImage']}.png",
+            "canonical": canonical,
+        }
+        meta[canonical] = entry
+        stem = "analyse/" + _DATE_SUFFIX.sub("", slug)
+        meta.setdefault(stem, entry)
+    return meta
+
+
+def _meta_map():
+    global _meta_cache
+    if _meta_cache is None:
+        _meta_cache = _build_meta()
+    return _meta_cache
 
 
 def _esc(text: str) -> str:
@@ -137,11 +113,17 @@ def _render_with_og(meta: dict, url: str) -> str:
 def analysis_page(request, subpath: str = ""):
     """Serve dist/index.html with per-analysis OG tags injected for crawlers."""
     norm = ("analyse/" + subpath).strip("/") if subpath else "analyse"
-    norm = _ALIASES.get(norm, norm)
-    meta = ANALYSIS_META.get(norm, ANALYSIS_META["analyse"])
-    url = f"{SITE}/{norm}"
+    meta_map = _meta_map()
+    entry = meta_map.get(norm)
+    if entry is not None:
+        url = f"{SITE}/{entry['canonical']}"
+    else:
+        # Unknown analyse path: fall back to the index metadata, but keep the
+        # requested path as the canonical url (matches the previous behaviour).
+        entry = meta_map["analyse"]
+        url = f"{SITE}/{norm}"
     try:
-        return HttpResponse(_render_with_og(meta, url))
+        return HttpResponse(_render_with_og(entry, url))
     except FileNotFoundError:
         # Dev fallback (no build present): let the normal template path handle it.
         return render(request, "index.html")
