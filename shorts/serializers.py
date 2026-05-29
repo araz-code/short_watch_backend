@@ -102,6 +102,7 @@ class ShortPositionDetailSerializer(serializers.Serializer):
     priceFlow = PriceFlowBucketSerializer(many=True, required=False)
     sharesOutstanding = serializers.IntegerField(allow_null=True, required=False)
     daysToCover = serializers.FloatField(allow_null=True, required=False)
+    showPriceData = serializers.BooleanField(required=False)
 
 
 class LargeShortSellingForShortSellerSerializer(serializers.ModelSerializer):

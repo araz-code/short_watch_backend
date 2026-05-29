@@ -10,6 +10,9 @@ class Stock(models.Model):
     active = models.BooleanField(default=True)
     shares_outstanding = models.PositiveBigIntegerField(null=True, blank=True)
     float_shares = models.PositiveBigIntegerField(null=True, blank=True)
+    # When unchecked, the frontend hides the price chart, volume and price flow
+    # for this stock (e.g. Noble, which has no Copenhagen price feed on our source).
+    show_price_data = models.BooleanField(default=True)
 
     def __str__(self):
         return f'{self.symbol} - {self.name}'

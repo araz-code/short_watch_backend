@@ -97,7 +97,8 @@ ShortedStockDetailsResponse = namedtuple('ShortedStockDetailsResponse', ['chartV
                                                                          'velocity30d',
                                                                          'priceFlow',
                                                                          'sharesOutstanding',
-                                                                         'daysToCover'])
+                                                                         'daysToCover',
+                                                                         'showPriceData'])
 
 
 PRICE_FLOW_BUCKET_WIDTH = 0.02  # 2% wide log-spaced buckets
@@ -298,14 +299,15 @@ class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
 
             response = ShortedStockDetailsResponse(chart_values, historic, sellers, announcements,
                                                    percentile, velocity_7d, velocity_30d, price_flow,
-                                                   stock.shares_outstanding, days_to_cover)
+                                                   stock.shares_outstanding, days_to_cover,
+                                                   stock.show_price_data)
 
             data = self.get_serializer(response).data
             cache.set(cache_key, data, timeout=CACHE_TIMEOUT_SECONDS)
             return Response(data)
         except Stock.DoesNotExist:
             return Response(self.get_serializer(
-                ShortedStockDetailsResponse([], [], [], [], None, None, None, [], None, None)).data)
+                ShortedStockDetailsResponse([], [], [], [], None, None, None, [], None, None, True)).data)
 
 
 class ShortSellerView(ReadOnlyModelViewSet):
