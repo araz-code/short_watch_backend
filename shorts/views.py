@@ -32,31 +32,11 @@ class ShortPositionView(ReadOnlyModelViewSet):
     lookup_field = 'code'
 
     def list(self, request, *args, **kwargs):
-        cache_key = 'short_positions_list'
-        cached = cache.get(cache_key)
+        cached = cache.get('short_positions_list')
         if cached:
             return Response(cached)
-
-        latest_per_stock = dict(
-            ShortPosition.objects
-            .filter(stock__active=True)
-            .values('stock_id')
-            .annotate(max_ts=Max('timestamp'))
-            .values_list('stock_id', 'max_ts')
-        )
-        most_recent_short_positions = (
-            ShortPosition.objects.select_related('stock')
-            .filter(reduce(or_, (Q(stock_id=sid, timestamp=ts)
-                                 for sid, ts in latest_per_stock.items())))
-        ) if latest_per_stock else ShortPosition.objects.none()
-
-        sorted_data = sorted(most_recent_short_positions, key=lambda x: x.stock.symbol)
-        seen = set()
-        sorted_data = [p for p in sorted_data if p.stock_id not in seen and not seen.add(p.stock_id)]
-
-        serializer = self.serializer_class(sorted_data, many=True)
-        cache.set(cache_key, serializer.data, timeout=CACHE_TIMEOUT_SECONDS)
-        return Response(serializer.data)
+        # Cache miss (e.g. first request before fetch_shorts has warmed it).
+        return Response(warm_short_positions_list_cache())
 
     def retrieve(self, request, code=None, *args, **kwargs):
         short_positions_for_code = self.get_queryset().select_related('stock') \
@@ -64,6 +44,37 @@ class ShortPositionView(ReadOnlyModelViewSet):
 
         serializer = self.serializer_class(short_positions_for_code, many=True)
         return Response(serializer.data)
+
+
+def _build_short_positions_list():
+    """Latest short position per active stock, sorted by symbol and de-duplicated.
+    Request-independent so it can be warmed off the request path."""
+    latest_per_stock = dict(
+        ShortPosition.objects
+        .filter(stock__active=True)
+        .values('stock_id')
+        .annotate(max_ts=Max('timestamp'))
+        .values_list('stock_id', 'max_ts')
+    )
+    most_recent_short_positions = (
+        ShortPosition.objects.select_related('stock')
+        .filter(reduce(or_, (Q(stock_id=sid, timestamp=ts)
+                             for sid, ts in latest_per_stock.items())))
+    ) if latest_per_stock else ShortPosition.objects.none()
+
+    sorted_data = sorted(most_recent_short_positions, key=lambda x: x.stock.symbol)
+    seen = set()
+    sorted_data = [p for p in sorted_data if p.stock_id not in seen and not seen.add(p.stock_id)]
+
+    return ShortPositionSerializer(sorted_data, many=True).data
+
+
+def warm_short_positions_list_cache():
+    """Build the short positions list and store it in the cache. Called by
+    fetch_shorts so the list is served from cache, never rebuilt on a request."""
+    data = _build_short_positions_list()
+    cache.set('short_positions_list', data, timeout=CACHE_TIMEOUT_SECONDS)
+    return data
 
 
 class OldShortSellerView(GenericViewSet, RetrieveAPIView):
@@ -310,14 +321,11 @@ class ShortSellerView(ReadOnlyModelViewSet):
     detail_serializer_class = ShortSellerDetailSerializer
 
     def list(self, request, *args, **kwargs):
-        cache_key = 'short_sellers_list'
-        cached = cache.get(cache_key)
+        cached = cache.get('short_sellers_list')
         if cached:
             return Response(cached)
-
-        response = super().list(request, *args, **kwargs)
-        cache.set(cache_key, response.data, timeout=CACHE_TIMEOUT_SECONDS)
-        return response
+        # Cache miss (e.g. first request before fetch_shorts has warmed it).
+        return Response(warm_short_sellers_list_cache())
 
     def get_serializer_class(self):
         if self.action == 'retrieve':
@@ -325,6 +333,22 @@ class ShortSellerView(ReadOnlyModelViewSet):
                 return self.detail_serializer_class
 
         return self.serializer_class
+
+
+def _build_short_sellers_list():
+    """Serialize the short sellers list. Request-independent: no pagination or
+    filter backends are configured, and ShortSellerListSerializer uses only
+    object-based method fields (no request/context), so this matches what the
+    view returns on a real request."""
+    return ShortSellerListSerializer(ShortSellerView.queryset, many=True).data
+
+
+def warm_short_sellers_list_cache():
+    """Build the short sellers list and store it in the cache. Called by
+    fetch_shorts so the list is served from cache, never rebuilt on a request."""
+    data = _build_short_sellers_list()
+    cache.set('short_sellers_list', data, timeout=CACHE_TIMEOUT_SECONDS)
+    return data
 
 
 import re

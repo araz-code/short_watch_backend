@@ -116,8 +116,14 @@ class Command(BaseCommand):
         # is non-fatal: on failure the key just stays empty and the next request
         # recomputes it.
         try:
-            from shorts.views import warm_top_lists_cache, warm_homepage_stats_cache
-            for warm in (warm_top_lists_cache, warm_homepage_stats_cache):
+            from shorts.views import (
+                warm_top_lists_cache,
+                warm_homepage_stats_cache,
+                warm_short_positions_list_cache,
+                warm_short_sellers_list_cache,
+            )
+            for warm in (warm_top_lists_cache, warm_homepage_stats_cache,
+                         warm_short_positions_list_cache, warm_short_sellers_list_cache):
                 try:
                     warm()
                 except Exception as e:
