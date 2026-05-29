@@ -105,6 +105,7 @@ const PricePointChart: React.FC<{
   priceFlow?: PriceFlowBucket[];
   symbol: string;
   periodControl?: React.ReactNode;
+  showPriceData?: boolean;
 }> = (props) => {
   const { data: pricePoints, priceFlow, periodControl } = props;
   const { t } = useTranslation();
@@ -150,6 +151,14 @@ const PricePointChart: React.FC<{
     const saved = localStorage.getItem("showPriceFlow");
     return saved ? JSON.parse(saved) : true;
   });
+
+  // When false (admin unchecked "show price data" for this stock), keep the
+  // short position line but suppress the closing-price, volume and price-flow
+  // overlays and their toggle buttons. The user's saved toggle prefs are left
+  // untouched for other stocks.
+  const priceEnabled = props.showPriceData !== false;
+  const closingPricesVisible = priceEnabled && showClosingPrices;
+  const priceFlowVisible = priceEnabled && showPriceFlow;
 
   const maxY: number =
     pricePoints.reduce((max, point) => Math.max(max, point.value), -Infinity) +
@@ -205,6 +214,7 @@ const PricePointChart: React.FC<{
   return (
     <div>
       <div className="flex items-center justify-between px-2 mb-1 mt-2 sm:mt-0">
+        {priceEnabled ? (
         <div className="flex items-center gap-2">
           <button
             onClick={toggleClosingPrices}
@@ -266,6 +276,9 @@ const PricePointChart: React.FC<{
             </button>
           )}
         </div>
+        ) : (
+          <div />
+        )}
         {periodControl}
       </div>
       {periodChange !== null && (
@@ -334,17 +347,17 @@ const PricePointChart: React.FC<{
             tickLine={false}
             axisLine={false}
           />
-          {(showClosingPrices || showPriceFlow) && (
+          {(closingPricesVisible || priceFlowVisible) && (
             <YAxis
               dataKey="close"
-              width={showClosingPrices || showPriceFlow ? 38 : 0}
+              width={closingPricesVisible || priceFlowVisible ? 38 : 0}
               tick={{ fontSize: 11, fill: "#bbb" }}
               tickFormatter={(value) => formatNum(value, 0)}
               orientation="left"
               type="number"
               yAxisId="2"
               domain={[minPriceY, maxPriceY]}
-              hide={!showClosingPrices && !showPriceFlow}
+              hide={!closingPricesVisible && !priceFlowVisible}
               tickLine={false}
               axisLine={false}
             />
@@ -357,7 +370,7 @@ const PricePointChart: React.FC<{
               strokeOpacity: 0.3,
             }}
           />
-          {showPriceFlow && priceFlow && priceFlow.length > 0 && (
+          {priceFlowVisible && priceFlow && priceFlow.length > 0 && (
             <VolumeProfileOverlay priceFlow={priceFlow} />
           )}
           <Area
@@ -389,7 +402,7 @@ const PricePointChart: React.FC<{
               ifOverflow="extendDomain"
             />
           )}
-          {showClosingPrices && (
+          {closingPricesVisible && (
             <Line
               dataKey="close"
               stroke="#a855f7"
@@ -410,7 +423,7 @@ const PricePointChart: React.FC<{
               strokeOpacity={0.8}
             />
           )}
-          {showClosingPrices && maxVolume > 0 && (
+          {closingPricesVisible && maxVolume > 0 && (
             <>
               <YAxis
                 dataKey="volume"
@@ -445,7 +458,7 @@ const PricePointChart: React.FC<{
             </span>
             {t("Current")}
           </span>
-          {showClosingPrices && (
+          {closingPricesVisible && (
             <>
               <span className="flex items-center gap-1.5">
                 <span className="w-3 h-[3px] rounded-full bg-[#a855f7] inline-block" />
@@ -457,7 +470,7 @@ const PricePointChart: React.FC<{
               </span>
             </>
           )}
-          {showPriceFlow && priceFlow && priceFlow.length > 0 && (
+          {priceFlowVisible && priceFlow && priceFlow.length > 0 && (
             <span className="flex items-center gap-1.5">
               <span className="inline-flex items-center gap-[1px]">
                 <span className="w-2 h-3 bg-red-500/70 inline-block" />

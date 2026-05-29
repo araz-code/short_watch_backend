@@ -156,10 +156,10 @@ const ShortPositionDetailsPage: React.FC = () => {
   const stockName = data?.historic?.[0]?.name;
   const stockSymbol = data?.historic?.[0]?.symbol;
 
-  // The price chart, volume and price flow are hidden when an admin unchecks
-  // "show price data" on the stock (e.g. Noble, which has no Copenhagen price
-  // feed). A missing/undefined flag is treated as "show" so older cached
-  // responses keep working.
+  // When an admin unchecks "show price data" (e.g. Noble, which has no Copenhagen
+  // price feed), we keep the short position chart but drop the price/volume/flow
+  // overlays (handled inside PricePointChart) and the Price flow tab. A missing
+  // flag is treated as "show" so older cached responses keep working.
   const priceDataDisabled = data?.showPriceData === false;
   const visibleDetailOptions = priceDataDisabled
     ? detailOptions.filter((option) => option !== "Price flow")
@@ -401,22 +401,21 @@ const ShortPositionDetailsPage: React.FC = () => {
           )}
         </div>
         <div className="flex flex-col flex-1 min-h-0">
-          {!priceDataDisabled && (
-            <div className="mb-3 shrink-0">
-              <PricePointChart
-                data={filteredChartValues}
-                priceFlow={filteredPriceFlow}
-                symbol={data.historic.length > 0 && data.historic[0].symbol}
-                periodControl={
-                  <ToggleSwitch
-                    options={periodOptions}
-                    selectedOption={selectedPeriod}
-                    onSelectChange={setSelectedPeriod}
-                  />
-                }
-              />
-            </div>
-          )}
+          <div className="mb-3 shrink-0">
+            <PricePointChart
+              data={filteredChartValues}
+              priceFlow={filteredPriceFlow}
+              symbol={data.historic.length > 0 && data.historic[0].symbol}
+              showPriceData={!priceDataDisabled}
+              periodControl={
+                <ToggleSwitch
+                  options={periodOptions}
+                  selectedOption={selectedPeriod}
+                  onSelectChange={setSelectedPeriod}
+                />
+              }
+            />
+          </div>
           <div className="mb-1 flex justify-center gap-6 border-b border-gray-200 dark:border-gray-700 shrink-0">
             {visibleDetailOptions.map((option) => (
               <button
