@@ -245,30 +245,30 @@ const AmbuAnalysisPage: React.FC = () => {
             Ambu A/S (AMBU-B)
           </p>
           <p className="text-gray-600 dark:text-gray-300 mt-3 leading-relaxed">
-            Ambu handler i dag omkring 65,60 DKK - cirka 47% under niveauet
-            fra januar 2020, altså før pandemien overhovedet startede.
+            Ambu handler i dag omkring 65,60 DKK, cirka 47% under niveauet
+            fra januar 2020, altså før pandemien overhovedet begyndte.
             Undervejs næsten tredoblede aktien sig til en pandemi-top på
             355,40 DKK den 27. april 2021, før den kollapsede. Den ramte en
-            ny all-time low på 61,70 DKK så sent som den 29. april 2026 og
+            ny bundrekord på 61,70 DKK så sent som den 29. april 2026 og
             ligger nu cirka 82% under toppen.
           </p>
           <p className="text-gray-600 dark:text-gray-300 mt-3 leading-relaxed">
-            Den primære årsag til faldet er ikke operationel svaghed, men en
-            uundgåelig værdiansættelses-reset fra et boble-niveau. I
-            september 2020 ramte Ambus P/E-multipel 3.730x på rullende
-            indtjening, og selv på normaliserede 2021-tal handlede aktien
-            over 100x indtjening. Den slags værdiansættelser har historisk
-            kun ét udfald: Et hårdt mean-reversion-fald uanset selskabets
-            operationelle udvikling.
+            Den primære årsag til faldet er ikke svag drift, men en
+            uundgåelig korrektion af en ekstrem værdiansættelse. I september
+            2020 ramte Ambus P/E-multipel 3.730 på rullende indtjening, og
+            selv på normaliserede 2021-tal handlede aktien til over 100 gange
+            indtjeningen. Den slags værdiansættelser ender historisk kun ét
+            sted: I et hårdt tilbagefald mod normale niveauer, uanset hvor
+            godt selskabet klarer sig.
           </p>
           <p className="text-gray-600 dark:text-gray-300 mt-3 leading-relaxed">
-            Det paradoksale er, at selskabet operationelt har gennemført en
+            Det paradoksale er, at selskabet driftsmæssigt har gennemført en
             af de stærkeste transformationer i dansk sundhedssektor under
-            CEO Britt Meelby Jensen. EBIT-marginen før special items er
-            næsten femdoblet fra 2,7% i FY21/22 til 13,0% i FY24/25, organisk
-            omsætningsvækst landede på 13,1% i seneste hele regnskabsår, og
-            selskabet har nu netto-kontant-position. Alligevel fortsætter
-            aktien ned. Hvad gør den ikke?
+            adm. direktør Britt Meelby Jensen. Driftsmarginen før særlige
+            poster er næsten femdoblet fra 2,7% i regnskabsåret 2021/22 til
+            13,0% i 2024/25, den organiske omsætningsvækst landede på 13,1% i
+            seneste regnskabsår, og selskabet har nu flere kontanter end
+            gæld. Alligevel bliver aktien ved at falde. Hvorfor?
           </p>
           <p className="text-gray-600 dark:text-gray-300 mt-3 leading-relaxed">
             Vi gennemgår kursudviklingen siden 2020 sammenlignet med
@@ -282,7 +282,7 @@ const AmbuAnalysisPage: React.FC = () => {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-12">
           <KPI value="-47%" label="Afkast siden jan 2020" highlight tone="red" />
           <KPI value="+181%" label="Til pandemi-toppen (apr 2021)" />
-          <KPI value="-82%" label="Fra all-time high" />
+          <KPI value="-82%" label="Fra rekordniveau" />
           <KPI value="7,21%" label="Short interest (27/5)" highlight tone="red" />
         </div>
 
@@ -290,10 +290,10 @@ const AmbuAnalysisPage: React.FC = () => {
         <section className="mb-12">
           <SectionHeader n={1} title="Hvor stort er problemet egentlig?" />
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            Sammenligningen siden januar 2020 - før pandemien - fortæller to
-            ting. For det første er det ikke en bred sektorkrise: Intuitive
+            Sammenligningen siden januar 2020, altså før pandemien, fortæller
+            to ting. For det første er det ikke en bred sektorkrise: Intuitive
             Surgical er mere end fordoblet (+127%), Boston Scientific er steget
-            17%, og selv japanske Olympus (den klare reusable-konkurrent) er
+            17%, og selv japanske Olympus (den klare genbrugs-konkurrent) er
             omtrent tilbage på sit start-niveau (+2%). For det andet er Ambus
             kursrejse unik: Aktien næsten tredoblede sig til pandemi-toppen og
             er nu faldet helt tilbage til cirka 47% under udgangspunktet. Kun
@@ -347,7 +347,7 @@ const AmbuAnalysisPage: React.FC = () => {
             Ambus toppris på 355,40 DKK den 27. april 2021 var et resultat
             af en perfekt storm under COVID-19. Engangsendoskoper, som var
             Ambus kerneprodukt, blev pludselig set som en smitterisiko-løsning,
-            fordi reusable instrumenter krævede genbrugsprocessering der
+            fordi genbrugsinstrumenter krævede genbrugsprocessering der
             blev anset som en risikofaktor under pandemien. Hospitalerne
             købte massivt og opbyggede lagre langt over normal forbrugsrate.
           </p>
@@ -357,7 +357,7 @@ const AmbuAnalysisPage: React.FC = () => {
             april 2021, og markedet priste Ambu som om engangsendoskoper-paradigmet
             var ved at overtage hele endoskopi-markedet på få år. I september
             2020 ramte P/E-multiplen 3.730x på rullende 12 måneders indtjening,
-            et niveau der historisk har været forbeholdt "story stocks" i
+            et niveau der historisk kun ses på rene fortælling-aktier i
             ekstreme boble-toppe. Selv på normaliserede 2021-tal handlede
             aktien på over 100x indtjening.
           </p>
@@ -448,8 +448,8 @@ const AmbuAnalysisPage: React.FC = () => {
             kerneproduktlinjen aScope. Senest har Ambu lanceret aScope 5
             Broncho (top-tier bronkoskop), aScope Gastro Large (4,2 mm
             arbejdskanal til avancerede GI-procedurer) og er ved at udvikle
-            en koloskopilinje. Strategien handler om at omsætte single-use
-            paradigmet til markeder, hvor Olympus' reusable-instrumenter
+            en koloskopilinje. Strategien handler om at udbrede
+            engangs-modellen til markeder, hvor Olympus' genbrugsinstrumenter
             stadig dominerer.
           </p>
         </section>
@@ -462,7 +462,7 @@ const AmbuAnalysisPage: React.FC = () => {
             og aktien faldt cirka 13% på dagen. Årsagen var ikke svag drift,
             men en kombination af tariff-omkostninger og valutamodvind. Q4
             FY24/25 (kvartalet juli til september 2025) leverede en
-            EBIT-margin før special items på 10,0% mod konsensus omkring
+            EBIT-margin før særlige poster på 10,0% mod konsensus omkring
             12-13%. Tariff-effekten og en svækket USD over for DKK var
             hovedansvarlige.
           </p>
@@ -476,7 +476,7 @@ const AmbuAnalysisPage: React.FC = () => {
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
             For FY25/26 har Ambu guidet organisk omsætningsvækst på 10-13%
-            og EBIT-margin før special items på 12-14% (14-16% eksklusive
+            og EBIT-margin før særlige poster på 12-14% (14-16% eksklusive
             tariff-impacten på cirka 2 procentpoint). Det er den primære
             grund til at marginerne falder kortvarigt efter at have toppet
             på 16,1% i Q1 FY24/25 (kvartalet oktober-december 2024).
@@ -550,16 +550,16 @@ const AmbuAnalysisPage: React.FC = () => {
               <strong>Tariff- og FX-modvind tager toppen af margin-løftet.</strong>{" "}
               FY25/26-vejledningen er 12-14% EBIT-margin mod tidligere håb
               om 14-16%. Det er ikke en stor forskel, men det får analytikere
-              til at justere terminalværdier ned, og value-investorerne
+              til at justere terminalværdier ned, og de værdiorienterede investorer
               tøver med at træde ind før der er klarhed.
             </li>
             <li>
               <strong>Single-use konverteringsraten er langsommere end forventet.</strong>{" "}
-              Olympus' reusable-endoskoper er dybt integrerede i hospitalers
-              workflows, og overgangen til single-use kræver investering i
-              displays (aBox/aView) samt klinisk uddannelse. Selv med
-              veldokumenterede smitte- og produktivitetsfordele tager
-              adoption tid.
+              Olympus' genbrugsendoskoper er dybt integrerede i hospitalernes
+              arbejdsgange, og overgangen til engangsudstyr kræver
+              investering i skærme (aBox/aView) samt klinisk oplæring. Selv
+              med veldokumenterede smitte- og produktivitetsfordele tager
+              udbredelsen tid.
             </li>
             <li>
               <strong>Værdiansættelsen er stadig rig på faldende business.</strong>{" "}
@@ -572,14 +572,14 @@ const AmbuAnalysisPage: React.FC = () => {
               <strong>Hedgefondene har rekordhøj shortinteresse.</strong>{" "}
               7,21% short interest med store navne som Wellington og
               Millennium betyder, at den marginale køber stadig møder en
-              marginal sælger der vil shorte mere ved enhver bounce.
+              marginal sælger der vil shorte mere ved enhver kursstigning.
             </li>
           </ol>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
             Markedet straffer ikke transformationen. Det signalerer i stedet
             usikkerhed om holdbarheden af margin-løftet i en tariff-præget
-            verden, og det venter på bevis for at single-use endoscopy reelt
-            bliver standarden i procedure-volumen, ikke kun i Ambus
+            verden, og det venter på bevis for at engangs-endoskopi reelt
+            bliver standarden i antallet af procedurer, ikke kun i Ambus
             produktlinje.
           </p>
         </section>
@@ -596,8 +596,8 @@ const AmbuAnalysisPage: React.FC = () => {
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-3">
             Modsiden er, at markedet pt. priser tariff-presset, langsom
-            single-use adoption og rig værdiansættelse hårdere end den
-            opnåede transformation. Hedgefondenes shortinteresse på et
+            udbredelse af engangsudstyr og en rig værdiansættelse hårdere
+            end den opnåede transformation. Hedgefondenes shortinteresse på et
             historisk topniveau er det tydeligste signal om at den
             professionelle investorbase ikke tror på et hurtigt comeback.
           </p>
@@ -608,8 +608,8 @@ const AmbuAnalysisPage: React.FC = () => {
             længere tid at arbejde sig igennem end markedet havde håbet.
             Hvis ZOOM AHEAD leverer +20% EBIT-margin mod FY29/30, vil
             dagens kurs vise sig at være meget billig. Hvis tarifferne
-            normaliseres langsommere eller single-use adoptionsraten skuffer,
-            kan aktien fortsætte ned. Det er den balance investorer må veje.
+            normaliseres langsommere, eller udbredelsen af engangsudstyr
+            skuffer, kan aktien fortsætte ned. Det er den balance investorer må veje.
           </p>
         </section>
 
