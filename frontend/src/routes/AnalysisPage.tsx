@@ -8,14 +8,8 @@ import { trackEvent, trackPageView } from "../analytics";
 import { HOST } from "../apis/ShortPositionAPI";
 import { analyses } from "../data/analyses";
 
-// Per-ticker gradient so each card has a small splash of color tied to the stock.
-const gradients: Record<string, string> = {
-  BAVA: "from-emerald-500 to-teal-600",
-  ZEAL: "from-violet-500 to-indigo-600",
-  GN: "from-amber-500 to-orange-600",
-  NOVO: "from-sky-500 to-blue-600",
-  PNDORA: "from-pink-500 to-rose-600",
-};
+// The accent color per analysis comes from analyses.json (analysis.accentColor),
+// so it is shared per stock and reused on iOS.
 
 function tickerFromTitle(title: string): string {
   const match = title.match(/\(([^)]+)\)/);
@@ -33,7 +27,6 @@ const AnalysisPage: React.FC = () => {
 
   const [featured, ...rest] = analyses;
   const featuredTicker = featured ? tickerFromTitle(featured.title) : "";
-  const featuredGradient = gradients[featuredTicker] ?? "from-blue-500 to-indigo-600";
 
   const headerDescription = isDa
     ? "Dybdegående gennemgange af danske aktier: fra short-positioner og insider-handler til værdiansættelser og makroeksponering."
@@ -78,13 +71,14 @@ const AnalysisPage: React.FC = () => {
             className="group block mb-10 sm:mb-12 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#19191f] hover:shadow-xl hover:border-gray-300 dark:hover:border-gray-600 hover:-translate-y-0.5 transition-all duration-200"
           >
             {/* Colored top bar */}
-            <div className={`relative h-2 bg-gradient-to-r ${featuredGradient}`} />
+            <div className="relative h-2" style={{ backgroundColor: featured.accentColor }} />
 
             <div className="grid sm:grid-cols-[180px_1fr] gap-6 sm:gap-8 p-6 sm:p-8">
               {/* Ticker badge column */}
               <div className="flex flex-col items-center sm:items-start gap-3">
                 <div
-                  className={`shrink-0 w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-gradient-to-br ${featuredGradient} flex items-center justify-center shadow-md`}
+                  className="shrink-0 w-24 h-24 sm:w-28 sm:h-28 rounded-2xl flex items-center justify-center shadow-md"
+                  style={{ backgroundColor: featured.accentColor }}
                 >
                   <span className="text-white text-xl sm:text-2xl font-extrabold tracking-tight">
                     {featuredTicker}
@@ -141,7 +135,6 @@ const AnalysisPage: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
               {rest.map((a) => {
                 const ticker = tickerFromTitle(a.title);
-                const gradient = gradients[ticker] ?? "from-blue-500 to-indigo-600";
                 return (
                   <Link
                     key={a.slug}
@@ -152,7 +145,7 @@ const AnalysisPage: React.FC = () => {
                     className="group relative flex flex-col rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#19191f] hover:shadow-lg hover:border-gray-300 dark:hover:border-gray-600 hover:-translate-y-0.5 transition-all duration-200"
                   >
                     {/* Header bar with ticker */}
-                    <div className={`relative bg-gradient-to-br ${gradient} h-14 flex items-center px-4`}>
+                    <div className="relative h-14 flex items-center px-4" style={{ backgroundColor: a.accentColor }}>
                       <span className="text-white text-base font-extrabold tracking-tight">
                         {ticker}
                       </span>

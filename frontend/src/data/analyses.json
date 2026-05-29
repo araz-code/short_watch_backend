@@ -7,6 +7,7 @@
   "analyses": [
     {
       "slug": "c25/2026-05-28",
+      "accentColor": "#6366F1",
       "code": "",
       "title": "OMX Copenhagen 25 (C25)",
       "subtitle": {
@@ -28,6 +29,7 @@
     },
     {
       "slug": "pandora/2026-05-23",
+      "accentColor": "#EC4899",
       "code": "DK0060252690",
       "title": "Pandora A/S (PNDORA)",
       "subtitle": {
@@ -49,6 +51,7 @@
     },
     {
       "slug": "novo/dcf/2026-05-19",
+      "accentColor": "#0EA5E9",
       "code": "DK0062498333",
       "title": "Novo Nordisk A/S (NOVO)",
       "subtitle": {
@@ -70,6 +73,7 @@
     },
     {
       "slug": "bava/2026-05-17",
+      "accentColor": "#10B981",
       "code": "DK0015998017",
       "title": "Bavarian Nordic (BAVA)",
       "subtitle": {
@@ -91,6 +95,7 @@
     },
     {
       "slug": "zeal/gennemsnitspris/2026-05-14",
+      "accentColor": "#8B5CF6",
       "code": "DK0060257814",
       "title": "Zealand Pharma (ZEAL)",
       "subtitle": {
@@ -112,6 +117,7 @@
     },
     {
       "slug": "gn/2026-05-14",
+      "accentColor": "#F59E0B",
       "code": "DK0010272632",
       "title": "GN Store Nord (GN)",
       "subtitle": {
@@ -133,6 +139,7 @@
     },
     {
       "slug": "zeal/2026-05-13",
+      "accentColor": "#8B5CF6",
       "code": "DK0060257814",
       "title": "Zealand Pharma (ZEAL)",
       "subtitle": {

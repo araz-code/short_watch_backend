@@ -25,6 +25,7 @@ def analyses_view(request):
             "excerpt": a["excerpt"][lang],
             "date": a["date"][lang],
             "readingMinutes": a["readingMinutes"],
+            "accentColor": a.get("accentColor", "#6366F1"),
             "url": f"{SITE}/analyse/{a['slug']}",
             "ogImage": (f"{SITE}/og-images/{og_image}{'-en' if lang == 'en' else ''}.png"
                         if og_image else None),

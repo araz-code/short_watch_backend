@@ -27,6 +27,7 @@ itself is still a hand-built React page, see step 1.)
   "analyses": [                    // ORDER = display order (newest first)
     {
       "slug": "c25/2026-05-28",    // path after /analyse/ ; must match the React route
+      "accentColor": "#6366F1",    // hex on the card top border; SAME for the same stock
       "code": "",                  // related stock ISIN, or "" if none
       "title": "OMX Copenhagen 25 (C25)",
       "subtitle": { "da": "…", "en": "…" },   // headline
@@ -42,6 +43,10 @@ itself is still a hand-built React page, see step 1.)
 ```
 
 Notes:
+- `accentColor` is a hex shown as the card's top accent on the web and in the
+  iOS app. It is **per stock**: give all analyses of the same stock the same
+  color (e.g. both ZEAL analyses use `#8B5CF6`). New stock = pick a new distinct
+  color.
 - `ogTitle`/`ogDescription` are Danish; crawlers get these regardless of viewer
   language (that is the existing, intentional behavior).
 - `ogImage` is the **base** name. The English social/app thumbnail is derived as

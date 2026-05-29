@@ -8,6 +8,9 @@ export interface Analysis {
   date: { da: string; en: string };
   readingMinutes: number;
   code: string;
+  // Hex accent shown on the card's top border. Shared per stock (both ZEAL
+  // analyses use the same color); used on web and in the iOS app.
+  accentColor: string;
 }
 
 // Single source of truth: analyses.json. The backend reads the same file for
@@ -21,4 +24,5 @@ export const analyses: Analysis[] = data.analyses.map((a) => ({
   date: a.date,
   readingMinutes: a.readingMinutes,
   code: a.code,
+  accentColor: a.accentColor,
 }));
