@@ -80,6 +80,10 @@ urlpatterns = [
          {'path': 'images/apple-touch-icon-152x152.png', 'document_root': settings.STATIC_ROOT}),
     path('apple-touch-icon-180x180.png', serve,
          {'path': 'images/apple-touch-icon-180x180.png', 'document_root': settings.STATIC_ROOT}),
+    # OG/social images and the in-app analysis thumbnails. Without this route
+    # /og-images/* falls through to the SPA catch-all and returns index.html
+    # (text/html), so image loads fail. Serve the real PNGs from dist/og-images.
+    re_path(r'^og-images/(?P<path>.*)$', serve, {'document_root': os.path.join(FRONTEND_DIST, 'og-images')}),
     path('robots.txt', serve, {'path': 'robots.txt', 'document_root': FRONTEND_DIST}),
     path('sitemap.xml', lambda r: HttpResponse(
         '<?xml version="1.0" encoding="UTF-8"?>\n'
