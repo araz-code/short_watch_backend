@@ -110,15 +110,20 @@ class Command(BaseCommand):
             'top_lists',
         ] + detail_keys)
 
-        # Rebuild the top lists right here, off the request path, so no user ever
-        # pays the heavy aggregation cost on a cache miss. Imported locally to
-        # avoid a circular import at module load. A failure here is non-fatal:
-        # the key just stays empty and the next request recomputes it.
+        # Rebuild the top lists and homepage stats right here, off the request
+        # path, so no user ever pays the heavy aggregation cost on a cache miss.
+        # Imported locally to avoid a circular import at module load. Each warm
+        # is non-fatal: on failure the key just stays empty and the next request
+        # recomputes it.
         try:
-            from shorts.views import warm_top_lists_cache
-            warm_top_lists_cache()
+            from shorts.views import warm_top_lists_cache, warm_homepage_stats_cache
+            for warm in (warm_top_lists_cache, warm_homepage_stats_cache):
+                try:
+                    warm()
+                except Exception as e:
+                    Error.objects.create(message=f'{warm.__name__} failed: {str(e)}'[:500])
         except Exception as e:
-            Error.objects.create(message=f'Top lists warm failed: {str(e)}'[:500])
+            Error.objects.create(message=f'Cache warm import failed: {str(e)}'[:500])
 
         RunStatus.objects.filter(executed_at__lt=timezone.now() - timedelta(days=3)).delete()
 

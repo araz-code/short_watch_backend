@@ -337,43 +337,66 @@ def stats_view(request):
     cached = cache.get('homepage_stats')
     if cached:
         return Response(cached)
+    # Cache miss (e.g. the first request before fetch_shorts has warmed it).
+    return Response(warm_homepage_stats_cache())
 
+
+# Returned (but not cached) if the stats build hits an unexpected error, so a
+# transient failure never gets stuck in the cache for the full timeout.
+_FALLBACK_HOMEPAGE_STATS = {
+    'shortedCount': 0,
+    'shortedCountDelta': None,
+    'mostShorted': None,
+    'mostViewed': None,
+    'mostFollowed': None,
+    'updatedAt': None,
+}
+
+
+def _build_homepage_stats():
+    """Build the homepage summary numbers. Returns the data dict, or None on
+    failure so the caller can avoid caching an error result."""
     try:
-        # 1. How many stocks are currently shorted (active stocks with position > 0)
-        latest_positions = ShortPosition.objects.filter(
-            stock__active=True
-        ).values('stock').annotate(
-            latest=Max('timestamp')
+        # 1. Currently shorted active stocks (latest value > 0), the single most
+        #    shorted, and the latest update timestamp. Subquery annotations avoid
+        #    the previous one-query-per-stock loop.
+        latest_value_subq = ShortPosition.objects.filter(
+            stock=OuterRef('pk')
+        ).order_by('-timestamp').values('value')[:1]
+        latest_ts_subq = ShortPosition.objects.filter(
+            stock=OuterRef('pk')
+        ).order_by('-timestamp').values('timestamp')[:1]
+        shorted_stocks = list(
+            Stock.objects.filter(active=True)
+            .annotate(
+                latest_value=Subquery(latest_value_subq, output_field=FloatField()),
+                latest_ts=Subquery(latest_ts_subq),
+            )
+            .filter(latest_value__gt=0)
         )
-        shorted_count = 0
+        shorted_count = len(shorted_stocks)
         most_shorted = None
         most_shorted_value = 0
         latest_update = None
-        for entry in latest_positions:
-            pos = ShortPosition.objects.select_related('stock').filter(
-                stock_id=entry['stock'], timestamp=entry['latest']
-            ).first()
-            if pos and pos.value > 0:
-                shorted_count += 1
-                if pos.value > most_shorted_value:
-                    most_shorted_value = pos.value
-                    most_shorted = pos.stock
-                if latest_update is None or pos.timestamp > latest_update:
-                    latest_update = pos.timestamp
+        for s in shorted_stocks:
+            if s.latest_value > most_shorted_value:
+                most_shorted_value = s.latest_value
+                most_shorted = s
+            if s.latest_ts and (latest_update is None or s.latest_ts > latest_update):
+                latest_update = s.latest_ts
 
-        # 1b. Deltas vs. 7 days ago (freshness signal — works with daily-ish updates)
+        # 1b. Same count as of 7 days ago, for the freshness delta. One grouped
+        #     query instead of a per-stock loop.
         seven_days_ago = timezone.now() - timedelta(days=7)
-        prev_latest_positions = ShortPosition.objects.filter(
-            stock__active=True,
-            timestamp__lt=seven_days_ago,
-        ).values('stock').annotate(latest=Max('timestamp'))
-        prev_shorted_count = 0
-        for entry in prev_latest_positions:
-            pos = ShortPosition.objects.filter(
-                stock_id=entry['stock'], timestamp=entry['latest']
-            ).first()
-            if pos and pos.value > 0:
-                prev_shorted_count += 1
+        prev_value_subq = ShortPosition.objects.filter(
+            stock=OuterRef('pk'), timestamp__lt=seven_days_ago
+        ).order_by('-timestamp').values('value')[:1]
+        prev_shorted_count = (
+            Stock.objects.filter(active=True)
+            .annotate(prev_value=Subquery(prev_value_subq, output_field=FloatField()))
+            .filter(prev_value__gt=0)
+            .count()
+        )
 
         most_shorted_prev_value = None
         if most_shorted:
@@ -384,38 +407,23 @@ def stats_view(request):
             if prev_pos:
                 most_shorted_prev_value = prev_pos.value
 
-        # 2. Most viewed detail page in last month (by unique IPs)
+        # 2. Most viewed detail page in the last month (by unique IPs), in SQL.
         one_month_ago = timezone.now() - timedelta(days=30)
-        code_pattern = re.compile(r'/details/(\S+)')
-        detail_logs = list(RequestLog.objects.filter(
-            requested_url__icontains='/details/',
-            timestamp__gte=one_month_ago,
-        ).values_list('requested_url', 'client_ip'))
-
-        unique_ips = {}
-        for url, ip in detail_logs:
-            match = code_pattern.search(url)
-            if match:
-                code = match.group(1).strip('/')
-                unique_ips.setdefault(code, set()).add(ip)
-        view_counts = {code: len(ips) for code, ips in unique_ips.items()}
-
-        most_viewed_code = max(view_counts, key=view_counts.get) if view_counts else None
+        mv_rows = _most_viewed_counts(one_month_ago, limit=1)
         most_viewed_stock = None
         most_viewed_count = 0
-        if most_viewed_code:
-            try:
-                most_viewed_stock = Stock.objects.get(code=most_viewed_code)
-                most_viewed_count = view_counts[most_viewed_code]
-            except Stock.DoesNotExist:
-                pass
+        if mv_rows:
+            top = mv_rows[0]
+            most_viewed_stock = Stock.objects.filter(code=top['code']).first()
+            if most_viewed_stock:
+                most_viewed_count = top['viewers']
 
         # 3. Most followed stock (by app users)
         most_followed = Stock.objects.annotate(
             follower_count=Count('app_users')
         ).order_by('-follower_count').first()
 
-        data = {
+        return {
             'shortedCount': shorted_count,
             'shortedCountDelta': (shorted_count - prev_shorted_count) if prev_shorted_count else None,
             'mostShorted': {
@@ -439,29 +447,30 @@ def stats_view(request):
             } if most_followed and most_followed.follower_count > 0 else None,
             'updatedAt': latest_update.isoformat() if latest_update else None,
         }
-        cache.set('homepage_stats', data, timeout=CACHE_TIMEOUT_SECONDS)
-        return Response(data)
     except Exception:
-        return Response({
-            'shortedCount': 0,
-            'shortedCountDelta': None,
-            'mostShorted': None,
-            'mostViewed': None,
-            'mostFollowed': None,
-            'updatedAt': None,
-        })
+        return None
 
 
-def _compute_most_viewed(one_month_ago):
-    # Extract the stock code that follows ".../details/" and count distinct
-    # client IPs per code directly in SQL. Doing the work in the database avoids
-    # pulling tens of thousands of log rows into Python and regex-parsing each.
+def warm_homepage_stats_cache():
+    """Build the homepage stats and store them in the cache. Called by
+    fetch_shorts after each run so the work stays off the user request path."""
+    data = _build_homepage_stats()
+    if data is None:
+        return _FALLBACK_HOMEPAGE_STATS
+    cache.set('homepage_stats', data, timeout=CACHE_TIMEOUT_SECONDS)
+    return data
+
+
+def _most_viewed_counts(one_month_ago, limit=20):
+    """Distinct client IPs per stock code for /details/ requests, computed in SQL
+    so we never pull the raw log rows into Python and regex-parse each one.
+    Returns a list of {'code', 'viewers'} ordered by viewers desc."""
     after_details = Func(F('requested_url'), Value('/details/'), Value(-1),
                          function='SUBSTRING_INDEX')
     code_segment = Func(after_details, Value('/'), Value(1), function='SUBSTRING_INDEX')
     code_expr = Func(code_segment, Value('?'), Value(1), function='SUBSTRING_INDEX',
                      output_field=CharField())
-    rows = list(
+    return list(
         RequestLog.objects.filter(
             requested_url__icontains='/details/',
             timestamp__gte=one_month_ago,
@@ -469,10 +478,14 @@ def _compute_most_viewed(one_month_ago):
         .annotate(code=code_expr)
         .values('code')
         .annotate(viewers=Count('client_ip', distinct=True))
-        .order_by('-viewers')[:20]
+        .order_by('-viewers')[:limit]
     )
+
+
+def _compute_most_viewed(one_month_ago):
+    rows = _most_viewed_counts(one_month_ago, limit=20)
     # Map codes to stocks in a single query, preserving the viewer ranking and
-    # skipping any code that no longer matches an active stock.
+    # skipping any code that no longer matches a known stock.
     stocks = {s.code: s for s in Stock.objects.filter(code__in=[r['code'] for r in rows])}
     result = []
     for row in rows:
