@@ -110,6 +110,16 @@ class Command(BaseCommand):
             'top_lists',
         ] + detail_keys)
 
+        # Rebuild the top lists right here, off the request path, so no user ever
+        # pays the heavy aggregation cost on a cache miss. Imported locally to
+        # avoid a circular import at module load. A failure here is non-fatal:
+        # the key just stays empty and the next request recomputes it.
+        try:
+            from shorts.views import warm_top_lists_cache
+            warm_top_lists_cache()
+        except Exception as e:
+            Error.objects.create(message=f'Top lists warm failed: {str(e)}'[:500])
+
         RunStatus.objects.filter(executed_at__lt=timezone.now() - timedelta(days=3)).delete()
 
         delete_old_logs()

@@ -6,7 +6,8 @@ from django.core.cache import cache
 from functools import reduce
 from operator import or_
 
-from django.db.models import Max, Prefetch, Count, Subquery, OuterRef, F, ExpressionWrapper, FloatField, Avg, Q
+from django.db.models import Max, Prefetch, Count, Subquery, OuterRef, F, ExpressionWrapper, FloatField, Avg, Q, \
+    Func, Value, CharField
 from django.utils import timezone
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.response import Response
@@ -452,26 +453,34 @@ def stats_view(request):
 
 
 def _compute_most_viewed(one_month_ago):
-    code_pattern = re.compile(r'/details/(\S+)')
-    detail_logs = list(RequestLog.objects.filter(
-        requested_url__icontains='/details/',
-        timestamp__gte=one_month_ago,
-    ).values_list('requested_url', 'client_ip'))
-    unique_ips = {}
-    for url, ip in detail_logs:
-        match = code_pattern.search(url)
-        if match:
-            code = match.group(1).strip('/')
-            unique_ips.setdefault(code, set()).add(ip)
-    view_counts = {code: len(ips) for code, ips in unique_ips.items()}
-    sorted_views = sorted(view_counts.items(), key=lambda x: x[1], reverse=True)[:10]
+    # Extract the stock code that follows ".../details/" and count distinct
+    # client IPs per code directly in SQL. Doing the work in the database avoids
+    # pulling tens of thousands of log rows into Python and regex-parsing each.
+    after_details = Func(F('requested_url'), Value('/details/'), Value(-1),
+                         function='SUBSTRING_INDEX')
+    code_segment = Func(after_details, Value('/'), Value(1), function='SUBSTRING_INDEX')
+    code_expr = Func(code_segment, Value('?'), Value(1), function='SUBSTRING_INDEX',
+                     output_field=CharField())
+    rows = list(
+        RequestLog.objects.filter(
+            requested_url__icontains='/details/',
+            timestamp__gte=one_month_ago,
+        )
+        .annotate(code=code_expr)
+        .values('code')
+        .annotate(viewers=Count('client_ip', distinct=True))
+        .order_by('-viewers')[:20]
+    )
+    # Map codes to stocks in a single query, preserving the viewer ranking and
+    # skipping any code that no longer matches an active stock.
+    stocks = {s.code: s for s in Stock.objects.filter(code__in=[r['code'] for r in rows])}
     result = []
-    for code, _ in sorted_views:
-        try:
-            stock = Stock.objects.get(code=code)
+    for row in rows:
+        stock = stocks.get(row['code'])
+        if stock:
             result.append({'symbol': stock.symbol, 'name': stock.name, 'code': stock.code})
-        except Stock.DoesNotExist:
-            pass
+        if len(result) >= 10:
+            break
     return result
 
 
@@ -485,22 +494,22 @@ def _compute_most_followed():
 
 
 def _compute_most_shorted():
-    latest_positions = ShortPosition.objects.filter(
-        stock__active=True
-    ).values('stock').annotate(latest=Max('timestamp'))
-    shorted_list = []
-    for entry in latest_positions:
-        pos = ShortPosition.objects.select_related('stock').filter(
-            stock_id=entry['stock'], timestamp=entry['latest']
-        ).first()
-        if pos and pos.value > 0:
-            shorted_list.append({
-                'symbol': pos.stock.symbol,
-                'name': pos.stock.name,
-                'code': pos.stock.code,
-                'value': pos.value,
-            })
-    return sorted(shorted_list, key=lambda x: x['value'], reverse=True)[:10]
+    # Annotate each active stock with its latest short value via a subquery and
+    # sort in the database, instead of issuing one query per stock in a loop.
+    latest_value_subq = ShortPosition.objects.filter(
+        stock=OuterRef('pk')
+    ).order_by('-timestamp').values('value')[:1]
+    rows = (
+        Stock.objects.filter(active=True)
+        .annotate(latest_value=Subquery(latest_value_subq, output_field=FloatField()))
+        .filter(latest_value__gt=0)
+        .order_by('-latest_value')[:10]
+        .values('symbol', 'name', 'code', 'latest_value')
+    )
+    return [
+        {'symbol': r['symbol'], 'name': r['name'], 'code': r['code'], 'value': r['latest_value']}
+        for r in rows
+    ]
 
 
 def _compute_most_active(one_month_ago):
@@ -565,17 +574,18 @@ def _compute_top_days_to_cover():
         .annotate(latest_short=Subquery(latest_pos_subq, output_field=FloatField()))
         .filter(latest_short__gt=0)
     )
+    # Average volume per stock over the window in one grouped query, rather than
+    # a separate query inside the loop for every active stock.
+    avg_volumes = {
+        row['stock']: row['avg_volume']
+        for row in ShortPositionChart.objects.filter(
+            date__gte=volume_cutoff, volume__isnull=False
+        ).values('stock').annotate(avg_volume=Avg('volume'))
+    }
     days_to_cover_list = []
     for s in active_stocks:
-        volumes = list(
-            ShortPositionChart.objects.filter(
-                stock=s, date__gte=volume_cutoff, volume__isnull=False
-            ).values_list('volume', flat=True)
-        )
-        if not volumes:
-            continue
-        avg_volume = sum(volumes) / len(volumes)
-        if avg_volume <= 0:
+        avg_volume = avg_volumes.get(s.pk)
+        if not avg_volume or avg_volume <= 0:
             continue
         dtc = (s.latest_short / 100.0 * s.shares_outstanding) / avg_volume
         days_to_cover_list.append({
@@ -607,7 +617,12 @@ def top_lists_view(request):
     cached = cache.get('top_lists')
     if cached:
         return Response(cached)
+    # Cache miss (e.g. the very first request, before fetch_shorts has warmed it).
+    # Build, cache and return so subsequent requests are served from cache.
+    return Response(warm_top_lists_cache())
 
+
+def _build_top_lists():
     one_month_ago = timezone.now() - timedelta(days=30)
 
     def safe(fn, *args):
@@ -618,7 +633,7 @@ def top_lists_view(request):
 
     most_rising, most_falling = safe(_compute_risers_fallers) or ([], [])
 
-    data = {
+    return {
         'mostViewed': safe(_compute_most_viewed, one_month_ago),
         'mostFollowed': safe(_compute_most_followed),
         'mostShorted': safe(_compute_most_shorted),
@@ -628,8 +643,14 @@ def top_lists_view(request):
         'mostDaysToCover': safe(_compute_top_days_to_cover),
         'mostShortSellers': safe(_compute_most_short_sellers),
     }
+
+
+def warm_top_lists_cache():
+    """Build the top lists and store them in the cache. Called by fetch_shorts
+    after each run so the heavy aggregation runs off the user request path."""
+    data = _build_top_lists()
     cache.set('top_lists', data, timeout=CACHE_TIMEOUT_SECONDS)
-    return Response(data)
+    return data
 
 
 @api_view(['GET'])
