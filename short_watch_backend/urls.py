@@ -19,6 +19,7 @@ from django.urls import path, include, re_path
 from django.http import HttpResponse
 from django.views.generic import TemplateView
 from django.views.static import serve
+from django.views.decorators.cache import cache_control
 
 from short_watch_backend import settings
 from home_page import og_views
@@ -27,6 +28,14 @@ from home_page.views import analyses_view
 import os
 
 FRONTEND_DIST = os.path.join(settings.FRONTEND_DIR, 'dist')
+OG_IMAGES_DIR = os.path.join(FRONTEND_DIST, 'og-images')
+
+
+@cache_control(public=True, max_age=86400)
+def serve_og_image(request, path):
+    """Serve an OG/analysis image with a Cache-Control header so Cloudflare and
+    clients cache it at the edge instead of hitting the origin on every request."""
+    return serve(request, path, document_root=OG_IMAGES_DIR)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -86,7 +95,7 @@ urlpatterns = [
     # OG/social images and the in-app analysis thumbnails. Without this route
     # /og-images/* falls through to the SPA catch-all and returns index.html
     # (text/html), so image loads fail. Serve the real PNGs from dist/og-images.
-    re_path(r'^og-images/(?P<path>.*)$', serve, {'document_root': os.path.join(FRONTEND_DIST, 'og-images')}),
+    re_path(r'^og-images/(?P<path>.*)$', serve_og_image),
     path('robots.txt', serve, {'path': 'robots.txt', 'document_root': FRONTEND_DIST}),
     path('sitemap.xml', lambda r: HttpResponse(
         '<?xml version="1.0" encoding="UTF-8"?>\n'
