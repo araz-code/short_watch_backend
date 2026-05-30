@@ -253,12 +253,12 @@ const AmbuAnalysisPage: React.FC = () => {
             ligger nu cirka 81% under toppen.
           </p>
           <p className="text-gray-600 dark:text-gray-300 mt-3 leading-relaxed">
-            Den primære årsag til faldet er ikke svag drift, men en
-            uundgåelig korrektion af en ekstrem værdiansættelse. På det
-            højeste handlede aktien til en P/E langt over 100 på rullende
-            indtjening. Den slags værdiansættelser ender historisk kun ét
-            sted: I et hårdt tilbagefald mod normale niveauer, uanset hvor
-            godt selskabet klarer sig.
+            En stor del af faldet skyldes ikke svag drift, men en korrektion
+            af en ekstrem værdiansættelse. På det højeste handlede aktien til
+            en P/E langt over 100 på rullende indtjening. Så høje multipler
+            har historisk sjældent været holdbare uden ekstrem og vedvarende
+            vækst, og da både vækst og marginer samtidig normaliserede, fulgte
+            et hårdt tilbagefald.
           </p>
           <p className="text-gray-600 dark:text-gray-300 mt-3 leading-relaxed">
             Det paradoksale er, at selskabet driftsmæssigt har gennemført en
@@ -361,13 +361,17 @@ const AmbuAnalysisPage: React.FC = () => {
             fortælling-aktier i ekstreme boble-toppe.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            Det betyder, at en stor del af Ambus efterfølgende fald ikke var
-            en operationel kritik, men en uundgåelig værdiansættelses-reset.
-            Selv hvis indtjeningen havde holdt sig konstant, ville et fald i
+            Det betyder, at en stor del af Ambus efterfølgende fald var en
+            værdiansættelses-reset snarere end ren operationel kritik. Selv
+            hvis indtjeningen havde holdt sig konstant, ville et fald i
             multiplen fra over 100x til omkring 25x i sig selv have skåret
-            aktien ned til en fjerdedel. Da
-            indtjeningen samtidig kollapsede (EBIT-margin fra 8,5% til 2,7%
-            på et regnskabsår), blev nedturen forstærket.
+            aktien ned til en fjerdedel. Men faldet handlede ikke kun om
+            multiplen: 2021-2022 var især en værdiansættelses-reset, mens
+            2022-2024 også var præget af reel fundamental skuffelse.
+            Indtjeningen kollapsede (EBIT-margin fra 8,5% til 2,7% på et
+            regnskabsår), væksten bremsede da hospitalernes pandemilagre
+            normaliserede, og single-use-udbredelsen i GI gik langsommere
+            end håbet.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
             Til den interne corporate governance-historik hører også Lars
@@ -493,9 +497,11 @@ const AmbuAnalysisPage: React.FC = () => {
             Den 29. maj 2026 stod den samlede shortinteresse i Ambu på 6,96%
             af aktiekapitalen. Toppen på 7,38% blev nået den 7. maj 2026,
             kun tre uger før denne analyse. Det er det højeste niveau Ambu
-            har haft i Finanstilsynets registreringer, og det signalerer at
-            institutionelle investorer er fundamentalt skeptiske over for
-            ZOOM AHEAD-targetene.
+            har haft i Finanstilsynets registreringer, og det indikerer
+            betydelig skepsis blandt dele af den professionelle investorbase
+            over for ZOOM AHEAD-targetene. Høj shortinteresse kan dog også
+            afspejle factor-, pair- eller market-neutral-strategier og ikke
+            kun ren fundamental skepsis.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             De største offentligt registrerede short-positioner kommer fra
@@ -609,8 +615,9 @@ const AmbuAnalysisPage: React.FC = () => {
             historie er ikke gået i stykker, men aktiekursen reflekterer en
             verden hvor tariffer, valuta og konkurrence-friktion tager
             længere tid at arbejde sig igennem end markedet havde håbet.
-            Hvis ZOOM AHEAD leverer +20% EBIT-margin mod FY29/30, vil
-            dagens kurs vise sig at være meget billig. Hvis tarifferne
+            Hvis Ambu både leverer margin- og vækstmålene i ZOOM AHEAD mod
+            FY29/30, kan dagens kurs vise sig attraktiv i bakspejlet. Hvis
+            tarifferne
             normaliseres langsommere, eller udbredelsen af engangsudstyr
             skuffer, kan aktien fortsætte ned. Det er den balance investorer må veje.
           </p>
