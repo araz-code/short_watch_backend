@@ -250,7 +250,7 @@ const AmbuAnalysisPage: React.FC = () => {
             Undervejs næsten tredoblede aktien sig til en pandemi-top på
             355,40 DKK den 27. april 2021, før den kollapsede. Den faldt
             helt til 61,70 DKK den 29. april 2026, det laveste niveau siden
-            2017, og ligger nu cirka 81% under toppen.
+            efteråret 2022, og ligger nu cirka 81% under toppen.
           </p>
           <p className="text-gray-600 dark:text-gray-300 mt-3 leading-relaxed">
             En stor del af faldet skyldes ikke svag drift, men en korrektion
