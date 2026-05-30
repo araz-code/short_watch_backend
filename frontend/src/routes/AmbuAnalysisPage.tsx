@@ -424,7 +424,7 @@ const AmbuAnalysisPage: React.FC = () => {
           </div>
 
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            Marginen er næsten femdoblet fra 2,7% til 13,0% over fire
+            Marginen er næsten femdoblet fra 2,7% til 13,0% over tre
             regnskabsår. I FY24/25 (afsluttet 30. september 2025) leverede
             Ambu organisk omsætningsvækst på 13,1%, free cash flow før opkøb
             på 407 mio. DKK, og selskabet endte med netto-kontant-position
