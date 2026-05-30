@@ -629,12 +629,12 @@ const AmbuAnalysisPage: React.FC = () => {
             Ambu er den interessante kontradiktion på dansk børs: Et selskab
             der operationelt har gjort næsten alt rigtigt under ny ledelse,
             men hvor aktien fortsætter med at falde. EBIT-marginen er næsten
-            femdoblet (fra 2,7% til 13,0%), gælden er afviklet, og strategien
+            femdoblet (fra 2,7% til 13,0%), nettogælden er afviklet, og strategien
             er klar med ambitiøse FY29/30-mål.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-3">
             Modsiden er, at markedet pt. priser tariff-presset, langsom
-            udbredelse af engangsudstyr og en rig værdiansættelse hårdere
+            udbredelse af engangsudstyr og en høj værdiansættelse hårdere
             end den opnåede transformation. Hedgefondenes shortinteresse på et
             historisk topniveau er det tydeligste signal om at den
             professionelle investorbase ikke tror på et hurtigt comeback.
