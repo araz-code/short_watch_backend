@@ -19,7 +19,7 @@ import {
   ReferenceLine,
 } from "recharts";
 
-const SLUG = "ambu/2026-05-28";
+const SLUG = "ambu/2026-06-01";
 
 // ─── types ───────────────────────────────────────────────────────────────────
 interface ComparisonPoint {
@@ -122,7 +122,7 @@ const COMPARISON_DATA: ComparisonPoint[] = [
   { date: "2026-02", ambu: 64.4, olympus: 85.6, bsx: 183.5, colo: 57.3, isrg: 269.8 },
   { date: "2026-03", ambu: 55.4, olympus: 83.4, bsx: 149.9, colo: 51.3, isrg: 247.1 },
   { date: "2026-04", ambu: 51.1, olympus: 86.7, bsx: 137.6, colo: 46.3, isrg: 245.2 },
-  { date: "2026-05", ambu: 53.1, olympus: 102.3, bsx: 117.3, colo: 46.7, isrg: 227.0 },
+  { date: "2026-05", ambu: 54.6, olympus: 102.3, bsx: 117.3, colo: 46.7, isrg: 227.0 },
 ];
 
 // Operating margin per regnskabsår (Ambu's fiskaler slutter september)
@@ -136,7 +136,7 @@ const MARGIN_DATA: MarginPoint[] = [
   { fy: "FY24/25", margin: 13.0 },
 ];
 
-// Aktuelle large short-positioner i Ambu (Zirium's egen database, 27. maj 2026)
+// Aktuelle large short-positioner i Ambu (Zirium's egen database, 29. maj 2026)
 const SHORT_HOLDERS: ShortHolder[] = [
   { name: "Wellington Management International Limited", value: 0.82, date: "14. maj 2026" },
   { name: "Millennium International Management LP",      value: 0.80, date: "27. maj 2026" },
@@ -191,29 +191,29 @@ const AmbuAnalysisPage: React.FC = () => {
       <title>Ambu: Fald trods en succesfuld transformation | Zirium</title>
       <meta
         name="description"
-        content="Ambu ligger 47% under sit pre-pandemi-niveau, selvom selskabet operationelt har gennemført en stærk transformation under CEO Britt Meelby Jensen med margin der er næsten femdoblet. Men aktien bliver ved at falde. Vi ser på paradokset, tariff-presset og hedgefondenes rekordhøje shortinteresse."
+        content="Ambu ligger 45% under sit pre-pandemi-niveau, selvom selskabet operationelt har gennemført en stærk transformation under CEO Britt Meelby Jensen med margin der er næsten femdoblet. Men aktien bliver ved at falde. Vi ser på paradokset, tariff-presset og hedgefondenes historisk høje shortinteresse."
       />
       <meta property="og:title" content="Ambu: Fald trods en succesfuld transformation" />
-      <meta property="og:description" content="Ambu ligger 47% under pre-pandemi-niveauet trods næsten femdoblet margin. Hedgefonde har historisk høj shortinteresse. Hvad er paradokset?" />
+      <meta property="og:description" content="Ambu ligger 45% under pre-pandemi-niveauet trods næsten femdoblet margin. Hedgefonde har historisk høj shortinteresse. Hvad er paradokset?" />
       <meta property="og:type" content="article" />
       <meta property="og:url" content={`https://www.zirium.dk/analyse/${SLUG}`} />
-      <meta property="og:image" content="https://www.zirium.dk/og-images/ambu-2026-05-28.png" />
+      <meta property="og:image" content="https://www.zirium.dk/og-images/ambu-2026-06-01.png" />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
       <meta property="og:image:type" content="image/png" />
       <meta property="og:site_name" content="Zirium" />
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content="Ambu: Fald trods en succesfuld transformation" />
-      <meta name="twitter:description" content="Ambu ligger 47% under pre-pandemi-niveauet trods næsten femdoblet margin. Hedgefonde har historisk høj shortinteresse." />
-      <meta name="twitter:image" content="https://www.zirium.dk/og-images/ambu-2026-05-28.png" />
+      <meta name="twitter:description" content="Ambu ligger 45% under pre-pandemi-niveauet trods næsten femdoblet margin. Hedgefonde har historisk høj shortinteresse." />
+      <meta name="twitter:image" content="https://www.zirium.dk/og-images/ambu-2026-06-01.png" />
       <script type="application/ld+json">{JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Article",
         "headline": "Ambu: Fald trods en succesfuld transformation",
-        "description": "Ambu ligger 47% under sit pre-pandemi-niveau fra 2020. Operationelt har selskabet gennemført en stærk transformation, men aktien fortsætter ned.",
+        "description": "Ambu ligger 45% under sit pre-pandemi-niveau fra 2020. Operationelt har selskabet gennemført en stærk transformation, men aktien fortsætter ned.",
         "author": { "@type": "Person", "name": "Araz Bayat Makoo" },
         "publisher": { "@type": "Organization", "name": "Zirium", "url": "https://www.zirium.dk" },
-        "datePublished": "2026-05-28",
+        "datePublished": "2026-06-01",
         "mainEntityOfPage": `https://www.zirium.dk/analyse/${SLUG}`,
         "inLanguage": "da",
       })}</script>
@@ -236,7 +236,7 @@ const AmbuAnalysisPage: React.FC = () => {
         {/* Header */}
         <header className="mb-10 mt-4">
           <p className="text-base text-gray-600 dark:text-gray-300 mb-4">
-            Analyse lavet af Araz Bayat Makoo (Zirium) - 28. maj 2026
+            Analyse lavet af Araz Bayat Makoo (Zirium) - 1. juni 2026
           </p>
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-white mb-3 leading-tight">
             Ambu: Fald trods en succesfuld transformation
@@ -245,12 +245,12 @@ const AmbuAnalysisPage: React.FC = () => {
             Ambu A/S (AMBU-B)
           </p>
           <p className="text-gray-600 dark:text-gray-300 mt-3 leading-relaxed">
-            Ambu handler i dag omkring 65,60 DKK, cirka 47% under niveauet
+            Ambu handler i dag omkring 67,40 DKK, cirka 45% under niveauet
             fra januar 2020, altså før pandemien overhovedet begyndte.
             Undervejs næsten tredoblede aktien sig til en pandemi-top på
             355,40 DKK den 27. april 2021, før den kollapsede. Den ramte en
             ny bundrekord på 61,70 DKK så sent som den 29. april 2026 og
-            ligger nu cirka 82% under toppen.
+            ligger nu cirka 81% under toppen.
           </p>
           <p className="text-gray-600 dark:text-gray-300 mt-3 leading-relaxed">
             Den primære årsag til faldet er ikke svag drift, men en
@@ -280,10 +280,10 @@ const AmbuAnalysisPage: React.FC = () => {
 
         {/* KPIs */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-12">
-          <KPI value="-47%" label="Afkast siden jan 2020" highlight tone="red" />
+          <KPI value="-45%" label="Afkast siden jan 2020" highlight tone="red" />
           <KPI value="+181%" label="Til pandemi-toppen (apr 2021)" />
-          <KPI value="-82%" label="Fra rekordniveau" />
-          <KPI value="7,21%" label="Short interest (27/5)" highlight tone="red" />
+          <KPI value="-81%" label="Fra rekordniveau" />
+          <KPI value="6,96%" label="Short interest (29/5)" highlight tone="red" />
         </div>
 
         {/* Section 1 */}
@@ -296,7 +296,7 @@ const AmbuAnalysisPage: React.FC = () => {
             17%, og selv japanske Olympus (den klare genbrugs-konkurrent) er
             omtrent tilbage på sit start-niveau (+2%). For det andet er Ambus
             kursrejse unik: Aktien næsten tredoblede sig til pandemi-toppen og
-            er nu faldet helt tilbage til cirka 47% under udgangspunktet. Kun
+            er nu faldet helt tilbage til cirka 45% under udgangspunktet. Kun
             Coloplast (-53%) har et lignende samlet fald, men uden Ambus
             ekstreme spike op og ned.
           </p>
@@ -485,9 +485,9 @@ const AmbuAnalysisPage: React.FC = () => {
 
         {/* Section 6 */}
         <section className="mb-12">
-          <SectionHeader n={6} title="Hedgefondenes rekordhøje shortinteresse" />
+          <SectionHeader n={6} title="Hedgefondenes historisk høje shortinteresse" />
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            Den 27. maj 2026 stod den samlede shortinteresse i Ambu på 7,21%
+            Den 29. maj 2026 stod den samlede shortinteresse i Ambu på 6,96%
             af aktiekapitalen. Toppen på 7,38% blev nået den 7. maj 2026,
             kun tre uger før denne analyse. Det er det højeste niveau Ambu
             har haft i Finanstilsynets registreringer, og det signalerer at
@@ -569,8 +569,8 @@ const AmbuAnalysisPage: React.FC = () => {
               er det ikke billigt nok endnu.
             </li>
             <li>
-              <strong>Hedgefondene har rekordhøj shortinteresse.</strong>{" "}
-              7,21% short interest med store navne som Wellington og
+              <strong>Hedgefondene har historisk høj shortinteresse.</strong>{" "}
+              6,96% short interest med store navne som Wellington og
               Millennium betyder, at den marginale køber stadig møder en
               marginal sælger der vil shorte mere ved enhver kursstigning.
             </li>
@@ -633,7 +633,7 @@ const AmbuAnalysisPage: React.FC = () => {
             professionel rådgivning før du handler.
           </p>
           <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-3">
-            Copyright Zirium  |  28. maj 2026
+            Copyright Zirium  |  1. juni 2026
           </p>
         </footer>
       </article>

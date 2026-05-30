@@ -197,7 +197,7 @@ const router = createBrowserRouter([
     element: <ErrorBoundary><C25AnalysisPage /></ErrorBoundary>,
   },
   {
-    path: "analyse/ambu/2026-05-28",
+    path: "analyse/ambu/2026-06-01",
     element: <ErrorBoundary><AmbuAnalysisPage /></ErrorBoundary>,
   },
   {

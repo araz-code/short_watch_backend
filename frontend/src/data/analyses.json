@@ -6,6 +6,28 @@
   },
   "analyses": [
     {
+      "slug": "ambu/2026-06-01",
+      "accentColor": "#14B8A6",
+      "code": "DK0060946788",
+      "title": "Ambu A/S (AMBU-B)",
+      "subtitle": {
+        "da": "Ambu: 5 års fald trods en succesfuld transformation",
+        "en": "Ambu: 5 years of decline despite a successful transformation"
+      },
+      "excerpt": {
+        "da": "Ambu er faldet 72% over 5 år trods en næsten femdoblet EBIT-margin under ny ledelse. Hedgefondene har historisk høj shortinteresse. Vi forklarer paradokset.",
+        "en": "Ambu has fallen 72% over 5 years despite nearly quintupled EBIT margins under new leadership. Hedge funds hold record-high short interest. We unpack the paradox."
+      },
+      "date": {
+        "da": "1. juni 2026",
+        "en": "June 1, 2026"
+      },
+      "readingMinutes": 9,
+      "ogImage": "ambu-2026-06-01",
+      "ogTitle": "Ambu: Fald trods en succesfuld transformation",
+      "ogDescription": "Ambu ligger 45% under pre-pandemi-niveauet trods næsten femdoblet margin. Hedgefonde har historisk høj shortinteresse. Hvad er paradokset?"
+    },
+    {
       "slug": "c25/2026-05-28",
       "accentColor": "#6366F1",
       "code": "",
@@ -26,28 +48,6 @@
       "ogImage": "c25-2026-05-28",
       "ogTitle": "Hvorfor C25 har stået stille i 5 år",
       "ogDescription": "C25 -2% mens peers steg 40-79%. Sektorforskydninger og enkelt-aktie-kollaps forklarer det danske efterslæb."
-    },
-    {
-      "slug": "ambu/2026-05-28",
-      "accentColor": "#14B8A6",
-      "code": "DK0060946788",
-      "title": "Ambu A/S (AMBU-B)",
-      "subtitle": {
-        "da": "Ambu: 5 års fald trods en succesfuld transformation",
-        "en": "Ambu: 5 years of decline despite a successful transformation"
-      },
-      "excerpt": {
-        "da": "Ambu er faldet 71% over 5 år trods en firedoblet EBIT-margin under ny ledelse. Hedgefondene har historisk høj shortinteresse. Vi forklarer paradokset.",
-        "en": "Ambu has fallen 71% over 5 years despite quadrupled EBIT margins under new leadership. Hedge funds hold record-high short interest. We unpack the paradox."
-      },
-      "date": {
-        "da": "28. maj 2026",
-        "en": "May 28, 2026"
-      },
-      "readingMinutes": 9,
-      "ogImage": "ambu-2026-05-28",
-      "ogTitle": "Ambu: Fald trods en succesfuld transformation",
-      "ogDescription": "Ambu ligger 47% under pre-pandemi-niveauet trods næsten femdoblet margin. Hedgefonde har historisk høj shortinteresse. Hvad er paradokset?"
     },
     {
       "slug": "pandora/2026-05-23",
