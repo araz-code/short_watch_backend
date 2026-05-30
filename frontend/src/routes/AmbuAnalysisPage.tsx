@@ -206,7 +206,7 @@ const AmbuAnalysisPage: React.FC = () => {
         content="Ambu ligger 45% under sit pre-pandemi-niveau, selvom selskabet operationelt har gennemført en stærk transformation under CEO Britt Meelby Jensen med margin der er næsten femdoblet. Men aktien bliver ved at falde. Vi ser på paradokset, tariff-presset og hedgefondenes historisk høje shortinteresse."
       />
       <meta property="og:title" content="Ambu: Fald trods en succesfuld transformation" />
-      <meta property="og:description" content="Ambu ligger 45% under pre-pandemi-niveauet trods næsten femdoblet margin. Hedgefonde har historisk høj shortinteresse. Hvad er paradokset?" />
+      <meta property="og:description" content="Ambu ligger 45% under pre-pandemi-niveauet trods næsten femdoblet margin. Hedgefonde har høj shortinteresse. Hvad er paradokset?" />
       <meta property="og:type" content="article" />
       <meta property="og:url" content={`https://www.zirium.dk/analyse/${SLUG}`} />
       <meta property="og:image" content="https://www.zirium.dk/og-images/ambu-2026-06-01.png" />
@@ -216,7 +216,7 @@ const AmbuAnalysisPage: React.FC = () => {
       <meta property="og:site_name" content="Zirium" />
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content="Ambu: Fald trods en succesfuld transformation" />
-      <meta name="twitter:description" content="Ambu ligger 45% under pre-pandemi-niveauet trods næsten femdoblet margin. Hedgefonde har historisk høj shortinteresse." />
+      <meta name="twitter:description" content="Ambu ligger 45% under pre-pandemi-niveauet trods næsten femdoblet margin. Hedgefonde har høj shortinteresse." />
       <meta name="twitter:image" content="https://www.zirium.dk/og-images/ambu-2026-06-01.png" />
       <script type="application/ld+json">{JSON.stringify({
         "@context": "https://schema.org",
@@ -518,7 +518,7 @@ const AmbuAnalysisPage: React.FC = () => {
 
         {/* Section 6 */}
         <section className="mb-12">
-          <SectionHeader n={6} title="Hedgefondenes historisk høje shortinteresse" />
+          <SectionHeader n={6} title="Hedgefondenes høje shortinteresse" />
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             Den 29. maj 2026 stod den samlede shortinteresse i Ambu på 6,96%
             af aktiekapitalen. Toppen på 7,38% blev nået den 7. maj 2026,
@@ -614,7 +614,7 @@ const AmbuAnalysisPage: React.FC = () => {
               ikke billigt nok for de værdiorienterede investorer.
             </li>
             <li>
-              <strong>Hedgefondene har historisk høj shortinteresse.</strong>{" "}
+              <strong>Hedgefondene har høj shortinteresse.</strong>{" "}
               6,96% short interest med store navne som Wellington og
               Millennium betyder, at den marginale køber stadig møder en
               marginal sælger, der vil shorte mere ved enhver kursstigning.
@@ -688,7 +688,7 @@ const AmbuAnalysisPage: React.FC = () => {
                 <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Organisk vækst bremset til 7,3% i Q2, guidance sænket til 10-12%</li>
                 <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Anesthesia &amp; Patient Monitoring faldt 2,5%</li>
                 <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Tariff- og FX-modvind: margin guidet 12-14% mod håb om 14-16%</li>
-                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Historisk høj shortinteresse (6,96%, top 7,38%)</li>
+                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Høj shortinteresse (6,96%, top 7,38%)</li>
                 <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Værdiansættelsen stadig høj (cirka 22x forward P/E)</li>
                 <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Langsom single-use-konvertering i GI</li>
               </ul>
