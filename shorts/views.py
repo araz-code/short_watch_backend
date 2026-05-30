@@ -6,7 +6,8 @@ from django.core.cache import cache
 from functools import reduce
 from operator import or_
 
-from django.db.models import Max, Prefetch, Count, Subquery, OuterRef, F, ExpressionWrapper, FloatField, Avg, Q
+from django.db.models import Max, Prefetch, Count, Subquery, OuterRef, F, ExpressionWrapper, FloatField, Avg, Q, \
+    Func, Value, CharField
 from django.utils import timezone
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.response import Response
@@ -31,31 +32,11 @@ class ShortPositionView(ReadOnlyModelViewSet):
     lookup_field = 'code'
 
     def list(self, request, *args, **kwargs):
-        cache_key = 'short_positions_list'
-        cached = cache.get(cache_key)
+        cached = cache.get('short_positions_list')
         if cached:
             return Response(cached)
-
-        latest_per_stock = dict(
-            ShortPosition.objects
-            .filter(stock__active=True)
-            .values('stock_id')
-            .annotate(max_ts=Max('timestamp'))
-            .values_list('stock_id', 'max_ts')
-        )
-        most_recent_short_positions = (
-            ShortPosition.objects.select_related('stock')
-            .filter(reduce(or_, (Q(stock_id=sid, timestamp=ts)
-                                 for sid, ts in latest_per_stock.items())))
-        ) if latest_per_stock else ShortPosition.objects.none()
-
-        sorted_data = sorted(most_recent_short_positions, key=lambda x: x.stock.symbol)
-        seen = set()
-        sorted_data = [p for p in sorted_data if p.stock_id not in seen and not seen.add(p.stock_id)]
-
-        serializer = self.serializer_class(sorted_data, many=True)
-        cache.set(cache_key, serializer.data, timeout=CACHE_TIMEOUT_SECONDS)
-        return Response(serializer.data)
+        # Cache miss (e.g. first request before fetch_shorts has warmed it).
+        return Response(warm_short_positions_list_cache())
 
     def retrieve(self, request, code=None, *args, **kwargs):
         short_positions_for_code = self.get_queryset().select_related('stock') \
@@ -63,6 +44,37 @@ class ShortPositionView(ReadOnlyModelViewSet):
 
         serializer = self.serializer_class(short_positions_for_code, many=True)
         return Response(serializer.data)
+
+
+def _build_short_positions_list():
+    """Latest short position per active stock, sorted by symbol and de-duplicated.
+    Request-independent so it can be warmed off the request path."""
+    latest_per_stock = dict(
+        ShortPosition.objects
+        .filter(stock__active=True)
+        .values('stock_id')
+        .annotate(max_ts=Max('timestamp'))
+        .values_list('stock_id', 'max_ts')
+    )
+    most_recent_short_positions = (
+        ShortPosition.objects.select_related('stock')
+        .filter(reduce(or_, (Q(stock_id=sid, timestamp=ts)
+                             for sid, ts in latest_per_stock.items())))
+    ) if latest_per_stock else ShortPosition.objects.none()
+
+    sorted_data = sorted(most_recent_short_positions, key=lambda x: x.stock.symbol)
+    seen = set()
+    sorted_data = [p for p in sorted_data if p.stock_id not in seen and not seen.add(p.stock_id)]
+
+    return ShortPositionSerializer(sorted_data, many=True).data
+
+
+def warm_short_positions_list_cache():
+    """Build the short positions list and store it in the cache. Called by
+    fetch_shorts so the list is served from cache, never rebuilt on a request."""
+    data = _build_short_positions_list()
+    cache.set('short_positions_list', data, timeout=CACHE_TIMEOUT_SECONDS)
+    return data
 
 
 class OldShortSellerView(GenericViewSet, RetrieveAPIView):
@@ -85,7 +97,8 @@ ShortedStockDetailsResponse = namedtuple('ShortedStockDetailsResponse', ['chartV
                                                                          'velocity30d',
                                                                          'priceFlow',
                                                                          'sharesOutstanding',
-                                                                         'daysToCover'])
+                                                                         'daysToCover',
+                                                                         'showPriceData'])
 
 
 PRICE_FLOW_BUCKET_WIDTH = 0.02  # 2% wide log-spaced buckets
@@ -286,14 +299,15 @@ class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
 
             response = ShortedStockDetailsResponse(chart_values, historic, sellers, announcements,
                                                    percentile, velocity_7d, velocity_30d, price_flow,
-                                                   stock.shares_outstanding, days_to_cover)
+                                                   stock.shares_outstanding, days_to_cover,
+                                                   stock.show_price_data)
 
             data = self.get_serializer(response).data
             cache.set(cache_key, data, timeout=CACHE_TIMEOUT_SECONDS)
             return Response(data)
         except Stock.DoesNotExist:
             return Response(self.get_serializer(
-                ShortedStockDetailsResponse([], [], [], [], None, None, None, [], None, None)).data)
+                ShortedStockDetailsResponse([], [], [], [], None, None, None, [], None, None, True)).data)
 
 
 class ShortSellerView(ReadOnlyModelViewSet):
@@ -309,14 +323,11 @@ class ShortSellerView(ReadOnlyModelViewSet):
     detail_serializer_class = ShortSellerDetailSerializer
 
     def list(self, request, *args, **kwargs):
-        cache_key = 'short_sellers_list'
-        cached = cache.get(cache_key)
+        cached = cache.get('short_sellers_list')
         if cached:
             return Response(cached)
-
-        response = super().list(request, *args, **kwargs)
-        cache.set(cache_key, response.data, timeout=CACHE_TIMEOUT_SECONDS)
-        return response
+        # Cache miss (e.g. first request before fetch_shorts has warmed it).
+        return Response(warm_short_sellers_list_cache())
 
     def get_serializer_class(self):
         if self.action == 'retrieve':
@@ -324,6 +335,22 @@ class ShortSellerView(ReadOnlyModelViewSet):
                 return self.detail_serializer_class
 
         return self.serializer_class
+
+
+def _build_short_sellers_list():
+    """Serialize the short sellers list. Request-independent: no pagination or
+    filter backends are configured, and ShortSellerListSerializer uses only
+    object-based method fields (no request/context), so this matches what the
+    view returns on a real request."""
+    return ShortSellerListSerializer(ShortSellerView.queryset, many=True).data
+
+
+def warm_short_sellers_list_cache():
+    """Build the short sellers list and store it in the cache. Called by
+    fetch_shorts so the list is served from cache, never rebuilt on a request."""
+    data = _build_short_sellers_list()
+    cache.set('short_sellers_list', data, timeout=CACHE_TIMEOUT_SECONDS)
+    return data
 
 
 import re
@@ -336,43 +363,66 @@ def stats_view(request):
     cached = cache.get('homepage_stats')
     if cached:
         return Response(cached)
+    # Cache miss (e.g. the first request before fetch_shorts has warmed it).
+    return Response(warm_homepage_stats_cache())
 
+
+# Returned (but not cached) if the stats build hits an unexpected error, so a
+# transient failure never gets stuck in the cache for the full timeout.
+_FALLBACK_HOMEPAGE_STATS = {
+    'shortedCount': 0,
+    'shortedCountDelta': None,
+    'mostShorted': None,
+    'mostViewed': None,
+    'mostFollowed': None,
+    'updatedAt': None,
+}
+
+
+def _build_homepage_stats():
+    """Build the homepage summary numbers. Returns the data dict, or None on
+    failure so the caller can avoid caching an error result."""
     try:
-        # 1. How many stocks are currently shorted (active stocks with position > 0)
-        latest_positions = ShortPosition.objects.filter(
-            stock__active=True
-        ).values('stock').annotate(
-            latest=Max('timestamp')
+        # 1. Currently shorted active stocks (latest value > 0), the single most
+        #    shorted, and the latest update timestamp. Subquery annotations avoid
+        #    the previous one-query-per-stock loop.
+        latest_value_subq = ShortPosition.objects.filter(
+            stock=OuterRef('pk')
+        ).order_by('-timestamp').values('value')[:1]
+        latest_ts_subq = ShortPosition.objects.filter(
+            stock=OuterRef('pk')
+        ).order_by('-timestamp').values('timestamp')[:1]
+        shorted_stocks = list(
+            Stock.objects.filter(active=True)
+            .annotate(
+                latest_value=Subquery(latest_value_subq, output_field=FloatField()),
+                latest_ts=Subquery(latest_ts_subq),
+            )
+            .filter(latest_value__gt=0)
         )
-        shorted_count = 0
+        shorted_count = len(shorted_stocks)
         most_shorted = None
         most_shorted_value = 0
         latest_update = None
-        for entry in latest_positions:
-            pos = ShortPosition.objects.select_related('stock').filter(
-                stock_id=entry['stock'], timestamp=entry['latest']
-            ).first()
-            if pos and pos.value > 0:
-                shorted_count += 1
-                if pos.value > most_shorted_value:
-                    most_shorted_value = pos.value
-                    most_shorted = pos.stock
-                if latest_update is None or pos.timestamp > latest_update:
-                    latest_update = pos.timestamp
+        for s in shorted_stocks:
+            if s.latest_value > most_shorted_value:
+                most_shorted_value = s.latest_value
+                most_shorted = s
+            if s.latest_ts and (latest_update is None or s.latest_ts > latest_update):
+                latest_update = s.latest_ts
 
-        # 1b. Deltas vs. 7 days ago (freshness signal — works with daily-ish updates)
+        # 1b. Same count as of 7 days ago, for the freshness delta. One grouped
+        #     query instead of a per-stock loop.
         seven_days_ago = timezone.now() - timedelta(days=7)
-        prev_latest_positions = ShortPosition.objects.filter(
-            stock__active=True,
-            timestamp__lt=seven_days_ago,
-        ).values('stock').annotate(latest=Max('timestamp'))
-        prev_shorted_count = 0
-        for entry in prev_latest_positions:
-            pos = ShortPosition.objects.filter(
-                stock_id=entry['stock'], timestamp=entry['latest']
-            ).first()
-            if pos and pos.value > 0:
-                prev_shorted_count += 1
+        prev_value_subq = ShortPosition.objects.filter(
+            stock=OuterRef('pk'), timestamp__lt=seven_days_ago
+        ).order_by('-timestamp').values('value')[:1]
+        prev_shorted_count = (
+            Stock.objects.filter(active=True)
+            .annotate(prev_value=Subquery(prev_value_subq, output_field=FloatField()))
+            .filter(prev_value__gt=0)
+            .count()
+        )
 
         most_shorted_prev_value = None
         if most_shorted:
@@ -383,38 +433,23 @@ def stats_view(request):
             if prev_pos:
                 most_shorted_prev_value = prev_pos.value
 
-        # 2. Most viewed detail page in last month (by unique IPs)
+        # 2. Most viewed detail page in the last month (by unique IPs), in SQL.
         one_month_ago = timezone.now() - timedelta(days=30)
-        code_pattern = re.compile(r'/details/(\S+)')
-        detail_logs = list(RequestLog.objects.filter(
-            requested_url__icontains='/details/',
-            timestamp__gte=one_month_ago,
-        ).values_list('requested_url', 'client_ip'))
-
-        unique_ips = {}
-        for url, ip in detail_logs:
-            match = code_pattern.search(url)
-            if match:
-                code = match.group(1).strip('/')
-                unique_ips.setdefault(code, set()).add(ip)
-        view_counts = {code: len(ips) for code, ips in unique_ips.items()}
-
-        most_viewed_code = max(view_counts, key=view_counts.get) if view_counts else None
+        mv_rows = _most_viewed_counts(one_month_ago, limit=1)
         most_viewed_stock = None
         most_viewed_count = 0
-        if most_viewed_code:
-            try:
-                most_viewed_stock = Stock.objects.get(code=most_viewed_code)
-                most_viewed_count = view_counts[most_viewed_code]
-            except Stock.DoesNotExist:
-                pass
+        if mv_rows:
+            top = mv_rows[0]
+            most_viewed_stock = Stock.objects.filter(code=top['code']).first()
+            if most_viewed_stock:
+                most_viewed_count = top['viewers']
 
         # 3. Most followed stock (by app users)
         most_followed = Stock.objects.annotate(
             follower_count=Count('app_users')
         ).order_by('-follower_count').first()
 
-        data = {
+        return {
             'shortedCount': shorted_count,
             'shortedCountDelta': (shorted_count - prev_shorted_count) if prev_shorted_count else None,
             'mostShorted': {
@@ -438,40 +473,53 @@ def stats_view(request):
             } if most_followed and most_followed.follower_count > 0 else None,
             'updatedAt': latest_update.isoformat() if latest_update else None,
         }
-        cache.set('homepage_stats', data, timeout=CACHE_TIMEOUT_SECONDS)
-        return Response(data)
     except Exception:
-        return Response({
-            'shortedCount': 0,
-            'shortedCountDelta': None,
-            'mostShorted': None,
-            'mostViewed': None,
-            'mostFollowed': None,
-            'updatedAt': None,
-        })
+        return None
+
+
+def warm_homepage_stats_cache():
+    """Build the homepage stats and store them in the cache. Called by
+    fetch_shorts after each run so the work stays off the user request path."""
+    data = _build_homepage_stats()
+    if data is None:
+        return _FALLBACK_HOMEPAGE_STATS
+    cache.set('homepage_stats', data, timeout=CACHE_TIMEOUT_SECONDS)
+    return data
+
+
+def _most_viewed_counts(one_month_ago, limit=20):
+    """Distinct client IPs per stock code for /details/ requests, computed in SQL
+    so we never pull the raw log rows into Python and regex-parse each one.
+    Returns a list of {'code', 'viewers'} ordered by viewers desc."""
+    after_details = Func(F('requested_url'), Value('/details/'), Value(-1),
+                         function='SUBSTRING_INDEX')
+    code_segment = Func(after_details, Value('/'), Value(1), function='SUBSTRING_INDEX')
+    code_expr = Func(code_segment, Value('?'), Value(1), function='SUBSTRING_INDEX',
+                     output_field=CharField())
+    return list(
+        RequestLog.objects.filter(
+            requested_url__icontains='/details/',
+            timestamp__gte=one_month_ago,
+        )
+        .annotate(code=code_expr)
+        .values('code')
+        .annotate(viewers=Count('client_ip', distinct=True))
+        .order_by('-viewers')[:limit]
+    )
 
 
 def _compute_most_viewed(one_month_ago):
-    code_pattern = re.compile(r'/details/(\S+)')
-    detail_logs = list(RequestLog.objects.filter(
-        requested_url__icontains='/details/',
-        timestamp__gte=one_month_ago,
-    ).values_list('requested_url', 'client_ip'))
-    unique_ips = {}
-    for url, ip in detail_logs:
-        match = code_pattern.search(url)
-        if match:
-            code = match.group(1).strip('/')
-            unique_ips.setdefault(code, set()).add(ip)
-    view_counts = {code: len(ips) for code, ips in unique_ips.items()}
-    sorted_views = sorted(view_counts.items(), key=lambda x: x[1], reverse=True)[:10]
+    rows = _most_viewed_counts(one_month_ago, limit=20)
+    # Map codes to stocks in a single query, preserving the viewer ranking and
+    # skipping any code that no longer matches a known stock.
+    stocks = {s.code: s for s in Stock.objects.filter(code__in=[r['code'] for r in rows])}
     result = []
-    for code, _ in sorted_views:
-        try:
-            stock = Stock.objects.get(code=code)
+    for row in rows:
+        stock = stocks.get(row['code'])
+        if stock:
             result.append({'symbol': stock.symbol, 'name': stock.name, 'code': stock.code})
-        except Stock.DoesNotExist:
-            pass
+        if len(result) >= 10:
+            break
     return result
 
 
@@ -485,22 +533,22 @@ def _compute_most_followed():
 
 
 def _compute_most_shorted():
-    latest_positions = ShortPosition.objects.filter(
-        stock__active=True
-    ).values('stock').annotate(latest=Max('timestamp'))
-    shorted_list = []
-    for entry in latest_positions:
-        pos = ShortPosition.objects.select_related('stock').filter(
-            stock_id=entry['stock'], timestamp=entry['latest']
-        ).first()
-        if pos and pos.value > 0:
-            shorted_list.append({
-                'symbol': pos.stock.symbol,
-                'name': pos.stock.name,
-                'code': pos.stock.code,
-                'value': pos.value,
-            })
-    return sorted(shorted_list, key=lambda x: x['value'], reverse=True)[:10]
+    # Annotate each active stock with its latest short value via a subquery and
+    # sort in the database, instead of issuing one query per stock in a loop.
+    latest_value_subq = ShortPosition.objects.filter(
+        stock=OuterRef('pk')
+    ).order_by('-timestamp').values('value')[:1]
+    rows = (
+        Stock.objects.filter(active=True)
+        .annotate(latest_value=Subquery(latest_value_subq, output_field=FloatField()))
+        .filter(latest_value__gt=0)
+        .order_by('-latest_value')[:10]
+        .values('symbol', 'name', 'code', 'latest_value')
+    )
+    return [
+        {'symbol': r['symbol'], 'name': r['name'], 'code': r['code'], 'value': r['latest_value']}
+        for r in rows
+    ]
 
 
 def _compute_most_active(one_month_ago):
@@ -565,17 +613,18 @@ def _compute_top_days_to_cover():
         .annotate(latest_short=Subquery(latest_pos_subq, output_field=FloatField()))
         .filter(latest_short__gt=0)
     )
+    # Average volume per stock over the window in one grouped query, rather than
+    # a separate query inside the loop for every active stock.
+    avg_volumes = {
+        row['stock']: row['avg_volume']
+        for row in ShortPositionChart.objects.filter(
+            date__gte=volume_cutoff, volume__isnull=False
+        ).values('stock').annotate(avg_volume=Avg('volume'))
+    }
     days_to_cover_list = []
     for s in active_stocks:
-        volumes = list(
-            ShortPositionChart.objects.filter(
-                stock=s, date__gte=volume_cutoff, volume__isnull=False
-            ).values_list('volume', flat=True)
-        )
-        if not volumes:
-            continue
-        avg_volume = sum(volumes) / len(volumes)
-        if avg_volume <= 0:
+        avg_volume = avg_volumes.get(s.pk)
+        if not avg_volume or avg_volume <= 0:
             continue
         dtc = (s.latest_short / 100.0 * s.shares_outstanding) / avg_volume
         days_to_cover_list.append({
@@ -607,7 +656,12 @@ def top_lists_view(request):
     cached = cache.get('top_lists')
     if cached:
         return Response(cached)
+    # Cache miss (e.g. the very first request, before fetch_shorts has warmed it).
+    # Build, cache and return so subsequent requests are served from cache.
+    return Response(warm_top_lists_cache())
 
+
+def _build_top_lists():
     one_month_ago = timezone.now() - timedelta(days=30)
 
     def safe(fn, *args):
@@ -618,7 +672,7 @@ def top_lists_view(request):
 
     most_rising, most_falling = safe(_compute_risers_fallers) or ([], [])
 
-    data = {
+    return {
         'mostViewed': safe(_compute_most_viewed, one_month_ago),
         'mostFollowed': safe(_compute_most_followed),
         'mostShorted': safe(_compute_most_shorted),
@@ -628,8 +682,14 @@ def top_lists_view(request):
         'mostDaysToCover': safe(_compute_top_days_to_cover),
         'mostShortSellers': safe(_compute_most_short_sellers),
     }
+
+
+def warm_top_lists_cache():
+    """Build the top lists and store them in the cache. Called by fetch_shorts
+    after each run so the heavy aggregation runs off the user request path."""
+    data = _build_top_lists()
     cache.set('top_lists', data, timeout=CACHE_TIMEOUT_SECONDS)
-    return Response(data)
+    return data
 
 
 @api_view(['GET'])

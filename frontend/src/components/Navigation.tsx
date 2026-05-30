@@ -2,6 +2,7 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { trackEvent } from "../analytics";
+import { isEmbedded } from "../utils/embed";
 
 const defaultCollapseMenu = {
   mainMenu: true,
@@ -46,6 +47,11 @@ const Navigation: React.FC = () => {
     document.addEventListener("keydown", handleEscape);
     return () => document.removeEventListener("keydown", handleEscape);
   }, []);
+
+  // In the iOS WebView (?embed=1) the app provides its own chrome, so hide the
+  // site navigation. All hooks above run unconditionally; this value is stable
+  // per session, so the early return does not violate the rules of hooks.
+  if (isEmbedded()) return null;
 
   const navClasses = isHome
     ? "bg-[#0d1b4c] border border-white/20 shadow-lg shadow-black/20"

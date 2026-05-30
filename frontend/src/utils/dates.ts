@@ -2,7 +2,9 @@ import i18n from "./i18n";
 
 export const formatTimestamp = (
   timestamp: string,
-  formatType: "dateAndTime" | "dateOnly" = "dateAndTime"
+  // "todayWithTime": show the time when the date is today, but only the date
+  // otherwise (used by compact lists that still want a precise "today" stamp).
+  formatType: "dateAndTime" | "dateOnly" | "todayWithTime" = "dateAndTime"
 ) => {
   const date = new Date(timestamp);
   const today = new Date();
@@ -17,9 +19,10 @@ export const formatTimestamp = (
       minute: "2-digit",
     };
     const time = date.toLocaleTimeString(undefined, options);
-    return formatType === "dateAndTime"
-      ? `${i18n.t("Today")}, ${time}`
-      : `${i18n.t("Today")}`;
+    // dateOnly shows just "Today"; dateAndTime and todayWithTime add the time.
+    return formatType === "dateOnly"
+      ? `${i18n.t("Today")}`
+      : `${i18n.t("Today")}, ${time}`;
   }
 
   if (formatType === "dateAndTime") {

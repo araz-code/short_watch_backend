@@ -19,12 +19,23 @@ from django.urls import path, include, re_path
 from django.http import HttpResponse
 from django.views.generic import TemplateView
 from django.views.static import serve
+from django.views.decorators.cache import cache_control
 
 from short_watch_backend import settings
+from home_page import og_views
+from home_page.views import analyses_view
 
 import os
 
 FRONTEND_DIST = os.path.join(settings.FRONTEND_DIR, 'dist')
+OG_IMAGES_DIR = os.path.join(FRONTEND_DIST, 'og-images')
+
+
+@cache_control(public=True, max_age=86400)
+def serve_og_image(request, path):
+    """Serve an OG/analysis image with a Cache-Control header so Cloudflare and
+    clients cache it at the edge instead of hitting the origin on every request."""
+    return serve(request, path, document_root=OG_IMAGES_DIR)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -59,7 +70,12 @@ urlpatterns = [
     path('v18/shorts/', include('shorts.urls')),
     path('v18/users/', include('users.urls')),
     path('v18/insider/', include('insider_transactions.urls')),
+    path('v19/shorts/', include('shorts.urls')),
+    path('v19/users/', include('users.urls')),
     path('stats/', include('request_logging.urls')),
+    path('v18/analyses', analyses_view),
+    path('v19/analyses', analyses_view),
+    path('favicon.svg', serve, {'path': 'favicon.svg', 'document_root': FRONTEND_DIST}),
     path('favicon.png', serve, {'path': 'favicon.png', 'document_root': FRONTEND_DIST}),
     path('manifest.json', serve, {'path': 'manifest.json', 'document_root': FRONTEND_DIST}),
     path('icon-192.png', serve, {'path': 'icon-192.png', 'document_root': FRONTEND_DIST}),
@@ -76,6 +92,10 @@ urlpatterns = [
          {'path': 'images/apple-touch-icon-152x152.png', 'document_root': settings.STATIC_ROOT}),
     path('apple-touch-icon-180x180.png', serve,
          {'path': 'images/apple-touch-icon-180x180.png', 'document_root': settings.STATIC_ROOT}),
+    # OG/social images and the in-app analysis thumbnails. Without this route
+    # /og-images/* falls through to the SPA catch-all and returns index.html
+    # (text/html), so image loads fail. Serve the real PNGs from dist/og-images.
+    re_path(r'^og-images/(?P<path>.*)$', serve_og_image),
     path('robots.txt', serve, {'path': 'robots.txt', 'document_root': FRONTEND_DIST}),
     path('sitemap.xml', lambda r: HttpResponse(
         '<?xml version="1.0" encoding="UTF-8"?>\n'
@@ -101,6 +121,10 @@ urlpatterns = [
         '</urlset>\n',
         content_type="application/xml"
     )),
+    # Analysis routes get server-side Open Graph injection so social crawlers
+    # (Slack/Facebook/LinkedIn/X), which do not run JS, see the correct per-page
+    # preview instead of the generic index.html tags. Must precede the catch-all.
+    re_path(r'^analyse(?:/(?P<subpath>.*?))?/?$', og_views.analysis_page),
     path('', TemplateView.as_view(template_name="index.html")),
     re_path(r'^(?:.*)/?$', TemplateView.as_view(template_name="index.html")),
 ]

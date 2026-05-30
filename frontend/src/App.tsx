@@ -1,3 +1,5 @@
+// Must run before i18n so ?lang= / ?embed= query params are applied on init.
+import "./utils/embed.ts";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { lazy, Suspense, useEffect, useState } from "react";

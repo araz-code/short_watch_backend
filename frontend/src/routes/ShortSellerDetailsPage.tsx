@@ -327,6 +327,7 @@ const ShortSellerDetailsPage: React.FC = () => {
                           {...announcement}
                           first={index === 0}
                           isEven={index % 2 === 0}
+                          prevValue={groupedAnnouncements[symbol][index + 1]?.value}
                         />
                       </li>
                     ))}

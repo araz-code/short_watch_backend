@@ -83,7 +83,7 @@ const ShortSellerRow: React.FC<ShortSeller & { isEven: boolean }> = (props) => {
           )}
         </div>
         <span className="text-xs text-gray-500 dark:text-gray-400 shrink-0 tabular-nums whitespace-nowrap">
-          {formatTimestamp(lastUpdated, "dateOnly")}
+          {formatTimestamp(lastUpdated, "todayWithTime")}
         </span>
       </div>
 
