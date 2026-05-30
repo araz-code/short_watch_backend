@@ -556,8 +556,11 @@ const AmbuAnalysisPage: React.FC = () => {
           </div>
 
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-            Det er værd at notere, at både Millennium og AHL er klassiske
-            multi-strategy hedgefonde, mens Wellington og BlackRock primært
+            De seks positioner udgør tilsammen 4,0% af aktiekapitalen, godt
+            halvdelen af den samlede shortinteresse på 6,96%; resten ligger i
+            positioner under 0,5%-tærsklen. Det er værd at notere, at både
+            Millennium og AHL er klassiske multi-strategy hedgefonde, mens
+            Wellington og BlackRock primært
             er store kapitalforvaltere, hvis short-positioner typisk kommer
             fra deres hedgefond- eller alternative produkter snarere end
             deres traditionelle long-only-fonde. Sammensætningen viser at
