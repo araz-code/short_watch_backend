@@ -248,9 +248,9 @@ const AmbuAnalysisPage: React.FC = () => {
             Ambu handler i dag omkring 67,40 DKK, cirka 45% under niveauet
             fra januar 2020, altså før pandemien overhovedet begyndte.
             Undervejs næsten tredoblede aktien sig til en pandemi-top på
-            355,40 DKK den 27. april 2021, før den kollapsede. Den ramte en
-            ny bundrekord på 61,70 DKK så sent som den 29. april 2026 og
-            ligger nu cirka 81% under toppen.
+            355,40 DKK den 27. april 2021, før den kollapsede. Den faldt
+            helt til 61,70 DKK den 29. april 2026, det laveste niveau siden
+            2017, og ligger nu cirka 81% under toppen.
           </p>
           <p className="text-gray-600 dark:text-gray-300 mt-3 leading-relaxed">
             En stor del af faldet skyldes ikke svag drift, men en korrektion
@@ -280,7 +280,7 @@ const AmbuAnalysisPage: React.FC = () => {
         {/* KPIs */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-12">
           <KPI value="-45%" label="Afkast siden jan 2020" highlight tone="red" />
-          <KPI value="+181%" label="Til pandemi-toppen (apr 2021)" />
+          <KPI value="+188%" label="Til pandemi-toppen (apr 2021)" />
           <KPI value="-81%" label="Fra rekordniveau" />
           <KPI value="6,96%" label="Short interest (29/5)" highlight tone="red" />
         </div>
@@ -463,7 +463,7 @@ const AmbuAnalysisPage: React.FC = () => {
 
         {/* Section 5 */}
         <section className="mb-12">
-          <SectionHeader n={5} title="Tariff-presset der ramte i 2025" />
+          <SectionHeader n={5} title="Tariff-pres og en svagere Q2" />
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             Den 5. november 2025 rapporterede Ambu deres FY24/25-regnskab,
             og aktien faldt cirka 16% på dagen. Årsagen var ikke svag drift,
@@ -482,11 +482,30 @@ const AmbuAnalysisPage: React.FC = () => {
             indtil da må Ambu absorbere omkostningerne.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-            For FY25/26 har Ambu guidet organisk omsætningsvækst på 10-13%
-            og EBIT-margin før særlige poster på 12-14% (14-16% eksklusive
-            tariff-impacten på cirka 2 procentpoint). Det er den primære
-            grund til at marginerne falder kortvarigt efter at have toppet
-            på 16,1% i Q1 FY24/25 (kvartalet oktober-december 2024).
+            Ved årsregnskabet guidede Ambu FY25/26 til organisk
+            omsætningsvækst på 10-13% og EBIT-margin før særlige poster på
+            12-14% (14-16% eksklusive tariff-impacten på cirka 2
+            procentpoint). Det er den primære grund til at marginerne falder
+            kortvarigt efter at have toppet på 16,1% i Q1 FY24/25 (kvartalet
+            oktober-december 2024).
+          </p>
+          <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
+            Den 6. maj 2026 bekræftede Q2-regnskabet for 2025/26 markedets
+            bekymring. Den organiske vækst bremsede til 7,3% i kvartalet mod
+            13,1% i hele FY24/25. Endoscopy Solutions voksede fortsat stærkt
+            (+13,8%), men Anesthesia & Patient Monitoring faldt 2,5%, og
+            EBIT-marginen lå på 11,0% i kvartalet. Samtidig sænkede Ambu sin
+            helårsguidance for organisk vækst til 10-12% (fra 10-13%). For et
+            marked der allerede tvivlede på eksekveringen, var en
+            vækstopbremsning kombineret med en nedjustering præcis det
+            forkerte signal.
+          </p>
+          <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+            Som modtræk lancerede bestyrelsen samtidig et aktietilbagekøb på
+            op til 300 mio. DKK, der løber fra 6. maj til senest 30. september
+            2026. Det signalerer, at ledelsen selv vurderer aktien som
+            undervurderet, og kan lægge en vis støtte under kursen på kort
+            sigt.
           </p>
         </section>
 
@@ -552,9 +571,16 @@ const AmbuAnalysisPage: React.FC = () => {
           <SectionHeader n={7} title="Hvorfor bliver aktien ved at falde?" />
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             Paradokset er klart: Operationelt er Ambu på sporet, men aktien
-            har fortsat ned. Der er fire forklaringer der spiller sammen:
+            har fortsat ned. Der er fem forklaringer der spiller sammen:
           </p>
           <ol className="space-y-3 text-gray-600 dark:text-gray-300 leading-relaxed list-decimal pl-6 mb-4">
+            <li>
+              <strong>Den seneste vækst skuffede.</strong>{" "}
+              Q2-regnskabet i maj 2026 viste en opbremsning til 7,3% organisk
+              vækst og en nedjustering af helårsguidancen til 10-12%. Når
+              multiplen stadig er høj, straffer markedet enhver svaghed i
+              væksten ekstra hårdt.
+            </li>
             <li>
               <strong>Tariff- og FX-modvind tager toppen af margin-løftet.</strong>{" "}
               FY25/26-vejledningen er 12-14% EBIT-margin mod tidligere håb
@@ -619,7 +645,9 @@ const AmbuAnalysisPage: React.FC = () => {
             FY29/30, kan dagens kurs vise sig attraktiv i bakspejlet. Hvis
             tarifferne
             normaliseres langsommere, eller udbredelsen af engangsudstyr
-            skuffer, kan aktien fortsætte ned. Det er den balance investorer må veje.
+            skuffer, kan aktien fortsætte ned. Det igangværende tilbagekøb på
+            300 mio. DKK kan lægge en kortsigtet bund, men afgør ikke
+            vækstspørgsmålet. Det er den balance investorer må veje.
           </p>
         </section>
 
