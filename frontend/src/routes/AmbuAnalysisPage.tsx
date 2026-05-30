@@ -122,7 +122,7 @@ const COMPARISON_DATA: ComparisonPoint[] = [
   { date: "2026-02", ambu: 64.4, olympus: 85.6, bsx: 183.5, colo: 57.3, isrg: 269.8 },
   { date: "2026-03", ambu: 55.4, olympus: 83.4, bsx: 149.9, colo: 51.3, isrg: 247.1 },
   { date: "2026-04", ambu: 51.1, olympus: 86.7, bsx: 137.6, colo: 46.3, isrg: 245.2 },
-  { date: "2026-05", ambu: 54.6, olympus: 102.3, bsx: 117.3, colo: 46.7, isrg: 227.0 },
+  { date: "2026-05", ambu: 54.6, olympus: 100.1, bsx: 115.4, colo: 46.5, isrg: 227.6 },
 ];
 
 // Operating margin per regnskabsår (Ambu's fiskaler slutter september)
@@ -254,10 +254,9 @@ const AmbuAnalysisPage: React.FC = () => {
           </p>
           <p className="text-gray-600 dark:text-gray-300 mt-3 leading-relaxed">
             Den primære årsag til faldet er ikke svag drift, men en
-            uundgåelig korrektion af en ekstrem værdiansættelse. I september
-            2020 ramte Ambus P/E-multipel 3.730 på rullende indtjening, og
-            selv på normaliserede 2021-tal handlede aktien til over 100 gange
-            indtjeningen. Den slags værdiansættelser ender historisk kun ét
+            uundgåelig korrektion af en ekstrem værdiansættelse. På det
+            højeste handlede aktien til en P/E langt over 100 på rullende
+            indtjening. Den slags værdiansættelser ender historisk kun ét
             sted: I et hårdt tilbagefald mod normale niveauer, uanset hvor
             godt selskabet klarer sig.
           </p>
@@ -292,9 +291,9 @@ const AmbuAnalysisPage: React.FC = () => {
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             Sammenligningen siden januar 2020, altså før pandemien, fortæller
             to ting. For det første er det ikke en bred sektorkrise: Intuitive
-            Surgical er mere end fordoblet (+127%), Boston Scientific er steget
-            17%, og selv japanske Olympus (den klare genbrugs-konkurrent) er
-            omtrent tilbage på sit start-niveau (+2%). For det andet er Ambus
+            Surgical er mere end fordoblet (+128%), Boston Scientific er steget
+            15%, og selv japanske Olympus (den klare genbrugs-konkurrent) er
+            omtrent tilbage på sit start-niveau (cirka 0%). For det andet er Ambus
             kursrejse unik: Aktien næsten tredoblede sig til pandemi-toppen og
             er nu faldet helt tilbage til cirka 45% under udgangspunktet. Kun
             Coloplast (-53%) har et lignende samlet fald, men uden Ambus
@@ -335,8 +334,9 @@ const AmbuAnalysisPage: React.FC = () => {
             udbytter for at sikre sammenlignelighed, normaliseret til 100 i
             januar 2020. Afkast er målt i lokal valuta og er ikke
             valuta-justeret. For Olympus (noteret i JPY) ville en
-            valuta-justering til DKK trække det viste +2% noget ned, da yen
-            er svækket markant over for kronen i perioden.
+            valuta-justering til DKK trække det viste niveau (omtrent 0%) ned
+            i negativt territorium, da yen er svækket markant over for kronen
+            i perioden.
           </p>
         </section>
 
@@ -355,29 +355,32 @@ const AmbuAnalysisPage: React.FC = () => {
             Den kombinerede effekt var dramatisk på både regnskaber og
             værdiansættelse. Aktien næsten tredoblede sig fra januar 2020 til
             april 2021, og markedet priste Ambu som om engangsendoskoper-paradigmet
-            var ved at overtage hele endoskopi-markedet på få år. I september
-            2020 ramte P/E-multiplen 3.730x på rullende 12 måneders indtjening,
-            et niveau der historisk kun ses på rene fortælling-aktier i
-            ekstreme boble-toppe. Selv på normaliserede 2021-tal handlede
-            aktien på over 100x indtjening.
+            var ved at overtage hele endoskopi-markedet på få år. På det
+            højeste handlede aktien til en P/E langt over 100 på rullende
+            indtjening, et niveau der historisk kun ses på rene
+            fortælling-aktier i ekstreme boble-toppe.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             Det betyder, at en stor del af Ambus efterfølgende fald ikke var
             en operationel kritik, men en uundgåelig værdiansættelses-reset.
             Selv hvis indtjeningen havde holdt sig konstant, ville et fald i
-            multiplen fra 100x til 25x have halveret aktien tre gange. Da
+            multiplen fra over 100x til omkring 25x i sig selv have skåret
+            aktien ned til en fjerdedel. Da
             indtjeningen samtidig kollapsede (EBIT-margin fra 8,5% til 2,7%
             på et regnskabsår), blev nedturen forstærket.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
             Til den interne corporate governance-historik hører også Lars
-            Marcher-sagen fra maj 2019, hvor den fyrede CEO sad med 3,8 mio.
+            Marcher-sagen fra 10. maj 2019, hvor den fyrede CEO sad med 3,8 mio.
             aktier privat og nægtede at oplyse om han solgte efter fyringen,
             hvor offentliggørelseskravet ikke længere gjaldt. Dansk
             Aktionærforening kritiserede dette som et regelhul. Episoden er
             ikke direkte årsag til faldet siden 2021, men den prægede en
             periode hvor mange institutionelle investorer blev forsigtige med
-            Ambu som ledelses-case.
+            Ambu som ledelses-case. Det var Juan José González der overtog som
+            CEO efter Marcher og ledte Ambu gennem hele boom-og-bust-perioden,
+            indtil bestyrelsen i maj 2022 hentede Britt Meelby Jensen ind for
+            at lede genopretningen.
           </p>
         </section>
 
@@ -459,7 +462,7 @@ const AmbuAnalysisPage: React.FC = () => {
           <SectionHeader n={5} title="Tariff-presset der ramte i 2025" />
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             Den 5. november 2025 rapporterede Ambu deres FY24/25-regnskab,
-            og aktien faldt cirka 13% på dagen. Årsagen var ikke svag drift,
+            og aktien faldt cirka 16% på dagen. Årsagen var ikke svag drift,
             men en kombination af tariff-omkostninger og valutamodvind. Q4
             FY24/25 (kvartalet juli til september 2025) leverede en
             EBIT-margin før særlige poster på 10,0% mod konsensus omkring
@@ -562,11 +565,11 @@ const AmbuAnalysisPage: React.FC = () => {
               udbredelsen tid.
             </li>
             <li>
-              <strong>Værdiansættelsen er stadig rig på faldende business.</strong>{" "}
-              Ambu handler til cirka 21x forward P/E og 2,8x P/B med
-              omsætningsvækst på cirka 1,2% år-over-år (seneste rapporterede
-              kvartal). For investorer der køber multipler frem for vækst,
-              er det ikke billigt nok endnu.
+              <strong>Værdiansættelsen er stadig høj.</strong>{" "}
+              Selv efter kursfaldet handler Ambu til cirka 22x forward P/E og
+              cirka 3x indre værdi. For en margin-historie, hvor markedet er
+              usikker på holdbarheden i en tariff-præget verden, er det endnu
+              ikke billigt nok for de værdiorienterede investorer.
             </li>
             <li>
               <strong>Hedgefondene har historisk høj shortinteresse.</strong>{" "}
