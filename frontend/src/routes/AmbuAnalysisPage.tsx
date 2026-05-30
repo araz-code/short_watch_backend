@@ -368,15 +368,15 @@ const AmbuAnalysisPage: React.FC = () => {
             aktien ned til en fjerdedel. Men faldet handlede ikke kun om
             multiplen: 2021-2022 var især en værdiansættelses-reset, mens
             2022-2024 også var præget af reel fundamental skuffelse.
-            Indtjeningen kollapsede (EBIT-margin fra 8,5% til 2,7% på et
-            regnskabsår), væksten bremsede da hospitalernes pandemilagre
+            Indtjeningen kollapsede (EBIT-margin fra 8,5% i 2020/21 til 2,7%
+            i 2021/22), væksten bremsede da hospitalernes pandemilagre
             normaliserede, og single-use-udbredelsen i GI gik langsommere
             end håbet.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
             Til den interne corporate governance-historik hører også Lars
             Marcher-sagen fra 10. maj 2019, hvor den fyrede CEO sad med 3,8 mio.
-            aktier privat og nægtede at oplyse om han solgte efter fyringen,
+            aktier privat og ikke ville kommentere om han solgte efter fyringen,
             hvor offentliggørelseskravet ikke længere gjaldt. Dansk
             Aktionærforening kritiserede dette som et regelhul. Episoden er
             ikke direkte årsag til faldet siden 2021, men den prægede en
