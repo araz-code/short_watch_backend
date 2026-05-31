@@ -203,7 +203,7 @@ const AmbuAnalysisPage: React.FC = () => {
       <title>Ambu: Fald trods en succesfuld transformation | Zirium</title>
       <meta
         name="description"
-        content="Ambu ligger 45% under sit pre-pandemi-niveau, selvom selskabet operationelt har gennemført en stærk transformation under CEO Britt Meelby Jensen med margin der er næsten femdoblet. Men aktien bliver ved at falde. Vi ser på paradokset, tariff-presset og hedgefondenes historisk høje shortinteresse."
+        content="Ambu ligger 45% under sit pre-pandemi-niveau, selvom selskabet operationelt har gennemført en stærk transformation under CEO Britt Meelby Jensen med margin der er næsten femdoblet. Men aktien bliver ved at falde. Vi ser på paradokset, tariff-presset og hedgefondenes høje shortinteresse."
       />
       <meta property="og:title" content="Ambu: Fald trods en succesfuld transformation" />
       <meta property="og:description" content="Ambu ligger 45% under pre-pandemi-niveauet trods næsten femdoblet margin. Hedgefonde har høj shortinteresse. Hvad er paradokset?" />
@@ -269,7 +269,7 @@ const AmbuAnalysisPage: React.FC = () => {
           <p className="text-gray-600 dark:text-gray-300 mt-3 leading-relaxed">
             Kursen ligger i dag omkring 67,40 DKK, cirka 45% under niveauet
             fra før pandemien og cirka 81% under pandemitoppen fra april
-            2021 (se nøgletallene nedenfor). En stor del af faldet skyldes
+            2021. En stor del af faldet skyldes
             ikke svag drift, men en korrektion af en ekstrem værdiansættelse:
             På det højeste handlede aktien til en P/E langt over 100 på
             rullende indtjening. Så høje multipler har historisk sjældent
@@ -280,7 +280,7 @@ const AmbuAnalysisPage: React.FC = () => {
             Vi gennemgår kursudviklingen siden 2020 sammenlignet med
             konkurrenterne, transformationen under ZOOM IN-strategien, den nye
             ZOOM AHEAD-plan mod FY29/30, det aktuelle tariff-pres og
-            hedgefondenes historisk høje shortinteresse i selskabet.
+            hedgefondenes høje shortinteresse i selskabet.
           </p>
         </header>
 
@@ -337,8 +337,9 @@ const AmbuAnalysisPage: React.FC = () => {
           </div>
 
           <p className="text-xs text-gray-500 dark:text-gray-400 italic leading-relaxed">
-            Note: Sammenligningen bruger prisindekser uden reinvesterede
-            udbytter for at sikre sammenlignelighed, normaliseret til 100 i
+            Note: Grafen viser kun kursudvikling og medregner ikke udbytter,
+            så det samlede afkast for udbyttebetalende selskaber er reelt
+            højere end vist. Indekset er normaliseret til 100 i
             januar 2020. Afkast er målt i lokal valuta og er ikke
             valutajusteret. For Olympus (noteret i JPY) ville en
             valutajustering til DKK trække det viste niveau (omtrent 0%) ned
@@ -377,8 +378,8 @@ const AmbuAnalysisPage: React.FC = () => {
             2022-2024 også var præget af reel fundamental skuffelse.
             Indtjeningen kollapsede (EBIT-margin fra 8,5% i 2020/21 til 2,7%
             i 2021/22), væksten bremsede, da hospitalernes pandemilagre
-            normaliserede, og single-use-udbredelsen i GI gik langsommere
-            end håbet.
+            normaliserede, og single-use-udbredelsen i det gastrointestinale
+            segment (GI, mave-tarm) gik langsommere end håbet.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
             Til den interne corporate governance-historik hører også Lars
@@ -488,7 +489,7 @@ const AmbuAnalysisPage: React.FC = () => {
             endoskopiefterspørgsel til lokal produktion inden FY29/30, men
             indtil da må Ambu absorbere omkostningerne.
           </p>
-          <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+          <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             Ved årsregnskabet guidede Ambu FY25/26 til organisk
             omsætningsvækst på 10-13% og EBIT-margin før særlige poster på
             12-14% (14-16% eksklusive tariff-impacten på cirka 2
@@ -700,7 +701,7 @@ const AmbuAnalysisPage: React.FC = () => {
         <section className="mb-12">
           <SectionHeader n={10} title="Konklusion" />
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-3">
-            Ambu er den interessante kontradiktion på dansk børs: Et selskab
+            Ambu er det interessante paradoks på dansk børs: Et selskab
             der operationelt har gjort næsten alt rigtigt under ny ledelse,
             men hvor aktien fortsætter med at falde. EBIT-marginen er næsten
             femdoblet (fra 2,7% til 13,0%), nettogælden er afviklet, og strategien
