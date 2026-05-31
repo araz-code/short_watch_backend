@@ -18,7 +18,7 @@ from errors.models import Error
 from errors.service import delete_old_errors
 from request_logging.service import delete_old_logs
 from short_watch_backend.settings import FCM_SERVICE_ACCOUNT_FILE, DEBUG
-from shorts.models import ShortPosition, RunStatus, LargeShortSelling, ShortPositionChart, Stock, Announcement
+from shorts.models import ShortPosition, RunStatus, LargeShortSelling, ShortPositionChart, Stock, Announcement, ShortSeller
 from shorts.utils import parse_headline, parse_publication_date, get_stock_for_issuer, get_or_create_seller
 from users.models import AppUser
 
@@ -103,12 +103,14 @@ class Command(BaseCommand):
         # which only row-locks the matched entries.
         detail_keys = [f'detail_{code}' for code in
                        Stock.objects.values_list('code', flat=True)]
+        seller_detail_keys = [f'seller_detail_{pk}' for pk in
+                              ShortSeller.objects.values_list('pk', flat=True)]
         cache.delete_many([
             'short_positions_list',
             'short_sellers_list',
             'homepage_stats',
             'top_lists',
-        ] + detail_keys)
+        ] + detail_keys + seller_detail_keys)
 
         # Rebuild the top lists and homepage stats right here, off the request
         # path, so no user ever pays the heavy aggregation cost on a cache miss.
@@ -121,9 +123,11 @@ class Command(BaseCommand):
                 warm_homepage_stats_cache,
                 warm_short_positions_list_cache,
                 warm_short_sellers_list_cache,
+                warm_short_seller_details_cache,
             )
             for warm in (warm_top_lists_cache, warm_homepage_stats_cache,
-                         warm_short_positions_list_cache, warm_short_sellers_list_cache):
+                         warm_short_positions_list_cache, warm_short_sellers_list_cache,
+                         warm_short_seller_details_cache):
                 try:
                     warm()
                 except Exception as e:

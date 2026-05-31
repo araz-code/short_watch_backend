@@ -329,6 +329,17 @@ class ShortSellerView(ReadOnlyModelViewSet):
         # Cache miss (e.g. first request before fetch_shorts has warmed it).
         return Response(warm_short_sellers_list_cache())
 
+    def retrieve(self, request, *args, **kwargs):
+        seller = self.get_object()
+        cache_key = f'seller_detail_{seller.pk}'
+        cached = cache.get(cache_key)
+        if cached is not None:
+            return Response(cached)
+        # Cache miss (e.g. first request before fetch_shorts has warmed it).
+        data = self.get_serializer(seller).data
+        cache.set(cache_key, data, timeout=CACHE_TIMEOUT_SECONDS)
+        return Response(data)
+
     def get_serializer_class(self):
         if self.action == 'retrieve':
             if hasattr(self, 'detail_serializer_class'):
@@ -341,8 +352,12 @@ def _build_short_sellers_list():
     """Serialize the short sellers list. Request-independent: no pagination or
     filter backends are configured, and ShortSellerListSerializer uses only
     object-based method fields (no request/context), so this matches what the
-    view returns on a real request."""
-    return ShortSellerListSerializer(ShortSellerView.queryset, many=True).data
+    view returns on a real request.
+
+    .all() forces a fresh evaluation: ShortSellerView.queryset is a shared
+    class-level QuerySet that caches its rows once iterated, so without this
+    a later run in the same process would serialize stale data."""
+    return ShortSellerListSerializer(ShortSellerView.queryset.all(), many=True).data
 
 
 def warm_short_sellers_list_cache():
@@ -351,6 +366,28 @@ def warm_short_sellers_list_cache():
     data = _build_short_sellers_list()
     cache.set('short_sellers_list', data, timeout=CACHE_TIMEOUT_SECONDS)
     return data
+
+
+def warm_short_seller_details_cache():
+    """Build every short seller's detail payload and store each under its own
+    'seller_detail_{pk}' key. Called by fetch_shorts so seller detail is served
+    from cache, never rebuilt on a request.
+
+    Request-independent: ShortSellerDetailSerializer uses only object-based
+    method fields (no request/context), so this matches what retrieve()
+    returns on a real request. Iterates the same filtered queryset the view
+    exposes, so only retrievable sellers are warmed.
+
+    .all() forces a fresh evaluation: ShortSellerView.queryset is a shared
+    class-level QuerySet that caches its rows once iterated, so without this
+    a later run in the same process would serialize stale data."""
+    entries = {
+        f'seller_detail_{seller.pk}': ShortSellerDetailSerializer(seller).data
+        for seller in ShortSellerView.queryset.all()
+    }
+    if entries:
+        cache.set_many(entries, timeout=CACHE_TIMEOUT_SECONDS)
+    return entries
 
 
 import re

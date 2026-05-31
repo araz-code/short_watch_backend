@@ -59,10 +59,14 @@ from shorts.models import (
     ShortPositionChart,
     LargeShortSelling,
     ShortSeller,
+    Announcement,
     RunStatus,
 )
+from shorts.serializers import ShortSellerDetailSerializer
+from shorts.views import ShortSellerView, warm_short_seller_details_cache
 from shorts.utils import parse_headline, parse_publication_date
 from users.models import AppUser
+from rest_framework.test import APIRequestFactory
 
 CPH = pytz.timezone('Europe/Copenhagen')
 
@@ -78,6 +82,27 @@ def make_short_position(stock, value, timestamp=None, prev_value=0):
         prev_value=prev_value,
         timestamp=timestamp or timezone.now(),
     )
+
+
+def make_seller_with_announcement(name='Seller One', dfsa_id='ANN-1', value=1.23,
+                                  headline=None, published=None, stock=None):
+    """Create a ShortSeller with one non-cancellation announcement dated inside
+    the window ShortSellerView.queryset requires (published >= 2023-11-06), so
+    the seller appears in the filtered queryset and is retrievable/warmable."""
+    seller = ShortSeller.objects.create(name=name)
+    stock = stock or make_stock(code=f'DK-{dfsa_id}', symbol=name[:20])
+    pub = published or timezone.make_aware(datetime(2026, 5, 1, 12, 0, 0))
+    Announcement.objects.create(
+        stock=stock,
+        short_seller=seller,
+        headline=headline or f'{name} holds a net short position of 1,23% in Example A/S',
+        published_date=pub,
+        registration_date=pub,
+        dfsa_id=dfsa_id,
+        value=value,
+        is_cancellation=False,
+    )
+    return seller
 
 
 # =============================================================================
@@ -805,9 +830,13 @@ class HandleOrchestrationTests(TestCase):
     @patch.object(Command, 'fetch_large_short_selling')
     @patch.object(Command, 'fetch_short_positions_selenium')
     @patch.object(Command, '_get_webdriver')
-    def test_handle_invalidates_the_four_expected_caches(
+    def test_handle_rebuilds_list_caches_and_keeps_unrelated_keys(
         self, mock_driver, mock_selenium, mock_large, mock_remove, mock_logs
     ):
+        # handle() always invalidates the view-level caches and then re-warms
+        # them, so the stale sentinels are gone and the keys hold freshly built
+        # values. delete_many() targets only the known keys, so unrelated keys
+        # survive (unlike the old cache.clear()).
         cache.set('short_positions_list', 'A', timeout=None)
         cache.set('short_sellers_list', 'B', timeout=None)
         cache.set('homepage_stats', 'C', timeout=None)
@@ -816,12 +845,14 @@ class HandleOrchestrationTests(TestCase):
 
         Command().handle()
 
-        # cache.clear() wipes the whole backend, including unrelated keys.
-        self.assertIsNone(cache.get('short_positions_list'))
-        self.assertIsNone(cache.get('short_sellers_list'))
-        self.assertIsNone(cache.get('homepage_stats'))
-        self.assertIsNone(cache.get('top_lists'))
-        self.assertIsNone(cache.get('unrelated_key'))
+        # Re-warmed: list caches rebuilt (empty DB → empty lists), never left
+        # as the stale sentinel.
+        self.assertEqual(cache.get('short_positions_list'), [])
+        self.assertEqual(cache.get('short_sellers_list'), [])
+        self.assertNotEqual(cache.get('homepage_stats'), 'C')
+        self.assertNotEqual(cache.get('top_lists'), 'D')
+        # Targeted invalidation leaves unrelated keys intact.
+        self.assertEqual(cache.get('unrelated_key'), 'KEEP')
 
     @patch('shorts.management.commands.fetch_shorts.delete_old_logs')
     @patch.object(Command, 'remove_duplicate_positions')
@@ -890,31 +921,28 @@ class HandleOrchestrationTests(TestCase):
     @patch.object(Command, 'fetch_large_short_selling')
     @patch.object(Command, 'fetch_short_positions_selenium')
     @patch.object(Command, '_get_webdriver')
-    def test_handle_only_invalidates_short_sellers_cache_when_selenium_fails(
+    def test_handle_rebuilds_caches_even_when_selenium_fails(
         self, mock_driver, mock_selenium, mock_large, mock_remove, mock_logs
     ):
+        # Cache invalidation/warming is unconditional: even when the selenium
+        # fetch raises, handle() still invalidates and re-warms the list caches.
         mock_driver.return_value = MagicMock()
         mock_selenium.side_effect = Exception('chrome unavailable')
 
         cache.set('short_positions_list', 'A', timeout=None)
         cache.set('short_sellers_list', 'B', timeout=None)
-        cache.set('homepage_stats', 'C', timeout=None)
-        cache.set('top_lists', 'D', timeout=None)
 
         Command().handle()
 
-        # Large sellers refresh succeeded → cache.clear() wipes everything.
-        self.assertIsNone(cache.get('short_positions_list'))
-        self.assertIsNone(cache.get('short_sellers_list'))
-        self.assertIsNone(cache.get('homepage_stats'))
-        self.assertIsNone(cache.get('top_lists'))
+        self.assertEqual(cache.get('short_positions_list'), [])
+        self.assertEqual(cache.get('short_sellers_list'), [])
 
     @patch('shorts.management.commands.fetch_shorts.delete_old_logs')
     @patch.object(Command, 'remove_duplicate_positions')
     @patch.object(Command, 'fetch_large_short_selling')
     @patch.object(Command, 'fetch_short_positions_selenium')
     @patch.object(Command, '_get_webdriver')
-    def test_handle_only_invalidates_position_caches_when_large_sellers_fails(
+    def test_handle_rebuilds_caches_even_when_large_sellers_fails(
         self, mock_driver, mock_selenium, mock_large, mock_remove, mock_logs
     ):
         mock_driver.return_value = MagicMock()
@@ -922,23 +950,18 @@ class HandleOrchestrationTests(TestCase):
 
         cache.set('short_positions_list', 'A', timeout=None)
         cache.set('short_sellers_list', 'B', timeout=None)
-        cache.set('homepage_stats', 'C', timeout=None)
-        cache.set('top_lists', 'D', timeout=None)
 
         Command().handle()
 
-        # Selenium refresh succeeded → cache.clear() wipes everything.
-        self.assertIsNone(cache.get('short_positions_list'))
-        self.assertIsNone(cache.get('short_sellers_list'))
-        self.assertIsNone(cache.get('homepage_stats'))
-        self.assertIsNone(cache.get('top_lists'))
+        self.assertEqual(cache.get('short_positions_list'), [])
+        self.assertEqual(cache.get('short_sellers_list'), [])
 
     @patch('shorts.management.commands.fetch_shorts.delete_old_logs')
     @patch.object(Command, 'remove_duplicate_positions')
     @patch.object(Command, 'fetch_large_short_selling')
     @patch.object(Command, 'fetch_short_positions_selenium')
     @patch.object(Command, '_get_webdriver')
-    def test_handle_skips_cache_invalidation_when_both_fetches_fail(
+    def test_handle_rebuilds_caches_even_when_both_fetches_fail(
         self, mock_driver, mock_selenium, mock_large, mock_remove, mock_logs
     ):
         mock_driver.return_value = MagicMock()
@@ -947,82 +970,50 @@ class HandleOrchestrationTests(TestCase):
 
         cache.set('short_positions_list', 'A', timeout=None)
         cache.set('short_sellers_list', 'B', timeout=None)
-        cache.set('homepage_stats', 'C', timeout=None)
-        cache.set('top_lists', 'D', timeout=None)
 
         Command().handle()
 
-        # Nothing actually refreshed → no caches invalidated.
-        self.assertEqual(cache.get('short_positions_list'), 'A')
-        self.assertEqual(cache.get('short_sellers_list'), 'B')
-        self.assertEqual(cache.get('homepage_stats'), 'C')
-        self.assertEqual(cache.get('top_lists'), 'D')
+        self.assertEqual(cache.get('short_positions_list'), [])
+        self.assertEqual(cache.get('short_sellers_list'), [])
 
     @patch('shorts.management.commands.fetch_shorts.delete_old_logs')
     @patch.object(Command, 'remove_duplicate_positions')
     @patch.object(Command, 'fetch_large_short_selling')
     @patch.object(Command, 'fetch_short_positions_selenium')
     @patch.object(Command, '_get_webdriver')
-    def test_handle_skips_cache_invalidation_when_fetches_succeed_but_data_unchanged(
+    def test_handle_rebuilds_caches_even_when_data_unchanged(
         self, mock_driver, mock_selenium, mock_large, mock_remove, mock_logs
     ):
-        # Both fetches return False — feed parsed cleanly but every row was a
-        # no-op (already in DB). Caches must remain populated.
+        # Both fetches report no data change — caches are still invalidated and
+        # re-warmed on every run.
         mock_driver.return_value = MagicMock()
         mock_selenium.return_value = False
         mock_large.return_value = False
 
         cache.set('short_positions_list', 'A', timeout=None)
         cache.set('short_sellers_list', 'B', timeout=None)
-        cache.set('homepage_stats', 'C', timeout=None)
-        cache.set('top_lists', 'D', timeout=None)
 
         Command().handle()
 
-        self.assertEqual(cache.get('short_positions_list'), 'A')
-        self.assertEqual(cache.get('short_sellers_list'), 'B')
-        self.assertEqual(cache.get('homepage_stats'), 'C')
-        self.assertEqual(cache.get('top_lists'), 'D')
+        self.assertEqual(cache.get('short_positions_list'), [])
+        self.assertEqual(cache.get('short_sellers_list'), [])
 
     @patch('shorts.management.commands.fetch_shorts.delete_old_logs')
     @patch.object(Command, 'remove_duplicate_positions')
     @patch.object(Command, 'fetch_large_short_selling')
     @patch.object(Command, 'fetch_short_positions_selenium')
     @patch.object(Command, '_get_webdriver')
-    def test_handle_invalidates_only_short_sellers_when_only_large_changed(
+    def test_handle_invalidates_per_stock_detail_cache(
         self, mock_driver, mock_selenium, mock_large, mock_remove, mock_logs
     ):
-        # Selenium succeeded but the feed contained no new positions; large
-        # sellers fetch did mutate data. cache.clear() wipes everything.
-        mock_driver.return_value = MagicMock()
-        mock_selenium.return_value = False
-        mock_large.return_value = True
-
-        cache.set('short_positions_list', 'A', timeout=None)
-        cache.set('short_sellers_list', 'B', timeout=None)
-        cache.set('homepage_stats', 'C', timeout=None)
-        cache.set('top_lists', 'D', timeout=None)
-
-        Command().handle()
-
-        self.assertIsNone(cache.get('short_positions_list'))
-        self.assertIsNone(cache.get('short_sellers_list'))
-        self.assertIsNone(cache.get('homepage_stats'))
-        self.assertIsNone(cache.get('top_lists'))
-
-    @patch('shorts.management.commands.fetch_shorts.delete_old_logs')
-    @patch.object(Command, 'remove_duplicate_positions')
-    @patch.object(Command, 'fetch_large_short_selling')
-    @patch.object(Command, 'fetch_short_positions_selenium')
-    @patch.object(Command, '_get_webdriver')
-    def test_handle_clears_cache_when_short_positions_changed(
-        self, mock_driver, mock_selenium, mock_large, mock_remove, mock_logs
-    ):
-        mock_driver.return_value = MagicMock()
-        mock_selenium.return_value = True
-        mock_large.return_value = False
-
+        # Per-stock detail keys are derived from existing Stock rows, invalidated
+        # every run, and left for the next request to rebuild lazily (the detail
+        # view is not pre-warmed).
+        make_stock(code='DK1')
         cache.set('detail_DK1', 'old', timeout=None)
+        mock_selenium.return_value = False
+        mock_large.return_value = False
+
         Command().handle()
 
         self.assertIsNone(cache.get('detail_DK1'))
@@ -1032,34 +1023,142 @@ class HandleOrchestrationTests(TestCase):
     @patch.object(Command, 'fetch_large_short_selling')
     @patch.object(Command, 'fetch_short_positions_selenium')
     @patch.object(Command, '_get_webdriver')
-    def test_handle_clears_cache_when_large_sellers_changed(
+    def test_handle_prewarms_seller_detail_cache(
         self, mock_driver, mock_selenium, mock_large, mock_remove, mock_logs
     ):
-        mock_driver.return_value = MagicMock()
+        # Seller detail is pre-warmed: after a run, each seller's detail payload
+        # is in the cache without any request having hit the endpoint.
+        seller = make_seller_with_announcement()
         mock_selenium.return_value = False
-        mock_large.return_value = True
+        mock_large.return_value = False
 
-        cache.set('detail_DK1', 'old', timeout=None)
         Command().handle()
 
-        self.assertIsNone(cache.get('detail_DK1'))
+        cached = cache.get(f'seller_detail_{seller.pk}')
+        self.assertIsNotNone(cached)
+        self.assertEqual(cached, ShortSellerDetailSerializer(seller).data)
 
     @patch('shorts.management.commands.fetch_shorts.delete_old_logs')
     @patch.object(Command, 'remove_duplicate_positions')
     @patch.object(Command, 'fetch_large_short_selling')
     @patch.object(Command, 'fetch_short_positions_selenium')
     @patch.object(Command, '_get_webdriver')
-    def test_handle_does_not_clear_cache_when_neither_changed(
+    def test_handle_invalidates_and_rewarms_seller_detail_cache(
         self, mock_driver, mock_selenium, mock_large, mock_remove, mock_logs
     ):
-        mock_driver.return_value = MagicMock()
+        # A stale seller-detail entry is invalidated and replaced with a freshly
+        # built payload on the run.
+        seller = make_seller_with_announcement()
+        cache.set(f'seller_detail_{seller.pk}', 'stale', timeout=None)
         mock_selenium.return_value = False
         mock_large.return_value = False
 
-        cache.set('detail_DK1', 'old', timeout=None)
         Command().handle()
 
-        self.assertEqual(cache.get('detail_DK1'), 'old')
+        cached = cache.get(f'seller_detail_{seller.pk}')
+        self.assertNotEqual(cached, 'stale')
+        self.assertEqual(cached, ShortSellerDetailSerializer(seller).data)
+
+    @patch('shorts.management.commands.fetch_shorts.delete_old_logs')
+    @patch.object(Command, 'remove_duplicate_positions')
+    @patch.object(Command, 'fetch_large_short_selling')
+    @patch.object(Command, 'fetch_short_positions_selenium')
+    @patch.object(Command, '_get_webdriver')
+    def test_handle_refreshes_seller_detail_cache_on_next_run(
+        self, mock_driver, mock_selenium, mock_large, mock_remove, mock_logs
+    ):
+        # Updates to a seller's underlying data land in the cache on the NEXT
+        # run: the pre-warmed payload reflects the newly added announcement.
+        mock_selenium.return_value = False
+        mock_large.return_value = False
+
+        seller = make_seller_with_announcement(dfsa_id='ANN-1')
+        Command().handle()
+        first = cache.get(f'seller_detail_{seller.pk}')
+        self.assertEqual(len(first['announcements']), 1)
+
+        # A new announcement arrives for the same seller between runs.
+        when = timezone.make_aware(datetime(2026, 5, 10, 9, 0, 0))
+        Announcement.objects.create(
+            stock=make_stock(code='DK-ANN-2', symbol='SYM2'),
+            short_seller=seller,
+            headline='Second position disclosure',
+            published_date=when,
+            registration_date=when,
+            dfsa_id='ANN-2',
+            value=2.5,
+            is_cancellation=False,
+        )
+
+        Command().handle()
+        second = cache.get(f'seller_detail_{seller.pk}')
+        self.assertEqual(len(second['announcements']), 2)
+
+    @patch('shorts.management.commands.fetch_shorts.delete_old_logs')
+    @patch.object(Command, 'remove_duplicate_positions')
+    @patch.object(Command, 'fetch_large_short_selling')
+    @patch.object(Command, 'fetch_short_positions_selenium')
+    @patch.object(Command, '_get_webdriver')
+    def test_handle_refreshes_short_sellers_list_on_next_run(
+        self, mock_driver, mock_selenium, mock_large, mock_remove, mock_logs
+    ):
+        # The short_sellers_list pre-warm also picks up a newly qualifying
+        # seller on the next run (guards the .all() fresh-evaluation fix).
+        mock_selenium.return_value = False
+        mock_large.return_value = False
+
+        Command().handle()
+        self.assertEqual(cache.get('short_sellers_list'), [])
+
+        make_seller_with_announcement(name='Late Seller', dfsa_id='LATE-1')
+
+        Command().handle()
+        second = cache.get('short_sellers_list')
+        self.assertEqual(len(second), 1)
+
+
+# =============================================================================
+# Short seller detail caching — view retrieve() + warm function
+# =============================================================================
+
+
+class ShortSellerDetailCacheTests(TestCase):
+    """The per-seller detail endpoint caches under 'seller_detail_{pk}', and the
+    warm function rebuilds those entries off the request path."""
+
+    def _retrieve(self, pk):
+        view = ShortSellerView.as_view({'get': 'retrieve'})
+        request = APIRequestFactory().get('/')
+        return view(request, pk=str(pk))
+
+    def test_warm_populates_seller_detail_cache(self):
+        seller = make_seller_with_announcement()
+
+        warm_short_seller_details_cache()
+
+        cached = cache.get(f'seller_detail_{seller.pk}')
+        self.assertEqual(cached, ShortSellerDetailSerializer(seller).data)
+
+    def test_retrieve_populates_cache_on_miss(self):
+        seller = make_seller_with_announcement()
+        cache.delete(f'seller_detail_{seller.pk}')
+
+        response = self._retrieve(seller.pk)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data, ShortSellerDetailSerializer(seller).data)
+        self.assertEqual(cache.get(f'seller_detail_{seller.pk}'), response.data)
+
+    def test_retrieve_serves_from_cache_without_rebuilding(self):
+        seller = make_seller_with_announcement()
+        # Pre-seed a sentinel so a cache hit is unambiguous: the view must
+        # return it verbatim rather than re-serializing the seller.
+        cache.set(f'seller_detail_{seller.pk}', {'sentinel': True}, timeout=None)
+
+        response = self._retrieve(seller.pk)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data, {'sentinel': True})
 
 
 # =============================================================================
