@@ -45,6 +45,8 @@ const PandoraSilverPageEn = lazy(() => import("./routes/PandoraSilverAnalysisPag
 const AnalysisPage = lazy(() => import("./routes/AnalysisPage.tsx"));
 const C25AnalysisPageDa = lazy(() => import("./routes/C25AnalysisPage.tsx"));
 const C25AnalysisPageEn = lazy(() => import("./routes/C25AnalysisPage.en.tsx"));
+// Obesity market analysis (Danish-only)
+const ObesityMarketAnalysisPage = lazy(() => import("./routes/ObesityMarketAnalysisPage.tsx"));
 
 function ZealAnalysisPage() {
   const lng = localStorage.getItem("i18nextLng") || navigator.language;
@@ -154,6 +156,14 @@ const router = createBrowserRouter([
   {
     path: "analyse",
     element: <ErrorBoundary><AnalysisPage /></ErrorBoundary>,
+  },
+  {
+    path: "analyse/fedme/2026-05-31",
+    element: <ErrorBoundary><ObesityMarketAnalysisPage /></ErrorBoundary>,
+  },
+  {
+    path: "analyse/fedme",
+    element: <ErrorBoundary><ObesityMarketAnalysisPage /></ErrorBoundary>,
   },
   {
     path: "analyse/zeal/2026-05-13",
