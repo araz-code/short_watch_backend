@@ -154,8 +154,8 @@ const TopListsPage: React.FC = () => {
           )}
         />
         <RankList
-          title={t("Biggest risers")}
-          subtitle={t("Top 10 biggest increases in short position over the last 30 days")}
+          title={t("Largest increases")}
+          subtitle={t("Top 10 largest increases in short position over the last 30 days")}
           items={data.mostRising}
           renderExtra={(stock) => (
             <span className="text-sm font-semibold text-red-600 dark:text-red-400 tabular-nums shrink-0">
@@ -164,8 +164,8 @@ const TopListsPage: React.FC = () => {
           )}
         />
         <RankList
-          title={t("Biggest fallers")}
-          subtitle={t("Top 10 biggest decreases in short position over the last 30 days")}
+          title={t("Largest decreases")}
+          subtitle={t("Top 10 largest decreases in short position over the last 30 days")}
           items={data.mostFalling}
           renderExtra={(stock) => (
             <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400 tabular-nums shrink-0">
