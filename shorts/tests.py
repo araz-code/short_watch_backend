@@ -63,10 +63,18 @@ from shorts.models import (
     RunStatus,
 )
 from shorts.serializers import ShortSellerDetailSerializer
-from shorts.views import ShortSellerView, warm_short_seller_details_cache
+from shorts.views import (
+    ShortSellerView,
+    ShortPositionDetailView,
+    warm_short_seller_details_cache,
+    warm_short_position_details_cache,
+    _build_short_position_detail,
+    _stock_detail_queryset,
+)
 from shorts.utils import parse_headline, parse_publication_date
 from users.models import AppUser
 from rest_framework.test import APIRequestFactory
+from rest_framework_api_key.models import APIKey
 
 CPH = pytz.timezone('Europe/Copenhagen')
 
@@ -1003,20 +1011,39 @@ class HandleOrchestrationTests(TestCase):
     @patch.object(Command, 'fetch_large_short_selling')
     @patch.object(Command, 'fetch_short_positions_selenium')
     @patch.object(Command, '_get_webdriver')
-    def test_handle_invalidates_per_stock_detail_cache(
+    def test_handle_invalidates_and_rewarms_active_stock_detail_cache(
         self, mock_driver, mock_selenium, mock_large, mock_remove, mock_logs
     ):
-        # Per-stock detail keys are derived from existing Stock rows, invalidated
-        # every run, and left for the next request to rebuild lazily (the detail
-        # view is not pre-warmed).
-        make_stock(code='DK1')
-        cache.set('detail_DK1', 'old', timeout=None)
+        # Active-stock detail keys are invalidated and pre-warmed every run.
+        make_stock(code='DK1', active=True)
+        cache.set('detail_DK1', 'stale', timeout=None)
         mock_selenium.return_value = False
         mock_large.return_value = False
 
         Command().handle()
 
-        self.assertIsNone(cache.get('detail_DK1'))
+        cached = cache.get('detail_DK1')
+        self.assertIsNotNone(cached)
+        self.assertNotEqual(cached, 'stale')
+
+    @patch('shorts.management.commands.fetch_shorts.delete_old_logs')
+    @patch.object(Command, 'remove_duplicate_positions')
+    @patch.object(Command, 'fetch_large_short_selling')
+    @patch.object(Command, 'fetch_short_positions_selenium')
+    @patch.object(Command, '_get_webdriver')
+    def test_handle_leaves_inactive_stock_detail_invalidated(
+        self, mock_driver, mock_selenium, mock_large, mock_remove, mock_logs
+    ):
+        # Inactive-stock detail keys are invalidated (derived from all Stock
+        # rows) but NOT pre-warmed, so they rebuild lazily on the rare request.
+        make_stock(code='DKX', active=False)
+        cache.set('detail_DKX', 'stale', timeout=None)
+        mock_selenium.return_value = False
+        mock_large.return_value = False
+
+        Command().handle()
+
+        self.assertIsNone(cache.get('detail_DKX'))
 
     @patch('shorts.management.commands.fetch_shorts.delete_old_logs')
     @patch.object(Command, 'remove_duplicate_positions')
@@ -1116,6 +1143,51 @@ class HandleOrchestrationTests(TestCase):
         second = cache.get('short_sellers_list')
         self.assertEqual(len(second), 1)
 
+    @patch('shorts.management.commands.fetch_shorts.delete_old_logs')
+    @patch.object(Command, 'remove_duplicate_positions')
+    @patch.object(Command, 'fetch_large_short_selling')
+    @patch.object(Command, 'fetch_short_positions_selenium')
+    @patch.object(Command, '_get_webdriver')
+    def test_handle_prewarms_active_stock_detail_cache(
+        self, mock_driver, mock_selenium, mock_large, mock_remove, mock_logs
+    ):
+        # Stock detail is pre-warmed: after a run, an active stock's detail
+        # payload is in the cache without any request having hit the endpoint.
+        stock = make_stock(code='DK1', active=True)
+        mock_selenium.return_value = False
+        mock_large.return_value = False
+
+        Command().handle()
+
+        cached = cache.get('detail_DK1')
+        self.assertIsNotNone(cached)
+        self.assertEqual(
+            cached, _build_short_position_detail(_stock_detail_queryset().get(code='DK1')))
+
+    @patch('shorts.management.commands.fetch_shorts.delete_old_logs')
+    @patch.object(Command, 'remove_duplicate_positions')
+    @patch.object(Command, 'fetch_large_short_selling')
+    @patch.object(Command, 'fetch_short_positions_selenium')
+    @patch.object(Command, '_get_webdriver')
+    def test_handle_refreshes_stock_detail_cache_on_next_run(
+        self, mock_driver, mock_selenium, mock_large, mock_remove, mock_logs
+    ):
+        # Updates to a stock's underlying data land in the cache on the NEXT
+        # run: a newly recorded short position shows up in the cached detail.
+        mock_selenium.return_value = False
+        mock_large.return_value = False
+
+        stock = make_stock(code='DK1', active=True)
+        Command().handle()
+        first = cache.get('detail_DK1')
+        self.assertEqual(len(first['historic']), 0)
+
+        make_short_position(stock, value=1.5)
+
+        Command().handle()
+        second = cache.get('detail_DK1')
+        self.assertEqual(len(second['historic']), 1)
+
 
 # =============================================================================
 # Short seller detail caching — view retrieve() + warm function
@@ -1156,6 +1228,60 @@ class ShortSellerDetailCacheTests(TestCase):
         cache.set(f'seller_detail_{seller.pk}', {'sentinel': True}, timeout=None)
 
         response = self._retrieve(seller.pk)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data, {'sentinel': True})
+
+
+# =============================================================================
+# Short position (stock) detail caching — view retrieve() + warm function
+# =============================================================================
+
+
+class StockDetailCacheTests(TestCase):
+    """The per-stock detail endpoint caches under 'detail_{code}', and the warm
+    function pre-builds those entries for active stocks off the request path."""
+
+    def _retrieve(self, code, api_key):
+        view = ShortPositionDetailView.as_view({'get': 'retrieve'})
+        request = APIRequestFactory().get('/', HTTP_AUTHORIZATION=f'Api-Key {api_key}')
+        return view(request, code=code)
+
+    def test_warm_populates_active_stock_detail_cache(self):
+        make_stock(code='DK1', active=True)
+
+        warm_short_position_details_cache()
+
+        cached = cache.get('detail_DK1')
+        self.assertIsNotNone(cached)
+        self.assertEqual(
+            cached, _build_short_position_detail(_stock_detail_queryset().get(code='DK1')))
+
+    def test_warm_skips_inactive_stocks(self):
+        make_stock(code='DKX', active=False)
+
+        warm_short_position_details_cache()
+
+        self.assertIsNone(cache.get('detail_DKX'))
+
+    def test_retrieve_populates_cache_on_miss(self):
+        make_stock(code='DK1', active=True)
+        _, key = APIKey.objects.create_key(name='test-miss')
+        cache.delete('detail_DK1')
+
+        response = self._retrieve('DK1', key)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(cache.get('detail_DK1'), response.data)
+
+    def test_retrieve_serves_from_cache_without_rebuilding(self):
+        make_stock(code='DK1', active=True)
+        _, key = APIKey.objects.create_key(name='test-hit')
+        # Pre-seed a sentinel so a cache hit is unambiguous: the view must
+        # return it verbatim rather than rebuilding the detail payload.
+        cache.set('detail_DK1', {'sentinel': True}, timeout=None)
+
+        response = self._retrieve('DK1', key)
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data, {'sentinel': True})

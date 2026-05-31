@@ -231,6 +231,92 @@ def _compute_derived_metrics(chart_values, historic):
 
 FIRST_ENTRY_DATE = date(2023, 11, 6)
 
+STOCK_DETAIL_CHART_START_OVERRIDES = {
+    'DK0010311471': date(2025, 12, 3),  # Sydbank merged
+}
+
+
+def _stock_detail_queryset():
+    """Fresh queryset (called, never a shared class attribute) with the
+    prefetches the detail build needs."""
+    return Stock.objects.prefetch_related(
+        'shortposition_set',
+        'shortpositionchart_set',
+        Prefetch('largeshortselling_set',
+                 queryset=LargeShortSelling.objects.select_related('stock', 'short_seller')),
+        Prefetch('announcement_set',
+                 queryset=Announcement.objects.select_related('stock')),
+    )
+
+
+def _build_short_position_detail(stock):
+    """Build the serialized detail payload for one stock. Request-independent:
+    ShortPositionDetailSerializer is a plain Serializer with field-based nested
+    serializers (no request/context), so this matches what retrieve() returns
+    on a real request and can be warmed off the request path."""
+    overrides = STOCK_DETAIL_CHART_START_OVERRIDES
+
+    historic_qs = stock.shortposition_set.all().order_by('-timestamp')
+    if stock.code in overrides:
+        historic_qs = historic_qs.filter(timestamp__date__gte=overrides[stock.code])
+    historic = historic_qs[:100]
+
+    chart_qs = stock.shortpositionchart_set.all()
+    if stock.code in overrides:
+        chart_qs = chart_qs.filter(date__gte=overrides[stock.code])
+    chart_values = list(chart_qs.order_by('-date'))
+
+    one_month_ago = datetime.now() - timedelta(days=30)
+    announcements = stock.announcement_set.filter(published_date__gte=one_month_ago).order_by(
+        '-published_date')
+
+    effective_start = overrides.get(stock.code, FIRST_ENTRY_DATE)
+    days_difference = (date.today() - effective_start).days
+
+    missing_count = days_difference + 1 - len(chart_values)
+
+    if missing_count > 0:
+        earliest_date = chart_values[-1].date if chart_values else effective_start
+
+        for i in range(missing_count):
+            missing_date = earliest_date - timedelta(days=i + 1)
+            if missing_date < effective_start:
+                break
+            missing_datetime = datetime.combine(missing_date, datetime.min.time(), tzinfo=timezone.utc)
+            chart_values.append(
+                ShortPositionChart(stock=stock, value=0, date=missing_date, timestamp=missing_datetime))
+
+        chart_values = sorted(chart_values, key=lambda x: x.date, reverse=True)
+
+    sellers = stock.largeshortselling_set.all().order_by('-date')
+
+    percentile, velocity_7d, velocity_30d = _compute_derived_metrics(chart_values, historic)
+
+    price_flow = _compute_price_flow(stock, chart_values)
+    days_to_cover = _compute_days_to_cover(historic, chart_values, stock.shares_outstanding)
+
+    response = ShortedStockDetailsResponse(chart_values, historic, sellers, announcements,
+                                           percentile, velocity_7d, velocity_30d, price_flow,
+                                           stock.shares_outstanding, days_to_cover,
+                                           stock.show_price_data)
+
+    return ShortPositionDetailSerializer(response).data
+
+
+def warm_short_position_details_cache():
+    """Pre-warm the per-stock detail cache under 'detail_{code}' for every
+    active stock. Called by fetch_shorts so detail is served from cache, never
+    rebuilt on a request. Only active stocks are warmed (the watch list filters
+    to active, so only those details are ever requested); inactive stocks stay
+    invalidated and rebuild lazily on the rare request."""
+    entries = {
+        f'detail_{stock.code}': _build_short_position_detail(stock)
+        for stock in _stock_detail_queryset().filter(active=True)
+    }
+    if entries:
+        cache.set_many(entries, timeout=CACHE_TIMEOUT_SECONDS)
+    return entries
+
 
 class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
     queryset = ShortPosition.objects.all()
@@ -245,68 +331,12 @@ class ShortPositionDetailView(GenericViewSet, RetrieveAPIView):
             return Response(cached)
 
         try:
-            stock = Stock.objects.prefetch_related(
-                'shortposition_set',
-                'shortpositionchart_set',
-                Prefetch('largeshortselling_set',
-                         queryset=LargeShortSelling.objects.select_related('stock', 'short_seller')),
-                Prefetch('announcement_set',
-                         queryset=Announcement.objects.select_related('stock')),
-            ).get(code=code)
-
-            CHART_START_OVERRIDES = {
-                'DK0010311471': date(2025, 12, 3),  # Sydbank merged
-            }
-
-            historic_qs = stock.shortposition_set.all().order_by('-timestamp')
-            if stock.code in CHART_START_OVERRIDES:
-                historic_qs = historic_qs.filter(timestamp__date__gte=CHART_START_OVERRIDES[stock.code])
-            historic = historic_qs[:100]
-
-            chart_qs = stock.shortpositionchart_set.all()
-            if stock.code in CHART_START_OVERRIDES:
-                chart_qs = chart_qs.filter(date__gte=CHART_START_OVERRIDES[stock.code])
-            chart_values = list(chart_qs.order_by('-date'))
-
-            one_month_ago = datetime.now() - timedelta(days=30)
-            announcements = stock.announcement_set.filter(published_date__gte=one_month_ago).order_by(
-                '-published_date')
-
-            effective_start = CHART_START_OVERRIDES.get(stock.code, FIRST_ENTRY_DATE)
-            days_difference = (date.today() - effective_start).days
-
-            missing_count = days_difference + 1 - len(chart_values)
-
-            if missing_count > 0:
-                earliest_date = chart_values[-1].date if chart_values else effective_start
-
-                for i in range(missing_count):
-                    missing_date = earliest_date - timedelta(days=i + 1)
-                    if missing_date < effective_start:
-                        break
-                    missing_datetime = datetime.combine(missing_date, datetime.min.time(), tzinfo=timezone.utc)
-                    chart_values.append(
-                        ShortPositionChart(stock=stock, value=0, date=missing_date, timestamp=missing_datetime))
-
-                chart_values = sorted(chart_values, key=lambda x: x.date, reverse=True)
-
-            sellers = stock.largeshortselling_set.all().order_by('-date')
-
-            percentile, velocity_7d, velocity_30d = _compute_derived_metrics(chart_values, historic)
-
-            price_flow = _compute_price_flow(stock, chart_values)
-            days_to_cover = _compute_days_to_cover(historic, chart_values, stock.shares_outstanding)
-
-            response = ShortedStockDetailsResponse(chart_values, historic, sellers, announcements,
-                                                   percentile, velocity_7d, velocity_30d, price_flow,
-                                                   stock.shares_outstanding, days_to_cover,
-                                                   stock.show_price_data)
-
-            data = self.get_serializer(response).data
+            stock = _stock_detail_queryset().get(code=code)
+            data = _build_short_position_detail(stock)
             cache.set(cache_key, data, timeout=CACHE_TIMEOUT_SECONDS)
             return Response(data)
         except Stock.DoesNotExist:
-            return Response(self.get_serializer(
+            return Response(ShortPositionDetailSerializer(
                 ShortedStockDetailsResponse([], [], [], [], None, None, None, [], None, None, True)).data)
 
 

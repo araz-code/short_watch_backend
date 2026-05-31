@@ -124,10 +124,11 @@ class Command(BaseCommand):
                 warm_short_positions_list_cache,
                 warm_short_sellers_list_cache,
                 warm_short_seller_details_cache,
+                warm_short_position_details_cache,
             )
             for warm in (warm_top_lists_cache, warm_homepage_stats_cache,
                          warm_short_positions_list_cache, warm_short_sellers_list_cache,
-                         warm_short_seller_details_cache):
+                         warm_short_seller_details_cache, warm_short_position_details_cache):
                 try:
                     warm()
                 except Exception as e:
