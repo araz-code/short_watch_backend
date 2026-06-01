@@ -58,9 +58,9 @@ class ContactSubmissionAdmin(admin.ModelAdmin):
 
 @admin.register(PageFeedback)
 class PageFeedbackAdmin(admin.ModelAdmin):
-    list_display = ('created_at', 'sentiment', 'page_type', 'page_id', 'comment_preview', 'read')
+    list_display = ('created_at', 'sentiment', 'page_type', 'page_id', 'comment_preview', 'client_ip', 'read')
     list_filter = ('read', 'sentiment', 'page_type', 'created_at')
-    search_fields = ('page_id', 'comment')
+    search_fields = ('page_id', 'comment', 'client_ip')
     readonly_fields = ('created_at', 'sentiment', 'page_type', 'page_id', 'comment', 'client_ip', 'user_agent')
     actions = ['mark_as_read', 'mark_as_unread']
     ordering = ('-created_at',)
