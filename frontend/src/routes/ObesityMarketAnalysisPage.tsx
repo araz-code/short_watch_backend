@@ -347,6 +347,20 @@ const ObesityMarketAnalysisPage: React.FC = () => {
             </ResponsiveContainer>
           </div>
 
+          <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
+            En vigtig afklaring til grafen: To af de fire produkter er strengt taget
+            diabetes-lægemidler, ikke fedme-lægemidler. Ozempic og Mounjaro er
+            godkendt og markedsført mod type 2-diabetes, mens Wegovy og Zepbound er
+            de godkendte fedme-versioner. Men det er præcis de samme molekyler:
+            Ozempic og Wegovy er begge semaglutid, og Mounjaro og Zepbound er begge
+            tirzepatid, blot i forskellige doser og under forskellige navne. I
+            praksis er skellet udvisket, fordi især Ozempic i vid udstrækning bruges
+            "off-label" til vægttab. Derfor giver det mening at se på hele
+            incretin-franchisen, diabetes-brandene inklusive, når man vurderer
+            fedme-kapløbet, så længe man husker, at en del af salget formelt er
+            diabetes-behandling.
+          </p>
+
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 mt-6">Novo Nordisk (FY2025)</h3>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-3">
             Novos semaglutid-franchise dækker både diabetes (Ozempic) og fedme
@@ -435,9 +449,10 @@ const ObesityMarketAnalysisPage: React.FC = () => {
             Det fører til den egentlige pointe for Novo og Lilly. Den vigtigste
             variabel er ikke, om markedet vokser, men hvem der ender med at sidde på
             andelen, og til hvilken nettopris. Netop derfor handler de næste afsnit
-            om de faktorer, der afgør det: først pris og fastholdelse, som kan løfte
-            eller dæmpe hele udfaldsrummet ovenfor, og dernæst momentum-skiftet mellem
-            de to selskaber.
+            om de faktorer, der afgør det: først pris og fastholdelse, dernæst
+            patentbeskyttelse og kopikonkurrence, som tilsammen kan løfte eller dæmpe
+            hele udfaldsrummet ovenfor, og til sidst selve momentum-skiftet mellem de
+            to selskaber.
           </p>
         </section>
 
@@ -474,9 +489,60 @@ const ObesityMarketAnalysisPage: React.FC = () => {
           </p>
         </section>
 
-        {/* Section 6: Momentum-skiftet */}
+        {/* Section 6: Patentudløb, kopier og koncentration */}
         <section className="mb-12">
-          <SectionHeader n={6} title="Momentum-skiftet" />
+          <SectionHeader n={6} title="Patentudløb, kopier og koncentration" />
+          <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
+            Et marked på flere hundrede milliarder tiltrækker uvægerligt
+            konkurrence, og her er forskellen mellem de to selskaber stor. Det er
+            ikke nok at kigge på, hvem der sælger mest i dag; man skal se på, hvor
+            længe de kan beskytte det.
+          </p>
+
+          <div className="grid grid-cols-2 gap-3 mb-4">
+            <KPI value="fra 2026" label="Semaglutid (Novo): patentudløb begynder i flere markeder" highlight tone="red" />
+            <KPI value="~2036-2039" label="Tirzepatid (Lilly): kerne- og formuleringspatenter" highlight tone="green" />
+          </div>
+
+          <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-3">
+            <strong>Patentudløb.</strong> Novos semaglutid mister allerede
+            eksklusivitet i 2026 i en række store markeder: Canada (januar), Kina,
+            Indien og Brasilien (marts), hvor blandt andet 17 kinesiske generiske
+            kandidater er i fase 3. I USA og EU holder beskyttelsen til omkring
+            2031-2032. Lillys tirzepatid er derimod dækket af et kerne-patent til
+            2036 og formuleringspatenter, der kan strække eksklusiviteten til
+            2039-2041. Med andre ord: Novos vigtigste molekyle begynder at falde fri
+            cirka 5-10 år før Lillys. Det er en strukturel, ikke en
+            stemnings-baseret, forskel.
+          </p>
+          <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-3">
+            <strong>Kopier og compounders.</strong> Mens der var officiel mangel i
+            USA (2022-2024), måtte apoteker lovligt fremstille "compounded" kopier
+            af både semaglutid og tirzepatid, og et stort gråt marked voksede frem
+            via telemedicin. FDA erklærede manglen ophørt (tirzepatid oktober 2024,
+            semaglutid februar 2025), og overgangsfristerne udløb i foråret 2025, så
+            storskala-compounding ikke længere er tilladt. Alligevel pegede Novo
+            fortsat på "vedvarende brug af compounded GLP-1" som en hovedårsag til
+            sin nedjustering, så lækagen er ikke forsvundet. Oven i kommer ægte
+            generika i de markeder, hvor semaglutid-patentet allerede er udløbet.
+          </p>
+          <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+            <strong>Koncentration.</strong> Endelig er det værd at huske, at Lilly
+            ikke er en ren fedme-aktie. Incretin (Mounjaro og Zepbound) udgjorde
+            cirka 56% af omsætningen i 2025; resten er bredt fordelt på kræft
+            (Verzenio), immunologi (Taltz), diabetes (Jardiance) og Alzheimers
+            (Kisunla/donanemab). Novo er langt mere koncentreret: Semaglutid alene
+            (Ozempic, Wegovy, Rybelsus) er omkring to tredjedele af koncernens
+            omsætning. Det betyder, at netop patent- og kopirisikoen ovenfor rammer
+            Novo hårdere, mens Lilly har en bredere base at stå på. Det nuancerer
+            momentum-billedet: Lilly fører ikke kun på vækst, men også på
+            holdbarhed og spredning.
+          </p>
+        </section>
+
+        {/* Section 7: Momentum-skiftet */}
+        <section className="mb-12">
+          <SectionHeader n={7} title="Momentum-skiftet" />
           <div className="grid grid-cols-2 gap-3 mb-4">
             <KPI value="≈515-530 mia. DKK" label="Eli Lilly: guidance 2026 (80-83 mia. USD)" highlight tone="green" />
             <KPI value="-5 til -13%" label="Novo Nordisk: salgs-guidance 2026 (CER)" highlight tone="red" />
@@ -504,9 +570,9 @@ const ObesityMarketAnalysisPage: React.FC = () => {
           </p>
         </section>
 
-        {/* Section 7: Aktiekurserne */}
+        {/* Section 8: Aktiekurserne */}
         <section className="mb-12">
-          <SectionHeader n={7} title="Aktiekurserne: Novo vs Eli Lilly" />
+          <SectionHeader n={8} title="Aktiekurserne: Novo vs Eli Lilly" />
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             Det samme skift kan ses direkte i aktiekurserne. Grafen viser daglig
             lukkekurs for Novo Nordisk (NOVO B, i DKK) og Eli Lilly (LLY, i USD),
@@ -560,9 +626,9 @@ const ObesityMarketAnalysisPage: React.FC = () => {
           </p>
         </section>
 
-        {/* Section 8: Næste slagmark */}
+        {/* Section 9: Næste slagmark */}
         <section className="mb-12">
-          <SectionHeader n={8} title="Næste slagmark: orale og næste generation" />
+          <SectionHeader n={9} title="Næste slagmark: orale og næste generation" />
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             Markedet for ugentlige injektioner modnes. Kampen fra 2026 og frem
             handler om to ting: Bekvemmelighed (piller frem for sprøjter) og
@@ -591,26 +657,50 @@ const ObesityMarketAnalysisPage: React.FC = () => {
               den tredje bølge.
             </li>
           </ul>
+
+          <p className="text-gray-600 dark:text-gray-300 leading-relaxed mt-4">
+            Det fører til en mere grundlæggende diskussion: Nogle argumenterer for,
+            at fedmemedicin er på vej til at blive et <em>forbrugerprodukt</em> snarere
+            end et klassisk receptpligtigt lægemiddel. Logikken er, at en pille
+            fjerner sprøjte-barrieren, og at salget i stigende grad går uden om
+            forsikring via selvbetalings-kanaler og telemedicin: Lillys LillyDirect
+            nåede over 1 mio. patienter i 2025, dens orale Foundayo sælges kontant
+            til cirka 150-350 USD om måneden, og Novo sender meget af efterspørgslen
+            på oral Wegovy gennem sin egen NovoCare-apotek. Hvis modellen for alvor
+            bliver "betal selv online", udvider det potentielt markedet langt ud over
+            den forsikringsdækkede del (jf. penetrations-grafen), men det flytter også
+            konkurrencen over på forbruger-pris og brand, mere som kosttilskud eller
+            kosmetik end som hospitalsmedicin. Andre advarer om, at det er rigtige
+            lægemidler med reelle bivirkninger, og at en ren forbruger-logik
+            undervurderer den lægefaglige opfølgning. Uanset hvad er det en udvikling,
+            der kan ændre både markedets størrelse og marginstrukturen markant.
+          </p>
         </section>
 
-        {/* Section 9: Konklusion */}
+        {/* Section 10: Konklusion */}
         <section className="mb-12">
-          <SectionHeader n={9} title="Konklusion" />
+          <SectionHeader n={10} title="Konklusion" />
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-3">
             Patientgrundlaget er massivt og voksende: Over 890 mio. voksne med
             fedme i 2022 ifølge WHO, og tallet ventes at stige til cirka 1,13 mia. i
             2030 (World Obesity Atlas 2025) og over 1,5 mia. i 2035 (Atlas 2023).
             Selve medicin-markedet kan plausibelt nå cirka 95-105 mia. USD (ca. 610-675
             mia. DKK) i 2030 ifølge de store banker, men estimaterne bliver trimmet,
-            ikke hævet, på grund af bekymringer om pris og fastholdelse af patienter.
+            ikke hævet, på grund af bekymringer om pris, fastholdelse, patentudløb og
+            kopimedicin.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-3">
             Det er fortsat et Novo/Lilly-duopol, men momentum er for tiden klart
             tippet over mod Lilly (trecifret vækst, oral lancering), mens Novo
-            nedjusterer sin guidance. Den divergens, sammen med en troværdig tredje
-            bølge fra Amgen, Viking og Pfizer, er den vigtigste investeringsmæssige
+            nedjusterer sin guidance. Forskellen er ikke kun stemning: Lilly har
+            længere patentbeskyttelse på tirzepatid (~2036-2039) og en bredere
+            portefølje, mens Novos semaglutid begynder at miste eksklusivitet
+            allerede i 2026 i flere markeder og udgør langt størstedelen af
+            koncernens omsætning. Den divergens, sammen med en troværdig tredje bølge
+            fra Amgen, Viking og Pfizer, er den vigtigste investeringsmæssige
             observation lige nu. Den endelige værdi afhænger dog mindst lige så meget
-            af pris og fastholdelse som af, hvem der vinder mest markedsandel.
+            af pris, fastholdelse og patentbeskyttelse som af, hvem der vinder mest
+            markedsandel.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
             For danske investorer er pointen vigtig: Novo Nordisk er ikke længere
@@ -635,7 +725,8 @@ const ObesityMarketAnalysisPage: React.FC = () => {
             RAND (GLP-1-anvendelse); real-world persistensstudier og apoteksdata
             (fastholdelse); Novo Nordisk årsrapport 2025 og Eli Lilly Q4 2025
             resultatmeddelelse (salgstal); Goldman Sachs Research og Morgan Stanley
-            Research (markedsestimater); IQVIA (pipeline-udsigt); aktiekurser fra
+            Research (markedsestimater); IQVIA (pipeline-udsigt); FDA og
+            patentdatabaser (patentudløb og compounding); aktiekurser fra
             Yahoo Finance.{" "}
             <strong>Ansvarsfraskrivelse:</strong>{" "}
             Denne analyse er alene til informationsformål og udgør ikke
