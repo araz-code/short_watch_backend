@@ -5,13 +5,6 @@ import { faArrowRight, faFileLines } from "@fortawesome/free-solid-svg-icons";
 import { analyses } from "../data/analyses";
 import { trackEvent } from "../analytics";
 
-const gradients: Record<string, string> = {
-  BAVA: "from-emerald-500 to-teal-600",
-  ZEAL: "from-violet-500 to-indigo-600",
-  GN: "from-amber-500 to-orange-600",
-    NOVO: "from-sky-500 to-blue-600",
-};
-
 function tickerFromTitle(title: string): string {
   const match = title.match(/\(([^)]+)\)/);
   return match ? match[1] : title.split(" ")[0];
@@ -44,7 +37,6 @@ export default function FeaturedAnalyses() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
         {featured.map((a) => {
           const ticker = tickerFromTitle(a.title);
-          const gradient = gradients[ticker] ?? "from-blue-500 to-indigo-600";
           return (
             <Link
               key={a.slug}
@@ -52,7 +44,7 @@ export default function FeaturedAnalyses() {
               onClick={() => trackEvent("analysis_link_click", { click_source: "homepage_featured", slug: a.slug })}
               className="group block rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#19191f] hover:shadow-md hover:border-gray-300 dark:hover:border-gray-600 transition-all"
             >
-              <div className={`relative bg-gradient-to-br ${gradient} h-9 flex items-center px-3`}>
+              <div className="relative h-9 flex items-center px-3" style={{ backgroundColor: a.accentColor }}>
                 <span className="text-white text-sm font-bold tracking-tight">
                   {ticker}
                 </span>
