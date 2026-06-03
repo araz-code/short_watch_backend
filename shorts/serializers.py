@@ -171,7 +171,12 @@ class ShortSellerDetailSerializer(serializers.ModelSerializer):
 
     @staticmethod
     def get_announcements(obj):
-        sorted_announcements = obj.announcements.exclude(
+        # select_related('stock') avoids an N+1: AnnouncementSerializer reads
+        # stock.symbol/stock.code per row, and this .exclude().order_by() builds
+        # a fresh queryset that bypasses any prefetch on the parent. Without it,
+        # warming every seller's full announcement history fires one stock query
+        # per announcement, which dominates the fetch_shorts cache warm.
+        sorted_announcements = obj.announcements.select_related('stock').exclude(
             Q(headline__icontains="CANCELLATION") | Q(headline__icontains="CANCELLED")
         ).order_by('-published_date')
         return AnnouncementSerializer(sorted_announcements, many=True).data
