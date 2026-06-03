@@ -218,9 +218,9 @@ const ObesityMarketAnalysisPage: React.FC = () => {
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             USA er det vigtigste enkeltmarked for fedmemedicin, og her er
-            forekomsten endnu højere: 42,4% af voksne amerikanere havde fedme og
-            9,2% svær fedme (NIDDK, baseret på NHANES 2017-2018), og 19,3% af børn
-            og unge. Det er en stor del af forklaringen på, at netop amerikansk
+            forekomsten endnu højere: 40,3% af voksne amerikanere havde fedme og
+            9,7% svær fedme (CDC/NCHS, NHANES august 2021-august 2023), og 21,1% af
+            børn og unge (2-19 år). Det er en stor del af forklaringen på, at netop amerikansk
             pris- og tilskudspolitik er så afgørende for, hvor stort markedet reelt
             bliver.
           </p>
@@ -313,7 +313,7 @@ const ObesityMarketAnalysisPage: React.FC = () => {
             amerikansk tilskud (især Medicare-dækning). At Goldman har sænket sit
             tal er hovedpointen: Tesen er "kæmpe stort, men måske mindre og mere
             priskonkurrencepræget, end hypen i 2023 antydede". Goldman forventer,
-            at orale piller alene tager cirka 25% af markedet i 2030.
+            at orale piller alene tager cirka 24% af markedet i 2030.
           </p>
         </section>
 
@@ -405,7 +405,7 @@ const ObesityMarketAnalysisPage: React.FC = () => {
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             Grafen oversætter det til kroner og ører med tre prisscenarier. Den
             afgørende ukendte er netto-omsætningen pr. patient pr. år efter rabatter,
-            og den varierer enormt geografisk: I USA er listeprisen 10.000-13.500
+            og den varierer enormt geografisk: I USA er listeprisen cirka 13.000-16.000
             USD, men nettoprisen langt lavere (kontantpris for Wegovy cirka 4.200
             USD, Medicare-forhandlet cirka 2.900 USD), i Europa lavere endnu, og i
             emerging markets minimal. Derfor regner vi med tre globalt blandede
@@ -465,7 +465,7 @@ const ObesityMarketAnalysisPage: React.FC = () => {
             arbejdsgivere allerede med GLP-1-regningen, PBM'erne (de store
             indkøbsmellemled) presser nettopriserne, og myndighederne vil næsten
             sikkert forsøge at sænke dem yderligere. Novo skar i 2025 sine
-            amerikanske GLP-1-priser med op til 70%. Hvis nettoprisen pr. patient
+            amerikanske GLP-1-priser med op til cirka 75%. Hvis nettoprisen pr. patient
             falder hurtigere, end antallet af patienter stiger, kan markedet vokse i
             mennesker uden at omsætningen eksploderer tilsvarende. Det er i praksis
             en hovedårsag til, at Goldman sænkede sit estimat fra 130 til 95 mia. USD.
@@ -501,7 +501,7 @@ const ObesityMarketAnalysisPage: React.FC = () => {
 
           <div className="grid grid-cols-2 gap-3 mb-4">
             <KPI value="fra 2026" label="Semaglutid (Novo): patentudløb begynder i flere markeder" highlight tone="red" />
-            <KPI value="~2036-2039" label="Tirzepatid (Lilly): kerne- og formuleringspatenter" highlight tone="green" />
+            <KPI value="~2036-2041" label="Tirzepatid (Lilly): kerne- og formuleringspatenter" highlight tone="green" />
           </div>
 
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-3">
@@ -532,7 +532,7 @@ const ObesityMarketAnalysisPage: React.FC = () => {
             cirka 56% af omsætningen i 2025; resten er bredt fordelt på kræft
             (Verzenio), immunologi (Taltz), diabetes (Jardiance) og Alzheimers
             (Kisunla/donanemab). Novo er langt mere koncentreret: Semaglutid alene
-            (Ozempic, Wegovy, Rybelsus) er omkring to tredjedele af koncernens
+            (Ozempic, Wegovy, Rybelsus) er omkring tre fjerdedele (cirka 74%) af koncernens
             omsætning. Det betyder, at netop patent- og kopirisikoen ovenfor rammer
             Novo hårdere, mens Lilly har en bredere base at stå på. Det nuancerer
             momentum-billedet: Lilly fører ikke kun på vækst, men også på
@@ -551,7 +551,8 @@ const ObesityMarketAnalysisPage: React.FC = () => {
             Den direkte sammenligning er slående. Lillys obesity-produkt Zepbound
             solgte i 2025 for ca. 87 mia. DKK (13,5 mia. USD) mod Novos Wegovy på
             79,1 mia. DKK. På franchise-niveau solgte Lilly tirzepatid for ca. 234
-            mia. DKK (36,5 mia. USD) mod Novos semaglutid, og Lilly voksede med
+            mia. DKK (36,5 mia. USD) mod Novos samlede semaglutid-franchise på cirka
+            228 mia. DKK (Ozempic, Wegovy og Rybelsus), og Lilly voksede med
             trecifrede vækstrater på kvartalsbasis, samtidig med at Novo nedjusterede.
             Siden GLP-1-boomet accelererede i 2023, er det nu Lilly snarere end Novo,
             der driver narrativet.
@@ -610,7 +611,7 @@ const ObesityMarketAnalysisPage: React.FC = () => {
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-3">
             Forløbet falder i to faser. Frem til midten af 2024 fulgtes de to ad i en
             fælles GLP-1-optur, og Novo toppede 25. juni 2024 (indeks 217, +117%).
-            Derefter skiltes vejene: Novo faldt cirka 70% til bunden i marts 2026
+            Derefter skiltes vejene: Novo faldt cirka 77% til bunden i marts 2026
             (indeks 50), mens Lilly fortsatte op. Samlet endte Novo cirka 34% lavere,
             mens Lilly steg cirka 211% (indeks 311).
           </p>
@@ -639,12 +640,12 @@ const ObesityMarketAnalysisPage: React.FC = () => {
               <strong>Orale GLP-1:</strong> Lillys orforglipron blev lanceret i USA
               som Foundayo i april 2026 og åbner en direkte front mod Novos orale
               semaglutid (oral Wegovy). Goldman forventer, at piller udgør cirka
-              25% af markedet i 2030.
+              24% af markedet i 2030.
             </li>
             <li>
               <strong>Næste generation af injektioner:</strong> Lillys retatrutide
-              og Amgens MariTide (månedlig dosering) har i fase 2 vist vægttab på
-              over 24%, et niveau der nærmer sig fedmekirurgi.
+              har i fase 2 vist vægttab på over 24%, et niveau der nærmer sig
+              fedmekirurgi, mens Amgens MariTide (månedlig dosering) nåede op mod 20%.
             </li>
             <li>
               <strong>Novos svar:</strong> CagriSema (cagrilintid plus semaglutid)
@@ -693,11 +694,11 @@ const ObesityMarketAnalysisPage: React.FC = () => {
             Det er fortsat et Novo/Lilly-duopol, men momentum er for tiden klart
             tippet over mod Lilly (trecifret vækst, oral lancering), mens Novo
             nedjusterer sin guidance. Forskellen er ikke kun stemning: Lilly har
-            længere patentbeskyttelse på tirzepatid (~2036-2039) og en bredere
+            længere patentbeskyttelse på tirzepatid (~2036-2041) og en bredere
             portefølje, mens Novos semaglutid begynder at miste eksklusivitet
             allerede i 2026 i flere markeder og udgør langt størstedelen af
             koncernens omsætning. Den divergens, sammen med en troværdig tredje bølge
-            fra Amgen, Viking og Pfizer, er den vigtigste investeringsmæssige
+            fra Amgen, Viking, Pfizer og Roche, er den vigtigste investeringsmæssige
             observation lige nu. Den endelige værdi afhænger dog mindst lige så meget
             af pris, fastholdelse og patentbeskyttelse som af, hvem der vinder mest
             markedsandel.
@@ -721,7 +722,7 @@ const ObesityMarketAnalysisPage: React.FC = () => {
           <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed text-center">
             <strong>Kilder:</strong> WHO "Obesity and overweight" fact sheet samt
             World Obesity Atlas 2025 (2010/2030) og 2023 (2035, omkostninger)
-            (forekomst og fremskrivninger); NIDDK / NHANES 2017-2018 (USA); KFF og
+            (forekomst og fremskrivninger); CDC / NCHS, NHANES august 2021-august 2023 (USA); KFF og
             RAND (GLP-1-anvendelse); real-world persistensstudier og apoteksdata
             (fastholdelse); Novo Nordisk årsrapport 2025 og Eli Lilly Q4 2025
             resultatmeddelelse (salgstal); Goldman Sachs Research og Morgan Stanley
