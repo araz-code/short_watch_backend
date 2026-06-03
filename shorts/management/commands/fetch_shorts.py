@@ -84,18 +84,27 @@ class Command(BaseCommand):
             # The function already writes its own Error row on failure; this
             # extra catch keeps the rest of handle() running (matching the
             # selenium block above) so we can still invalidate caches for any
-            # source that DID succeed.
+            # source that DID succeed. We can't tell whether seller data changed
+            # before the failure, so treat it as changed and re-warm the seller
+            # caches below rather than risk serving a stale cache.
+            large_sellers_data_changed = True
             Error.objects.create(message=f'Large sellers fetch failed: {str(e)}'[:500])
 
+        announcements_data_changed = False
         try:
-            self.fetch_announcements()
+            announcements_data_changed = bool(self.fetch_announcements())
         except Exception as e:
+            # fetch_announcements creates rows incrementally with no transaction,
+            # so it may have created some before raising. Treat a failure as a
+            # possible change and re-warm the seller caches below to stay correct.
+            announcements_data_changed = True
             Error.objects.create(message=f'Announcements fetch failed: {str(e)}'[:500])
 
         self.remove_duplicate_positions()
 
-        # Invalidate all view-level caches so they rebuild on the next
-        # request.  Uses delete_many() instead of cache.clear() because the
+        # Invalidate the short-watch view-level caches so they rebuild on the
+        # next request (seller caches are handled separately, below).
+        # Uses delete_many() instead of cache.clear() because the
         # DatabaseCache backend implements clear() as a bare
         # DELETE FROM django_cache which acquires a table-level lock on
         # MySQL/InnoDB, blocking every concurrent cache.get() from the API
@@ -103,14 +112,23 @@ class Command(BaseCommand):
         # which only row-locks the matched entries.
         detail_keys = [f'detail_{code}' for code in
                        Stock.objects.values_list('code', flat=True)]
-        seller_detail_keys = [f'seller_detail_{pk}' for pk in
-                              ShortSeller.objects.values_list('pk', flat=True)]
         cache.delete_many([
             'short_positions_list',
-            'short_sellers_list',
             'homepage_stats',
             'top_lists',
-        ] + detail_keys + seller_detail_keys)
+        ] + detail_keys)
+
+        # The seller list and per-seller detail caches only change when
+        # large-seller data or announcements change. On a quiet run the
+        # previously warmed entries are still valid, so we neither invalidate
+        # nor re-warm them - that re-warm is the bulk of the post-run CPU cost.
+        # When something DID change we invalidate here and re-warm below, so the
+        # cache always reflects the latest data.
+        seller_data_changed = large_sellers_data_changed or announcements_data_changed
+        if seller_data_changed:
+            seller_detail_keys = [f'seller_detail_{pk}' for pk in
+                                  ShortSeller.objects.values_list('pk', flat=True)]
+            cache.delete_many(['short_sellers_list'] + seller_detail_keys)
 
         # Rebuild the top lists and homepage stats right here, off the request
         # path, so no user ever pays the heavy aggregation cost on a cache miss.
@@ -126,9 +144,14 @@ class Command(BaseCommand):
                 warm_short_seller_details_cache,
                 warm_short_position_details_cache,
             )
-            for warm in (warm_top_lists_cache, warm_homepage_stats_cache,
-                         warm_short_positions_list_cache, warm_short_sellers_list_cache,
-                         warm_short_seller_details_cache, warm_short_position_details_cache):
+            warms = [warm_top_lists_cache, warm_homepage_stats_cache,
+                     warm_short_positions_list_cache, warm_short_position_details_cache]
+            # Only re-warm the seller caches when seller data actually changed
+            # (matches the invalidation above). On quiet runs the prior entries
+            # stay valid, and skipping this is where the CPU saving comes from.
+            if seller_data_changed:
+                warms += [warm_short_sellers_list_cache, warm_short_seller_details_cache]
+            for warm in warms:
                 try:
                     warm()
                 except Exception as e:
@@ -246,9 +269,14 @@ class Command(BaseCommand):
             raise CommandError(f'Error occurred: {str(e)}')
 
     def fetch_announcements(self):
-        """Fetch announcements from the past month, creating any missing ones."""
+        """Fetch announcements from the past month, creating any missing ones.
+
+        Returns the number of announcements created, so the caller can tell
+        whether seller-facing data actually changed and skip the (expensive)
+        seller cache re-warm when nothing new arrived."""
         cutoff = (datetime.now() - timedelta(days=30)).date()
         page = 1
+        created = 0
 
         while True:
             body = {
@@ -311,10 +339,13 @@ class Command(BaseCommand):
                     is_historic=parsed['is_historic'],
                     is_cancellation=parsed['is_cancellation'],
                 )
+                created += 1
 
             if reached_cutoff or page >= data['paging']['totalPages']:
                 break
             page += 1
+
+        return created
 
     @staticmethod
     def fetch_short_positions(short_data):

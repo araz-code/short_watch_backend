@@ -821,6 +821,15 @@ class FetchLargeShortSellingTests(TestCase):
 class HandleOrchestrationTests(TestCase):
     """We mock out every external collaborator and assert the side effects we care about."""
 
+    def setUp(self):
+        # fetch_announcements makes a live HTTP call. Stub it so these tests are
+        # offline and deterministic. Default 0 = no announcements created, i.e. no
+        # seller-data change. Tests that exercise the announcement-change path set
+        # self.mock_announcements.return_value to a positive count.
+        patcher = patch.object(Command, 'fetch_announcements', return_value=0)
+        self.mock_announcements = patcher.start()
+        self.addCleanup(patcher.stop)
+
     @patch('shorts.management.commands.fetch_shorts.delete_old_errors')
     @patch('shorts.management.commands.fetch_shorts.delete_old_logs')
     @patch.object(Command, 'remove_duplicate_positions')
@@ -841,10 +850,11 @@ class HandleOrchestrationTests(TestCase):
     def test_handle_rebuilds_list_caches_and_keeps_unrelated_keys(
         self, mock_driver, mock_selenium, mock_large, mock_remove, mock_logs
     ):
-        # handle() always invalidates the view-level caches and then re-warms
-        # them, so the stale sentinels are gone and the keys hold freshly built
-        # values. delete_many() targets only the known keys, so unrelated keys
-        # survive (unlike the old cache.clear()).
+        # With seller data changed (large sellers reported a change), handle()
+        # invalidates and re-warms every view-level cache, so the stale sentinels
+        # are gone and the keys hold freshly built values. delete_many() targets
+        # only the known keys, so unrelated keys survive (unlike the old clear()).
+        mock_large.return_value = True
         cache.set('short_positions_list', 'A', timeout=None)
         cache.set('short_sellers_list', 'B', timeout=None)
         cache.set('homepage_stats', 'C', timeout=None)
@@ -932,10 +942,12 @@ class HandleOrchestrationTests(TestCase):
     def test_handle_rebuilds_caches_even_when_selenium_fails(
         self, mock_driver, mock_selenium, mock_large, mock_remove, mock_logs
     ):
-        # Cache invalidation/warming is unconditional: even when the selenium
-        # fetch raises, handle() still invalidates and re-warms the list caches.
+        # Short-watch caches are rebuilt unconditionally even when the selenium
+        # fetch raises. The seller caches rebuild here because the large-seller
+        # fetch reported a change.
         mock_driver.return_value = MagicMock()
         mock_selenium.side_effect = Exception('chrome unavailable')
+        mock_large.return_value = True
 
         cache.set('short_positions_list', 'A', timeout=None)
         cache.set('short_sellers_list', 'B', timeout=None)
@@ -950,9 +962,12 @@ class HandleOrchestrationTests(TestCase):
     @patch.object(Command, 'fetch_large_short_selling')
     @patch.object(Command, 'fetch_short_positions_selenium')
     @patch.object(Command, '_get_webdriver')
-    def test_handle_rebuilds_caches_even_when_large_sellers_fails(
+    def test_handle_rewarms_seller_cache_when_large_sellers_fails(
         self, mock_driver, mock_selenium, mock_large, mock_remove, mock_logs
     ):
+        # A failed large-seller fetch is treated as "might have changed", so the
+        # seller caches are re-warmed rather than risk serving a stale cache, just
+        # like the short-watch caches which always rebuild.
         mock_driver.return_value = MagicMock()
         mock_large.side_effect = Exception('http boom')
 
@@ -969,9 +984,11 @@ class HandleOrchestrationTests(TestCase):
     @patch.object(Command, 'fetch_large_short_selling')
     @patch.object(Command, 'fetch_short_positions_selenium')
     @patch.object(Command, '_get_webdriver')
-    def test_handle_rebuilds_caches_even_when_both_fetches_fail(
+    def test_handle_rewarms_seller_cache_when_both_fetches_fail(
         self, mock_driver, mock_selenium, mock_large, mock_remove, mock_logs
     ):
+        # Both fetches failing is uncertain, so the seller caches are re-warmed to
+        # stay correct; the short-watch caches rebuild unconditionally.
         mock_driver.return_value = MagicMock()
         mock_selenium.side_effect = Exception('chrome unavailable')
         mock_large.side_effect = Exception('http boom')
@@ -989,11 +1006,35 @@ class HandleOrchestrationTests(TestCase):
     @patch.object(Command, 'fetch_large_short_selling')
     @patch.object(Command, 'fetch_short_positions_selenium')
     @patch.object(Command, '_get_webdriver')
-    def test_handle_rebuilds_caches_even_when_data_unchanged(
+    def test_handle_rewarms_seller_cache_when_announcements_fetch_fails(
         self, mock_driver, mock_selenium, mock_large, mock_remove, mock_logs
     ):
-        # Both fetches report no data change — caches are still invalidated and
-        # re-warmed on every run.
+        # fetch_announcements creates rows incrementally and may have created some
+        # before raising, so a failure (even with large sellers unchanged) must
+        # re-warm the seller caches - otherwise newly created announcements would
+        # be missing from a stale cache.
+        mock_driver.return_value = MagicMock()
+        mock_selenium.return_value = False
+        mock_large.return_value = False
+        self.mock_announcements.side_effect = Exception('feed down')
+
+        cache.set('short_sellers_list', 'B', timeout=None)
+
+        Command().handle()
+
+        self.assertEqual(cache.get('short_sellers_list'), [])
+
+    @patch('shorts.management.commands.fetch_shorts.delete_old_logs')
+    @patch.object(Command, 'remove_duplicate_positions')
+    @patch.object(Command, 'fetch_large_short_selling')
+    @patch.object(Command, 'fetch_short_positions_selenium')
+    @patch.object(Command, '_get_webdriver')
+    def test_handle_skips_seller_cache_when_nothing_changed(
+        self, mock_driver, mock_selenium, mock_large, mock_remove, mock_logs
+    ):
+        # No seller-data change (large sellers unchanged, no announcements created)
+        # leaves the seller cache untouched - this is the CPU saving. The
+        # short-watch caches are still rebuilt unconditionally.
         mock_driver.return_value = MagicMock()
         mock_selenium.return_value = False
         mock_large.return_value = False
@@ -1004,7 +1045,7 @@ class HandleOrchestrationTests(TestCase):
         Command().handle()
 
         self.assertEqual(cache.get('short_positions_list'), [])
-        self.assertEqual(cache.get('short_sellers_list'), [])
+        self.assertEqual(cache.get('short_sellers_list'), 'B')
 
     @patch('shorts.management.commands.fetch_shorts.delete_old_logs')
     @patch.object(Command, 'remove_duplicate_positions')
@@ -1053,11 +1094,11 @@ class HandleOrchestrationTests(TestCase):
     def test_handle_prewarms_seller_detail_cache(
         self, mock_driver, mock_selenium, mock_large, mock_remove, mock_logs
     ):
-        # Seller detail is pre-warmed: after a run, each seller's detail payload
-        # is in the cache without any request having hit the endpoint.
+        # Seller detail is pre-warmed when seller data changed: after a run, each
+        # seller's detail payload is in the cache without a request hitting it.
         seller = make_seller_with_announcement()
         mock_selenium.return_value = False
-        mock_large.return_value = False
+        mock_large.return_value = True
 
         Command().handle()
 
@@ -1073,12 +1114,12 @@ class HandleOrchestrationTests(TestCase):
     def test_handle_invalidates_and_rewarms_seller_detail_cache(
         self, mock_driver, mock_selenium, mock_large, mock_remove, mock_logs
     ):
-        # A stale seller-detail entry is invalidated and replaced with a freshly
-        # built payload on the run.
+        # When seller data changed, a stale seller-detail entry is invalidated and
+        # replaced with a freshly built payload on the run.
         seller = make_seller_with_announcement()
         cache.set(f'seller_detail_{seller.pk}', 'stale', timeout=None)
         mock_selenium.return_value = False
-        mock_large.return_value = False
+        mock_large.return_value = True
 
         Command().handle()
 
@@ -1094,10 +1135,12 @@ class HandleOrchestrationTests(TestCase):
     def test_handle_refreshes_seller_detail_cache_on_next_run(
         self, mock_driver, mock_selenium, mock_large, mock_remove, mock_logs
     ):
-        # Updates to a seller's underlying data land in the cache on the NEXT
-        # run: the pre-warmed payload reflects the newly added announcement.
+        # When new announcements arrive (fetch_announcements reports a change),
+        # the next run re-warms the seller detail so the cached payload reflects
+        # the newly added announcement - even though large-seller data did not change.
         mock_selenium.return_value = False
         mock_large.return_value = False
+        self.mock_announcements.return_value = 1
 
         seller = make_seller_with_announcement(dfsa_id='ANN-1')
         Command().handle()
@@ -1129,10 +1172,11 @@ class HandleOrchestrationTests(TestCase):
     def test_handle_refreshes_short_sellers_list_on_next_run(
         self, mock_driver, mock_selenium, mock_large, mock_remove, mock_logs
     ):
-        # The short_sellers_list pre-warm also picks up a newly qualifying
-        # seller on the next run (guards the .all() fresh-evaluation fix).
+        # When seller data changed, the short_sellers_list pre-warm picks up a
+        # newly qualifying seller on the next run (guards the .all() fresh-
+        # evaluation fix).
         mock_selenium.return_value = False
-        mock_large.return_value = False
+        mock_large.return_value = True
 
         Command().handle()
         self.assertEqual(cache.get('short_sellers_list'), [])
