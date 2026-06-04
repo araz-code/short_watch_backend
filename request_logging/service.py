@@ -64,9 +64,30 @@ code_pattern = re.compile(r'/details/(\w+)', re.IGNORECASE)
 version_pattern = re.compile(r'/(v\d+)')
 
 
+def _analysis_visit_q() -> Q:
+    """RequestLogs that feed the per-analysis dashboard table
+    (analysis_all_time_unique_ips / analysis_all_time_view_counts).
+
+    These are kept forever for now so the all-time view/visitor counts stay
+    accurate, i.e. they are excluded from the age-based purge in
+    delete_old_logs. Matches every '*-analysis' visit, the analysis overview,
+    and the novo-dcf-share visits."""
+    return (
+        Q(requested_url__icontains='/stats/visit/') & (
+            Q(requested_url__icontains='-analysis') |
+            Q(requested_url__icontains='/stats/visit/analysis/') |
+            Q(requested_url__icontains='/stats/visit/novo-dcf-share')
+        )
+    )
+
+
 def delete_old_logs():
     two_months_ago = datetime.now() - timedelta(days=40)
-    pks = list(RequestLog.objects.filter(timestamp__lt=two_months_ago).values_list('pk', flat=True))[:20000]
+    pks = list(
+        RequestLog.objects.filter(timestamp__lt=two_months_ago)
+        .exclude(_analysis_visit_q())
+        .values_list('pk', flat=True)
+    )[:20000]
     RequestLog.objects.filter(pk__in=pks).delete()
 
     pks = list(RequestLog.objects.filter(requested_url__iendswith='/status-check').values_list('pk', flat=True))[:5000]
@@ -412,6 +433,59 @@ def analysis_all_time_unique_ips() -> dict:
         'obesity_analysis': obesity_analysis,
         'analysis_overview': analysis_overview,
     }
+
+
+def analysis_all_time_view_counts() -> dict:
+    """All-time total view counts per analysis page, bucketed by URL pattern.
+
+    Unlike analysis_all_time_unique_ips this does NOT deduplicate by IP: every
+    visit hit is counted, so a reader who opens an analysis five times counts as
+    five views. Bots are still excluded (by user agent, not IP)."""
+    queryset = RequestLog.objects.filter(requested_url__contains='/stats/visit/') \
+        .values('requested_url', 'user_agent')
+
+    counts = {
+        'zeal_analysis': 0,
+        'zeal_cost_analysis': 0,
+        'gn_analysis': 0,
+        'bava_analysis': 0,
+        'novo_dcf_analysis': 0,
+        'novo_dcf_share': 0,
+        'pandora_silver_analysis': 0,
+        'c25_analysis': 0,
+        'ambu_analysis': 0,
+        'obesity_analysis': 0,
+        'analysis_overview': 0,
+    }
+
+    for entry in queryset:
+        if is_bot(entry['user_agent']):
+            continue
+        url = entry['requested_url']
+        if "/stats/visit/zeal-analysis" in url:
+            counts['zeal_analysis'] += 1
+        if "/stats/visit/zeal-cost-analysis" in url:
+            counts['zeal_cost_analysis'] += 1
+        if "/stats/visit/gn-analysis" in url:
+            counts['gn_analysis'] += 1
+        if "/stats/visit/bava-analysis" in url:
+            counts['bava_analysis'] += 1
+        if "/stats/visit/novo-dcf-analysis" in url:
+            counts['novo_dcf_analysis'] += 1
+        if "/stats/visit/novo-dcf-share" in url:
+            counts['novo_dcf_share'] += 1
+        if "/stats/visit/pandora-silver-analysis" in url:
+            counts['pandora_silver_analysis'] += 1
+        if "/stats/visit/c25-analysis" in url:
+            counts['c25_analysis'] += 1
+        if "/stats/visit/ambu-analysis" in url:
+            counts['ambu_analysis'] += 1
+        if "/stats/visit/obesity-analysis" in url:
+            counts['obesity_analysis'] += 1
+        if "/stats/visit/analysis/" in url:
+            counts['analysis_overview'] += 1
+
+    return counts
 
 
 def today_visit_buckets(for_date=None) -> dict:

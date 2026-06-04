@@ -321,13 +321,19 @@ def get_visits_by_analysis_table(_: HttpRequest) -> JsonResponse:
     b = service.today_visit_buckets()
     y = service.today_visit_buckets(for_date=timezone.localdate() - timedelta(days=1))
     t = service.analysis_all_time_unique_ips()
+    v = service.analysis_all_time_view_counts()
 
     def row(name, key):
+        unique = len(t[key])
+        views = v[key]
+        avg = round(views / unique, 1) if unique else 0
         return {
             'analysis': name,
             'today': len(b[key]),
             'yesterday': len(y[key]),
-            'total': len(t[key]),
+            'unique': unique,
+            'views': views,
+            'avg': avg,
         }
 
     rows = [
@@ -345,8 +351,8 @@ def get_visits_by_analysis_table(_: HttpRequest) -> JsonResponse:
     ]
 
     return JsonResponse({
-        'caption': "Unique visitors per analysis",
-        'headers': ['Analysis', 'Today', 'Yesterday', 'Total'],
+        'caption': "Visitors per analysis (Views = all hits no IP dedup, Avg = views per unique IP)",
+        'headers': ['Analysis', 'Today', 'Yesterday', 'Unique IPs', 'Views', 'Avg/IP'],
         'data': rows,
     })
 
