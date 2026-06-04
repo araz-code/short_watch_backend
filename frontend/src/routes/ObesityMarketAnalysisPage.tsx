@@ -119,6 +119,7 @@ const ObesityMarketAnalysisPage: React.FC = () => {
         name="description"
         content="WHO: over 890 mio. voksne lever med fedme. Analytikere ser et fedmemedicin-marked på 95-105 mia. USD i 2030. Vi gennemgår tallene og duopolet mellem Novo Nordisk og Eli Lilly."
       />
+      <link rel="canonical" href={`https://www.zirium.dk/analyse/${SLUG}`} />
       <meta property="og:title" content="Fedmemedicin: Hvor stort er markedet, og hvor hurtigt vokser det?" />
       <meta property="og:description" content="890 mio. voksne med fedme (WHO). Et marked estimeret til 95-105 mia. USD i 2030. Novo Nordisk vs Eli Lilly: Hvem vinder kapløbet?" />
       <meta property="og:type" content="article" />
@@ -140,6 +141,8 @@ const ObesityMarketAnalysisPage: React.FC = () => {
         "author": { "@type": "Person", "name": "Araz Bayat Makoo" },
         "publisher": { "@type": "Organization", "name": "Zirium", "url": "https://www.zirium.dk" },
         "datePublished": "2026-06-04",
+        "dateModified": "2026-06-04",
+        "image": "https://www.zirium.dk/og-images/novo-2026-06-04.png",
         "mainEntityOfPage": `https://www.zirium.dk/analyse/${SLUG}`,
         "inLanguage": "da",
       })}</script>
@@ -196,7 +199,7 @@ const ObesityMarketAnalysisPage: React.FC = () => {
 
         {/* Section 1: Patientgrundlaget */}
         <section className="mb-12">
-          <SectionHeader n={1} title="Patientgrundlaget: stort og hastigt voksende" />
+          <SectionHeader n={1} title="Patientgrundlaget: Stort og hastigt voksende" />
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             Den kliniske mulighed er enorm og stadig voksende. Ifølge WHO levede
             over 890 mio. voksne med fedme i 2022, svarende til cirka 16% af alle
@@ -700,7 +703,7 @@ const ObesityMarketAnalysisPage: React.FC = () => {
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-3">
             Det er fortsat et Novo/Lilly-duopol, men momentum er for tiden klart
-            tippet over mod Lilly (trecifret vækst, oral lancering), mens Novo
+            tippet over mod Lilly (trecifret kvartalsvækst, oral lancering), mens Novo
             nedjusterer sin guidance. Forskellen er ikke kun stemning: Lilly har
             længere patentbeskyttelse på tirzepatid (~2036-2041) og en bredere
             portefølje, mens Novos semaglutid begynder at miste eksklusivitet
