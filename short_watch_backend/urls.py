@@ -107,6 +107,7 @@ urlpatterns = [
         '  <url><loc>https://www.zirium.dk/insider-transactions</loc><changefreq>daily</changefreq><priority>0.8</priority></url>\n'
         '  <url><loc>https://www.zirium.dk/analyse</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>\n'
         '  <url><loc>https://www.zirium.dk/analyse/ambu/2026-06-01</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>\n'
+        '  <url><loc>https://www.zirium.dk/analyse/novo/2026-06-04</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>\n'
         '  <url><loc>https://www.zirium.dk/analyse/c25/2026-05-28</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>\n'
         '  <url><loc>https://www.zirium.dk/analyse/pandora/2026-05-23</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>\n'
         '  <url><loc>https://www.zirium.dk/analyse/novo/dcf/2026-05-19</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>\n'
