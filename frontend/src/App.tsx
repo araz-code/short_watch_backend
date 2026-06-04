@@ -164,11 +164,11 @@ const router = createBrowserRouter([
     element: <ErrorBoundary><AnalysisPage /></ErrorBoundary>,
   },
   {
-    path: "analyse/fedme/2026-05-31",
+    path: "analyse/novo/2026-06-04",
     element: <ErrorBoundary><ObesityMarketAnalysisPage /></ErrorBoundary>,
   },
   {
-    path: "analyse/fedme",
+    path: "analyse/novo",
     element: <ErrorBoundary><ObesityMarketAnalysisPage /></ErrorBoundary>,
   },
   {

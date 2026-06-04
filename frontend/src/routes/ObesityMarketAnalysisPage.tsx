@@ -21,7 +21,7 @@ import {
 } from "recharts";
 import { STOCK_DATA } from "../data/novoLillyPrices";
 
-const SLUG = "fedme/2026-05-31";
+const SLUG = "novo/2026-06-04";
 
 // ─── static data ────────────────────────────────────────────────────────────
 // Voksne der lever med fedme, mio. på verdensplan. 2010 og 2030 fra World Obesity
@@ -123,7 +123,7 @@ const ObesityMarketAnalysisPage: React.FC = () => {
       <meta property="og:description" content="890 mio. voksne med fedme (WHO). Et marked estimeret til 95-105 mia. USD i 2030. Novo Nordisk vs Eli Lilly: Hvem vinder kapløbet?" />
       <meta property="og:type" content="article" />
       <meta property="og:url" content={`https://www.zirium.dk/analyse/${SLUG}`} />
-      <meta property="og:image" content="https://www.zirium.dk/og-images/fedme-2026-05-31.png" />
+      <meta property="og:image" content="https://www.zirium.dk/og-images/novo-2026-06-04.png" />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
       <meta property="og:image:type" content="image/png" />
@@ -131,7 +131,7 @@ const ObesityMarketAnalysisPage: React.FC = () => {
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content="Fedmemedicin: Hvor stort er markedet, og hvor hurtigt vokser det?" />
       <meta name="twitter:description" content="890 mio. voksne med fedme (WHO). Et marked estimeret til 95-105 mia. USD i 2030. Novo Nordisk vs Eli Lilly." />
-      <meta name="twitter:image" content="https://www.zirium.dk/og-images/fedme-2026-05-31.png" />
+      <meta name="twitter:image" content="https://www.zirium.dk/og-images/novo-2026-06-04.png" />
       <script type="application/ld+json">{JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Article",
@@ -139,7 +139,7 @@ const ObesityMarketAnalysisPage: React.FC = () => {
         "description": "WHO: over 890 mio. voksne lever med fedme. Analytikere ser et fedmemedicin-marked på 95-105 mia. USD i 2030. Novo Nordisk vs Eli Lilly.",
         "author": { "@type": "Person", "name": "Araz Bayat Makoo" },
         "publisher": { "@type": "Organization", "name": "Zirium", "url": "https://www.zirium.dk" },
-        "datePublished": "2026-05-31",
+        "datePublished": "2026-06-04",
         "mainEntityOfPage": `https://www.zirium.dk/analyse/${SLUG}`,
         "inLanguage": "da",
       })}</script>
@@ -162,7 +162,7 @@ const ObesityMarketAnalysisPage: React.FC = () => {
         {/* Header */}
         <header className="mb-10 mt-4">
           <p className="text-base text-gray-600 dark:text-gray-300 mb-4">
-            Analyse lavet af Araz Bayat Makoo (Zirium) - 31. maj 2026
+            Analyse lavet af Araz Bayat Makoo (Zirium) - 4. juni 2026
           </p>
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-white mb-3 leading-tight">
             Fedmemedicin: Hvor stort er markedet, og hvor hurtigt vokser det?
@@ -309,10 +309,10 @@ const ObesityMarketAnalysisPage: React.FC = () => {
 
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
             Spændet (fra cirka 95 til 144 mia. USD i 2030) afspejler reel uenighed
-            om priserosion, hvor hurtigt orale piller bliver udbredt, og om
+            om prispres, hvor hurtigt orale piller bliver udbredt, og om
             amerikansk tilskud (især Medicare-dækning). At Goldman har sænket sit
-            tal er hovedpointen: Tesen er "kæmpe stort, men måske mindre og mere
-            priskonkurrencepræget, end hypen i 2023 antydede". Goldman forventer,
+            tal er hovedpointen: Tesen er, at markedet er kæmpe stort, men måske
+            mindre og mere priskonkurrencepræget, end hypen i 2023 antydede. Goldman forventer,
             at orale piller alene tager cirka 24% af markedet i 2030.
           </p>
         </section>
@@ -356,7 +356,8 @@ const ObesityMarketAnalysisPage: React.FC = () => {
             tirzepatid, blot i forskellige doser og under forskellige navne. I
             praksis er skellet udvisket, fordi især Ozempic i vid udstrækning bruges
             "off-label" til vægttab. Derfor giver det mening at se på hele
-            incretin-franchisen, diabetes-brandene inklusive, når man vurderer
+            incretin-franchisen (de GLP-1-baserede midler), diabetes-brandene
+            inklusive, når man vurderer
             fedme-kapløbet, så længe man husker, at en del af salget formelt er
             diabetes-behandling.
           </p>
@@ -394,10 +395,11 @@ const ObesityMarketAnalysisPage: React.FC = () => {
             Her er den enkleste måde at se det på. Selv om Novo og Lilly i 2025
             tilsammen solgte fedmemedicin (Wegovy og Zepbound) for cirka 25 mia. USD,
             er det stadig en lille del af patientgrundlaget, og brugen er stærkt
-            koncentreret i USA. Spørgeskemaundersøgelser fra KFF og RAND finder, at
-            omkring 1 ud af 8 voksne amerikanere (cirka 12%) aktuelt tager et
-            GLP-1-middel, mens receptbaserede opgørelser ligger lavere; uanset metode
-            er det et tocifret millionantal i ét enkelt land. Målt mod de over 1 mia.
+            koncentreret i USA. KFF finder, at omkring 1 ud af 8 voksne amerikanere
+            (cirka 12%) aktuelt tager et GLP-1-middel, og RAND finder en tilsvarende
+            størrelsesorden for dem, der nogensinde har brugt et; receptbaserede
+            opgørelser ligger lavere. Det er et stort antal i ét enkelt land: 12% af
+            cirka 260 mio. voksne amerikanere svarer til omkring 31 mio. Målt mod de over 1 mia.
             svært overvægtige på verdensplan er det fortsat kun en lav encifret
             procentdel, der er i behandling. Med 1,13 mia. svært overvægtige voksne i
             2030 er det den ubehandlede del, der definerer mulighederne.
@@ -406,8 +408,10 @@ const ObesityMarketAnalysisPage: React.FC = () => {
             Grafen oversætter det til kroner og ører med tre prisscenarier. Den
             afgørende ukendte er netto-omsætningen pr. patient pr. år efter rabatter,
             og den varierer enormt geografisk: I USA er listeprisen cirka 13.000-16.000
-            USD, men nettoprisen langt lavere (kontantpris for Wegovy cirka 4.200
-            USD, Medicare-forhandlet cirka 2.900 USD), i Europa lavere endnu, og i
+            USD (Novo sænker dog de amerikanske listepriser cirka 50% til omkring
+            8.100 USD om året fra januar 2027), men nettoprisen langt lavere
+            (kontantpris for Wegovy cirka 4.200 USD, Medicare-forhandlet cirka
+            2.900 USD), i Europa lavere endnu, og i
             emerging markets minimal. Derfor regner vi med tre globalt blandede
             niveauer: bear 1.000, base 2.000 og bull 4.000 USD pr. patient pr. år.
             Det er ikke en prognose, men en størrelsesorden, der gør følsomheden
@@ -418,7 +422,7 @@ const ObesityMarketAnalysisPage: React.FC = () => {
             <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-1">Markedet ved stigende behandlingsgrad i 2030 (mia. USD)</h3>
             <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">Illustrativ: andel af 1,13 mia. svært overvægtige × netto pr. patient pr. år (bear 1.000 / base 2.000 / bull 4.000 USD). Ikke en prognose.</p>
             <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={PENETRATION_DATA} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+              <LineChart data={PENETRATION_DATA} margin={{ top: 10, right: 10, left: 0, bottom: 12 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" strokeOpacity={0.3} />
                 <XAxis dataKey="pen" tick={{ fontSize: 12, fill: "#6b7280" }} label={{ value: "Behandlingsgrad", position: "insideBottom", offset: -2, fontSize: 11, fill: "#6b7280" }} />
                 <YAxis tick={{ fontSize: 11, fill: "#6b7280" }} domain={[0, 950]} tickFormatter={(v) => `${v}`} />
@@ -426,7 +430,7 @@ const ObesityMarketAnalysisPage: React.FC = () => {
                   contentStyle={{ backgroundColor: "#fff", border: "1px solid #e5e7eb", borderRadius: 8, fontSize: 12 }}
                   formatter={(v) => `${v} mia. USD`}
                 />
-                <Legend wrapperStyle={{ fontSize: 12 }} />
+                <Legend verticalAlign="top" wrapperStyle={{ fontSize: 12, paddingBottom: 8 }} />
                 <ReferenceLine y={100} stroke="#9ca3af" strokeDasharray="4 4" label={{ value: "Analytikerestimat 2030 (~100)", position: "insideTopRight", fontSize: 10, fill: "#6b7280" }} />
                 <Line type="monotone" dataKey="bull" name="Bull (4.000 USD)" stroke="#0d9488" strokeWidth={2} dot={false} />
                 <Line type="monotone" dataKey="base" name="Base (2.000 USD)" stroke="#14b8a6" strokeWidth={2} dot={false} />
@@ -449,7 +453,7 @@ const ObesityMarketAnalysisPage: React.FC = () => {
             Det fører til den egentlige pointe for Novo og Lilly. Den vigtigste
             variabel er ikke, om markedet vokser, men hvem der ender med at sidde på
             andelen, og til hvilken nettopris. Netop derfor handler de næste afsnit
-            om de faktorer, der afgør det: først pris og fastholdelse, dernæst
+            om de faktorer, der afgør det: Først pris og fastholdelse, dernæst
             patentbeskyttelse og kopikonkurrence, som tilsammen kan løfte eller dæmpe
             hele udfaldsrummet ovenfor, og til sidst selve momentum-skiftet mellem de
             to selskaber.
@@ -469,9 +473,9 @@ const ObesityMarketAnalysisPage: React.FC = () => {
             falder hurtigere, end antallet af patienter stiger, kan markedet vokse i
             mennesker uden at omsætningen eksploderer tilsvarende. Det er i praksis
             en hovedårsag til, at Goldman sænkede sit estimat fra 130 til 95 mia. USD.
-            Dertil kommer, at den betalbare målgruppe ofte er smallere end forekomsten:
+            Dertil kommer, at den betalbare målgruppe ofte er smallere end patientgrundlaget:
             Tilskud og indikationer afhænger typisk af BMI-grænser (ofte svær overvægt
-            med BMI 30+, eller BMI 27+ med følgesygdomme), så det reimbursable marked
+            med BMI 30+, eller BMI 27+ med følgesygdomme), så det dækkede marked
             er mindre end de rå tal for overvægt (BMI 25+).
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
@@ -508,8 +512,8 @@ const ObesityMarketAnalysisPage: React.FC = () => {
             <strong>Patentudløb.</strong> Novos semaglutid mister allerede
             eksklusivitet i 2026 i en række store markeder: Canada (januar), Kina,
             Indien og Brasilien (marts), hvor blandt andet 17 kinesiske generiske
-            kandidater er i fase 3. I USA og EU holder beskyttelsen til omkring
-            2031-2032. Lillys tirzepatid er derimod dækket af et kerne-patent til
+            kandidater er i fase 3. I EU holder beskyttelsen til omkring 2031-2032
+            og i USA til omkring 2032-2033. Lillys tirzepatid er derimod dækket af et kerne-patent til
             2036 og formuleringspatenter, der kan strække eksklusiviteten til
             2039-2041. Med andre ord: Novos vigtigste molekyle begynder at falde fri
             cirka 5-10 år før Lillys. Det er en strukturel, ikke en
@@ -524,7 +528,7 @@ const ObesityMarketAnalysisPage: React.FC = () => {
             storskala-compounding ikke længere er tilladt. Alligevel pegede Novo
             fortsat på "vedvarende brug af compounded GLP-1" som en hovedårsag til
             sin nedjustering, så lækagen er ikke forsvundet. Oven i kommer ægte
-            generika i de markeder, hvor semaglutid-patentet allerede er udløbet.
+            generisk medicin i de markeder, hvor semaglutid-patentet allerede er udløbet.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
             <strong>Koncentration.</strong> Endelig er det værd at huske, at Lilly
@@ -567,7 +571,7 @@ const ObesityMarketAnalysisPage: React.FC = () => {
             prisrobusthed uden for USA, hvor priserne i forvejen er lavere. Selv ved
             en lavere markedsandel kan Novo forblive et af verdens mest profitable
             lægemiddelselskaber. Pointen er ikke, at Novo forsvinder, men at
-            initiativet lige nu ligger hos Lilly.
+            momentum lige nu ligger hos Lilly.
           </p>
         </section>
 
@@ -582,7 +586,7 @@ const ObesityMarketAnalysisPage: React.FC = () => {
             absolutte kursniveau.
           </p>
 
-          <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-3 sm:p-5 mb-4" role="img" aria-label="Graf: Novo Nordisk og Eli Lilly aktiekurser rebaseret til 100 fra januar 2023 til maj 2026">
+          <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-3 sm:p-5 mb-4" role="img" aria-label="Graf: Novo Nordisk og Eli Lilly aktiekurser rebaseret til 100 fra januar 2023 til juni 2026">
             <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-1">Novo Nordisk vs Eli Lilly (3. jan 2023 = 100)</h3>
             <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">Daglig lukkekurs, udbyttejusteret, lokal valuta. Kilde: Yahoo Finance.</p>
             <ResponsiveContainer width="100%" height={340}>
@@ -612,8 +616,8 @@ const ObesityMarketAnalysisPage: React.FC = () => {
             Forløbet falder i to faser. Frem til midten af 2024 fulgtes de to ad i en
             fælles GLP-1-optur, og Novo toppede 25. juni 2024 (indeks 217, +117%).
             Derefter skiltes vejene: Novo faldt cirka 77% til bunden i marts 2026
-            (indeks 50), mens Lilly fortsatte op. Samlet endte Novo cirka 34% lavere,
-            mens Lilly steg cirka 211% (indeks 311).
+            (indeks 50), mens Lilly fortsatte op. Samlet endte Novo cirka 39% lavere,
+            mens Lilly steg cirka 204% (indeks 304).
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
             Det interessante er ikke kursfaldet i sig selv, men hvorfor multiplerne
@@ -655,7 +659,11 @@ const ObesityMarketAnalysisPage: React.FC = () => {
             <li>
               <strong>Udfordrere:</strong> Viking Therapeutics (VK2735), Pfizer
               (amylin-analogen MET-233i) og Roche er de mest troværdige aktører i
-              den tredje bølge.
+              den tredje bølge. Ud over Novo er der også en dansk vinkel: Zealand
+              Pharma står bag amylin-analogen petrelintid, som Roche licenserede i
+              2025 (op til 5,3 mia. USD) og nu fører mod fase 3, og Gubra står bag
+              GUBamy, udlicenseret til AbbVie (op til ca. 2,2 mia. USD) og aktuelt
+              i fase 1.
             </li>
           </ul>
 
@@ -698,7 +706,8 @@ const ObesityMarketAnalysisPage: React.FC = () => {
             portefølje, mens Novos semaglutid begynder at miste eksklusivitet
             allerede i 2026 i flere markeder og udgør langt størstedelen af
             koncernens omsætning. Den divergens, sammen med en troværdig tredje bølge
-            fra Amgen, Viking, Pfizer og Roche, er den vigtigste investeringsmæssige
+            fra Amgen, Viking, Pfizer og Roche (samt danske Zealand og Gubra bag
+            førende amylin-aktiver), er den vigtigste investeringsmæssige
             observation lige nu. Den endelige værdi afhænger dog mindst lige så meget
             af pris, fastholdelse og patentbeskyttelse som af, hvem der vinder mest
             markedsandel.
@@ -726,9 +735,10 @@ const ObesityMarketAnalysisPage: React.FC = () => {
             RAND (GLP-1-anvendelse); real-world persistensstudier og apoteksdata
             (fastholdelse); Novo Nordisk årsrapport 2025 og Eli Lilly Q4 2025
             resultatmeddelelse (salgstal); Goldman Sachs Research og Morgan Stanley
-            Research (markedsestimater); IQVIA (pipeline-udsigt); FDA og
-            patentdatabaser (patentudløb og compounding); aktiekurser fra
-            Yahoo Finance.{" "}
+            Research (markedsestimater); IQVIA (pipeline-udsigt); selskabsmeddelelser
+            fra Zealand Pharma, Roche, Gubra og AbbVie (amylin-pipeline og
+            licensaftaler); FDA og patentdatabaser (patentudløb og compounding);
+            aktiekurser fra Yahoo Finance.{" "}
             <strong>Ansvarsfraskrivelse:</strong>{" "}
             Denne analyse er alene til informationsformål og udgør ikke
             investeringsrådgivning. Markedsestimater er analytikeres gæt, ikke
@@ -737,7 +747,7 @@ const ObesityMarketAnalysisPage: React.FC = () => {
             handler.
           </p>
           <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-3">
-            Copyright Zirium  |  31. maj 2026
+            Copyright Zirium  |  4. juni 2026
           </p>
         </footer>
       </article>

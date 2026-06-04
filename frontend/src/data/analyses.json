@@ -6,6 +6,28 @@
   },
   "analyses": [
     {
+      "slug": "novo/2026-06-04",
+      "accentColor": "#0EA5E9",
+      "code": "DK0062498333",
+      "title": "Fedmemedicin (NOVO)",
+      "subtitle": {
+        "da": "Fedmemedicin: Hvor stort er markedet, og hvor hurtigt vokser det?",
+        "en": "The obesity drug market: how big is it, and how fast is it growing?"
+      },
+      "excerpt": {
+        "da": "WHO: over 890 mio. voksne lever med fedme. Analytikere ser et marked på 95-105 mia. USD i 2030. Vi gennemgår tallene og duopolet mellem Novo Nordisk og Eli Lilly.",
+        "en": "WHO: over 890 million adults live with obesity. Analysts see a 95-105 billion USD market by 2030. We unpack the numbers and the Novo Nordisk vs Eli Lilly duopoly."
+      },
+      "date": {
+        "da": "4. juni 2026",
+        "en": "June 4, 2026"
+      },
+      "readingMinutes": 17,
+      "ogImage": "novo-2026-06-04",
+      "ogTitle": "Fedmemedicin: Hvor stort er markedet, og hvor hurtigt vokser det?",
+      "ogDescription": "890 mio. voksne med fedme (WHO). Et marked estimeret til 95-105 mia. USD i 2030. Novo Nordisk vs Eli Lilly: Hvem vinder kapløbet?"
+    },
+    {
       "slug": "ambu/2026-06-01",
       "accentColor": "#14B8A6",
       "code": "DK0060946788",
@@ -26,28 +48,6 @@
       "ogImage": "ambu-2026-06-01",
       "ogTitle": "Ambu: Fald trods en succesfuld transformation",
       "ogDescription": "Ambu ligger 45% under pre-pandemi-niveauet trods næsten femdoblet margin. Hedgefonde har høj shortinteresse. Hvad er paradokset?"
-    },
-    {
-      "slug": "fedme/2026-05-31",
-      "accentColor": "#0EA5E9",
-      "code": "DK0062498333",
-      "title": "Fedmemedicin (GLP-1)",
-      "subtitle": {
-        "da": "Fedmemedicin: Hvor stort er markedet, og hvor hurtigt vokser det?",
-        "en": "The obesity drug market: how big is it, and how fast is it growing?"
-      },
-      "excerpt": {
-        "da": "WHO: over 890 mio. voksne lever med fedme. Analytikere ser et marked på 95-105 mia. USD i 2030. Vi gennemgår tallene og duopolet mellem Novo Nordisk og Eli Lilly.",
-        "en": "WHO: over 890 million adults live with obesity. Analysts see a 95-105 billion USD market by 2030. We unpack the numbers and the Novo Nordisk vs Eli Lilly duopoly."
-      },
-      "date": {
-        "da": "31. maj 2026",
-        "en": "May 31, 2026"
-      },
-      "readingMinutes": 17,
-      "ogImage": "fedme-2026-05-31",
-      "ogTitle": "Fedmemedicin: Hvor stort er markedet, og hvor hurtigt vokser det?",
-      "ogDescription": "890 mio. voksne med fedme (WHO). Et marked estimeret til 95-105 mia. USD i 2030. Novo Nordisk vs Eli Lilly: Hvem vinder kapløbet?"
     },
     {
       "slug": "c25/2026-05-28",
