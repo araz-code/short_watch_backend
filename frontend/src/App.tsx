@@ -45,8 +45,8 @@ const PandoraSilverPageEn = lazy(() => import("./routes/PandoraSilverAnalysisPag
 const AnalysisPage = lazy(() => import("./routes/AnalysisPage.tsx"));
 const C25AnalysisPageDa = lazy(() => import("./routes/C25AnalysisPage.tsx"));
 const C25AnalysisPageEn = lazy(() => import("./routes/C25AnalysisPage.en.tsx"));
-// Obesity market analysis (Danish-only)
-const ObesityMarketAnalysisPage = lazy(() => import("./routes/ObesityMarketAnalysisPage.tsx"));
+const ObesityMarketAnalysisPageDa = lazy(() => import("./routes/ObesityMarketAnalysisPage.tsx"));
+const ObesityMarketAnalysisPageEn = lazy(() => import("./routes/ObesityMarketAnalysisPage.en.tsx"));
 const AmbuAnalysisPageDa = lazy(() => import("./routes/AmbuAnalysisPage.tsx"));
 const AmbuAnalysisPageEn = lazy(() => import("./routes/AmbuAnalysisPage.en.tsx"));
 
@@ -81,6 +81,10 @@ function C25AnalysisPage() {
 function AmbuAnalysisPage() {
   const lng = localStorage.getItem("i18nextLng") || navigator.language;
   return lng.startsWith("da") ? <AmbuAnalysisPageDa /> : <AmbuAnalysisPageEn />;
+}
+function ObesityMarketAnalysisPage() {
+  const lng = localStorage.getItem("i18nextLng") || navigator.language;
+  return lng.startsWith("da") ? <ObesityMarketAnalysisPageDa /> : <ObesityMarketAnalysisPageEn />;
 }
 
 type ConsentButtonProps = {
