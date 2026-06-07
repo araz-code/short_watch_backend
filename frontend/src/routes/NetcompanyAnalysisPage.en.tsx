@@ -87,6 +87,7 @@ const FULL_HISTORY: ChartPoint[] = [
   { date: "2026-03-31", short: 6.37, close: 390.6, volume: 197691 },
   { date: "2026-04-30", short: 6.11, close: 361.2, volume: 117291 },
   { date: "2026-05-31", short: 7.20, close: 343.4, volume: 181079 },
+  { date: "2026-06-04", short: 7.32, close: 357.0, volume: null },
 ];
 
 const RECENT: ChartPoint[] = FULL_HISTORY.filter((d) => d.date >= "2025-08-31");
@@ -148,8 +149,8 @@ const SELLERS: SellerSeries[] = [
 
 const PIE_DATA: PieSlice[] = [
   { name: "Fosse Capital", value: 0.99 },
-  { name: "Citadel Advisors", value: 0.59 },
-  { name: "Below 0.50% (undisclosed)", value: 5.62 },
+  { name: "PDT Partners", value: 0.49 },
+  { name: "Below 0.50% (undisclosed)", value: 5.83 },
 ];
 
 const PIE_COLORS = ["#4361ee", "#2a9d8f", "#d4d4d8"];
@@ -263,9 +264,9 @@ const NetcompanyAnalysisPageEn: React.FC = () => {
   return (
     <PageTemplate>
       <title>Zirium | Netcompany (NETC) - Short Selling Analysis</title>
-      <meta name="description" content="In-depth analysis of short positions in Netcompany (NETC). The shorts covered through the 2024 rally, and a new wave is building against a P/E of 70." />
+      <meta name="description" content="In-depth analysis of short positions in Netcompany (NETC). The shorts covered through the 2024 rally, and a new wave is building against a P/E around 59." />
       <meta property="og:title" content="Short selling analysis: The shorts that covered, and the ones that came back" />
-      <meta property="og:description" content="In-depth analysis of short positions in Netcompany (NETC). The shorts covered through the 2024 rally, and a new wave is building against a P/E of 70." />
+      <meta property="og:description" content="In-depth analysis of short positions in Netcompany (NETC). The shorts covered through the 2024 rally, and a new wave is building against a P/E around 59." />
       <meta property="og:type" content="article" />
       <meta property="og:url" content="https://www.zirium.dk/analyse/netcompany/2026-06-05" />
       <meta property="og:image" content="https://www.zirium.dk/og-images/netcompany-2026-06-05-en.png" />
@@ -275,14 +276,14 @@ const NetcompanyAnalysisPageEn: React.FC = () => {
       <meta property="og:site_name" content="Zirium" />
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content="Short selling analysis: The shorts that covered, and the ones that came back" />
-      <meta name="twitter:description" content="In-depth analysis of short positions in Netcompany (NETC). The shorts covered through the 2024 rally, and a new wave is building against a P/E of 70." />
+      <meta name="twitter:description" content="In-depth analysis of short positions in Netcompany (NETC). The shorts covered through the 2024 rally, and a new wave is building against a P/E around 59." />
       <meta name="twitter:image" content="https://www.zirium.dk/og-images/netcompany-2026-06-05-en.png" />
       <link rel="canonical" href="https://www.zirium.dk/analyse/netcompany/2026-06-05" />
       <script type="application/ld+json">{JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Article",
         "headline": "Short selling analysis: The shorts that covered, and the ones that came back",
-        "description": "In-depth analysis of short positions in Netcompany (NETC). The shorts covered through the 2024 rally, and a new wave is building against a P/E of 70.",
+        "description": "In-depth analysis of short positions in Netcompany (NETC). The shorts covered through the 2024 rally, and a new wave is building against a P/E around 59.",
         "author": { "@type": "Person", "name": "Araz Bayat Makoo" },
         "publisher": { "@type": "Organization", "name": "Zirium", "url": "https://www.zirium.dk" },
         "datePublished": "2026-06-05",
@@ -320,17 +321,17 @@ const NetcompanyAnalysisPageEn: React.FC = () => {
             Netcompany is one of the most fascinating short stories on the Danish market, because it has
             two acts. The short sellers held almost 10% of the stock at the 2023 lows, capitulated through
             the entire 2024 rally, and have now returned with a fresh wave while the stock trades at a P/E
-            around 70. This analysis combines the evolution of the short positions with the company's
+            around 59 (reported). This analysis combines the evolution of the short positions with the company's
             journey from pandemic darling to acquisition-driven growth case.
           </p>
         </header>
 
         {/* ── KPIs ── */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-12">
-          <KPI value="7.20%" label="Short interest (May 31, 2026)" />
-          <KPI value="343.40 DKK" label="Latest close (May 31)" />
+          <KPI value="7.32%" label="Short interest (June 4, 2026)" />
+          <KPI value="357.00 DKK" label="Latest close (June 4)" />
           <KPI value="10.17%" label="Peak short (Nov 6, 2023, price low)" />
-          <KPI value="~70" label="P/E (the market prices high growth)" />
+          <KPI value="~59" label="P/E (reported, adjusted ~30)" />
         </div>
 
         {/* ── 1. Overview ── */}
@@ -344,9 +345,10 @@ const NetcompanyAnalysisPageEn: React.FC = () => {
             funds, betting both on the valuation and on margin pressure.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-            Current short interest is 7.2% as of May 31, 2026, up from below 3% in the autumn of 2024. What
+            Current short interest is 7.32% as of June 4, 2026, up from below 3% in the autumn of 2024. What
             is interesting is the journey there: the short peaked at 10.17% at the lows in November 2023,
-            fell almost linearly to 2.56% through 2024 as the price nearly doubled, and is now climbing
+            fell through 2024 to 2.56% (with a sharp drop in early 2024, when BlackRock covered) as the price
+            rose about 70% (from around 205 to over 350), and is now climbing
             again. This is not the usual Danish short case where the short follows a stock down. Here the
             shorts covered into a rally, and a new group has come back after the stock has risen.
           </p>
@@ -444,7 +446,7 @@ const NetcompanyAnalysisPageEn: React.FC = () => {
         {/* ── Chart 2: Recent ── */}
         <section className="mb-12">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2">5. The new wave in detail</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-300 mb-4">Short interest with volume since August 2025. The build from around 3% to 7.2% is clearly visible.</p>
+          <p className="text-sm text-gray-500 dark:text-gray-300 mb-4">Short interest with volume since August 2025. The build from around 3% to 7.3% is clearly visible.</p>
           <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-3 sm:p-5" role="img" aria-label="Chart: Short interest with volume for Netcompany since August 2025">
             <ResponsiveContainer width="100%" height={chartHeight}>
               <ComposedChart data={RECENT} margin={{ top: 5, right: 5, left: 0, bottom: 5 }}>
@@ -518,9 +520,9 @@ const NetcompanyAnalysisPageEn: React.FC = () => {
         <section className="mb-12">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">8. Who is shorting Netcompany?</h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
-            The most remarkable thing about the current 7.2% short is how little of it is visible. Only two
-            sellers are above the 0.50% disclosure threshold: Fosse Capital at 0.99% and Citadel Advisors at
-            0.59%. Together they account for just 1.58%. The remaining roughly 5.62% is held by a range of
+            The most remarkable thing about the current 7.3% short is how little of it is visible. Only two
+            sellers are named around the 0.50% disclosure threshold: Fosse Capital at 0.99% and PDT Partners
+            at 0.49%. Together they account for just 1.48%. The remaining roughly 5.83% is held by a range of
             players each below 0.50%, whose identity is therefore unknown. The bulk of the bet against
             Netcompany is anonymous.
           </p>
@@ -538,7 +540,7 @@ const NetcompanyAnalysisPageEn: React.FC = () => {
               </thead>
               <tbody>
                 <SellerRow i={0} name="Fosse Capital Partners" position="0.99%" date="Apr 17, 2026" desc="Long-running short. Peaked at 1.63% in Nov 2023. Now reducing gradually." />
-                <SellerRow i={1} name="Citadel Advisors LLC" position="0.59%" date="May 29, 2026" desc="Re-entered in April 2026. Peaked at 0.84% on May 8, trimming since." />
+                <SellerRow i={1} name="PDT Partners LLC" position="0.49%" date="June 5, 2026" desc="New quant fund. Entered in June 2026, right around the disclosure threshold." />
               </tbody>
             </table>
           </div>
@@ -568,7 +570,7 @@ const NetcompanyAnalysisPageEn: React.FC = () => {
           </div>
 
           <h3 className="text-base font-semibold text-gray-900 dark:text-white mt-8 mb-2">Breakdown of total short interest</h3>
-          <p className="text-sm text-gray-500 dark:text-gray-300 mb-4">About 78% of the short interest is held by players below the 0.50% threshold, whose identity is unknown.</p>
+          <p className="text-sm text-gray-500 dark:text-gray-300 mb-4">About 80% of the short interest is held by players below the 0.50% threshold, whose identity is unknown.</p>
           <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-3 sm:p-5 flex justify-center" role="img" aria-label="Pie chart: Breakdown of total short interest in Netcompany">
             <ResponsiveContainer width="100%" height={340}>
               <PieChart>
@@ -617,10 +619,11 @@ const NetcompanyAnalysisPageEn: React.FC = () => {
 
         {/* ── The core question ── */}
         <section className="mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">10. The central question: does Netcompany deserve a P/E of 70?</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">10. The central question: does Netcompany deserve its valuation?</h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            The new wave of shorts is ultimately about the valuation. With a P/E around 70 there is no
-            margin for error. The bull case and the bear case both revolve around the same two questions: is
+            The new wave of shorts is ultimately about the valuation. With a reported P/E around 59
+            (about 30 adjusted, about 20 on a forward basis) the stock is still richly valued, and there is
+            limited margin for error. The bull case and the bear case both revolve around the same two questions: is
             the growth real and organic, and is AI a tailwind or a threat?
           </p>
 
@@ -639,7 +642,7 @@ const NetcompanyAnalysisPageEn: React.FC = () => {
               <h4 className="font-semibold text-red-700 dark:text-red-400 mb-3 text-sm uppercase tracking-wide">The bear case</h4>
               <ul className="space-y-2 text-[15px] text-gray-700 dark:text-gray-300">
                 <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>The +38.7% is acquisition-driven, not organic</li>
-                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>A P/E around 70 leaves no margin for error</li>
+                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Richly valued (P/E ~59 reported, ~30 adjusted)</li>
                 <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>AI can commoditise bespoke development for everyone</li>
                 <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>EPS missed in Q1 despite revenue growth</li>
                 <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>The margin history shows how fast it can fall</li>
@@ -649,7 +652,7 @@ const NetcompanyAnalysisPageEn: React.FC = () => {
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
             The honest synthesis is that the margin upgrade shows AI is helping the cost side today, but it
             does not settle the pricing and demand side tomorrow. That is precisely where the shorts are
-            aiming. The margin upgrade says the optimists are ahead on points right now. The 7.2% that
+            aiming. The margin upgrade says the optimists are ahead on points right now. The 7.3% that
             refuses to disappear says the fight is far from over.
           </p>
         </section>
@@ -665,7 +668,7 @@ const NetcompanyAnalysisPageEn: React.FC = () => {
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             In the second act, which we are in the middle of, a new group has come back. This time it is less
-            about margin pressure and more about valuation: a P/E around 70, a large part of the growth bought
+            about margin pressure and more about valuation: a reported P/E around 59, a large part of the growth bought
             via SDC, and an open question about what generative AI does to the consulting model over time. The
             fact that nearly 4/5 of the short interest is anonymous, below the disclosure threshold, makes it
             hard to know exactly who is behind it, but the direction is clear: scepticism is growing again.
@@ -677,7 +680,7 @@ const NetcompanyAnalysisPageEn: React.FC = () => {
               <li>&#x2022; Organic vs. reported growth in the coming quarters (the NBS effect)</li>
               <li>&#x2022; Whether the adjusted EBITDA margin excluding NBS actually lands in 17-20%</li>
               <li>&#x2022; Whether short interest keeps rising (conviction) or turns (capitulation)</li>
-              <li>&#x2022; New named sellers above 0.50%, or whether Citadel and Fosse keep trimming</li>
+              <li>&#x2022; New named sellers above 0.50% (Citadel has just exited, PDT Partners entered), or whether Fosse keeps trimming</li>
               <li>&#x2022; Concrete evidence that AI lifts the margin rather than squeezing prices</li>
             </ul>
           </div>

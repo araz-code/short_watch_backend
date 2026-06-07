@@ -87,6 +87,7 @@ const FULL_HISTORY: ChartPoint[] = [
   { date: "2026-03-31", short: 6.37, close: 390.6, volume: 197691 },
   { date: "2026-04-30", short: 6.11, close: 361.2, volume: 117291 },
   { date: "2026-05-31", short: 7.20, close: 343.4, volume: 181079 },
+  { date: "2026-06-04", short: 7.32, close: 357.0, volume: null },
 ];
 
 const RECENT: ChartPoint[] = FULL_HISTORY.filter((d) => d.date >= "2025-08-31");
@@ -148,8 +149,8 @@ const SELLERS: SellerSeries[] = [
 
 const PIE_DATA: PieSlice[] = [
   { name: "Fosse Capital", value: 0.99 },
-  { name: "Citadel Advisors", value: 0.59 },
-  { name: "Under 0,50% (ukendte)", value: 5.62 },
+  { name: "PDT Partners", value: 0.49 },
+  { name: "Under 0,50% (ukendte)", value: 5.83 },
 ];
 
 const PIE_COLORS = ["#4361ee", "#2a9d8f", "#d4d4d8"];
@@ -263,9 +264,9 @@ const NetcompanyAnalysisPage: React.FC = () => {
   return (
     <PageTemplate>
       <title>Zirium | Netcompany (NETC) - Shortanalyse</title>
-      <meta name="description" content="Dybdegående analyse af short-positioner i Netcompany (NETC). Shorterne dækkede gennem 2024-rallyet, og en ny bølge bygger nu mod en P/E på 70." />
+      <meta name="description" content="Dybdegående analyse af short-positioner i Netcompany (NETC). Shorterne dækkede gennem 2024-rallyet, og en ny bølge bygger nu mod en P/E omkring 59." />
       <meta property="og:title" content="Shortanalyse: Shorterne der dækkede, og dem der kom tilbage" />
-      <meta property="og:description" content="Dybdegående analyse af short-positioner i Netcompany (NETC). Shorterne dækkede gennem 2024-rallyet, og en ny bølge bygger nu mod en P/E på 70." />
+      <meta property="og:description" content="Dybdegående analyse af short-positioner i Netcompany (NETC). Shorterne dækkede gennem 2024-rallyet, og en ny bølge bygger nu mod en P/E omkring 59." />
       <meta property="og:type" content="article" />
       <meta property="og:url" content="https://www.zirium.dk/analyse/netcompany/2026-06-05" />
       <meta property="og:image" content="https://www.zirium.dk/og-images/netcompany-2026-06-05.png" />
@@ -275,14 +276,14 @@ const NetcompanyAnalysisPage: React.FC = () => {
       <meta property="og:site_name" content="Zirium" />
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content="Shortanalyse: Shorterne der dækkede, og dem der kom tilbage" />
-      <meta name="twitter:description" content="Dybdegående analyse af short-positioner i Netcompany (NETC). Shorterne dækkede gennem 2024-rallyet, og en ny bølge bygger nu mod en P/E på 70." />
+      <meta name="twitter:description" content="Dybdegående analyse af short-positioner i Netcompany (NETC). Shorterne dækkede gennem 2024-rallyet, og en ny bølge bygger nu mod en P/E omkring 59." />
       <meta name="twitter:image" content="https://www.zirium.dk/og-images/netcompany-2026-06-05.png" />
       <link rel="canonical" href="https://www.zirium.dk/analyse/netcompany/2026-06-05" />
       <script type="application/ld+json">{JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Article",
         "headline": "Shortanalyse: Shorterne der dækkede, og dem der kom tilbage",
-        "description": "Dybdegående analyse af short-positioner i Netcompany (NETC). Shorterne dækkede gennem 2024-rallyet, og en ny bølge bygger nu mod en P/E på 70.",
+        "description": "Dybdegående analyse af short-positioner i Netcompany (NETC). Shorterne dækkede gennem 2024-rallyet, og en ny bølge bygger nu mod en P/E omkring 59.",
         "author": { "@type": "Person", "name": "Araz Bayat Makoo" },
         "publisher": { "@type": "Organization", "name": "Zirium", "url": "https://www.zirium.dk" },
         "datePublished": "2026-06-05",
@@ -320,17 +321,17 @@ const NetcompanyAnalysisPage: React.FC = () => {
             Netcompany er en af de mest fascinerende short-historier på det danske marked, fordi den
             har to akter. Short-sælgerne sad med næsten 10% af aktien i bunden i 2023, kapitulerede
             gennem hele 2024-rallyet, og er nu vendt tilbage med en ny bølge, mens aktien handler til
-            en P/E omkring 70. Denne analyse kombinerer udviklingen i short-positionerne med selskabets
+            en rapporteret P/E omkring 59. Denne analyse kombinerer udviklingen i short-positionerne med selskabets
             rejse fra pandemi-darling til opkøbsdrevet vækstcase.
           </p>
         </header>
 
         {/* ── KPIs ── */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-12">
-          <KPI value="7,20%" label="Short-interesse (31. maj 2026)" />
-          <KPI value="343,40 DKK" label="Seneste lukkekurs (31. maj)" />
+          <KPI value="7,32%" label="Short-interesse (4. juni 2026)" />
+          <KPI value="357,00 DKK" label="Seneste lukkekurs (4. juni)" />
           <KPI value="10,17%" label="Peak short (6. nov. 2023, kursbund)" />
-          <KPI value="~70" label="P/E (markedet priser høj vækst)" />
+          <KPI value="~59" label="P/E (rapporteret, justeret ~30)" />
         </div>
 
         {/* ── 1. Overordnet billede ── */}
@@ -344,9 +345,10 @@ const NetcompanyAnalysisPage: React.FC = () => {
             hedgefonde, der både har spekuleret i værdiansættelsen og i marginpres.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-            Den aktuelle short-interesse er 7,2% per 31. maj 2026, op fra under 3% i efteråret 2024.
+            Den aktuelle short-interesse er 7,32% per 4. juni 2026, op fra under 3% i efteråret 2024.
             Det interessante er rejsen dertil: shorten toppede på 10,17% i bunden i november 2023, faldt
-            stort set lineært til 2,56% gennem 2024 i takt med at kursen næsten fordoblede sig, og er nu
+            gennem 2024 til 2,56% (med et skarpt fald i starten af 2024, da BlackRock dækkede) i takt med at
+            kursen steg cirka 70% (fra cirka 205 til over 350), og er nu
             på vej op igen. Det er ikke den samme historie som de fleste danske shortcases, hvor shorten
             følger en aktie ned. Her dækkede shorterne ind i et rally, og en ny gruppe er kommet tilbage,
             efter at aktien er steget.
@@ -446,7 +448,7 @@ const NetcompanyAnalysisPage: React.FC = () => {
         {/* ── Chart 2: Recent ── */}
         <section className="mb-12">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2">5. Den nye bølge i detaljer</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-300 mb-4">Short-interesse med volumen siden august 2025. Opbygningen fra cirka 3% til 7,2% ses tydeligt.</p>
+          <p className="text-sm text-gray-500 dark:text-gray-300 mb-4">Short-interesse med volumen siden august 2025. Opbygningen fra cirka 3% til 7,3% ses tydeligt.</p>
           <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-3 sm:p-5" role="img" aria-label="Graf: Short-interesse med volumen for Netcompany siden august 2025">
             <ResponsiveContainer width="100%" height={chartHeight}>
               <ComposedChart data={RECENT} margin={{ top: 5, right: 5, left: 0, bottom: 5 }}>
@@ -520,9 +522,9 @@ const NetcompanyAnalysisPage: React.FC = () => {
         <section className="mb-12">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">8. Hvem shorter Netcompany?</h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
-            Det mest bemærkelsesværdige ved den aktuelle short på 7,2% er, hvor lidt af den der er synlig.
-            Kun to sælgere er over indberetningstærsklen på 0,50%: Fosse Capital med 0,99% og Citadel
-            Advisors med 0,59%. Tilsammen udgør de kun 1,58%. De resterende cirka 5,62% holdes af en
+            Det mest bemærkelsesværdige ved den aktuelle short på 7,3% er, hvor lidt af den der er synlig.
+            Kun to sælgere er navngivne omkring indberetningsgrænsen på 0,50%: Fosse Capital med 0,99% og
+            PDT Partners med 0,49%. Tilsammen udgør de kun 1,48%. De resterende cirka 5,83% holdes af en
             række aktører, der hver især ligger under 0,50%, og hvis identitet derfor er ukendt. Bulken af
             væddemålet mod Netcompany er altså anonymt.
           </p>
@@ -540,7 +542,7 @@ const NetcompanyAnalysisPage: React.FC = () => {
               </thead>
               <tbody>
                 <SellerRow i={0} name="Fosse Capital Partners" position="0,99%" date="17. apr 2026" desc="Langvarig short. Toppede 1,63% i nov 2023. Reducerer nu gradvist." />
-                <SellerRow i={1} name="Citadel Advisors LLC" position="0,59%" date="29. maj 2026" desc="Genindtrådt i april 2026. Toppede 0,84% den 8. maj, trimmer siden." />
+                <SellerRow i={1} name="PDT Partners LLC" position="0,49%" date="5. juni 2026" desc="Ny kvantfond. Trådte ind i juni 2026, lige omkring indberetningsgrænsen." />
               </tbody>
             </table>
           </div>
@@ -570,7 +572,7 @@ const NetcompanyAnalysisPage: React.FC = () => {
           </div>
 
           <h3 className="text-base font-semibold text-gray-900 dark:text-white mt-8 mb-2">Fordeling af den samlede short-interesse</h3>
-          <p className="text-sm text-gray-500 dark:text-gray-300 mb-4">Cirka 78% af short-interessen holdes af aktører under 0,50%-tærsklen, hvis identitet er ukendt.</p>
+          <p className="text-sm text-gray-500 dark:text-gray-300 mb-4">Cirka 80% af short-interessen holdes af aktører under 0,50%-tærsklen, hvis identitet er ukendt.</p>
           <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-3 sm:p-5 flex justify-center" role="img" aria-label="Cirkeldiagram: Fordeling af den samlede short-interesse i Netcompany">
             <ResponsiveContainer width="100%" height={340}>
               <PieChart>
@@ -619,10 +621,11 @@ const NetcompanyAnalysisPage: React.FC = () => {
 
         {/* ── The core question ── */}
         <section className="mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">10. Det centrale spørgsmål: Fortjener Netcompany en P/E på 70?</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">10. Det centrale spørgsmål: Fortjener Netcompany sin værdiansættelse?</h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            Den nye bølge af shorts handler i sidste ende om værdiansættelsen. Med en P/E omkring 70 er der
-            ingen fejlmargin. Bull-casen og bear-casen kredser om de samme to spørgsmål: Er væksten ægte og
+            Den nye bølge af shorts handler i sidste ende om værdiansættelsen. Med en rapporteret P/E omkring
+            59 (justeret cirka 30, forward cirka 20) er aktien stadig rigt prissat, og fejlmarginen er
+            begrænset. Bull-casen og bear-casen kredser om de samme to spørgsmål: Er væksten ægte og
             organisk, og er AI en medvind eller en trussel?
           </p>
 
@@ -641,7 +644,7 @@ const NetcompanyAnalysisPage: React.FC = () => {
               <h4 className="font-semibold text-red-700 dark:text-red-400 mb-3 text-sm uppercase tracking-wide">Bear-casen</h4>
               <ul className="space-y-2 text-[15px] text-gray-700 dark:text-gray-300">
                 <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>De +38,7% er opkøbsdrevet, ikke organisk</li>
-                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>P/E omkring 70 efterlader nul fejlmargin</li>
+                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Rig værdiansættelse (P/E ~59 rapporteret, ~30 justeret)</li>
                 <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>AI kan kommoditisere skræddersyet udvikling for alle</li>
                 <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>EPS skuffede i Q1 trods omsætningsvækst</li>
                 <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Marginhistorikken viser, hvor hurtigt den kan falde</li>
@@ -651,7 +654,7 @@ const NetcompanyAnalysisPage: React.FC = () => {
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
             Den ærlige syntese er, at marginopjusteringen viser, at AI hjælper omkostningssiden i dag, men
             den afgør ikke prissætnings- og efterspørgselssiden i morgen. Det er præcis dér, shorterne
-            sigter. Marginopjusteringen siger, at optimisterne fører på point lige nu. De 7,2%, der nægter
+            sigter. Marginopjusteringen siger, at optimisterne fører på point lige nu. De 7,3%, der nægter
             at forsvinde, siger, at kampen langtfra er afgjort.
           </p>
         </section>
@@ -667,7 +670,7 @@ const NetcompanyAnalysisPage: React.FC = () => {
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             I anden akt, som vi står midt i, er en ny gruppe kommet tilbage. Denne gang handler det mindre
-            om marginpres og mere om værdiansættelse: en P/E omkring 70, en stor del af væksten købt via
+            om marginpres og mere om værdiansættelse: en rapporteret P/E omkring 59, en stor del af væksten købt via
             SDC, og et åbent spørgsmål om, hvad generativ AI gør ved konsulentmodellen på sigt. At næsten
             4/5 af short-interessen er anonym, under indberetningstærsklen, gør det svært at vide præcis,
             hvem der står bag, men retningen er tydelig: skepsissen vokser igen.
@@ -679,7 +682,7 @@ const NetcompanyAnalysisPage: React.FC = () => {
               <li>&#x2022; Organisk vækst vs. rapporteret vækst i de kommende kvartaler (NBS-effekten)</li>
               <li>&#x2022; Om den justerede EBITDA-margin ekskl. NBS faktisk lander i 17-20%</li>
               <li>&#x2022; Om short-interessen fortsætter op (overbevisning) eller vender (kapitulation)</li>
-              <li>&#x2022; Nye navngivne sælgere over 0,50%, eller om Citadel og Fosse trimmer videre</li>
+              <li>&#x2022; Nye navngivne sælgere over 0,50% (Citadel er netop trådt ud, PDT Partners ind), eller om Fosse trimmer videre</li>
               <li>&#x2022; Konkrete beviser på, at AI løfter marginen i stedet for at presse priserne</li>
             </ul>
           </div>
