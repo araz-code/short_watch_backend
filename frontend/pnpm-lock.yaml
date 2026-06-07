@@ -26,6 +26,9 @@ dependencies:
   i18next-browser-languagedetector:
     specifier: ^8.2.1
     version: 8.2.1
+  kaplay:
+    specifier: ^3001.0.19
+    version: 3001.0.19
   react:
     specifier: ^19.2.5
     version: 19.2.5
@@ -1742,6 +1745,11 @@ packages:
     engines: {node: '>=6'}
     hasBin: true
     dev: true
+
+  /kaplay@3001.0.19:
+    resolution: {integrity: sha512-T8GdXGXvgv/vbYVA1lcHzuDNVhp3juOJJE8OZs0vR5MdGNElBvANEeTSnqAAhJpSXtNxpeNy29pqkok3RnXKtg==}
+    engines: {node: '>=20.0.0'}
+    dev: false
 
   /keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}

@@ -49,6 +49,9 @@ const ObesityMarketAnalysisPageDa = lazy(() => import("./routes/ObesityMarketAna
 const ObesityMarketAnalysisPageEn = lazy(() => import("./routes/ObesityMarketAnalysisPage.en.tsx"));
 const AmbuAnalysisPageDa = lazy(() => import("./routes/AmbuAnalysisPage.tsx"));
 const AmbuAnalysisPageEn = lazy(() => import("./routes/AmbuAnalysisPage.en.tsx"));
+// Hidden easter-egg game. Not linked anywhere in the UI; reachable only via the
+// direct /arcade URL. See ArcadePage.tsx for the obscurity-not-security note.
+const ArcadePage = lazy(() => import("./routes/ArcadePage.tsx"));
 
 function ZealAnalysisPage() {
   const lng = localStorage.getItem("i18nextLng") || navigator.language;
@@ -238,6 +241,11 @@ const router = createBrowserRouter([
   {
     path: "analyse/novo/dcf",
     element: <ErrorBoundary><NovoDCFPage /></ErrorBoundary>,
+  },
+  {
+    // Unlisted easter-egg game (not in nav, noindex).
+    path: "arcade",
+    element: <ErrorBoundary><ArcadePage /></ErrorBoundary>,
   },
 ]);
 
