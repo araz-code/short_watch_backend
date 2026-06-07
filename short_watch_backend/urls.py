@@ -29,6 +29,7 @@ import os
 
 FRONTEND_DIST = os.path.join(settings.FRONTEND_DIR, 'dist')
 OG_IMAGES_DIR = os.path.join(FRONTEND_DIST, 'og-images')
+ARCADE_DIR = os.path.join(FRONTEND_DIST, 'arcade')
 
 
 @cache_control(public=True, max_age=86400)
@@ -36,6 +37,14 @@ def serve_og_image(request, path):
     """Serve an OG/analysis image with a Cache-Control header so Cloudflare and
     clients cache it at the edge instead of hitting the origin on every request."""
     return serve(request, path, document_root=OG_IMAGES_DIR)
+
+
+@cache_control(public=True, max_age=86400)
+def serve_arcade_asset(request, path):
+    """Serve the /arcade easter-egg game's sprite assets from dist/arcade.
+    Without this route /arcade/*.png falls through to the SPA catch-all and
+    returns index.html, so the images fail to load (same issue as og-images)."""
+    return serve(request, path, document_root=ARCADE_DIR)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -96,6 +105,9 @@ urlpatterns = [
     # /og-images/* falls through to the SPA catch-all and returns index.html
     # (text/html), so image loads fail. Serve the real PNGs from dist/og-images.
     re_path(r'^og-images/(?P<path>.*)$', serve_og_image),
+    # Sprite assets for the hidden /arcade game. Restricted to image files so
+    # the /arcade page route itself still falls through to the SPA catch-all.
+    re_path(r'^arcade/(?P<path>.+\.(?:png|jpe?g|webp|svg|gif))$', serve_arcade_asset),
     path('robots.txt', serve, {'path': 'robots.txt', 'document_root': FRONTEND_DIST}),
     path('sitemap.xml', lambda r: HttpResponse(
         '<?xml version="1.0" encoding="UTF-8"?>\n'
