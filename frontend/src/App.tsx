@@ -198,7 +198,7 @@ const router = createBrowserRouter([
     element: <ErrorBoundary><GNAnalysisPage /></ErrorBoundary>,
   },
   {
-    path: "analyse/netcompany/2026-06-05",
+    path: "analyse/netcompany/2026-06-10",
     element: <ErrorBoundary><NetcompanyAnalysisPage /></ErrorBoundary>,
   },
   {

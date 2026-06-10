@@ -53,8 +53,8 @@ interface PieSlice {
 }
 
 // ─── static data ────────────────────────────────────────────────────────────
-// Aggregate short interest vs. closing price (monthly downsample of the Danish
-// FSA disclosures). Source: Zirium's own data.
+// Aggregated short interest vs. closing price (monthly downsampling of the
+// Danish FSA disclosures). Source: Zirium's own data.
 const FULL_HISTORY: ChartPoint[] = [
   { date: "2023-11-30", short: 9.58, close: 218.9, volume: 247311 },
   { date: "2023-12-31", short: 8.87, close: 225.6, volume: 96992 },
@@ -87,10 +87,10 @@ const FULL_HISTORY: ChartPoint[] = [
   { date: "2026-03-31", short: 6.37, close: 390.6, volume: 197691 },
   { date: "2026-04-30", short: 6.11, close: 361.2, volume: 117291 },
   { date: "2026-05-31", short: 7.20, close: 343.4, volume: 181079 },
-  { date: "2026-06-04", short: 7.32, close: 357.0, volume: null },
+  { date: "2026-06-09", short: 7.54, close: 340.2, volume: null },
 ];
 
-const RECENT: ChartPoint[] = FULL_HISTORY.filter((d) => d.date >= "2025-08-31");
+const RECENT: ChartPoint[] = FULL_HISTORY.filter((d) => d.date >= "2025-07-31");
 
 const SELLERS: SellerSeries[] = [
   {
@@ -119,13 +119,13 @@ const SELLERS: SellerSeries[] = [
   },
   {
     name: "Citadel Advisors",
-    latest: 0.59,
+    latest: 0,
     data: [
       { date: "2023-07-18", value: 0.51 }, { date: "2023-08-18", value: 0.70 },
       { date: "2023-09-01", value: 0.49 }, { date: "2026-04-10", value: 0.52 },
       { date: "2026-04-29", value: 0.70 }, { date: "2026-05-08", value: 0.84 },
       { date: "2026-05-12", value: 0.79 }, { date: "2026-05-22", value: 0.66 },
-      { date: "2026-05-29", value: 0.59 },
+      { date: "2026-05-29", value: 0.59 }, { date: "2026-06-04", value: 0.49 },
     ],
   },
   {
@@ -150,7 +150,7 @@ const SELLERS: SellerSeries[] = [
 const PIE_DATA: PieSlice[] = [
   { name: "Fosse Capital", value: 0.99 },
   { name: "PDT Partners", value: 0.49 },
-  { name: "Below 0.50% (undisclosed)", value: 5.83 },
+  { name: "Below 0.50% (undisclosed)", value: 6.06 },
 ];
 
 const PIE_COLORS = ["#4361ee", "#2a9d8f", "#d4d4d8"];
@@ -264,32 +264,32 @@ const NetcompanyAnalysisPageEn: React.FC = () => {
   return (
     <PageTemplate>
       <title>Zirium | Netcompany (NETC) - Short Selling Analysis</title>
-      <meta name="description" content="In-depth analysis of short positions in Netcompany (NETC). The shorts covered through the 2024 rally, and a new wave is building against a P/E around 59." />
-      <meta property="og:title" content="Short selling analysis: The shorts that covered, and the ones that came back" />
-      <meta property="og:description" content="In-depth analysis of short positions in Netcompany (NETC). The shorts covered through the 2024 rally, and a new wave is building against a P/E around 59." />
+      <meta name="description" content="In-depth analysis of short positions in Netcompany (NETC). The shorts covered through the 2024 rally, and a new wave is building against a P/E around 57." />
+      <meta property="og:title" content="Short selling analysis of Netcompany: The shorts that covered, and the ones that came back" />
+      <meta property="og:description" content="In-depth analysis of short positions in Netcompany (NETC). The shorts covered through the 2024 rally, and a new wave is building against a P/E around 57." />
       <meta property="og:type" content="article" />
-      <meta property="og:url" content="https://www.zirium.dk/analyse/netcompany/2026-06-05" />
-      <meta property="og:image" content="https://www.zirium.dk/og-images/netcompany-2026-06-05-en.png" />
+      <meta property="og:url" content="https://www.zirium.dk/analyse/netcompany/2026-06-10" />
+      <meta property="og:image" content="https://www.zirium.dk/og-images/netcompany-2026-06-10-en.png" />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
       <meta property="og:image:type" content="image/png" />
       <meta property="og:site_name" content="Zirium" />
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content="Short selling analysis: The shorts that covered, and the ones that came back" />
-      <meta name="twitter:description" content="In-depth analysis of short positions in Netcompany (NETC). The shorts covered through the 2024 rally, and a new wave is building against a P/E around 59." />
-      <meta name="twitter:image" content="https://www.zirium.dk/og-images/netcompany-2026-06-05-en.png" />
-      <link rel="canonical" href="https://www.zirium.dk/analyse/netcompany/2026-06-05" />
+      <meta name="twitter:title" content="Short selling analysis of Netcompany: The shorts that covered, and the ones that came back" />
+      <meta name="twitter:description" content="In-depth analysis of short positions in Netcompany (NETC). The shorts covered through the 2024 rally, and a new wave is building against a P/E around 57." />
+      <meta name="twitter:image" content="https://www.zirium.dk/og-images/netcompany-2026-06-10-en.png" />
+      <link rel="canonical" href="https://www.zirium.dk/analyse/netcompany/2026-06-10" />
       <script type="application/ld+json">{JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Article",
-        "headline": "Short selling analysis: The shorts that covered, and the ones that came back",
-        "description": "In-depth analysis of short positions in Netcompany (NETC). The shorts covered through the 2024 rally, and a new wave is building against a P/E around 59.",
+        "headline": "Short selling analysis of Netcompany: The shorts that covered, and the ones that came back",
+        "description": "In-depth analysis of short positions in Netcompany (NETC). The shorts covered through the 2024 rally, and a new wave is building against a P/E around 57.",
         "author": { "@type": "Person", "name": "Araz Bayat Makoo" },
         "publisher": { "@type": "Organization", "name": "Zirium", "url": "https://www.zirium.dk" },
-        "datePublished": "2026-06-05",
-        "dateModified": "2026-06-05",
-        "image": "https://www.zirium.dk/og-images/netcompany-2026-06-05-en.png",
-        "mainEntityOfPage": "https://www.zirium.dk/analyse/netcompany/2026-06-05",
+        "datePublished": "2026-06-10",
+        "dateModified": "2026-06-10",
+        "image": "https://www.zirium.dk/og-images/netcompany-2026-06-10-en.png",
+        "mainEntityOfPage": "https://www.zirium.dk/analyse/netcompany/2026-06-10",
         "inLanguage": "en",
       })}</script>
 
@@ -310,47 +310,47 @@ const NetcompanyAnalysisPageEn: React.FC = () => {
 
         {/* ── Header ── */}
         <header className="mb-10 mt-4">
-          <p className="text-lg text-gray-700 dark:text-gray-200 font-medium mb-1">Analysis by Araz Bayat Makoo (Zirium) - June 5, 2026</p>
+          <p className="text-lg text-gray-700 dark:text-gray-200 font-medium mb-1">Analysis by Araz Bayat Makoo (Zirium) - June 10, 2026</p>
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-white mb-3 leading-tight">
-            Short selling analysis: The shorts that covered, and the ones that came back
+            Short selling analysis of Netcompany: The shorts that covered, and the ones that came back
           </h1>
           <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
             Netcompany Group (NETC)
           </p>
           <p className="text-gray-600 dark:text-gray-300 mt-3 leading-relaxed">
-            Netcompany is one of the most fascinating short stories on the Danish market, because it has
-            two acts. The short sellers held almost 10% of the stock at the 2023 lows, capitulated through
-            the entire 2024 rally, and have now returned with a fresh wave while the stock trades at a P/E
-            around 59 (reported). This analysis combines the evolution of the short positions with the company's
-            journey from pandemic darling to acquisition-driven growth case.
+            Netcompany is one of the most fascinating short-selling stories on the Danish market
+            because it has two acts. Short sellers held almost 10% of the stock at the 2023 lows, capitulated
+            through the entire 2024 rally, and have now returned with a new wave while the stock
+            trades at a reported P/E around 57. This analysis combines the development in the short
+            positions with the company's journey from pandemic darling to acquisition-driven growth case.
           </p>
         </header>
 
         {/* ── KPIs ── */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-12">
-          <KPI value="7.32%" label="Short interest (June 4, 2026)" />
-          <KPI value="357.00 DKK" label="Latest close (June 4)" />
-          <KPI value="10.17%" label="Peak short (Nov 6, 2023, price low)" />
-          <KPI value="~59" label="P/E (reported, adjusted ~30)" />
+          <KPI value="7.54%" label="Short interest (June 9, 2026)" />
+          <KPI value="340.20 DKK" label="Latest close (June 9)" />
+          <KPI value="10.17%" label="Peak short (Nov 6, 2023, price bottom)" />
+          <KPI value="~57" label="P/E (reported, ~30 adjusted)" />
         </div>
 
-        {/* ── 1. Overview ── */}
+        {/* ── 1. The big picture ── */}
         <section className="mb-12">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">1. The big picture</h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            Netcompany builds business-critical IT solutions, primarily for the public sector in Denmark,
-            Norway, the UK, the Netherlands, and Greece (through the former Intrasoft). It is a model with
-            high visibility and long contracts, but also with a tight link between the number of consulting
-            hours and revenue. That is precisely why the stock has become a favourite target for hedge
-            funds, betting both on the valuation and on margin pressure.
+            Netcompany builds business-critical IT solutions, primarily for the public sector in
+            Denmark, Norway, the United Kingdom, the Netherlands and Greece (through the former
+            Intrasoft). It is a model with high visibility and long contracts, but also with a tight
+            link between consultant hours and revenue. That is precisely why the stock has become a
+            favourite target for hedge funds speculating both on the valuation and on margin pressure.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-            Current short interest is 7.32% as of June 4, 2026, up from below 3% in the autumn of 2024. What
-            is interesting is the journey there: the short peaked at 10.17% at the lows in November 2023,
-            fell through 2024 to 2.56% (with a sharp drop in early 2024, when BlackRock covered) as the price
-            rose about 70% (from around 205 to over 350), and is now climbing
-            again. This is not the usual Danish short case where the short follows a stock down. Here the
-            shorts covered into a rally, and a new group has come back after the stock has risen.
+            Current short interest is 7.54% as of June 9, 2026, up from below 3% in the autumn of 2024.
+            The interesting part is how it got there: The short peaked at 10.17% at the lows in November
+            2023, fell through 2024 to 2.34% (with a sharp drop in early 2024 as BlackRock covered) as
+            the share price rose about 70% (from around 205 to above 350), and is now climbing again.
+            This is not the same story as most Danish short cases, where the short follows a stock down.
+            Here the shorts covered into a rally, and a new group has come back after the stock had risen.
           </p>
         </section>
 
@@ -362,12 +362,12 @@ const NetcompanyAnalysisPageEn: React.FC = () => {
             <ResponsiveContainer width="100%" height={chartHeight}>
               <ComposedChart data={FULL_HISTORY} margin={{ top: 5, right: 5, left: 0, bottom: 5 }}>
                 <defs>
-                  <linearGradient id="netcShortGradEn" x1="0" y1="0" x2="0" y2="1">
+                  <linearGradient id="netcShortGrad" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0%" stopColor="#007AFF" stopOpacity={0.4} />
                     <stop offset="40%" stopColor="#007AFF" stopOpacity={0.15} />
                     <stop offset="100%" stopColor="#007AFF" stopOpacity={0} />
                   </linearGradient>
-                  <filter id="netcGlowEn">
+                  <filter id="netcGlow">
                     <feGaussianBlur stdDeviation="2" result="coloredBlur" />
                     <feMerge><feMergeNode in="coloredBlur" /><feMergeNode in="SourceGraphic" /></feMerge>
                   </filter>
@@ -377,7 +377,7 @@ const NetcompanyAnalysisPageEn: React.FC = () => {
                 <YAxis yAxisId="short" orientation="right" tick={{ fontSize: 10, fill: tickColor }} tickFormatter={(v) => `${v}%`} domain={[0, 11]} tickLine={false} axisLine={false} />
                 <YAxis yAxisId="price" orientation="left" tick={{ fontSize: 10, fill: tickColor }} tickFormatter={(v) => `${v}`} domain={["dataMin - 20", "dataMax + 20"]} tickLine={false} axisLine={false} />
                 <Tooltip content={ShortPriceTooltip} cursor={{ stroke: "#007AFF", strokeWidth: 1, strokeOpacity: 0.3 }} />
-                <Area yAxisId="short" type="step" dataKey="short" stroke="#007AFF" strokeWidth={2.5} fill="url(#netcShortGradEn)" activeDot={{ r: 5, fill: "#007AFF", stroke: "#fff", strokeWidth: 2, filter: "url(#netcGlowEn)" }} />
+                <Area yAxisId="short" type="step" dataKey="short" stroke="#007AFF" strokeWidth={2.5} fill="url(#netcShortGrad)" activeDot={{ r: 5, fill: "#007AFF", stroke: "#fff", strokeWidth: 2, filter: "url(#netcGlow)" }} />
                 <Line yAxisId="price" type="monotone" dataKey="close" stroke="#a855f7" strokeWidth={2} strokeOpacity={0.8} dot={false} activeDot={{ r: 4, fill: "#a855f7", stroke: "#fff", strokeWidth: 2 }} connectNulls />
                 <ReferenceLine yAxisId="short" y={10.17} stroke="#eab308" strokeDasharray="4 4" strokeWidth={1.5} />
               </ComposedChart>
@@ -389,69 +389,72 @@ const NetcompanyAnalysisPageEn: React.FC = () => {
             </div>
           </div>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mt-4">
-            The chart tells the whole story. Note the almost perfect mirror image in 2024: as the purple
-            price line rose from around 205 to over 350, the blue short line fell from nearly 10% to below
-            3%. The shorts took losses and closed positions. From the start of 2026 the pattern reverses:
-            short interest climbs again, even while the price sits high.
+            The chart tells the whole story. Note the almost perfect mirroring in 2024: As the purple
+            price line rose from around 205 to above 350, the blue short line fell from almost 10% to
+            below 3%. The shorts took losses and closed positions. From early 2026 the pattern reverses:
+            Short interest is rising again, even with the share price at elevated levels.
           </p>
         </section>
 
         {/* ── 2. Background ── */}
         <section className="mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">3. From pandemic darling to a 75% fall</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">3. From pandemic darling to a 75% drop</h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            Netcompany was listed in June 2018 at around 155 DKK per share. During the pandemic it became
-            one of the Copenhagen exchange's most hyped growth stocks, driven by a wave of public-sector
-            digitalisation, and peaked on August 23, 2021 at 861.60 DKK. At that point the stock traded at
-            a valuation that assumed many years of high, profitable growth.
+            Netcompany was listed in June 2018 at around 155 DKK per share. During the pandemic the
+            company became one of the most hyped growth stocks on the Copenhagen exchange, driven by a
+            wave of public-sector digitalisation, and peaked at 861.60 DKK on August 23, 2021. At that
+            point the stock traded at a valuation that assumed many years of high, profitable growth.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            Two things broke the story. First, the 2022 rate hikes hit all highly valued growth stocks
-            hard, and a P/E in the 40s suddenly became hard to defend. Second, earnings came under
-            pressure: after the 2021 acquisition of Greek Intrasoft and an aggressive build-out of capacity
-            in places like the UK, costs rose faster than earnings. The net margin fell from around 11% in
-            2022 to about 5% in 2023, and earnings per share more than halved from 12.27 to 6.13 DKK.
+            Two things broke the story. First, the rate hikes of 2022 hit all highly priced growth
+            stocks hard, and a P/E in the 40s suddenly became hard to justify. Second, earnings came
+            under pressure: After the acquisition of Greece's Intrasoft in 2021 and an aggressive
+            build-out of capacity, not least in the United Kingdom, costs grew faster than earnings.
+            The net margin fell from around 11% in 2022 to about 5% in 2023, and earnings per share
+            roughly halved from 12.27 to 6.13 DKK.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-            The result was a fall of more than 75% from the top. The stock found a bottom around 200-220
-            DKK in the autumn of 2023, and this was exactly where short interest peaked. When scepticism was
-            at its greatest, the shorts held more than 10% of the stock.
+            The result was a drop of more than 75% from the top. The stock found its bottom around
+            200-220 DKK in the autumn of 2023, and that was exactly where short interest peaked. When
+            scepticism was at its highest, the shorts held more than 10% of the stock.
           </p>
         </section>
 
         {/* ── 3. 2023-2024 ── */}
         <section className="mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">4. 2023-2024: The short peak, then the capitulation</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">4. 2023-2024: The peak in short interest, then the capitulation</h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            The dominant short seller in this period was BlackRock, which steadily built its position from
-            0.65% in late 2021 to a full 3.72% in January 2024, by far the largest single position in the
-            stock ever. At the peak there were up to ten different funds with positions above 0.50%. The
-            consensus among the shorts was that the low margin was structural and that the growth premium
-            had to go.
+            The dominant short seller in this period was BlackRock, which steadily built its position
+            from 0.65% in late 2021 to a full 3.72% in January 2024, the largest named single position
+            registered in the stock. The remarkable thing is how few followed it above the threshold:
+            Even when short interest peaked at 10.17%, only BlackRock and Fosse Capital were above
+            0.50%, with around 5% between them. The rest was spread across anonymous positions below
+            the threshold. The consensus among the shorts was that the low margin was structural and
+            that the growth premium had to go.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            They were wrong, at least in the short run. Over 2024 Netcompany showed strong order intake and
-            began to restore its margin. The stock rose from around 205 DKK to over 350 DKK over the year.
-            For the shorts it was painful, and they responded by covering: BlackRock cut its position from
-            3.72% to 0.41% within a few days in late February 2024, and total short interest fell to a
-            bottom of 2.56% in October 2024.
+            They were wrong, at least in the short run. Over 2024 Netcompany showed strong order intake
+            and began to restore its margin. The stock rose from around 205 DKK to above 350 DKK during
+            the year. For the shorts it was painful, and they reacted by covering: BlackRock scaled down
+            from 3.72% over six weeks and finally cut from 2.39% to 0.41% in two days in late February
+            2024, and total short interest fell to its bottom of 2.34% on November 1, 2024.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-            It is an important lesson in the mechanics themselves: a falling short interest is not in itself
-            a buy signal. Here it fell because the shorts were losing and were forced or chose to close, not
-            because the risk in the company had disappeared.
+            It is an important lesson in the mechanics of short selling: Falling short interest is not
+            in itself a buy signal. Here it fell because the shorts were losing and were forced to close,
+            or chose to, not because the risk in the company had disappeared.
           </p>
         </section>
 
         {/* ── Chart 2: Recent ── */}
         <section className="mb-12">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2">5. The new wave in detail</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-300 mb-4">Short interest with volume since August 2025. The build from around 3% to 7.3% is clearly visible.</p>
-          <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-3 sm:p-5" role="img" aria-label="Chart: Short interest with volume for Netcompany since August 2025">
+          <p className="text-sm text-gray-500 dark:text-gray-300 mb-4">Short interest with volume since July 2025. The build from just over 3% to 7.5% is clearly visible.</p>
+          <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-3 sm:p-5" role="img" aria-label="Chart: Short interest with volume for Netcompany since July 2025">
             <ResponsiveContainer width="100%" height={chartHeight}>
               <ComposedChart data={RECENT} margin={{ top: 5, right: 5, left: 0, bottom: 5 }}>
                 <defs>
-                  <linearGradient id="netcShortGradREn" x1="0" y1="0" x2="0" y2="1">
+                  <linearGradient id="netcShortGradR" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0%" stopColor="#e63946" stopOpacity={0.3} />
                     <stop offset="100%" stopColor="#e63946" stopOpacity={0} />
                   </linearGradient>
@@ -462,7 +465,7 @@ const NetcompanyAnalysisPageEn: React.FC = () => {
                 <YAxis yAxisId="vol" hide domain={[0, 1800000]} />
                 <Tooltip content={ShortPriceTooltip} />
                 <Bar yAxisId="vol" dataKey="volume" fill={isDark ? "#555" : "#cbd5e1"} opacity={0.5} />
-                <Area yAxisId="short" type="stepAfter" dataKey="short" stroke="#e63946" strokeWidth={2.5} fill="url(#netcShortGradREn)" activeDot={{ r: 5, fill: "#e63946", stroke: "#fff", strokeWidth: 2 }} />
+                <Area yAxisId="short" type="stepAfter" dataKey="short" stroke="#e63946" strokeWidth={2.5} fill="url(#netcShortGradR)" activeDot={{ r: 5, fill: "#e63946", stroke: "#fff", strokeWidth: 2 }} />
               </ComposedChart>
             </ResponsiveContainer>
             <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-300 mt-2 px-2">
@@ -474,45 +477,49 @@ const NetcompanyAnalysisPageEn: React.FC = () => {
 
         {/* ── 4. SDC / NBS ── */}
         <section className="mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">6. The SDC acquisition: growth that was bought</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">6. The SDC acquisition: Growth that was bought</h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            In February 2025 Netcompany agreed to buy Skandinavisk Data Center (SDC) for around 1.0 billion
-            DKK, and the deal closed on July 1, 2025. SDC is a banking platform that provides IT
-            infrastructure to a wide range of Nordic banks, and the business was renamed Netcompany Banking
-            Services (NBS). The acquisition is expected to lift earnings per share from 2026 and by a
-            double-digit percentage from 2028.
+            In February 2025 Netcompany agreed to acquire Skandinavisk Data Center (SDC) for around
+            DKK 1.0 billion, and the deal closed on July 1, 2025. SDC is a banking platform that
+            provides IT infrastructure to a wide range of Nordic banks, and the business was renamed
+            Netcompany Banking Services (NBS). The acquisition is expected to lift earnings per share
+            from 2026, and by a double-digit percentage from 2028.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-            The acquisition is central to understanding the 2026 numbers. NBS adds a substantial but
-            slower-growing stream of revenue to the accounts, and it is precisely the difference between
-            reported and organic growth that has become one of the key points of contention between the
-            optimists and the shorts.
+            The acquisition is central to understanding the 2026 numbers. NBS adds substantial, but
+            slower-growing, revenue to the accounts, and it is precisely the gap between reported and
+            organic growth that has become one of the key points of contention between the optimists
+            and the shorts.
           </p>
         </section>
 
         {/* ── 5. Q1 2026 ── */}
         <section className="mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">7. Q1 2026: +38.7% on the surface, a miss underneath</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">7. Q1 2026: +38.7% on the surface, disappointment underneath</h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            On May 6, 2026 Netcompany published its Q1 report. The headline was strong: total revenue grew
-            38.7% year over year. But almost all of the difference came from NBS, which was not in the
-            comparison figures for Q1 2025. Organic growth was 13.1%, which was actually above the company's
-            own full-year guidance of 5-10% excluding NBS. Even so, the stock fell on the day, because
-            earnings per share disappointed relative to expectations.
+            On May 6, 2026 Netcompany published its Q1 results. The headline number was strong: Total
+            revenue grew 38.7% year on year in constant currencies. But almost the entire difference
+            came from NBS, which was not part of the comparison figures for Q1 2025. Organic growth was
+            13.1%, which was actually above the company's own full-year guidance of 5-10% excluding
+            NBS. Even so, the stock fell on the day because earnings per share fell short of
+            expectations.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            The most important signal for the bull case was the margin guidance. Netcompany guides an
-            adjusted EBITDA margin excluding NBS of 17-20%, and management explicitly points to AI embedded
-            in its methods and platforms as part of the explanation for the improved delivery execution. If
-            that holds, it is the rare situation where a consulting house partially breaks the linear link
-            between hours and earnings.
+            The most important signal for the bull case was the margin guidance. Netcompany had already
+            raised it on March 26, 2026 and maintained it in Q1: An adjusted EBITDA margin excluding
+            NBS of 17-20%, with management explicitly pointing to AI embedded in methodology and
+            platforms as part of the explanation for the improved delivery execution. If that holds, it
+            is the rare situation where a consultancy partially breaks the linear link between hours
+            and earnings.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-            This is exactly the point that makes Netcompany an AI story with two interpretations. The same
-            word, AI, is both the core of the bull case (we deliver more cheaply and at a higher margin) and
-            of the bear case (generative AI can eventually commoditise bespoke software development and
-            squeeze both prices and growth). The rising short positions suggest that a growing group is
-            choosing the second interpretation.
+            This is exactly the point that makes Netcompany an AI story with two interpretations. The
+            same word, AI, is at the core of both the bull case (we deliver more cheaply and at higher
+            margins) and the bear case (generative AI may eventually commoditise custom software
+            development and squeeze both prices and growth). Nobody can know whether the rising short
+            positions are driven by that particular interpretation, since most of the positions are
+            anonymous. But they show that scepticism is growing at the same time as the AI debate has
+            made the case more binary.
           </p>
         </section>
 
@@ -520,16 +527,20 @@ const NetcompanyAnalysisPageEn: React.FC = () => {
         <section className="mb-12">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">8. Who is shorting Netcompany?</h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
-            The most remarkable thing about the current 7.3% short is how little of it is visible. Only two
-            sellers are named around the 0.50% disclosure threshold: Fosse Capital at 0.99% and PDT Partners
-            at 0.49%. Together they account for just 1.48%. The remaining roughly 5.83% is held by a range of
-            players each below 0.50%, whose identity is therefore unknown. The bulk of the bet against
-            Netcompany is anonymous.
+            The most remarkable thing about the current 7.5% short is how little of it is visible. Only
+            one seller is above the 0.50% disclosure threshold: Fosse Capital at 0.99%. Citadel Advisors
+            exited on June 4, and the quant fund PDT Partners, which entered at the threshold the same
+            day, fell back to 0.49% just a day later. The remaining roughly 6.06% is held by a range of
+            players who each sit below 0.50% and whose identity is therefore unknown. The bulk of the
+            bet against Netcompany is anonymous. It is also worth remembering that rising short interest
+            is a signal, not proof: Precisely because most of it is anonymous, the 7.54% can cover
+            anything from valuation bets to hedging and quant strategies with very different time
+            horizons.
           </p>
 
           <div className="overflow-x-auto rounded-2xl border border-gray-100 dark:border-gray-800 mb-6">
             <table className="w-full text-left">
-              <caption className="sr-only">Active short sellers in Netcompany above 0.50%</caption>
+              <caption className="sr-only">Named short sellers in Netcompany around the 0.50% threshold</caption>
               <thead>
                 <tr className="bg-blue-500 text-white">
                   <th scope="col" className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">Short seller</th>
@@ -540,13 +551,13 @@ const NetcompanyAnalysisPageEn: React.FC = () => {
               </thead>
               <tbody>
                 <SellerRow i={0} name="Fosse Capital Partners" position="0.99%" date="Apr 17, 2026" desc="Long-running short. Peaked at 1.63% in Nov 2023. Now reducing gradually." />
-                <SellerRow i={1} name="PDT Partners LLC" position="0.49%" date="June 5, 2026" desc="New quant fund. Entered in June 2026, right around the disclosure threshold." />
+                <SellerRow i={1} name="PDT Partners LLC" position="0.49%" date="June 5, 2026" desc="New quant fund. Entered at the threshold on June 4 but fell below 0.50% again the next day." />
               </tbody>
             </table>
           </div>
 
-          <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-2">Position development over time</h3>
-          <p className="text-sm text-gray-500 dark:text-gray-300 mb-4">Selected short sellers' positions based on disclosures to the Danish FSA. BlackRock was the historical whale.</p>
+          <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-2">Positions over time</h3>
+          <p className="text-sm text-gray-500 dark:text-gray-300 mb-4">Selected short sellers&apos; positions based on disclosures to the Danish FSA. BlackRock was the historical whale.</p>
           <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-3 sm:p-5" role="img" aria-label="Chart: Selected short sellers' position development over time for Netcompany">
             <ResponsiveContainer width="100%" height={chartHeight}>
               <ComposedChart data={sellerChartData} margin={{ top: 5, right: 5, left: 0, bottom: 5 }}>
@@ -569,9 +580,9 @@ const NetcompanyAnalysisPageEn: React.FC = () => {
             </div>
           </div>
 
-          <h3 className="text-base font-semibold text-gray-900 dark:text-white mt-8 mb-2">Breakdown of total short interest</h3>
-          <p className="text-sm text-gray-500 dark:text-gray-300 mb-4">About 80% of the short interest is held by players below the 0.50% threshold, whose identity is unknown.</p>
-          <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-3 sm:p-5 flex justify-center" role="img" aria-label="Pie chart: Breakdown of total short interest in Netcompany">
+          <h3 className="text-base font-semibold text-gray-900 dark:text-white mt-8 mb-2">Breakdown of the total short interest</h3>
+          <p className="text-sm text-gray-500 dark:text-gray-300 mb-4">About 80% of the short interest is held by unknown players below the 0.50% threshold. PDT Partners&apos; 0.49% is only known because the fund has just fallen back below the threshold.</p>
+          <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-3 sm:p-5 flex justify-center" role="img" aria-label="Pie chart: Breakdown of the total short interest in Netcompany">
             <ResponsiveContainer width="100%" height={340}>
               <PieChart>
                 <Pie data={PIE_DATA} cx="50%" cy="50%" outerRadius={110} innerRadius={55} dataKey="value" nameKey="name" paddingAngle={2} label={({ value }) => `${Number(value).toFixed(2)}%`} labelLine={{ stroke: isDark ? "#555" : "#ccc", strokeWidth: 1 }} style={{ fontSize: 11 }}>
@@ -590,41 +601,42 @@ const NetcompanyAnalysisPageEn: React.FC = () => {
         <section className="mb-12">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-6">9. Timeline of key events</h2>
           <div className="ml-2">
-            <TimelineEvent date="June 2018" title="IPO at around 155 DKK" color="#4361ee">
-              <p>Netcompany listed on Nasdaq Copenhagen. Even then the company was known for its fixed-price delivery model and its dominance in public-sector digitalisation in Denmark.</p>
+            <TimelineEvent date="June 2018" title="Listed at around 155 DKK" color="#4361ee">
+              <p>Netcompany was listed on Nasdaq Copenhagen. Even then the company was known for its fixed delivery model and its dominance in public-sector digitalisation in Denmark.</p>
             </TimelineEvent>
             <TimelineEvent date="August 2021" title="All-time high: 861.60 DKK" color="#2a9d8f">
-              <p>The pandemic digitalisation wave and the acquisition of Greek Intrasoft made Netcompany one of the exchange's most expensive growth stocks. The valuation assumed many years of high, profitable growth.</p>
+              <p>The pandemic&apos;s digitalisation wave and the acquisition of Greece&apos;s Intrasoft made Netcompany one of the exchange&apos;s most expensive growth stocks. The valuation assumed many years of high, profitable growth.</p>
             </TimelineEvent>
             <TimelineEvent date="2022-2023" title="Rate shock and margin pressure: -75%" color="#e63946">
-              <p>Rising rates hit highly valued growth stocks, and at the same time the net margin fell from around 11% to 5%, while earnings per share more than halved. The stock fell over 75% from the top.</p>
+              <p>Rising rates hit highly priced growth stocks, and at the same time the net margin fell from around 11% to 5% while earnings per share roughly halved. The stock fell more than 75% from the top.</p>
             </TimelineEvent>
             <TimelineEvent date="November 2023" title="Short interest peaks at 10.17%" color="#e63946">
-              <p>As the price bottomed around 205 DKK, the short sellers held more than 10% of the stock. BlackRock was the largest, with a position heading toward 3.72%. Scepticism was at its peak.</p>
+              <p>With the share price bottoming around 205 DKK, short sellers held more than 10% of the stock. BlackRock was the largest with a position heading towards 3.72%. Scepticism was at its peak.</p>
             </TimelineEvent>
             <TimelineEvent date="February 2024" title="The capitulation begins" color="#2a9d8f">
-              <p>As order intake stayed strong and the price rose, BlackRock cut its position from 3.72% to 0.41% within a few days. That kicked off a broad decline in short interest through 2024.</p>
+              <p>Amid strong order intake and a rising share price, BlackRock scaled its position down from 3.72% and finally cut from 2.39% to 0.41% in two days. It marked the start of a broad decline in short interest through 2024.</p>
             </TimelineEvent>
-            <TimelineEvent date="October 2024" title="Short interest bottoms at 2.56%" color="#4361ee">
-              <p>The stock had risen above 320 DKK, and short interest had fallen to its lowest level. For a moment it looked as if the short case was dead.</p>
+            <TimelineEvent date="November 2024" title="Short interest bottoms at 2.34%" color="#4361ee">
+              <p>The stock had risen to around 320 DKK, and on November 1 short interest hit its lowest level. For a while the short case looked dead.</p>
             </TimelineEvent>
             <TimelineEvent date="July 1, 2025" title="The SDC acquisition closes" color="#4361ee">
-              <p>Netcompany completed the purchase of Skandinavisk Data Center for around 1.0 billion DKK and renamed it Netcompany Banking Services. The acquisition adds substantial revenue to the accounts from 2026.</p>
+              <p>Netcompany completed the acquisition of Skandinavisk Data Center for around DKK 1.0 billion and renamed it Netcompany Banking Services. The acquisition adds substantial revenue to the accounts from 2026.</p>
             </TimelineEvent>
             <TimelineEvent date="May 6, 2026" title="Q1 2026: Strong growth, but an EPS miss" color="#e63946">
-              <p>Total revenue growth of 38.7% (driven by NBS), organic growth of 13.1% above guidance, and margin guidance excluding NBS of 17-20% with AI as the explanation. Even so, the stock fell on an EPS miss. Short interest was heading toward 7%.</p>
+              <p>Total revenue growth of 38.7% in constant currencies (driven by NBS), organic growth of 13.1% above guidance, and margin guidance excluding NBS of 17-20% with AI as the explanation. Even so, the stock fell on an EPS miss. Short interest was heading towards 7%.</p>
             </TimelineEvent>
           </div>
         </section>
 
         {/* ── The core question ── */}
         <section className="mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">10. The central question: does Netcompany deserve its valuation?</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">10. The core question: Does Netcompany deserve its valuation?</h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            The new wave of shorts is ultimately about the valuation. With a reported P/E around 59
-            (about 30 adjusted, about 20 on a forward basis) the stock is still richly valued, and there is
-            limited margin for error. The bull case and the bear case both revolve around the same two questions: is
-            the growth real and organic, and is AI a tailwind or a threat?
+            The new wave of shorts is ultimately about the valuation. At a reported P/E around 57
+            (about 30 adjusted for acquisition amortisation and integration costs, 14-16 on analysts&apos;
+            2026 estimates), the stock is still richly priced and the margin for error is limited. The
+            bull case and the bear case revolve around the same two questions: Is the growth real and
+            organic, and is AI a tailwind or a threat?
           </p>
 
           <div className="grid sm:grid-cols-2 gap-4 mb-4">
@@ -633,7 +645,7 @@ const NetcompanyAnalysisPageEn: React.FC = () => {
               <ul className="space-y-2 text-[15px] text-gray-700 dark:text-gray-300">
                 <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Organic growth of 13.1% in Q1, above guidance</li>
                 <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Margin guidance raised to 17-20% excluding NBS</li>
-                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>AI lowers delivery cost and lifts the margin</li>
+                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>AI lowers delivery costs and lifts margins</li>
                 <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Sticky, long-term public-sector contracts</li>
                 <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>NBS is EPS accretive from 2026</li>
               </ul>
@@ -642,18 +654,20 @@ const NetcompanyAnalysisPageEn: React.FC = () => {
               <h4 className="font-semibold text-red-700 dark:text-red-400 mb-3 text-sm uppercase tracking-wide">The bear case</h4>
               <ul className="space-y-2 text-[15px] text-gray-700 dark:text-gray-300">
                 <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>The +38.7% is acquisition-driven, not organic</li>
-                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Richly valued (P/E ~59 reported, ~30 adjusted)</li>
-                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>AI can commoditise bespoke development for everyone</li>
-                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>EPS missed in Q1 despite revenue growth</li>
-                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>The margin history shows how fast it can fall</li>
+                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Rich valuation (P/E ~57 reported, ~30 adjusted)</li>
+                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>AI may commoditise custom development for everyone</li>
+                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>EPS disappointed in Q1 despite revenue growth</li>
+                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>The margin history shows how quickly it can fall</li>
               </ul>
             </div>
           </div>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-            The honest synthesis is that the margin upgrade shows AI is helping the cost side today, but it
-            does not settle the pricing and demand side tomorrow. That is precisely where the shorts are
-            aiming. The margin upgrade says the optimists are ahead on points right now. The 7.3% that
-            refuses to disappear says the fight is far from over.
+            The honest synthesis is that the margin upgrade shows AI is helping the cost side today,
+            but it does not settle the pricing and demand side of tomorrow, and that is where the bear
+            case has its strongest argument. Likewise, the bought growth from SDC is not a problem in
+            itself; it only becomes a bear argument if the integration or the return on the acquisition
+            disappoints. The margin upgrade says the optimists are ahead on points right now. The 7.5%
+            that is not just staying but growing says the battle is far from settled.
           </p>
         </section>
 
@@ -661,44 +675,49 @@ const NetcompanyAnalysisPageEn: React.FC = () => {
         <section className="mb-12">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">11. Conclusion</h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            Netcompany is a rare short case with two acts. In the first act the shorts held almost 10% at the
-            2023 lows, underestimated the company's ability to restore its margin, and capitulated through
-            the entire 2024 rally. It is a reminder that a high short interest is no guarantee that a stock
-            will fall, and that a falling short interest is not a buy signal in itself.
+            Netcompany is a rare short case with two acts. In the first act the shorts held almost 10%
+            at the 2023 lows, underestimated the company&apos;s ability to restore its margin, and
+            capitulated through the entire 2024 rally. It is a reminder that high short interest is no
+            guarantee that a stock will fall, and that falling short interest is not a buy signal in
+            itself.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            In the second act, which we are in the middle of, a new group has come back. This time it is less
-            about margin pressure and more about valuation: a reported P/E around 59, a large part of the growth bought
-            via SDC, and an open question about what generative AI does to the consulting model over time. The
-            fact that nearly 4/5 of the short interest is anonymous, below the disclosure threshold, makes it
-            hard to know exactly who is behind it, but the direction is clear: scepticism is growing again.
+            In the second act, which we are in the middle of, a new group has come back. This time it
+            is less about margin pressure and more about valuation: A reported P/E around 57, a large
+            share of the growth bought via SDC, and an open question about what generative AI will do
+            to the consulting model over time. With about four fifths of the short interest anonymous,
+            below the disclosure threshold, it is hard to know exactly who is behind it, but the
+            direction is clear: Scepticism is growing again.
           </p>
 
           <div className="bg-gray-50 dark:bg-[#15151a] rounded-2xl border border-gray-100 dark:border-gray-800 p-5 mt-6">
             <h4 className="font-semibold text-gray-900 dark:text-white mb-3">Upcoming catalysts to watch</h4>
             <ul className="space-y-1.5 text-[15px] text-gray-600 dark:text-gray-300">
               <li>&#x2022; Organic vs. reported growth in the coming quarters (the NBS effect)</li>
-              <li>&#x2022; Whether the adjusted EBITDA margin excluding NBS actually lands in 17-20%</li>
-              <li>&#x2022; Whether short interest keeps rising (conviction) or turns (capitulation)</li>
-              <li>&#x2022; New named sellers above 0.50% (Citadel has just exited, PDT Partners entered), or whether Fosse keeps trimming</li>
-              <li>&#x2022; Concrete evidence that AI lifts the margin rather than squeezing prices</li>
+              <li>&#x2022; Whether the adjusted EBITDA margin excluding NBS actually lands at 17-20%</li>
+              <li>&#x2022; Whether short interest keeps climbing (conviction) or turns (capitulation)</li>
+              <li>&#x2022; New named sellers above 0.50% (Citadel has just exited, and PDT Partners fell below the threshold after one day), or whether Fosse keeps trimming</li>
+              <li>&#x2022; Concrete evidence that AI lifts margins rather than squeezing prices</li>
             </ul>
           </div>
         </section>
 
-        <FeedbackWidget pageType="analysis" pageId="netcompany/2026-06-05" />
-        <RelatedAnalyses currentSlug="netcompany/2026-06-05" />
+        <FeedbackWidget pageType="analysis" pageId="netcompany/2026-06-10" />
+        <RelatedAnalyses currentSlug="netcompany/2026-06-10" />
 
         {/* ── Disclaimer ── */}
         <footer className="border-t border-gray-100 dark:border-gray-800 pt-6">
           <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed text-center">
+            <strong>Sources:</strong> The Danish FSA&apos;s register of large short positions via Zirium
+            (aggregated short interest from October 2023, named positions from 2021), Yahoo Finance via
+            yfinance (price data), Netcompany&apos;s annual and interim reports, and analysts&apos;
+            consensus estimates.{" "}
             <strong>Disclaimer:</strong> This analysis is for informational purposes only and does not
-            constitute investment advice. Data comes from the Danish FSA's public registers and the
-            company's own reports. Past performance is not a guarantee of future returns. Always do your own
-            analysis and seek professional advice before trading.
+            constitute investment advice. Past performance is not a guarantee of future returns. Always
+            do your own analysis and seek professional advice before trading.
           </p>
           <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-3">
-            Copyright Zirium  |  June 5, 2026
+            Copyright Zirium  |  June 10, 2026
           </p>
         </footer>
       </article>
