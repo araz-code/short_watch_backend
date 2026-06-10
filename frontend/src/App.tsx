@@ -49,6 +49,8 @@ const ObesityMarketAnalysisPageDa = lazy(() => import("./routes/ObesityMarketAna
 const ObesityMarketAnalysisPageEn = lazy(() => import("./routes/ObesityMarketAnalysisPage.en.tsx"));
 const AmbuAnalysisPageDa = lazy(() => import("./routes/AmbuAnalysisPage.tsx"));
 const AmbuAnalysisPageEn = lazy(() => import("./routes/AmbuAnalysisPage.en.tsx"));
+const NetcompanyAnalysisPageDa = lazy(() => import("./routes/NetcompanyAnalysisPage.tsx"));
+const NetcompanyAnalysisPageEn = lazy(() => import("./routes/NetcompanyAnalysisPage.en.tsx"));
 
 function ZealAnalysisPage() {
   const lng = localStorage.getItem("i18nextLng") || navigator.language;
@@ -85,6 +87,10 @@ function AmbuAnalysisPage() {
 function ObesityMarketAnalysisPage() {
   const lng = localStorage.getItem("i18nextLng") || navigator.language;
   return lng.startsWith("da") ? <ObesityMarketAnalysisPageDa /> : <ObesityMarketAnalysisPageEn />;
+}
+function NetcompanyAnalysisPage() {
+  const lng = localStorage.getItem("i18nextLng") || navigator.language;
+  return lng.startsWith("da") ? <NetcompanyAnalysisPageDa /> : <NetcompanyAnalysisPageEn />;
 }
 
 type ConsentButtonProps = {
@@ -190,6 +196,14 @@ const router = createBrowserRouter([
   {
     path: "analyse/gn",
     element: <ErrorBoundary><GNAnalysisPage /></ErrorBoundary>,
+  },
+  {
+    path: "analyse/netcompany/2026-06-10",
+    element: <ErrorBoundary><NetcompanyAnalysisPage /></ErrorBoundary>,
+  },
+  {
+    path: "analyse/netcompany",
+    element: <ErrorBoundary><NetcompanyAnalysisPage /></ErrorBoundary>,
   },
   {
     path: "analyse/zeal/gennemsnitspris/2026-05-14",

@@ -385,6 +385,7 @@ def analysis_all_time_unique_ips() -> dict:
     c25_analysis = set()
     ambu_analysis = set()
     obesity_analysis = set()
+    netcompany_analysis = set()
     analysis_overview = set()
 
     for entry in queryset:
@@ -417,6 +418,8 @@ def analysis_all_time_unique_ips() -> dict:
             ambu_analysis.add(ip)
         if "/stats/visit/obesity-analysis" in url:
             obesity_analysis.add(ip)
+        if "/stats/visit/netcompany-analysis" in url:
+            netcompany_analysis.add(ip)
         if "/stats/visit/analysis/" in url:
             analysis_overview.add(ip)
 
@@ -431,6 +434,7 @@ def analysis_all_time_unique_ips() -> dict:
         'c25_analysis': c25_analysis,
         'ambu_analysis': ambu_analysis,
         'obesity_analysis': obesity_analysis,
+        'netcompany_analysis': netcompany_analysis,
         'analysis_overview': analysis_overview,
     }
 
@@ -455,6 +459,7 @@ def analysis_all_time_view_counts() -> dict:
         'c25_analysis': 0,
         'ambu_analysis': 0,
         'obesity_analysis': 0,
+        'netcompany_analysis': 0,
         'analysis_overview': 0,
     }
 
@@ -482,6 +487,8 @@ def analysis_all_time_view_counts() -> dict:
             counts['ambu_analysis'] += 1
         if "/stats/visit/obesity-analysis" in url:
             counts['obesity_analysis'] += 1
+        if "/stats/visit/netcompany-analysis" in url:
+            counts['netcompany_analysis'] += 1
         if "/stats/visit/analysis/" in url:
             counts['analysis_overview'] += 1
 
@@ -515,6 +522,7 @@ def today_visit_buckets(for_date=None) -> dict:
     c25_analysis = set()
     ambu_analysis = set()
     obesity_analysis = set()
+    netcompany_analysis = set()
     analysis_overview = set()
     bots = set()
     bots_by_name = {}  # fragment -> set of IPs
@@ -601,6 +609,8 @@ def today_visit_buckets(for_date=None) -> dict:
             ambu_analysis.add(ip)
         if "/stats/visit/obesity-analysis" in url:
             obesity_analysis.add(ip)
+        if "/stats/visit/netcompany-analysis" in url:
+            netcompany_analysis.add(ip)
         if "/stats/visit/analysis/" in url:
             analysis_overview.add(ip)
 
@@ -626,6 +636,7 @@ def today_visit_buckets(for_date=None) -> dict:
         'c25_analysis': c25_analysis,
         'ambu_analysis': ambu_analysis,
         'obesity_analysis': obesity_analysis,
+        'netcompany_analysis': netcompany_analysis,
         'analysis_overview': analysis_overview,
         'bots': bots, 'bots_by_name': bots_by_name,
     }
