@@ -51,6 +51,7 @@ const AmbuAnalysisPageDa = lazy(() => import("./routes/AmbuAnalysisPage.tsx"));
 const AmbuAnalysisPageEn = lazy(() => import("./routes/AmbuAnalysisPage.en.tsx"));
 const NetcompanyAnalysisPageDa = lazy(() => import("./routes/NetcompanyAnalysisPage.tsx"));
 const NetcompanyAnalysisPageEn = lazy(() => import("./routes/NetcompanyAnalysisPage.en.tsx"));
+const CHEMMAnalysisPageDa = lazy(() => import("./routes/CHEMMAnalysisPage.tsx"));
 
 function ZealAnalysisPage() {
   const lng = localStorage.getItem("i18nextLng") || navigator.language;
@@ -91,6 +92,10 @@ function ObesityMarketAnalysisPage() {
 function NetcompanyAnalysisPage() {
   const lng = localStorage.getItem("i18nextLng") || navigator.language;
   return lng.startsWith("da") ? <NetcompanyAnalysisPageDa /> : <NetcompanyAnalysisPageEn />;
+}
+function CHEMMAnalysisPage() {
+  // English version pending; Danish is shown for all languages until it exists
+  return <CHEMMAnalysisPageDa />;
 }
 
 type ConsentButtonProps = {
@@ -188,6 +193,14 @@ const router = createBrowserRouter([
   {
     path: "analyse/zeal",
     element: <ErrorBoundary><ZealAnalysisPage /></ErrorBoundary>,
+  },
+  {
+    path: "analyse/chemm/2026-06-17",
+    element: <ErrorBoundary><CHEMMAnalysisPage /></ErrorBoundary>,
+  },
+  {
+    path: "analyse/chemm",
+    element: <ErrorBoundary><CHEMMAnalysisPage /></ErrorBoundary>,
   },
   {
     path: "analyse/gn/2026-05-14",

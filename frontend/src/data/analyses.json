@@ -6,6 +6,28 @@
   },
   "analyses": [
     {
+      "slug": "chemm/2026-06-17",
+      "accentColor": "#007AFF",
+      "code": "",
+      "title": "ChemoMetec (CHEMM)",
+      "subtitle": {
+        "da": "Shortanalyse: Shorterne missede kollapset og jagter nu rekylen",
+        "en": "Short selling analysis: The shorts missed the collapse and now chase the rebound"
+      },
+      "excerpt": {
+        "da": "Dybdegående analyse af short-positioner i ChemoMetec (CHEMM). Shorterne var næsten ude, da aktien kollapsede, og bygger nu op igen efter rekylen.",
+        "en": "In-depth analysis of short positions in ChemoMetec (CHEMM). The shorts were almost out when the stock collapsed, and are now building up again after the rebound."
+      },
+      "date": {
+        "da": "17. juni 2026",
+        "en": "June 17, 2026"
+      },
+      "readingMinutes": 10,
+      "ogImage": "chemm-2026-06-17",
+      "ogTitle": "Shortanalyse: Shorterne missede kollapset og jagter nu rekylen",
+      "ogDescription": "Dybdegående analyse af short-positioner i ChemoMetec (CHEMM). Shorterne var næsten ude, da aktien kollapsede, og bygger nu op igen efter rekylen."
+    },
+    {
       "slug": "netcompany/2026-06-10",
       "accentColor": "#1D4ED8",
       "code": "DK0060952919",
