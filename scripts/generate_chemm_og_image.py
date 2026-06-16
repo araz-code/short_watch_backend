@@ -86,3 +86,4 @@ def render(headline: str, byline: str, out_name: str) -> None:
 
 
 render("ChemoMetec: Shorterne missede kollapset", "Araz Bayat Makoo  ·  17. juni 2026", "chemm-2026-06-17.png")
+render("ChemoMetec: The shorts missed the collapse", "Araz Bayat Makoo  ·  June 17, 2026", "chemm-2026-06-17-en.png")

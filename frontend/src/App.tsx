@@ -52,6 +52,7 @@ const AmbuAnalysisPageEn = lazy(() => import("./routes/AmbuAnalysisPage.en.tsx")
 const NetcompanyAnalysisPageDa = lazy(() => import("./routes/NetcompanyAnalysisPage.tsx"));
 const NetcompanyAnalysisPageEn = lazy(() => import("./routes/NetcompanyAnalysisPage.en.tsx"));
 const CHEMMAnalysisPageDa = lazy(() => import("./routes/CHEMMAnalysisPage.tsx"));
+const CHEMMAnalysisPageEn = lazy(() => import("./routes/CHEMMAnalysisPage.en.tsx"));
 
 function ZealAnalysisPage() {
   const lng = localStorage.getItem("i18nextLng") || navigator.language;
@@ -94,8 +95,8 @@ function NetcompanyAnalysisPage() {
   return lng.startsWith("da") ? <NetcompanyAnalysisPageDa /> : <NetcompanyAnalysisPageEn />;
 }
 function CHEMMAnalysisPage() {
-  // English version pending; Danish is shown for all languages until it exists
-  return <CHEMMAnalysisPageDa />;
+  const lng = localStorage.getItem("i18nextLng") || navigator.language;
+  return lng.startsWith("da") ? <CHEMMAnalysisPageDa /> : <CHEMMAnalysisPageEn />;
 }
 
 type ConsentButtonProps = {
