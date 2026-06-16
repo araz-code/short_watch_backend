@@ -8,6 +8,33 @@ interface State {
   hasError: boolean;
 }
 
+// True when an error comes from a lazily-loaded chunk that can no longer be
+// fetched. This happens to clients running an old build after a new deploy:
+// the old hashed chunk files are gone, so the dynamic import() 404s. Browsers
+// word this differently, so we match all the common variants.
+export function isChunkLoadError(error: unknown): boolean {
+  const msg = error instanceof Error ? `${error.name} ${error.message}` : String(error);
+  return (
+    /ChunkLoadError/i.test(msg) ||
+    /Loading chunk [\w-]+ failed/i.test(msg) ||
+    /dynamically imported module/i.test(msg) ||
+    /Importing a module script failed/i.test(msg)
+  );
+}
+
+// Reload at most once per 10s window, so a genuine (non-chunk) error that keeps
+// throwing on the fresh build can never loop forever.
+export function reloadForNewBuild(): boolean {
+  const KEY = "chunk-reload-at";
+  const last = Number(sessionStorage.getItem(KEY) || 0);
+  if (Date.now() - last > 10000) {
+    sessionStorage.setItem(KEY, String(Date.now()));
+    window.location.reload();
+    return true;
+  }
+  return false;
+}
+
 class ErrorBoundary extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
@@ -16,6 +43,13 @@ class ErrorBoundary extends React.Component<Props, State> {
 
   static getDerivedStateFromError(): State {
     return { hasError: true };
+  }
+
+  componentDidCatch(error: unknown) {
+    // A stale chunk after a deploy: pull the new build instead of showing an error.
+    if (isChunkLoadError(error)) {
+      reloadForNewBuild();
+    }
   }
 
   render() {
