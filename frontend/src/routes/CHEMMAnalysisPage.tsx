@@ -66,6 +66,7 @@ const FULL_HISTORY = [
   { date: "2026-05-06", short: 3.36, close: 321.6 },
   { date: "2026-06-01", short: 3.79, close: 357.4 },
   { date: "2026-06-09", short: 3.47, close: 383.6 },
+  { date: "2026-06-16", short: 3.54, close: 368.8 },
 ];
 
 // Daily detail for 2026 (sampled)
@@ -104,6 +105,8 @@ const ZOOM_2026 = [
   { date: "2026-06-01", short: 3.79, close: 357.4 },
   { date: "2026-06-04", short: 3.68, close: 377.6 },
   { date: "2026-06-09", short: 3.47, close: 383.6 },
+  { date: "2026-06-11", short: 3.4, close: 376.6 },
+  { date: "2026-06-16", short: 3.54, close: 368.8 },
 ];
 
 // Price flow of the 2026 rebuild (since Feb 1), thousands of shares per
@@ -189,10 +192,16 @@ function FlowTooltip({ active, payload }: TooltipContentProps<ValueType, NameTyp
   );
 }
 
-function KPI({ value, label }: { value: string; label: string }) {
+function KPI({ value, label, highlight, tone = "blue" }: { value: string; label: string; highlight?: boolean; tone?: "blue" | "red" | "green" }) {
+  const toneClasses = {
+    blue:  { bg: "bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800",             text: "text-blue-600 dark:text-blue-400" },
+    red:   { bg: "bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800",                 text: "text-red-700 dark:text-red-400" },
+    green: { bg: "bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800", text: "text-emerald-700 dark:text-emerald-400" },
+  };
+  const t = toneClasses[tone];
   return (
-    <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-5 text-center">
-      <p className="text-lg sm:text-xl font-bold tabular-nums text-gray-900 dark:text-white">{value}</p>
+    <div className={`rounded-2xl border p-4 sm:p-5 text-center ${highlight ? t.bg : "bg-white dark:bg-[#19191f] border-gray-100 dark:border-gray-800"}`}>
+      <p className={`text-lg sm:text-xl font-bold tabular-nums ${highlight ? t.text : "text-gray-900 dark:text-white"}`}>{value}</p>
       <p className="text-xs text-gray-500 dark:text-gray-300 mt-1 leading-tight">{label}</p>
     </div>
   );
@@ -297,7 +306,7 @@ const CHEMMAnalysisPage: React.FC = () => {
           <p className="text-gray-600 dark:text-gray-300 mt-3 leading-relaxed">
             ChemoMetec er en af de mærkeligste shorthistorier på det danske marked. Aktien var blandt de
             mest shortede i 2023-24, men da den i foråret 2026 leverede sit største endagsfald nogensinde,
-            var shorterne stort set ude. Nu, efter at aktien er steget over 60% fra bunden, bygger et helt
+            var shorterne stort set ude. Nu, efter at aktien er steget ca. 56% fra bunden, bygger et helt
             nyt hold af fonde positioner op igen. Denne analyse gennemgår forløbet i fire akter og fletter
             den fundamentale baggrund ind undervejs.
           </p>
@@ -305,10 +314,10 @@ const CHEMMAnalysisPage: React.FC = () => {
 
         {/* ── KPIs ── */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-12">
-          <KPI value="3,47%" label="Short-interesse (9. juni)" />
-          <KPI value="383,60 DKK" label="Seneste lukkekurs (9. juni)" />
-          <KPI value="-52%" label="Fra toppen (792 DKK, okt. 2025)" />
-          <KPI value="+62%" label="Fra bunden (236,80 DKK, 24. marts)" />
+          <KPI value="3,54%" label="Short-interesse (16. juni)" highlight tone="blue" />
+          <KPI value="368,80 DKK" label="Seneste lukkekurs (16. juni)" />
+          <KPI value="-53%" label="Fra toppen (792 DKK, okt. 2025)" highlight tone="red" />
+          <KPI value="+56%" label="Fra bunden (236,80 DKK, 24. marts)" highlight tone="green" />
         </div>
 
         {/* ── 1. Overordnet billede ── */}
@@ -467,13 +476,15 @@ const CHEMMAnalysisPage: React.FC = () => {
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">7. Akt 4: Genopbygningen efter bunden</h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             Først efter kollapset kom shorterne tilbage. Fra bunden på 0,29% i februar er short-interessen
-            steget støt til en foreløbig top på 3,79% den 1. juni, senest 3,47% den 9. juni. Det svarer til
-            en netto-opbygning på ca. 553.000 aktier på fire måneder i et selskab med kun 17,4 mio. aktier
-            udestående. Den aktuelle position har en markedsværdi på ca. 232 mio. DKK.
+            steget støt til en foreløbig top på 3,79% den 1. juni, senest 3,54% i midten af juni. Det svarer til
+            en netto-opbygning på ca. 565.000 aktier på godt fire måneder i et selskab med kun 17,4 mio. aktier
+            udestående. Den aktuelle position har en markedsværdi på ca. 227 mio. DKK.
           </p>
           <p className="text-sm text-gray-500 dark:text-gray-300 mb-4">
-            Prisstrømmen nedenfor viser, ved hvilke kurser 2026-opbygningen er sket (metoden er forklaret i
-            vores prisstrøm-analyse af GN). Rød = netto åbnede shorts, grøn = netto dækkede.
+            Prisstrømmen nedenfor er en modelberegning af, ved hvilke kurser 2026-opbygningen er sket. Den
+            bygger udelukkende på nettoændringer i de offentliggjorte positioner (metoden er forklaret i vores
+            prisstrøm-analyse af GN), så de enkelte tal er estimater og ikke observerede handelskurser. Rød =
+            netto åbnede shorts, grøn = netto dækkede.
           </p>
           <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-3 sm:p-5" role="img" aria-label="Graf: Netto prisstrøm per kursbånd for ChemoMetec siden februar 2026">
             <ResponsiveContainer width="100%" height={chartHeight}>
@@ -483,7 +494,7 @@ const CHEMMAnalysisPage: React.FC = () => {
                 <YAxis tick={{ fontSize: 10, fill: tickColor }} tickFormatter={(v) => `${v}`} label={{ value: "1.000 aktier", angle: -90, position: "insideLeft", fontSize: 10, fill: tickColor }} />
                 <Tooltip content={FlowTooltip} cursor={{ fill: isDark ? "#ffffff10" : "#00000008" }} />
                 <ReferenceLine y={0} stroke={isDark ? "#555" : "#ccc"} />
-                <ReferenceLine x={377.1} stroke="#eab308" strokeDasharray="4 4" strokeWidth={1.5} />
+                <ReferenceLine x={362.5} stroke="#eab308" strokeDasharray="4 4" strokeWidth={1.5} />
                 <Bar dataKey="net" radius={[3, 3, 0, 0]}>
                   {FLOW_2026.map((b) => (
                     <Cell key={b.mid} fill={b.net > 0 ? "#e63946" : "#2a9d8f"} />
@@ -494,20 +505,21 @@ const CHEMMAnalysisPage: React.FC = () => {
             <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-300 mt-2 px-2">
               <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-[#e63946] inline-block" />Netto åbnet</span>
               <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-[#2a9d8f] inline-block" />Netto dækket</span>
-              <span className="flex items-center gap-1.5"><span className="inline-flex items-center gap-[2px]"><span className="w-[4px] h-[2px] bg-[#eab308] inline-block" /><span className="w-[4px] h-[2px] bg-[#eab308] inline-block" /></span>Kurs i dag (~384 DKK)</span>
+              <span className="flex items-center gap-1.5"><span className="inline-flex items-center gap-[2px]"><span className="w-[4px] h-[2px] bg-[#eab308] inline-block" /><span className="w-[4px] h-[2px] bg-[#eab308] inline-block" /></span>Kurs i dag (~369 DKK)</span>
             </div>
           </div>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mt-4 mb-4">
             Opbygningen er sket bredt i intervallet ca. 295-435 DKK med de tungeste bånd omkring 300-330
             og 400 DKK. Vores estimat på den vægtede gennemsnitskurs for alle nye shorts siden februar er
-            ca. 363 DKK. Med en aktuel kurs på 383,60 DKK er den samlede 2026-årgang altså allerede ca.
-            5-6% i minus.
+            ca. 363 DKK. Med en aktuel kurs på 368,80 DKK er den samlede 2026-årgang altså allerede ca.
+            2% i minus.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
             Endnu mere markant ser det ud for de shorts, der er åbnet efter nedjusteringen den 24. marts:
             Her er der brutto åbnet ca. 712.000 aktier til en estimeret gennemsnitskurs på kun ca. 326 DKK.
-            De positioner er ved kurs 384 omkring 18% i minus. Shorterne har med andre ord ikke fanget
-            faldet, men er i stedet gået ind imod rekylen, og indtil videre har rekylen vundet.
+            De positioner er ved kurs 369 omkring 13% i minus (modelestimat). Shorterne har med andre ord
+            ikke fanget faldet, men er i stedet gået ind imod rekylen, og indtil videre er aktien steget
+            videre fra bunden.
           </p>
         </section>
 
@@ -548,9 +560,9 @@ const CHEMMAnalysisPage: React.FC = () => {
                 </tr>
                 <tr className="bg-white dark:bg-[#19191f]">
                   <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white whitespace-nowrap">Under 0,50% (ukendte)</td>
-                  <td className="px-4 py-3 text-sm tabular-nums font-semibold text-red-500">~2,07%</td>
+                  <td className="px-4 py-3 text-sm tabular-nums font-semibold text-red-500">~2,14%</td>
                   <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">-</td>
-                  <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-300 hidden sm:table-cell">Differencen op til de samlede 3,47%.</td>
+                  <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-300 hidden sm:table-cell">Differencen op til de samlede 3,54%.</td>
                 </tr>
               </tbody>
             </table>
@@ -603,8 +615,8 @@ const CHEMMAnalysisPage: React.FC = () => {
             <TimelineEvent date="6. maj 2026" title="Q3 bedre end frygtet, lille opjustering og tilbagekøb" color="#2a9d8f">
               <p>Q3-omsætning på 142,3 mio. DKK (+15%) og EBITDA på 84,5 mio. DKK (+33%, inkl. en positiv IFRS-engangseffekt på 15,1 mio.). Guidance justeret op til 505-525 mio. DKK og EBITDA 275-290 mio. DKK. Fra 18. maj til 8. oktober 2026 kører et aktietilbagekøb på op til 500.000 aktier (2,9% af kapitalen), maks. 100 mio. DKK.</p>
             </TimelineEvent>
-            <TimelineEvent date="Juni 2026" title="Rekyl til 384 DKK, short-interessen topper foreløbigt" color="#4361ee">
-              <p>Aktien er steget ca. 62% fra bunden. Short-interessen ramte 3,79% den 1. juni og er senest 3,47%. Citadel (0,92%) er eneste offentliggjorte position.</p>
+            <TimelineEvent date="Juni 2026" title="Rekyl til 369 DKK, short-interessen topper foreløbigt" color="#4361ee">
+              <p>Aktien er steget ca. 56% fra bunden. Short-interessen ramte 3,79% den 1. juni og er senest 3,54%. Citadel (0,92%) er eneste offentliggjorte position.</p>
             </TimelineEvent>
           </div>
         </section>
@@ -614,8 +626,8 @@ const CHEMMAnalysisPage: React.FC = () => {
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">10. Det centrale spørgsmål: Kommer shorterne for sent igen?</h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             De nye shorts satser på, at rekylen er løbet foran fundamentet: Guidance er trods den lille
-            opjustering i maj stadig markant under efterårets niveau, og med en markedsværdi på ca. 6,7
-            mia. DKK prissættes selskabet til omkring 23-24 gange midtpunktet af EBITDA-guidance. Omvendt
+            opjustering i maj stadig markant under efterårets niveau, og med en markedsværdi på ca. 6,4
+            mia. DKK prissættes selskabet til omkring 22-23 gange midtpunktet af EBITDA-guidance. Omvendt
             viste tredje kvartal fremgang, og selskabet køber selv aktier tilbage frem til oktober.
           </p>
 
@@ -626,8 +638,8 @@ const CHEMMAnalysisPage: React.FC = () => {
                 <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Svagt nordamerikansk marked for celle- og genterapi</li>
                 <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Længere kundebeslutninger og udskudte automationsprojekter</li>
                 <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>XcytoMatic kannibaliserer midlertidigt NC-salget</li>
-                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Aktien +62% fra bunden, mens guidance kun er hævet marginalt</li>
-                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Høj værdiansættelse: Ca. 23-24x EBITDA-guidance</li>
+                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Aktien +56% fra bunden, mens guidance kun er hævet marginalt</li>
+                <li className="flex gap-2"><span className="text-red-400 mt-0.5">&#x25BC;</span>Høj værdiansættelse: Ca. 22-23x EBITDA-guidance</li>
               </ul>
             </div>
             <div className="bg-blue-50 dark:bg-blue-500/10 rounded-2xl border border-blue-100 dark:border-blue-500/20 p-5">
@@ -636,7 +648,7 @@ const CHEMMAnalysisPage: React.FC = () => {
                 <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Q3 viste +15% omsætning og opjusteret guidance</li>
                 <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Tilbagekøb på op til 100 mio. DKK støtter kursen til oktober</li>
                 <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Kun 17,4 mio. aktier: Illikvid aktie med squeeze-potentiale</li>
-                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>2026-shortsene er allerede ca. 5-18% i minus (estimat)</li>
+                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>2026-shortsene er allerede ca. 2-13% i minus (estimat)</li>
                 <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Historikken: Sidst kostede det dyrt at shorte vendingen</li>
               </ul>
             </div>
