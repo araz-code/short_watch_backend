@@ -26,86 +26,251 @@ import {
 } from "recharts/types/component/DefaultTooltipContent";
 
 // ─── static data ────────────────────────────────────────────────────────────
-// Short interest and close price, sampled monthly plus key event days
+// Short interest and close price, sampled weekly plus key event days
 const FULL_HISTORY = [
   { date: "2023-11-06", short: 8.03, close: 323.03 },
-  { date: "2023-12-01", short: 8.99, close: 329.69 },
-  { date: "2024-01-01", short: 8.28, close: 379.81 },
-  { date: "2024-02-01", short: 9.07, close: 355.92 },
-  { date: "2024-03-01", short: 7.98, close: 496.29 },
-  { date: "2024-04-01", short: 8.6, close: 414.85 },
-  { date: "2024-05-01", short: 8.57, close: 288.57 },
-  { date: "2024-06-01", short: 8.2, close: 355.53 },
+  { date: "2023-11-12", short: 8.72, close: 323.81 },
+  { date: "2023-11-19", short: 8.87, close: 344.76 },
+  { date: "2023-11-26", short: 8.98, close: 352.79 },
+  { date: "2023-12-03", short: 8.99, close: 329.69 },
+  { date: "2023-12-10", short: 8.67, close: 339.87 },
+  { date: "2023-12-17", short: 8.38, close: 401.54 },
+  { date: "2023-12-24", short: 8.28, close: 385.29 },
+  { date: "2023-12-31", short: 8.28, close: 379.81 },
+  { date: "2024-01-07", short: 7.94, close: 367.86 },
+  { date: "2024-01-14", short: 7.96, close: 370.8 },
+  { date: "2024-01-21", short: 8.35, close: 361.79 },
+  { date: "2024-01-28", short: 8.27, close: 401.73 },
+  { date: "2024-02-04", short: 8.85, close: 354.75 },
+  { date: "2024-02-11", short: 8.75, close: 452.05 },
+  { date: "2024-02-18", short: 8.11, close: 434.82 },
+  { date: "2024-02-25", short: 8.13, close: 455.96 },
+  { date: "2024-03-03", short: 7.98, close: 496.29 },
+  { date: "2024-03-10", short: 7.88, close: 541.81 },
+  { date: "2024-03-17", short: 8.08, close: 423.86 },
+  { date: "2024-03-24", short: 8.47, close: 411.33 },
+  { date: "2024-03-31", short: 8.6, close: 414.85 },
+  { date: "2024-04-07", short: 8.13, close: 368.65 },
+  { date: "2024-04-14", short: 8.13, close: 288.77 },
+  { date: "2024-04-21", short: 9.14, close: 279.18 },
+  { date: "2024-04-28", short: 9.06, close: 280.55 },
+  { date: "2024-05-05", short: 8.77, close: 290.53 },
+  { date: "2024-05-12", short: 8.53, close: 306.19 },
+  { date: "2024-05-19", short: 8.67, close: 352.98 },
+  { date: "2024-05-26", short: 8.57, close: 358.86 },
+  { date: "2024-06-02", short: 8.2, close: 355.53 },
+  { date: "2024-06-09", short: 8.68, close: 324.99 },
+  { date: "2024-06-16", short: 8.93, close: 308.54 },
+  { date: "2024-06-23", short: 9, close: 294.64 },
+  { date: "2024-06-30", short: 9.14, close: 298.17 },
+  { date: "2024-07-07", short: 9.46, close: 352.98 },
   { date: "2024-07-10", short: 9.81, close: 369.82 },
-  { date: "2024-08-01", short: 9.56, close: 369.43 },
+  { date: "2024-07-14", short: 9.71, close: 375.11 },
+  { date: "2024-07-21", short: 9.78, close: 357.49 },
+  { date: "2024-07-28", short: 9.46, close: 378.83 },
+  { date: "2024-08-04", short: 9.45, close: 350.64 },
+  { date: "2024-08-11", short: 9.03, close: 371.78 },
+  { date: "2024-08-18", short: 8.83, close: 376.87 },
+  { date: "2024-08-25", short: 8.64, close: 385.29 },
   { date: "2024-09-01", short: 8.41, close: 366.69 },
-  { date: "2024-10-01", short: 6.82, close: 389.2 },
-  { date: "2024-11-01", short: 6.0, close: 403.85 },
+  { date: "2024-09-08", short: 7.97, close: 393.51 },
+  { date: "2024-09-15", short: 6.92, close: 444.41 },
+  { date: "2024-09-22", short: 6.92, close: 420.92 },
+  { date: "2024-09-29", short: 6.82, close: 409.17 },
+  { date: "2024-10-06", short: 6.79, close: 377.07 },
+  { date: "2024-10-13", short: 6.69, close: 353.57 },
+  { date: "2024-10-20", short: 6.5, close: 435.52 },
+  { date: "2024-10-27", short: 6.14, close: 405.63 },
+  { date: "2024-11-03", short: 6, close: 403.85 },
+  { date: "2024-11-10", short: 5.65, close: 479.47 },
+  { date: "2024-11-17", short: 4.5, close: 443.24 },
+  { date: "2024-11-24", short: 4.45, close: 467.59 },
   { date: "2024-12-01", short: 4.56, close: 468.78 },
-  { date: "2025-01-01", short: 4.06, close: 481.25 },
-  { date: "2025-02-01", short: 2.45, close: 554.3 },
-  { date: "2025-03-01", short: 2.3, close: 575.09 },
-  { date: "2025-04-01", short: 2.2, close: 501.84 },
-  { date: "2025-05-01", short: 2.48, close: 468.58 },
+  { date: "2024-12-08", short: 4.23, close: 476.9 },
+  { date: "2024-12-15", short: 4.25, close: 471.95 },
+  { date: "2024-12-22", short: 4.06, close: 486 },
+  { date: "2024-12-29", short: 4.06, close: 502.83 },
+  { date: "2025-01-05", short: 4.06, close: 496.4 },
+  { date: "2025-01-12", short: 3.97, close: 543.41 },
+  { date: "2025-01-19", short: 3.75, close: 516.69 },
+  { date: "2025-01-26", short: 2.69, close: 492.74 },
+  { date: "2025-02-02", short: 2.45, close: 554.3 },
+  { date: "2025-02-09", short: 2.22, close: 557.27 },
+  { date: "2025-02-16", short: 2.22, close: 566.18 },
+  { date: "2025-02-23", short: 2.3, close: 593.4 },
+  { date: "2025-03-02", short: 2.3, close: 575.09 },
+  { date: "2025-03-09", short: 2.2, close: 548.86 },
+  { date: "2025-03-16", short: 2.2, close: 526.59 },
+  { date: "2025-03-23", short: 2.2, close: 528.57 },
+  { date: "2025-03-30", short: 2.2, close: 504.81 },
+  { date: "2025-04-06", short: 2.34, close: 420.68 },
+  { date: "2025-04-13", short: 2.48, close: 453.54 },
+  { date: "2025-04-20", short: 2.48, close: 474.52 },
+  { date: "2025-04-27", short: 2.48, close: 461.46 },
+  { date: "2025-05-04", short: 2.53, close: 481.85 },
+  { date: "2025-05-11", short: 2.6, close: 485.01 },
+  { date: "2025-05-18", short: 2.6, close: 514.21 },
+  { date: "2025-05-25", short: 2.41, close: 503.82 },
   { date: "2025-06-01", short: 2.51, close: 522.63 },
-  { date: "2025-07-01", short: 2.37, close: 556.78 },
-  { date: "2025-08-01", short: 1.87, close: 481.06 },
-  { date: "2025-09-01", short: 1.17, close: 517.68 },
-  { date: "2025-10-01", short: 1.55, close: 641.9 },
-  { date: "2025-10-30", short: 0.85, close: 792.0 },
-  { date: "2025-11-24", short: 0.53, close: 757.0 },
-  { date: "2025-12-19", short: 0.53, close: 682.0 },
-  { date: "2026-01-07", short: 0.58, close: 689.5 },
+  { date: "2025-06-08", short: 2.51, close: 517.68 },
+  { date: "2025-06-15", short: 2.34, close: 525.6 },
+  { date: "2025-06-22", short: 2.34, close: 516.19 },
+  { date: "2025-06-29", short: 2.34, close: 562.72 },
+  { date: "2025-07-06", short: 2.27, close: 554.3 },
+  { date: "2025-07-13", short: 2.27, close: 532.53 },
+  { date: "2025-07-20", short: 2.17, close: 519.66 },
+  { date: "2025-07-27", short: 2.06, close: 509.76 },
+  { date: "2025-08-03", short: 1.87, close: 481.06 },
+  { date: "2025-08-10", short: 1.97, close: 492.34 },
+  { date: "2025-08-17", short: 1.63, close: 495.9 },
+  { date: "2025-08-24", short: 1.45, close: 521.14 },
+  { date: "2025-08-31", short: 1.17, close: 515.7 },
+  { date: "2025-09-07", short: 1.17, close: 536.49 },
+  { date: "2025-09-14", short: 1.17, close: 603.3 },
+  { date: "2025-09-21", short: 1.66, close: 646.36 },
+  { date: "2025-09-28", short: 1.55, close: 615.67 },
+  { date: "2025-10-05", short: 1.56, close: 671.1 },
+  { date: "2025-10-12", short: 1.34, close: 678.5 },
+  { date: "2025-10-19", short: 1.15, close: 670 },
+  { date: "2025-10-26", short: 1.04, close: 700 },
+  { date: "2025-10-30", short: 0.85, close: 792 },
+  { date: "2025-11-02", short: 0.67, close: 791 },
+  { date: "2025-11-09", short: 0.78, close: 694 },
+  { date: "2025-11-16", short: 0.78, close: 766 },
+  { date: "2025-11-23", short: 0.78, close: 751.5 },
+  { date: "2025-11-30", short: 0.53, close: 782.5 },
+  { date: "2025-12-07", short: 0.53, close: 742 },
+  { date: "2025-12-14", short: 0.53, close: 701 },
+  { date: "2025-12-19", short: 0.53, close: 682 },
+  { date: "2026-01-11", short: 0.44, close: 711.5 },
+  { date: "2026-01-18", short: 0.18, close: 712 },
+  { date: "2026-01-25", short: 0.44, close: 684 },
+  { date: "2026-02-01", short: 0.29, close: 609.5 },
   { date: "2026-02-04", short: 0.29, close: 579.5 },
-  { date: "2026-02-05", short: 0.41, close: 463.0 },
+  { date: "2026-02-05", short: 0.41, close: 463 },
+  { date: "2026-02-08", short: 0.79, close: 432 },
+  { date: "2026-02-15", short: 0.84, close: 403.4 },
+  { date: "2026-02-22", short: 1.05, close: 400 },
   { date: "2026-03-01", short: 0.98, close: 420.4 },
+  { date: "2026-03-08", short: 1.01, close: 414 },
+  { date: "2026-03-15", short: 1.57, close: 399.6 },
+  { date: "2026-03-22", short: 1.49, close: 398.6 },
   { date: "2026-03-23", short: 1.38, close: 398.6 },
   { date: "2026-03-24", short: 1.54, close: 236.8 },
-  { date: "2026-04-01", short: 2.03, close: 309.0 },
-  { date: "2026-05-01", short: 3.04, close: 326.0 },
+  { date: "2026-03-29", short: 1.93, close: 290 },
+  { date: "2026-04-05", short: 2.19, close: 309 },
+  { date: "2026-04-12", short: 2.08, close: 303.4 },
+  { date: "2026-04-19", short: 2.19, close: 350 },
+  { date: "2026-04-26", short: 2.62, close: 327.4 },
+  { date: "2026-05-03", short: 3.04, close: 326 },
   { date: "2026-05-06", short: 3.36, close: 321.6 },
-  { date: "2026-06-01", short: 3.79, close: 357.4 },
-  { date: "2026-06-09", short: 3.47, close: 383.6 },
+  { date: "2026-05-10", short: 3.56, close: 314.8 },
+  { date: "2026-05-17", short: 3.37, close: 313.4 },
+  { date: "2026-05-24", short: 3.22, close: 336.2 },
+  { date: "2026-05-31", short: 3.42, close: 375 },
+  { date: "2026-06-07", short: 3.33, close: 377.6 },
+  { date: "2026-06-14", short: 3.4, close: 374.6 },
   { date: "2026-06-16", short: 3.54, close: 368.8 },
 ];
 
-// Daily detail for 2026 (sampled)
+// Daily detail for 2026 (every trading day)
 const ZOOM_2026 = [
-  { date: "2026-02-01", short: 0.29, close: 609.5 },
+  { date: "2026-02-02", short: 0.29, close: 606.5 },
+  { date: "2026-02-03", short: 0.29, close: 613 },
   { date: "2026-02-04", short: 0.29, close: 579.5 },
-  { date: "2026-02-05", short: 0.41, close: 463.0 },
-  { date: "2026-02-09", short: 1.01, close: 407.0 },
+  { date: "2026-02-05", short: 0.41, close: 463 },
+  { date: "2026-02-06", short: 0.79, close: 432 },
+  { date: "2026-02-09", short: 1.01, close: 407 },
+  { date: "2026-02-10", short: 0.86, close: 413 },
+  { date: "2026-02-11", short: 0.62, close: 395 },
+  { date: "2026-02-12", short: 0.62, close: 406.8 },
   { date: "2026-02-13", short: 0.84, close: 403.4 },
-  { date: "2026-02-19", short: 0.88, close: 397.0 },
+  { date: "2026-02-16", short: 0.73, close: 400.8 },
+  { date: "2026-02-17", short: 0.93, close: 402.2 },
+  { date: "2026-02-18", short: 0.93, close: 409.6 },
+  { date: "2026-02-19", short: 0.88, close: 397 },
+  { date: "2026-02-20", short: 1.05, close: 400 },
+  { date: "2026-02-23", short: 0.79, close: 389.2 },
+  { date: "2026-02-24", short: 0.87, close: 386 },
   { date: "2026-02-25", short: 0.87, close: 385.2 },
+  { date: "2026-02-26", short: 0.87, close: 413 },
   { date: "2026-02-27", short: 0.98, close: 420.4 },
+  { date: "2026-03-02", short: 1.14, close: 410.6 },
+  { date: "2026-03-03", short: 0.98, close: 405.8 },
   { date: "2026-03-04", short: 0.98, close: 428.6 },
+  { date: "2026-03-05", short: 0.98, close: 420.6 },
+  { date: "2026-03-06", short: 1.01, close: 414 },
+  { date: "2026-03-09", short: 1.01, close: 409.8 },
   { date: "2026-03-10", short: 1.13, close: 420.6 },
+  { date: "2026-03-11", short: 1.23, close: 401.6 },
+  { date: "2026-03-12", short: 1.19, close: 400.6 },
   { date: "2026-03-13", short: 1.41, close: 399.6 },
+  { date: "2026-03-16", short: 1.41, close: 400.4 },
+  { date: "2026-03-17", short: 1.5, close: 412.8 },
   { date: "2026-03-18", short: 1.5, close: 403.2 },
+  { date: "2026-03-19", short: 1.6, close: 394.2 },
+  { date: "2026-03-20", short: 1.49, close: 398.6 },
   { date: "2026-03-23", short: 1.38, close: 398.6 },
   { date: "2026-03-24", short: 1.54, close: 236.8 },
-  { date: "2026-03-26", short: 1.95, close: 297.0 },
+  { date: "2026-03-25", short: 1.74, close: 280.6 },
+  { date: "2026-03-26", short: 1.95, close: 297 },
+  { date: "2026-03-27", short: 1.93, close: 290 },
+  { date: "2026-03-30", short: 1.93, close: 294.6 },
   { date: "2026-03-31", short: 2.09, close: 300.8 },
+  { date: "2026-04-01", short: 2.03, close: 309 },
+  { date: "2026-04-02", short: 2.03, close: 309 },
+  { date: "2026-04-03", short: 2.19, close: 309 },
+  { date: "2026-04-06", short: 2.19, close: 309 },
   { date: "2026-04-07", short: 2.19, close: 293.4 },
+  { date: "2026-04-08", short: 1.89, close: 305.8 },
+  { date: "2026-04-09", short: 1.9, close: 300.2 },
+  { date: "2026-04-10", short: 2.08, close: 303.4 },
   { date: "2026-04-13", short: 2.22, close: 302.6 },
+  { date: "2026-04-14", short: 2.32, close: 323 },
   { date: "2026-04-15", short: 2.48, close: 330.6 },
-  { date: "2026-04-17", short: 2.19, close: 350.0 },
+  { date: "2026-04-16", short: 2.19, close: 336.8 },
+  { date: "2026-04-17", short: 2.19, close: 350 },
+  { date: "2026-04-20", short: 2.35, close: 345 },
+  { date: "2026-04-21", short: 2.4, close: 346 },
+  { date: "2026-04-22", short: 2.3, close: 342.2 },
   { date: "2026-04-23", short: 2.41, close: 326.6 },
+  { date: "2026-04-24", short: 2.62, close: 327.4 },
+  { date: "2026-04-27", short: 2.78, close: 328.2 },
   { date: "2026-04-28", short: 2.84, close: 318.8 },
-  { date: "2026-05-01", short: 3.04, close: 326.0 },
-  { date: "2026-05-05", short: 3.04, close: 305.0 },
+  { date: "2026-04-29", short: 2.95, close: 320 },
+  { date: "2026-04-30", short: 2.95, close: 320 },
+  { date: "2026-05-01", short: 3.04, close: 326 },
+  { date: "2026-05-04", short: 3.04, close: 323.4 },
+  { date: "2026-05-05", short: 3.04, close: 305 },
   { date: "2026-05-06", short: 3.36, close: 321.6 },
+  { date: "2026-05-07", short: 3.46, close: 322.2 },
   { date: "2026-05-08", short: 3.56, close: 314.8 },
-  { date: "2026-05-11", short: 3.67, close: 316.0 },
+  { date: "2026-05-11", short: 3.67, close: 316 },
+  { date: "2026-05-12", short: 3.6, close: 320.6 },
+  { date: "2026-05-13", short: 3.34, close: 313.4 },
   { date: "2026-05-14", short: 3.37, close: 313.4 },
-  { date: "2026-05-20", short: 3.47, close: 342.0 },
+  { date: "2026-05-15", short: 3.37, close: 313.4 },
+  { date: "2026-05-18", short: 3.37, close: 323.2 },
+  { date: "2026-05-19", short: 3.37, close: 323.8 },
+  { date: "2026-05-20", short: 3.47, close: 342 },
+  { date: "2026-05-21", short: 3.48, close: 340 },
+  { date: "2026-05-22", short: 3.22, close: 336.2 },
+  { date: "2026-05-25", short: 3.32, close: 336.2 },
   { date: "2026-05-26", short: 3.32, close: 352.8 },
-  { date: "2026-05-29", short: 3.3, close: 375.0 },
+  { date: "2026-05-27", short: 3.3, close: 351.6 },
+  { date: "2026-05-28", short: 3.3, close: 356.2 },
+  { date: "2026-05-29", short: 3.3, close: 375 },
   { date: "2026-06-01", short: 3.79, close: 357.4 },
+  { date: "2026-06-02", short: 3.63, close: 366 },
+  { date: "2026-06-03", short: 3.52, close: 355 },
   { date: "2026-06-04", short: 3.68, close: 377.6 },
+  { date: "2026-06-05", short: 3.33, close: 377.6 },
+  { date: "2026-06-08", short: 3.33, close: 376.2 },
   { date: "2026-06-09", short: 3.47, close: 383.6 },
+  { date: "2026-06-10", short: 3.54, close: 382 },
   { date: "2026-06-11", short: 3.4, close: 376.6 },
+  { date: "2026-06-12", short: 3.56, close: 374.6 },
+  { date: "2026-06-15", short: 3.7, close: 377.8 },
   { date: "2026-06-16", short: 3.54, close: 368.8 },
 ];
 
@@ -316,7 +481,7 @@ const CHEMMAnalysisPage: React.FC = () => {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-12">
           <KPI value="3,54%" label="Short-interesse (16. juni)" highlight tone="blue" />
           <KPI value="368,80 DKK" label="Seneste lukkekurs (16. juni)" />
-          <KPI value="-53%" label="Fra toppen (792 DKK, okt. 2025)" highlight tone="red" />
+          <KPI value="-53%" label="Fra 2025-toppen (792 DKK)" highlight tone="red" />
           <KPI value="+56%" label="Fra bunden (236,80 DKK, 24. marts)" highlight tone="green" />
         </div>
 
@@ -373,7 +538,8 @@ const CHEMMAnalysisPage: React.FC = () => {
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">3. Akt 1: En af Danmarks mest shortede aktier (2023-24)</h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             I 2023 og 2024 var ChemoMetec en udpræget konsensus-short. Aktien var faldet hårdt fra
-            2021-toppen, væksten var gået i stå, og short-interessen lå stabilt mellem 8% og 9%, med en
+            rekordkursen i 2021 (all-time high på 1.149 DKK den 23. september 2021), væksten var gået i
+            stå, og short-interessen lå stabilt mellem 8% og 9%, med en
             top på 9,81% den 10. juli 2024. Det svarede til ca. 1,7 mio. aktier ud af kun 17,4 mio.
             udestående.
           </p>
@@ -404,9 +570,10 @@ const CHEMMAnalysisPage: React.FC = () => {
             2025 var kun Brummer og Wellington tilbage med positioner lige omkring tærsklen.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-            Ved kurstoppen den 30. oktober 2025 var short-interessen nede på 0,85%, og i februar 2026
-            ramte den bunden med blot 0,29%. Tallene skal som altid læses med forbehold for, at vi kun
-            ser nettoændringer, men retningen er utvetydig: Da aktien var dyrest, var næsten ingen short.
+            Ved kurstoppen den 30. oktober 2025 var short-interessen nede på 0,85%, og omkring årsskiftet
+            ramte den bunden med blot 0,18% (januar 2026); selv ved halvårsregnskabet i starten af februar
+            lå den kun på 0,29%. Tallene skal som altid læses med forbehold for, at vi kun ser
+            nettoændringer, men retningen er utvetydig: Da aktien var dyrest, var næsten ingen short.
           </p>
         </section>
 
@@ -447,24 +614,24 @@ const CHEMMAnalysisPage: React.FC = () => {
               <ComposedChart data={ZOOM_2026} margin={{ top: 5, right: 5, left: 0, bottom: 5 }}>
                 <defs>
                   <linearGradient id="chemmZoomGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#e63946" stopOpacity={0.3} />
-                    <stop offset="100%" stopColor="#e63946" stopOpacity={0} />
+                    <stop offset="0%" stopColor="#007AFF" stopOpacity={0.4} />
+                    <stop offset="100%" stopColor="#007AFF" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid horizontal vertical={false} stroke={gridColor} strokeWidth={1} />
                 <XAxis dataKey="date" tick={{ fontSize: 10, fill: tickColor }} tickFormatter={fmtDayMonth} interval="preserveStartEnd" />
                 <YAxis yAxisId="short" orientation="right" tick={{ fontSize: 10, fill: tickColor }} tickFormatter={(v) => `${v}%`} domain={[0, 4]} tickLine={false} axisLine={false} />
                 <YAxis yAxisId="price" orientation="left" tick={{ fontSize: 10, fill: tickColor }} tickFormatter={(v) => `${v}`} domain={[200, 650]} tickLine={false} axisLine={false} />
-                <Tooltip content={ShortPriceTooltip} cursor={{ stroke: "#e63946", strokeWidth: 1, strokeOpacity: 0.3 }} />
+                <Tooltip content={ShortPriceTooltip} cursor={{ stroke: "#007AFF", strokeWidth: 1, strokeOpacity: 0.3 }} />
                 <ReferenceLine yAxisId="price" x="2026-02-04" stroke="#eab308" strokeDasharray="4 4" strokeWidth={1.5} />
                 <ReferenceLine yAxisId="price" x="2026-03-24" stroke="#eab308" strokeDasharray="4 4" strokeWidth={1.5} />
                 <ReferenceLine yAxisId="price" x="2026-05-06" stroke="#eab308" strokeDasharray="4 4" strokeWidth={1.5} />
-                <Area yAxisId="short" type="stepAfter" dataKey="short" stroke="#e63946" strokeWidth={2.5} fill="url(#chemmZoomGrad)" activeDot={{ r: 5, fill: "#e63946", stroke: "#fff", strokeWidth: 2 }} />
+                <Area yAxisId="short" type="stepAfter" dataKey="short" stroke="#007AFF" strokeWidth={2.5} fill="url(#chemmZoomGrad)" activeDot={{ r: 5, fill: "#007AFF", stroke: "#fff", strokeWidth: 2 }} />
                 <Line yAxisId="price" type="monotone" dataKey="close" stroke="#a855f7" strokeWidth={2} strokeOpacity={0.8} dot={false} activeDot={{ r: 4, fill: "#a855f7", stroke: "#fff", strokeWidth: 2 }} />
               </ComposedChart>
             </ResponsiveContainer>
             <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-300 mt-2 px-2">
-              <span className="flex items-center gap-1.5"><span className="w-3 h-[3px] rounded-full bg-[#e63946] inline-block" />Short-interesse</span>
+              <span className="flex items-center gap-1.5"><span className="w-3 h-[3px] rounded-full bg-[#007AFF] inline-block" />Short-interesse</span>
               <span className="flex items-center gap-1.5"><span className="w-3 h-[3px] rounded-full bg-[#a855f7] inline-block" />Lukkekurs</span>
               <span className="flex items-center gap-1.5"><span className="inline-flex items-center gap-[2px]"><span className="w-[4px] h-[2px] bg-[#eab308] inline-block" /><span className="w-[4px] h-[2px] bg-[#eab308] inline-block" /></span>Nøglebegivenheder</span>
             </div>
@@ -475,16 +642,15 @@ const CHEMMAnalysisPage: React.FC = () => {
         <section className="mb-12">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">7. Akt 4: Genopbygningen efter bunden</h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            Først efter kollapset kom shorterne tilbage. Fra bunden på 0,29% i februar er short-interessen
+            Først efter kollapset kom shorterne tilbage. Fra bunden på 0,18% i januar er short-interessen
             steget støt til en foreløbig top på 3,79% den 1. juni, senest 3,54% i midten af juni. Det svarer til
-            en netto-opbygning på ca. 565.000 aktier på godt fire måneder i et selskab med kun 17,4 mio. aktier
+            en netto-opbygning på ca. 585.000 aktier på cirka fem måneder i et selskab med kun 17,4 mio. aktier
             udestående. Den aktuelle position har en markedsværdi på ca. 227 mio. DKK.
           </p>
-          <p className="text-sm text-gray-500 dark:text-gray-300 mb-4">
+          <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             Prisstrømmen nedenfor er en modelberegning af, ved hvilke kurser 2026-opbygningen er sket. Den
-            bygger udelukkende på nettoændringer i de offentliggjorte positioner (metoden er forklaret i vores
-            prisstrøm-analyse af GN), så de enkelte tal er estimater og ikke observerede handelskurser. Rød =
-            netto åbnede shorts, grøn = netto dækkede.
+            bygger udelukkende på nettoændringer i de offentliggjorte positioner, så de enkelte tal er
+            estimater og ikke observerede handelskurser. Rød = netto åbnede shorts, grøn = netto dækkede.
           </p>
           <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-3 sm:p-5" role="img" aria-label="Graf: Netto prisstrøm per kursbånd for ChemoMetec siden februar 2026">
             <ResponsiveContainer width="100%" height={chartHeight}>
@@ -527,11 +693,13 @@ const CHEMMAnalysisPage: React.FC = () => {
         <section className="mb-12">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">8. Hvem shorter ChemoMetec nu?</h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
-            Det mest påfaldende ved 2026-bølgen er, at den bæres af et helt nyt hold. Ingen af de store
-            navne fra 2023-24 er vendt tilbage. I stedet kom Citadel ind den 14. april 2026 og har bygget
-            op til 0,92%, mens D. E. Shaw krydsede tærsklen den 7. maj og senest er trimmet til 0,48%,
-            lige under offentliggørelsesgrænsen. Resten af den samlede short-interesse, ca. 2 procentpoint,
-            holdes af anonyme aktører med positioner under 0,50%.
+            Det mest påfaldende ved 2026-bølgen er, at de offentliggjorte positioner bæres af et helt nyt
+            hold. Ingen af de store navne fra 2023-24 er dukket op igen over offentliggørelsesgrænsen. I
+            stedet kom Citadel ind den 14. april 2026 og har bygget op til 0,92%, mens D. E. Shaw krydsede
+            tærsklen den 7. maj og senest er trimmet til 0,48%, lige under offentliggørelsesgrænsen. Resten
+            af den samlede short-interesse, ca. 2 procentpoint, holdes af anonyme aktører med positioner
+            under 0,50%, så det kan ikke udelukkes, at nogle af de gamle navne også shorter igen under
+            tærsklen.
           </p>
 
           <div className="overflow-x-auto rounded-2xl border border-gray-100 dark:border-gray-800 mb-6">
@@ -569,7 +737,7 @@ const CHEMMAnalysisPage: React.FC = () => {
           </div>
 
           <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-2">Det gamle hold (2023-25)</h3>
-          <p className="text-sm text-gray-500 dark:text-gray-300 mb-4">Fonde med offentliggjorte positioner over 0,50% i den forrige shortbølge. Ingen af dem er med i 2026-bølgen.</p>
+          <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">Fonde med offentliggjorte positioner over 0,50% i den forrige shortbølge. Ingen af dem optræder på offentliggørelseslisten i 2026-bølgen (men kan i princippet shorte under tærsklen).</p>
           <div className="overflow-x-auto rounded-2xl border border-gray-100 dark:border-gray-800">
             <table className="w-full text-left">
               <caption className="sr-only">Historiske short-sælgere i ChemoMetec</caption>
@@ -607,7 +775,7 @@ const CHEMMAnalysisPage: React.FC = () => {
               <p>Guidance hævet til 565-580 mio. DKK i omsætning og 320-335 mio. DKK i EBITDA. Aktien lukkede i 792 DKK den 30. oktober. Short-interessen var da nede på 0,85%.</p>
             </TimelineEvent>
             <TimelineEvent date="4. februar 2026" title="H1 2025/26 skuffer: -24% på to dage" color="#e63946">
-              <p>Omsætning på 249 mio. DKK (-1%, organisk +3%), Q2 isoleret -8%. Den amerikanske regeringsnedlukning kostede ca. 20 mio. DKK i november. Guidance fastholdt, men aktien faldt fra 613 til 463 DKK på to handelsdage. Short-interessen var rekordlave 0,29%.</p>
+              <p>Omsætning på 249 mio. DKK (-1%, organisk +3%), Q2 isoleret -8%. Den amerikanske regeringsnedlukning kostede ca. 20 mio. DKK i november. Guidance fastholdt, men aktien faldt fra 613 til 463 DKK på to handelsdage. Short-interessen var helt nede på 0,18% i januar og lå kun på 0,29% ved regnskabet.</p>
             </TimelineEvent>
             <TimelineEvent date="24. marts 2026" title="Nedjustering: Største endagsfald nogensinde" color="#e63946">
               <p>Omsætningsguidance sænket til 490-520 mio. DKK og EBITDA til 260-285 mio. DKK. Årsager: Svagere salg i Nordamerika, længere kundebeslutninger, langsommere automationsprojekter og XcytoMatic-interesse, der midlertidigt bremser NC-salget. Aktien lukkede i 236,80 DKK, ned ca. 41%. Short-interessen var kun ca. 1,4% dagen før.</p>
@@ -647,7 +815,6 @@ const CHEMMAnalysisPage: React.FC = () => {
               <ul className="space-y-2 text-[15px] text-gray-700 dark:text-gray-300">
                 <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Q3 viste +15% omsætning og opjusteret guidance</li>
                 <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Tilbagekøb på op til 100 mio. DKK støtter kursen til oktober</li>
-                <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Kun 17,4 mio. aktier: Illikvid aktie med squeeze-potentiale</li>
                 <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>2026-shortsene er allerede ca. 2-13% i minus (estimat)</li>
                 <li className="flex gap-2"><span className="text-blue-400 mt-0.5">&#x25B2;</span>Historikken: Sidst kostede det dyrt at shorte vendingen</li>
               </ul>
@@ -666,10 +833,10 @@ const CHEMMAnalysisPage: React.FC = () => {
             på sit laveste, præcis da den ville have tjent mest.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            Nu er rollerne byttet om. Et nyt hold anført af Citadel har på fire måneder bygget
-            short-interessen op fra 0,29% til ca. 3,5%, men det er sket efter faldet, ind i en rekyl, der
-            allerede har sendt de nye positioner i minus. Med et aktivt tilbagekøbsprogram, en lille
-            opjustering i maj og kun 17,4 mio. udestående aktier er det en short med betydelig risiko, og
+            Nu er rollerne byttet om. Et nyt hold anført af Citadel har på cirka fem måneder bygget
+            short-interessen op fra 0,18% til ca. 3,5%, men det er sket efter faldet, ind i en rekyl, der
+            allerede har sendt de nye positioner i minus. Med et aktivt tilbagekøbsprogram og en lille
+            opjustering i maj er det en short med betydelig risiko, og
             udfaldet afhænger af, om det nordamerikanske marked for celle- og genterapi reelt stabiliserer
             sig, eller om nedjusteringen i marts kun var den første.
           </p>
