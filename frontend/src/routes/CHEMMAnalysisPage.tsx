@@ -432,6 +432,7 @@ const CHEMMAnalysisPage: React.FC = () => {
       <meta name="twitter:title" content="Shortanalyse: Shorterne missede kollapset og jagter nu rekylen" />
       <meta name="twitter:description" content="Dybdegående analyse af short-positioner i ChemoMetec (CHEMM). Shorterne var næsten ude, da aktien kollapsede, og bygger nu op igen efter rekylen." />
       <meta name="twitter:image" content="https://www.zirium.dk/og-images/chemm-2026-06-17.png" />
+      <link rel="canonical" href="https://www.zirium.dk/analyse/chemm/2026-06-17" />
       <script type="application/ld+json">{JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Article",
@@ -440,6 +441,8 @@ const CHEMMAnalysisPage: React.FC = () => {
         "author": { "@type": "Person", "name": "Araz Bayat Makoo" },
         "publisher": { "@type": "Organization", "name": "Zirium", "url": "https://www.zirium.dk" },
         "datePublished": "2026-06-17",
+        "dateModified": "2026-06-17",
+        "image": "https://www.zirium.dk/og-images/chemm-2026-06-17.png",
         "mainEntityOfPage": "https://www.zirium.dk/analyse/chemm/2026-06-17",
         "inLanguage": "da",
       })}</script>
