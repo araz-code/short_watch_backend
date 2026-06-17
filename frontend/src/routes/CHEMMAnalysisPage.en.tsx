@@ -419,7 +419,7 @@ const CHEMMAnalysisPage: React.FC = () => {
     <PageTemplate>
       <title>Zirium | ChemoMetec (CHEMM) - Short Selling Analysis</title>
       <meta name="description" content="In-depth analysis of short positions in ChemoMetec (CHEMM). The shorts were almost out when the stock collapsed, and are now building up again after the rebound." />
-      <meta property="og:title" content="Short selling analysis: The shorts missed the collapse and now chase the rebound" />
+      <meta property="og:title" content="Short selling analysis of ChemoMetec: The shorts missed the collapse and now chase the rebound" />
       <meta property="og:description" content="In-depth analysis of short positions in ChemoMetec (CHEMM). The shorts were almost out when the stock collapsed, and are now building up again after the rebound." />
       <meta property="og:type" content="article" />
       <meta property="og:url" content="https://www.zirium.dk/analyse/chemm/2026-06-17" />
@@ -429,14 +429,14 @@ const CHEMMAnalysisPage: React.FC = () => {
       <meta property="og:image:type" content="image/png" />
       <meta property="og:site_name" content="Zirium" />
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content="Short selling analysis: The shorts missed the collapse and now chase the rebound" />
+      <meta name="twitter:title" content="Short selling analysis of ChemoMetec: The shorts missed the collapse and now chase the rebound" />
       <meta name="twitter:description" content="In-depth analysis of short positions in ChemoMetec (CHEMM). The shorts were almost out when the stock collapsed, and are now building up again after the rebound." />
       <meta name="twitter:image" content="https://www.zirium.dk/og-images/chemm-2026-06-17-en.png" />
       <link rel="canonical" href="https://www.zirium.dk/analyse/chemm/2026-06-17" />
       <script type="application/ld+json">{JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Article",
-        "headline": "Short selling analysis: The shorts missed the collapse and now chase the rebound",
+        "headline": "Short selling analysis of ChemoMetec: The shorts missed the collapse and now chase the rebound",
         "description": "In-depth analysis of short positions in ChemoMetec (CHEMM). The shorts were almost out when the stock collapsed, and are now building up again after the rebound.",
         "author": { "@type": "Person", "name": "Araz Bayat Makoo" },
         "publisher": { "@type": "Organization", "name": "Zirium", "url": "https://www.zirium.dk" },
@@ -466,7 +466,7 @@ const CHEMMAnalysisPage: React.FC = () => {
         <header className="mb-10 mt-4">
           <p className="text-lg text-gray-700 dark:text-gray-200 font-medium mb-4">Analysis by Araz Bayat Makoo (Zirium) - June 17, 2026</p>
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-white mb-3 leading-tight">
-            Short selling analysis: The shorts missed the collapse and now chase the rebound
+            Short selling analysis of ChemoMetec: The shorts missed the collapse and now chase the rebound
           </h1>
           <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
             ChemoMetec A/S (CHEMM)
