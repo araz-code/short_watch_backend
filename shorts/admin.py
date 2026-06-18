@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib.admin import display
+from django.db import transaction
 
 from shorts.models import ShortPosition, RunStatus, Stock, LargeShortSelling, ShortPositionChart, CompanyMap, Announcement, \
     ShortSeller
@@ -66,6 +67,26 @@ class StockAdmin(admin.ModelAdmin):
     list_filter = ('active', 'show_price_data')
     ordering = ('name',)
     search_fields = ('name', 'code', 'symbol')
+
+    @staticmethod
+    def _delete_related(stocks):
+        # All FKs into Stock use on_delete=PROTECT, so the protected child rows
+        # must be removed before the stock(s) can be deleted.
+        ShortPosition.objects.filter(stock__in=stocks).delete()
+        ShortPositionChart.objects.filter(stock__in=stocks).delete()
+        LargeShortSelling.objects.filter(stock__in=stocks).delete()
+        Announcement.objects.filter(stock__in=stocks).delete()
+        CompanyMap.objects.filter(stock__in=stocks).delete()
+
+    def delete_model(self, request, obj):
+        with transaction.atomic():
+            self._delete_related([obj])
+            super().delete_model(request, obj)
+
+    def delete_queryset(self, request, queryset):
+        with transaction.atomic():
+            self._delete_related(queryset)
+            super().delete_queryset(request, queryset)
 
 
 @admin.register(LargeShortSelling)
