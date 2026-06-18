@@ -10,6 +10,7 @@ class ShortPositionAdmin(admin.ModelAdmin):
     list_display = ('timestamp', 'code', 'symbol', 'name', 'value', 'prev_value')
     list_filter = ('stock__name', 'timestamp')
     ordering = ('-timestamp', 'stock__code')
+    autocomplete_fields = ('stock',)
 
     @staticmethod
     @display(description='code', ordering='stock__code')
@@ -33,7 +34,7 @@ class ShortPositionAdmin(admin.ModelAdmin):
         return '-'
 
     def has_add_permission(self, request):
-        return False
+        return True
 
     def has_change_permission(self, request, obj=None):
         return True
@@ -64,6 +65,7 @@ class StockAdmin(admin.ModelAdmin):
     list_editable = ('show_price_data',)
     list_filter = ('active', 'show_price_data')
     ordering = ('name',)
+    search_fields = ('name', 'code', 'symbol')
 
 
 @admin.register(LargeShortSelling)

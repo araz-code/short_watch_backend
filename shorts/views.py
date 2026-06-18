@@ -233,6 +233,7 @@ FIRST_ENTRY_DATE = date(2023, 11, 6)
 
 STOCK_DETAIL_CHART_START_OVERRIDES = {
     'DK0010311471': date(2025, 12, 3),  # Sydbank merged
+    'DK0064867972': date(2026, 5, 28),  # BioMar newly listed, no price data before this
 }
 
 
