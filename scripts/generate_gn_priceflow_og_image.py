@@ -86,3 +86,4 @@ def render(headline: str, byline: str, out_name: str) -> None:
 
 
 render("Prisstrøm: Hvor har shorterne handlet GN?", "Araz Bayat Makoo  ·  28. juni 2026", "gn-flow-2026-06-28.png")
+render("Price flow: Where have the shorts traded GN?", "Araz Bayat Makoo  ·  June 28, 2026", "gn-flow-2026-06-28-en.png")
