@@ -1146,8 +1146,8 @@ const GNPriceFlowAnalysisPage: React.FC = () => {
               <p>Det fulde billede viser, hvor de historiske positioner er bygget op, mens 1M/3M viser, hvad shorterne gør lige nu. Som i GN-eksemplet kan de to fortælle vidt forskellige historier: Historisk netto-shorting ved 108 DKK, men overvejende dækning de seneste måneder.</p>
             </div>
             <div className="bg-gray-50 dark:bg-[#15151a] rounded-2xl border border-gray-100 dark:border-gray-800 p-5">
-              <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Læg mærke til farveintensiteten og datoerne</h4>
-              <p>Bjælkerne nedtones efter alder: Aktivitet inden for de seneste 90 dage står skarpt, 3-12 måneder gammel aktivitet er svagere, og alt over et år er svagest. Datoerne i tabellen viser, hvornår hvert kursbånd sidst var aktivt. Et kraftigt rødt bånd med en frisk dato betyder, at der shortes på det niveau netop nu.</p>
+              <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Læg mærke til bjælkelængden og datoerne</h4>
+              <p>Bag tallene i hver række ligger en bjælke, hvis længde viser, hvor meget der er shortet eller dækket i båndet, skaleret efter det største bånd. Under tallene står datoen for, hvornår båndet sidst blev shortet henholdsvis dækket. De to ting er uafhængige: Bjælkens længde er den samlede mængde, der kan være bygget op over lang tid, mens datoen kun fortæller, hvornår båndet sidst var aktivt, ikke at hele mængden er ny.</p>
             </div>
             <div className="bg-gray-50 dark:bg-[#15151a] rounded-2xl border border-gray-100 dark:border-gray-800 p-5">
               <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Sammenlign med den aktuelle kurs</h4>
@@ -1172,9 +1172,10 @@ const GNPriceFlowAnalysisPage: React.FC = () => {
             </li>
             <li className="flex gap-3">
               <span className="text-blue-500 font-bold shrink-0">2.</span>
-              <span><strong>Kursen er en antagelse:</strong> Vi antager, at handlen skete til forrige handelsdags
-              kurs på grund af T+1-indberetning. Den faktiske handelskurs inden for dagen kender vi ikke,
-              og ved store intradag-udsving, som på Amplifon-dagen, kan afvigelsen være betydelig.</span>
+              <span><strong>Kursen er en antagelse:</strong> Vi tildeler ændringen forrige handelsdags
+              gennemsnitskurs (høj, lav, luk) på grund af T+1-indberetning. Den faktiske handelskurs inden
+              for dagen kender vi ikke, og ved store intradag-udsving, som på Amplifon-dagen, kan
+              afvigelsen være betydelig.</span>
             </li>
             <li className="flex gap-3">
               <span className="text-blue-500 font-bold shrink-0">3.</span>
@@ -1189,6 +1190,12 @@ const GNPriceFlowAnalysisPage: React.FC = () => {
               <span><strong>Båndene er estimater:</strong> 2%-brede kursbånd er valgt som kompromis mellem detalje
               og støj. Tallene skal læses som niveauer og størrelsesordener, ikke som præcise handelskurser.</span>
             </li>
+            <li className="flex gap-3">
+              <span className="text-blue-500 font-bold shrink-0">5.</span>
+              <span><strong>Båndene flytter sig med perioden:</strong> Grænserne beregnes ud fra den laveste kurs i
+              det viste vindue, så de samme kursniveauer kan få lidt forskellige båndgrænser i fx 3M- og
+              fuld-visningen. Sammenlign derfor båndene inden for én periode ad gangen.</span>
+            </li>
           </ul>
         </section>
 
@@ -1197,9 +1204,9 @@ const GNPriceFlowAnalysisPage: React.FC = () => {
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">8. Konklusion</h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             Prisstrømmen besvarer det spørgsmål, som den rå shortinteresse ikke kan: Ikke bare hvor meget
-            der er shortet, men hvor. For GN viser den, at den stående shortposition primært er bygget op
-            ved 108 DKK og oppe ved 157-166 DKK, mens der under 100 DKK netto er blevet dækket. Ved
-            den aktuelle kurs på ca. 87 DKK er den gennemsnitlige tilbageværende short derfor i plus,
+            der er shortet, men hvor. For GN viser den, at den shortning, vi kan følge siden november 2023,
+            primært er bygget op ved 108 DKK og oppe ved 157-166 DKK, mens der under 100 DKK netto er blevet
+            dækket. Ved den aktuelle kurs på ca. 87 DKK sidder de positioner derfor i plus,
             og selvom de seneste 3 måneder samlet set har været domineret af gevinsthjemtagning, er der
             samtidig dukket ny netto-shorting op omkring 100 DKK og spredt i de lave bånd.
           </p>
