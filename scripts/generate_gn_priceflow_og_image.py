@@ -85,4 +85,4 @@ def render(headline: str, byline: str, out_name: str) -> None:
     print(f"Saved: {out_path} ({os.path.getsize(out_path)} bytes)")
 
 
-render("Prisstrøm: Hvor har shorterne handlet GN?", "Araz Bayat Makoo  ·  28. juni 2026", "gn-2026-06-28.png")
+render("Prisstrøm: Hvor har shorterne handlet GN?", "Araz Bayat Makoo  ·  28. juni 2026", "gn-flow-2026-06-28.png")

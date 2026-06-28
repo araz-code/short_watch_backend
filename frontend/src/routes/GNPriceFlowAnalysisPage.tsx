@@ -839,7 +839,7 @@ const GNPriceFlowAnalysisPage: React.FC = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    trackPageView("/analyse/gn/2026-06-28", "gn_priceflow_analysis");
+    trackPageView("/analyse/gn/flow/2026-06-28", "gn_priceflow_analysis");
     fetch(`${HOST}/stats/visit/gn-priceflow-analysis/`).catch(() => {});
   }, []);
 
@@ -871,8 +871,8 @@ const GNPriceFlowAnalysisPage: React.FC = () => {
       <meta property="og:title" content="Sådan bruger du prisstrømmen: Hvor har shorterne handlet GN?" />
       <meta property="og:description" content="Med GN Store Nord som case viser vi, ved hvilke kurser shorterne har åbnet og dækket deres positioner, og hvordan du selv læser prisstrømmen." />
       <meta property="og:type" content="article" />
-      <meta property="og:url" content="https://www.zirium.dk/analyse/gn/2026-06-28" />
-      <meta property="og:image" content="https://www.zirium.dk/og-images/gn-2026-06-28.png" />
+      <meta property="og:url" content="https://www.zirium.dk/analyse/gn/flow/2026-06-28" />
+      <meta property="og:image" content="https://www.zirium.dk/og-images/gn-flow-2026-06-28.png" />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
       <meta property="og:image:type" content="image/png" />
@@ -880,7 +880,8 @@ const GNPriceFlowAnalysisPage: React.FC = () => {
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content="Sådan bruger du prisstrømmen: Hvor har shorterne handlet GN?" />
       <meta name="twitter:description" content="Med GN Store Nord som case viser vi, ved hvilke kurser shorterne har åbnet og dækket deres positioner, og hvordan du selv læser prisstrømmen." />
-      <meta name="twitter:image" content="https://www.zirium.dk/og-images/gn-2026-06-28.png" />
+      <meta name="twitter:image" content="https://www.zirium.dk/og-images/gn-flow-2026-06-28.png" />
+      <link rel="canonical" href="https://www.zirium.dk/analyse/gn/flow/2026-06-28" />
       <script type="application/ld+json">{JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Article",
@@ -889,7 +890,7 @@ const GNPriceFlowAnalysisPage: React.FC = () => {
         "author": { "@type": "Person", "name": "Araz Bayat Makoo" },
         "publisher": { "@type": "Organization", "name": "Zirium", "url": "https://www.zirium.dk" },
         "datePublished": "2026-06-28",
-        "mainEntityOfPage": "https://www.zirium.dk/analyse/gn/2026-06-28",
+        "mainEntityOfPage": "https://www.zirium.dk/analyse/gn/flow/2026-06-28",
         "inLanguage": "da",
       })}</script>
 
@@ -964,7 +965,8 @@ const GNPriceFlowAnalysisPage: React.FC = () => {
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
             Du finder prisstrømmen på aktiens detaljeside under fanen Prisstrøm, både på zirium.dk og i
             appen. Resultatet minder om det, man i teknisk analyse kalder en volumenprofil, men her er
-            det udelukkende short-aktiviteten, der fordeles på kursniveau.
+            det udelukkende short-aktiviteten, der fordeles på kursniveau. Du kan åbne GN's prisstrøm
+            direkte <a href="https://www.zirium.dk/short-watch-details?code=DK0010272632&tab=flow" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:text-blue-700 underline">her</a>.
           </p>
         </section>
 
@@ -999,8 +1001,9 @@ const GNPriceFlowAnalysisPage: React.FC = () => {
             </div>
           </div>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mt-4">
-            GN er et godt eksempel, fordi aktien har været igennem hele spektret: En top på 224 DKK i juni
-            2024, et bundniveau på 82,56 DKK i april 2025 og et hop på Amplifon-nyheden i marts 2026.
+            GN er et godt eksempel, fordi aktien i den viste periode har været igennem hele spektret: En
+            top på 224 DKK i juni 2024 (aktien har været højere før 2023), et bundniveau på 82,56 DKK i
+            april 2025 og et hop på Amplifon-nyheden i marts 2026.
             Samtidig er shortinteressen gået fra 6% til over 13% og ned igen til 9,85%. Siden november 2023
             er der brutto åbnet shorts for 62,9 mio. aktier og dækket 57,4 mio. Det er ca. 4,4 gange den
             nuværende shortposition på ca. 14,3 mio. aktier, så der har været rigeligt med aktivitet at
@@ -1080,6 +1083,12 @@ const GNPriceFlowAnalysisPage: React.FC = () => {
             ved 105. På en rolig dag ligger de to kurser tæt, men på en vild dag som denne skiller de godt
             6 DKK, en påmindelse om, at placeringen er et estimat, ikke en eksakt handelskurs.
           </p>
+          <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
+            Bemærk, at denne dækning næsten forsvinder i grafen i afsnit 3, der kun viser netto: Ved 111
+            DKK er der shortet omtrent lige så meget på andre tidspunkter, så nettoen går i nul (forbehold
+            1 i praksis). I appens liste, hvor shortet og dækket står hver for sig, kan du derimod godt se
+            den, med marts-datoen ved siden af.
+          </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
             Pointen er generel: Store udsving i strømmen har næsten altid en konkret anledning, et
             regnskab, en nedjustering eller, som her, et frasalg. Datokolonnen i appen viser, hvornår
@@ -1151,7 +1160,7 @@ const GNPriceFlowAnalysisPage: React.FC = () => {
             </div>
             <div className="bg-gray-50 dark:bg-[#15151a] rounded-2xl border border-gray-100 dark:border-gray-800 p-5">
               <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Sammenlign med den aktuelle kurs</h4>
-              <p>Ligger kursen under de store røde bånd, er shorterne samlet set i plus, og de har råd til at være tålmodige. Ligger kursen over dem, er de pressede, og en yderligere kursstigning kan tvinge dem til at dække. For GN ligger de store røde bånd ved 108 og 157-166 DKK, altså et godt stykke over den aktuelle kurs på ca. 87 DKK.</p>
+              <p>Ligger kursen under de store røde bånd, er shorterne samlet set i plus og har råd til at være tålmodige, såfremt de ikke allerede har dækket. Ligger kursen over dem, er de pressede, og en yderligere kursstigning kan tvinge dem til at dække. For GN ligger de store røde bånd ved 108 og 157-166 DKK, altså et godt stykke over den aktuelle kurs på ca. 87 DKK, men om de positioner stadig er åbne, viser prisstrømmen ikke.</p>
             </div>
             <div className="bg-gray-50 dark:bg-[#15151a] rounded-2xl border border-gray-100 dark:border-gray-800 p-5">
               <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Kobl store bånd til begivenheder</h4>
@@ -1179,8 +1188,8 @@ const GNPriceFlowAnalysisPage: React.FC = () => {
             </li>
             <li className="flex gap-3">
               <span className="text-blue-500 font-bold shrink-0">3.</span>
-              <span><strong>Den skelner ikke mellem aktører:</strong> Strømmen er summen af alle shorts, både de
-              offentliggjorte positioner over 0,50% og de anonyme under. Et rødt bånd fortæller, at nogen
+              <span><strong>Den skelner ikke mellem aktører:</strong> Strømmen er summen af de indberettede shorts,
+              både de offentliggjorte positioner over 0,50% og de anonyme mellem 0,1% og 0,50%. Et rødt bånd fortæller, at nogen
               shortede på det niveau, ikke hvem, og heller ikke om de stadig holder positionen. Med en
               bruttoaktivitet på 4,4 gange den nuværende position kan mange af de viste handler for længst
               være modsvaret af senere handler.</span>
@@ -1196,6 +1205,12 @@ const GNPriceFlowAnalysisPage: React.FC = () => {
               det viste vindue, så de samme kursniveauer kan få lidt forskellige båndgrænser i fx 3M- og
               fuld-visningen. Sammenlign derfor båndene inden for én periode ad gangen.</span>
             </li>
+            <li className="flex gap-3">
+              <span className="text-blue-500 font-bold shrink-0">6.</span>
+              <span><strong>Positioner under 0,1% er ikke med:</strong> Net-shortpositioner skal kun indberettes fra
+              0,1% (og offentliggøres med navn fra 0,5%). Alt under 0,1% rapporteres ingen steder, så den
+              reelle shortinteresse kan være lidt højere end den, vi viser.</span>
+            </li>
           </ul>
         </section>
 
@@ -1206,12 +1221,13 @@ const GNPriceFlowAnalysisPage: React.FC = () => {
             Prisstrømmen besvarer det spørgsmål, som den rå shortinteresse ikke kan: Ikke bare hvor meget
             der er shortet, men hvor. For GN viser den, at den shortning, vi kan følge siden november 2023,
             primært er bygget op ved 108 DKK og oppe ved 157-166 DKK, mens der under 100 DKK netto er blevet
-            dækket. Ved den aktuelle kurs på ca. 87 DKK sidder de positioner derfor i plus,
-            og selvom de seneste 3 måneder samlet set har været domineret af gevinsthjemtagning, er der
-            samtidig dukket ny netto-shorting op omkring 100 DKK og spredt i de lave bånd.
+            dækket. Ved den aktuelle kurs på ca. 87 DKK sidder de positioner derfor i plus, forudsat de
+            stadig er åbne, for prisstrømmen viser ikke, om de allerede er lukket højere oppe. Og selvom
+            de seneste 3 måneder samlet set har været domineret af gevinsthjemtagning, er der samtidig
+            dukket ny netto-shorting op omkring 100 DKK og spredt i de lave bånd.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-            Og det er netop det mest interessante at holde øje med herfra: farven på båndene omkring
+            Og det er netop det mest interessante at holde øje med herfra: Farven på båndene omkring
             87-95 DKK, hvor kursen ligger nu. I 3M-visningen er der allerede dukket lidt ny netto-shorting
             op her. Bliver de bånd ved med at være røde, genopbygger shorterne positioner på de lave
             niveauer, og så er historien om GN som en af de mest shortede danske aktier langtfra slut.
@@ -1220,8 +1236,8 @@ const GNPriceFlowAnalysisPage: React.FC = () => {
           </p>
         </section>
 
-        <FeedbackWidget pageType="analysis" pageId="gn/2026-06-28" />
-        <RelatedAnalyses currentSlug="gn/2026-06-28" />
+        <FeedbackWidget pageType="analysis" pageId="gn/flow/2026-06-28" />
+        <RelatedAnalyses currentSlug="gn/flow/2026-06-28" />
 
         {/* ── Disclaimer ── */}
         <footer className="border-t border-gray-100 dark:border-gray-800 pt-6">

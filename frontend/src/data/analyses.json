@@ -6,7 +6,7 @@
   },
   "analyses": [
     {
-      "slug": "gn/2026-06-28",
+      "slug": "gn/flow/2026-06-28",
       "accentColor": "#F59E0B",
       "code": "DK0010272632",
       "title": "GN Store Nord (GN)",
@@ -23,7 +23,7 @@
         "en": "June 28, 2026"
       },
       "readingMinutes": 6,
-      "ogImage": "gn-2026-06-28",
+      "ogImage": "gn-flow-2026-06-28",
       "ogTitle": "Sådan bruger du prisstrømmen: Hvor har shorterne handlet GN?",
       "ogDescription": "Med GN Store Nord som case viser vi, ved hvilke kurser shorterne har åbnet og dækket deres positioner, og hvordan du selv læser prisstrømmen."
     },

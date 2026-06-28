@@ -209,7 +209,11 @@ const router = createBrowserRouter([
     element: <ErrorBoundary><CHEMMAnalysisPage /></ErrorBoundary>,
   },
   {
-    path: "analyse/gn/2026-06-28",
+    path: "analyse/gn/flow/2026-06-28",
+    element: <ErrorBoundary><GNPriceFlowAnalysisPage /></ErrorBoundary>,
+  },
+  {
+    path: "analyse/gn/flow",
     element: <ErrorBoundary><GNPriceFlowAnalysisPage /></ErrorBoundary>,
   },
   {
