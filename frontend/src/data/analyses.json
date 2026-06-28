@@ -6,6 +6,28 @@
   },
   "analyses": [
     {
+      "slug": "gn/2026-06-28",
+      "accentColor": "#F59E0B",
+      "code": "DK0010272632",
+      "title": "GN Store Nord (GN)",
+      "subtitle": {
+        "da": "Sådan bruger du prisstrømmen: Hvor har shorterne handlet GN?",
+        "en": "How to use the price flow: Where have the shorts traded GN?"
+      },
+      "excerpt": {
+        "da": "Prisstrømmen viser, ved hvilke kurser shorts er åbnet og dækket. Med GN Store Nord som case lærer du at læse fanen og ser, hvor positionerne er bygget op.",
+        "en": "The price flow shows at which prices shorts were opened and covered. Using GN Store Nord as a case, you learn to read the tab and see where the positions were built."
+      },
+      "date": {
+        "da": "28. juni 2026",
+        "en": "June 28, 2026"
+      },
+      "readingMinutes": 6,
+      "ogImage": "gn-2026-06-28",
+      "ogTitle": "Sådan bruger du prisstrømmen: Hvor har shorterne handlet GN?",
+      "ogDescription": "Med GN Store Nord som case viser vi, ved hvilke kurser shorterne har åbnet og dækket deres positioner, og hvordan du selv læser prisstrømmen."
+    },
+    {
       "slug": "chemm/2026-06-17",
       "accentColor": "#007AFF",
       "code": "DK0060055861",
