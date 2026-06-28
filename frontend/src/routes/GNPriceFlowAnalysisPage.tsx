@@ -26,118 +26,758 @@ import {
 } from "recharts/types/component/DefaultTooltipContent";
 
 // ─── static data ────────────────────────────────────────────────────────────
-// Short interest and close price, sampled at key changes (Finanstilsynet + Nasdaq)
+// Daily short interest and close price since November 2023 (Finanstilsynet + Nasdaq).
+// Full series, every trading day, feeding the section 2 context chart.
 const POSITION_HISTORY = [
   { date: "2023-11-06", short: 6.03, close: 121.1 },
+  { date: "2023-11-07", short: 5.93, close: 116.7 },
+  { date: "2023-11-08", short: 6.02, close: 119.75 },
+  { date: "2023-11-09", short: 5.78, close: 121.95 },
+  { date: "2023-11-10", short: 5.6, close: 135.35 },
+  { date: "2023-11-13", short: 5.78, close: 139.5 },
+  { date: "2023-11-14", short: 5.91, close: 148.35 },
+  { date: "2023-11-15", short: 5.68, close: 150.85 },
+  { date: "2023-11-16", short: 5.3, close: 149.55 },
+  { date: "2023-11-17", short: 5.2, close: 148.1 },
+  { date: "2023-11-20", short: 5.59, close: 152.05 },
+  { date: "2023-11-21", short: 5.59, close: 149.8 },
+  { date: "2023-11-22", short: 5.49, close: 149.95 },
+  { date: "2023-11-23", short: 5.49, close: 149.6 },
+  { date: "2023-11-24", short: 5.49, close: 149.6 },
+  { date: "2023-11-27", short: 5.49, close: 155.6 },
+  { date: "2023-11-28", short: 5.3, close: 153.3 },
+  { date: "2023-11-29", short: 5.4, close: 159.15 },
+  { date: "2023-11-30", short: 5.4, close: 161.1 },
+  { date: "2023-12-01", short: 5.62, close: 158.5 },
+  { date: "2023-12-04", short: 6.16, close: 159.95 },
+  { date: "2023-12-05", short: 6.16, close: 160 },
   { date: "2023-12-06", short: 6.29, close: 162.7 },
+  { date: "2023-12-07", short: 6.29, close: 161.15 },
+  { date: "2023-12-08", short: 6.29, close: 160.3 },
+  { date: "2023-12-11", short: 6.29, close: 160.95 },
+  { date: "2023-12-12", short: 6.29, close: 161.15 },
+  { date: "2023-12-13", short: 6.29, close: 161.6 },
+  { date: "2023-12-14", short: 6.29, close: 177.2 },
+  { date: "2023-12-15", short: 5.5, close: 177.65 },
+  { date: "2023-12-18", short: 5.68, close: 177 },
+  { date: "2023-12-19", short: 5.68, close: 180.75 },
+  { date: "2023-12-20", short: 5.58, close: 181.45 },
+  { date: "2023-12-21", short: 5.58, close: 175.9 },
+  { date: "2023-12-22", short: 5.38, close: 176.2 },
+  { date: "2023-12-25", short: 5.38, close: 176.2 },
+  { date: "2023-12-26", short: 5.38, close: 176.2 },
+  { date: "2023-12-27", short: 5.38, close: 173.4 },
+  { date: "2023-12-28", short: 5.38, close: 173.5 },
+  { date: "2023-12-29", short: 5.28, close: 171.8 },
+  { date: "2024-01-01", short: 5.28, close: 171.8 },
+  { date: "2024-01-02", short: 5.09, close: 175.5 },
+  { date: "2024-01-03", short: 5.19, close: 170 },
+  { date: "2024-01-04", short: 5.3, close: 169.75 },
+  { date: "2024-01-05", short: 5.38, close: 168.15 },
+  { date: "2024-01-08", short: 5.49, close: 167.05 },
+  { date: "2024-01-09", short: 5.36, close: 170.85 },
+  { date: "2024-01-10", short: 5.36, close: 169.55 },
+  { date: "2024-01-11", short: 5.3, close: 173.45 },
+  { date: "2024-01-12", short: 4.96, close: 182.6 },
+  { date: "2024-01-15", short: 4.98, close: 181.65 },
+  { date: "2024-01-16", short: 4.98, close: 178 },
+  { date: "2024-01-17", short: 4.98, close: 176.85 },
+  { date: "2024-01-18", short: 5.09, close: 182.5 },
+  { date: "2024-01-19", short: 5.08, close: 180.7 },
+  { date: "2024-01-22", short: 5.19, close: 180.7 },
+  { date: "2024-01-23", short: 5.18, close: 169.35 },
+  { date: "2024-01-24", short: 5.18, close: 168.7 },
+  { date: "2024-01-25", short: 5.3, close: 172.55 },
+  { date: "2024-01-26", short: 5.4, close: 170.05 },
+  { date: "2024-01-29", short: 5.4, close: 167.25 },
+  { date: "2024-01-30", short: 5.4, close: 165.5 },
+  { date: "2024-01-31", short: 5.44, close: 163.6 },
+  { date: "2024-02-01", short: 5.54, close: 162.5 },
+  { date: "2024-02-02", short: 5.87, close: 163.25 },
+  { date: "2024-02-05", short: 6.16, close: 164.05 },
+  { date: "2024-02-06", short: 6.16, close: 162.55 },
+  { date: "2024-02-07", short: 6.61, close: 164.15 },
+  { date: "2024-02-08", short: 6.61, close: 174.5 },
   { date: "2024-02-09", short: 6.79, close: 179.55 },
+  { date: "2024-02-12", short: 7.04, close: 180.2 },
+  { date: "2024-02-13", short: 7.04, close: 175 },
+  { date: "2024-02-14", short: 7.04, close: 175.8 },
+  { date: "2024-02-15", short: 6.94, close: 183.45 },
+  { date: "2024-02-16", short: 6.94, close: 179.25 },
+  { date: "2024-02-19", short: 7.04, close: 177.05 },
+  { date: "2024-02-20", short: 6.9, close: 174.25 },
+  { date: "2024-02-21", short: 6.99, close: 169.85 },
+  { date: "2024-02-22", short: 6.88, close: 170.05 },
+  { date: "2024-02-23", short: 6.88, close: 167 },
+  { date: "2024-02-26", short: 6.88, close: 166 },
+  { date: "2024-02-27", short: 6.73, close: 167.05 },
+  { date: "2024-02-28", short: 6.79, close: 161.5 },
+  { date: "2024-02-29", short: 6.97, close: 161.15 },
+  { date: "2024-03-01", short: 6.9, close: 163.2 },
+  { date: "2024-03-04", short: 6.99, close: 155.5 },
+  { date: "2024-03-05", short: 6.93, close: 149.95 },
+  { date: "2024-03-06", short: 6.79, close: 154.7 },
+  { date: "2024-03-07", short: 6.52, close: 155 },
+  { date: "2024-03-08", short: 6.58, close: 154.3 },
+  { date: "2024-03-11", short: 6.52, close: 152.65 },
+  { date: "2024-03-12", short: 6.63, close: 152.95 },
+  { date: "2024-03-13", short: 6.63, close: 152.85 },
+  { date: "2024-03-14", short: 6.47, close: 155.6 },
+  { date: "2024-03-15", short: 6.31, close: 153.25 },
+  { date: "2024-03-18", short: 6.06, close: 159.7 },
+  { date: "2024-03-19", short: 6.07, close: 164.65 },
+  { date: "2024-03-20", short: 6.07, close: 174.65 },
+  { date: "2024-03-21", short: 5.92, close: 179.05 },
+  { date: "2024-03-22", short: 6.15, close: 182.15 },
+  { date: "2024-03-25", short: 6.05, close: 186.2 },
+  { date: "2024-03-26", short: 6.17, close: 188.15 },
+  { date: "2024-03-27", short: 6.05, close: 182.6 },
+  { date: "2024-03-28", short: 6.04, close: 182.6 },
+  { date: "2024-03-29", short: 6.04, close: 182.6 },
+  { date: "2024-04-01", short: 6.04, close: 182.6 },
+  { date: "2024-04-02", short: 6.04, close: 178.65 },
+  { date: "2024-04-03", short: 6.05, close: 183.4 },
+  { date: "2024-04-04", short: 6.05, close: 184.95 },
+  { date: "2024-04-05", short: 6.15, close: 181.75 },
+  { date: "2024-04-08", short: 6.15, close: 185.55 },
+  { date: "2024-04-09", short: 6.15, close: 186.6 },
+  { date: "2024-04-10", short: 6.13, close: 179.65 },
+  { date: "2024-04-11", short: 6.24, close: 177 },
+  { date: "2024-04-12", short: 6.24, close: 172.5 },
+  { date: "2024-04-15", short: 6.34, close: 170.5 },
+  { date: "2024-04-16", short: 6.34, close: 166.95 },
+  { date: "2024-04-17", short: 6.34, close: 168.9 },
+  { date: "2024-04-18", short: 6.34, close: 166 },
+  { date: "2024-04-19", short: 6.32, close: 172.85 },
+  { date: "2024-04-22", short: 6.32, close: 182 },
+  { date: "2024-04-23", short: 6.49, close: 184.15 },
+  { date: "2024-04-24", short: 6.44, close: 187.85 },
+  { date: "2024-04-25", short: 6.45, close: 179 },
+  { date: "2024-04-26", short: 6.45, close: 188.05 },
   { date: "2024-04-29", short: 6.55, close: 190.75 },
+  { date: "2024-04-30", short: 6.55, close: 190.6 },
+  { date: "2024-05-01", short: 6.54, close: 186.4 },
+  { date: "2024-05-02", short: 6.49, close: 208.6 },
+  { date: "2024-05-03", short: 5.9, close: 200 },
+  { date: "2024-05-06", short: 5.88, close: 208.4 },
+  { date: "2024-05-07", short: 5.89, close: 202 },
+  { date: "2024-05-08", short: 6, close: 202.6 },
+  { date: "2024-05-09", short: 5.9, close: 202.6 },
+  { date: "2024-05-10", short: 5.9, close: 202.6 },
+  { date: "2024-05-13", short: 5.9, close: 203.5 },
+  { date: "2024-05-14", short: 5.6, close: 201.6 },
+  { date: "2024-05-15", short: 5.74, close: 208 },
+  { date: "2024-05-16", short: 5.73, close: 214.3 },
+  { date: "2024-05-17", short: 5.49, close: 221.3 },
+  { date: "2024-05-20", short: 5.31, close: 221.3 },
+  { date: "2024-05-21", short: 5.31, close: 216.4 },
+  { date: "2024-05-22", short: 5.28, close: 211.3 },
+  { date: "2024-05-23", short: 5.28, close: 221.7 },
+  { date: "2024-05-24", short: 5.28, close: 221.2 },
+  { date: "2024-05-27", short: 5.28, close: 222.3 },
+  { date: "2024-05-28", short: 5.28, close: 221.8 },
+  { date: "2024-05-29", short: 5.2, close: 214.6 },
+  { date: "2024-05-30", short: 5.21, close: 215.5 },
+  { date: "2024-05-31", short: 5.21, close: 217.2 },
+  { date: "2024-06-03", short: 5.18, close: 223.3 },
+  { date: "2024-06-04", short: 5.18, close: 217.7 },
+  { date: "2024-06-05", short: 5.18, close: 217.7 },
   { date: "2024-06-06", short: 5.18, close: 224.2 },
+  { date: "2024-06-07", short: 5.22, close: 221.8 },
+  { date: "2024-06-10", short: 5.22, close: 223.8 },
+  { date: "2024-06-11", short: 5.73, close: 214.5 },
+  { date: "2024-06-12", short: 5.61, close: 222.7 },
+  { date: "2024-06-13", short: 5.64, close: 218.1 },
+  { date: "2024-06-14", short: 5.64, close: 208.1 },
+  { date: "2024-06-17", short: 5.69, close: 207.1 },
+  { date: "2024-06-18", short: 5.5, close: 204.9 },
+  { date: "2024-06-19", short: 5.59, close: 206.7 },
+  { date: "2024-06-20", short: 5.59, close: 209.6 },
+  { date: "2024-06-21", short: 5.73, close: 204.7 },
+  { date: "2024-06-24", short: 5.85, close: 202.4 },
+  { date: "2024-06-25", short: 5.55, close: 200.7 },
+  { date: "2024-06-26", short: 5.64, close: 197.65 },
+  { date: "2024-06-27", short: 5.42, close: 196.75 },
+  { date: "2024-06-28", short: 5.6, close: 194.1 },
+  { date: "2024-07-01", short: 5.51, close: 192.3 },
+  { date: "2024-07-02", short: 5.6, close: 190.4 },
+  { date: "2024-07-03", short: 5.93, close: 192.85 },
+  { date: "2024-07-04", short: 5.72, close: 191.75 },
+  { date: "2024-07-05", short: 5.72, close: 190.9 },
+  { date: "2024-07-08", short: 5.72, close: 188 },
+  { date: "2024-07-09", short: 5.72, close: 185.95 },
+  { date: "2024-07-10", short: 5.94, close: 184 },
+  { date: "2024-07-11", short: 6.09, close: 190.6 },
+  { date: "2024-07-12", short: 6.16, close: 189.15 },
+  { date: "2024-07-15", short: 6.16, close: 188.1 },
+  { date: "2024-07-16", short: 6.09, close: 188.6 },
+  { date: "2024-07-17", short: 5.96, close: 176.75 },
+  { date: "2024-07-18", short: 5.82, close: 175.85 },
+  { date: "2024-07-19", short: 6.01, close: 173.3 },
+  { date: "2024-07-22", short: 5.94, close: 170 },
+  { date: "2024-07-23", short: 6.28, close: 173.65 },
+  { date: "2024-07-24", short: 6.21, close: 175.25 },
+  { date: "2024-07-25", short: 6.4, close: 170.85 },
+  { date: "2024-07-26", short: 6.41, close: 174.95 },
+  { date: "2024-07-29", short: 6.38, close: 175.2 },
+  { date: "2024-07-30", short: 6.38, close: 178.35 },
+  { date: "2024-07-31", short: 6.33, close: 180.65 },
+  { date: "2024-08-01", short: 6.33, close: 178.9 },
+  { date: "2024-08-02", short: 6.33, close: 169.85 },
   { date: "2024-08-05", short: 6.62, close: 164.8 },
+  { date: "2024-08-06", short: 6.84, close: 165.85 },
+  { date: "2024-08-07", short: 6.9, close: 167.25 },
+  { date: "2024-08-08", short: 6.89, close: 172.55 },
+  { date: "2024-08-09", short: 6.89, close: 173.7 },
+  { date: "2024-08-12", short: 6.87, close: 172 },
+  { date: "2024-08-13", short: 6.72, close: 173.5 },
+  { date: "2024-08-14", short: 6.63, close: 179.55 },
+  { date: "2024-08-15", short: 6.34, close: 184.8 },
+  { date: "2024-08-16", short: 6.32, close: 182 },
+  { date: "2024-08-19", short: 6.22, close: 187.05 },
+  { date: "2024-08-20", short: 6.22, close: 183.35 },
+  { date: "2024-08-21", short: 6.12, close: 183.15 },
+  { date: "2024-08-22", short: 6.32, close: 166.35 },
+  { date: "2024-08-23", short: 6.22, close: 164.65 },
+  { date: "2024-08-26", short: 6.36, close: 158.75 },
+  { date: "2024-08-27", short: 6.5, close: 159 },
+  { date: "2024-08-28", short: 6.68, close: 153.15 },
+  { date: "2024-08-29", short: 6.84, close: 153.45 },
+  { date: "2024-08-30", short: 7, close: 153.7 },
+  { date: "2024-09-02", short: 7.01, close: 154.2 },
+  { date: "2024-09-03", short: 7.2, close: 158.8 },
+  { date: "2024-09-04", short: 6.99, close: 164.05 },
+  { date: "2024-09-05", short: 6.83, close: 162.75 },
+  { date: "2024-09-06", short: 6.96, close: 164.85 },
+  { date: "2024-09-09", short: 6.88, close: 163.95 },
+  { date: "2024-09-10", short: 6.99, close: 158.5 },
+  { date: "2024-09-11", short: 7.01, close: 160.55 },
+  { date: "2024-09-12", short: 7.05, close: 159.5 },
+  { date: "2024-09-13", short: 7.08, close: 164.5 },
+  { date: "2024-09-16", short: 7.11, close: 163.05 },
+  { date: "2024-09-17", short: 7.11, close: 170.05 },
+  { date: "2024-09-18", short: 7.25, close: 166.85 },
+  { date: "2024-09-19", short: 7.11, close: 163 },
+  { date: "2024-09-20", short: 7.28, close: 159.65 },
+  { date: "2024-09-23", short: 7.1, close: 158.55 },
+  { date: "2024-09-24", short: 7.13, close: 156.15 },
+  { date: "2024-09-25", short: 7.33, close: 154.55 },
+  { date: "2024-09-26", short: 7.62, close: 158.35 },
+  { date: "2024-09-27", short: 7.76, close: 155.85 },
+  { date: "2024-09-30", short: 7.92, close: 149.75 },
+  { date: "2024-10-01", short: 8.11, close: 148.7 },
+  { date: "2024-10-02", short: 8.2, close: 148.95 },
+  { date: "2024-10-03", short: 8.33, close: 145 },
+  { date: "2024-10-04", short: 8.8, close: 146.8 },
+  { date: "2024-10-07", short: 8.7, close: 145.7 },
+  { date: "2024-10-08", short: 8.9, close: 144.9 },
+  { date: "2024-10-09", short: 9.02, close: 144 },
+  { date: "2024-10-10", short: 9.11, close: 140.2 },
+  { date: "2024-10-11", short: 9.06, close: 140 },
+  { date: "2024-10-14", short: 9.46, close: 137.15 },
   { date: "2024-10-15", short: 9.95, close: 136.5 },
+  { date: "2024-10-16", short: 9.83, close: 135.75 },
+  { date: "2024-10-17", short: 10.15, close: 135.4 },
+  { date: "2024-10-18", short: 10.41, close: 135.2 },
+  { date: "2024-10-21", short: 10.46, close: 134.8 },
+  { date: "2024-10-22", short: 10.23, close: 130 },
+  { date: "2024-10-23", short: 10.51, close: 130.4 },
+  { date: "2024-10-24", short: 10.6, close: 134.35 },
+  { date: "2024-10-25", short: 10.71, close: 131.1 },
+  { date: "2024-10-28", short: 10.71, close: 131.5 },
+  { date: "2024-10-29", short: 10.96, close: 134.55 },
+  { date: "2024-10-30", short: 10.6, close: 133.7 },
+  { date: "2024-10-31", short: 10.47, close: 133.35 },
+  { date: "2024-11-01", short: 10.47, close: 135.8 },
+  { date: "2024-11-04", short: 10.56, close: 136.35 },
+  { date: "2024-11-05", short: 10.47, close: 134.35 },
+  { date: "2024-11-06", short: 10.07, close: 131.35 },
+  { date: "2024-11-07", short: 10.03, close: 133.6 },
+  { date: "2024-11-08", short: 9.91, close: 139.05 },
+  { date: "2024-11-11", short: 9.94, close: 142.65 },
+  { date: "2024-11-12", short: 9.71, close: 137.95 },
+  { date: "2024-11-13", short: 9.95, close: 133.2 },
+  { date: "2024-11-14", short: 10.25, close: 139.15 },
+  { date: "2024-11-15", short: 10.45, close: 135.4 },
+  { date: "2024-11-18", short: 10.51, close: 131.4 },
+  { date: "2024-11-19", short: 10.35, close: 130.75 },
+  { date: "2024-11-20", short: 10.37, close: 130.2 },
+  { date: "2024-11-21", short: 10.44, close: 131.05 },
+  { date: "2024-11-22", short: 10.44, close: 134.95 },
+  { date: "2024-11-25", short: 10.35, close: 134.85 },
+  { date: "2024-11-26", short: 10.36, close: 131.75 },
+  { date: "2024-11-27", short: 10.23, close: 131.15 },
+  { date: "2024-11-28", short: 10.45, close: 133.9 },
+  { date: "2024-11-29", short: 10.44, close: 135 },
+  { date: "2024-12-02", short: 10.41, close: 136.95 },
+  { date: "2024-12-03", short: 10.41, close: 129.85 },
+  { date: "2024-12-04", short: 10.46, close: 135.15 },
+  { date: "2024-12-05", short: 10.45, close: 134.35 },
+  { date: "2024-12-06", short: 10.55, close: 135.75 },
+  { date: "2024-12-09", short: 10.55, close: 138.2 },
+  { date: "2024-12-10", short: 10.6, close: 137.2 },
+  { date: "2024-12-11", short: 10.74, close: 136.65 },
+  { date: "2024-12-12", short: 10.6, close: 138.75 },
+  { date: "2024-12-13", short: 10.58, close: 138.2 },
+  { date: "2024-12-16", short: 10.68, close: 129.45 },
+  { date: "2024-12-17", short: 10.78, close: 126.2 },
+  { date: "2024-12-18", short: 10.78, close: 135.6 },
+  { date: "2024-12-19", short: 10.8, close: 130.7 },
+  { date: "2024-12-20", short: 10.83, close: 131.3 },
+  { date: "2024-12-23", short: 10.73, close: 130.7 },
+  { date: "2024-12-24", short: 10.85, close: 130.7 },
+  { date: "2024-12-25", short: 10.85, close: 130.7 },
+  { date: "2024-12-26", short: 10.85, close: 130.7 },
+  { date: "2024-12-27", short: 10.85, close: 135.65 },
+  { date: "2024-12-30", short: 10.81, close: 133.75 },
   { date: "2024-12-31", short: 10.92, close: 133.75 },
+  { date: "2025-01-01", short: 10.92, close: 133.75 },
+  { date: "2025-01-02", short: 10.92, close: 138 },
+  { date: "2025-01-03", short: 10.92, close: 135.15 },
+  { date: "2025-01-06", short: 10.96, close: 136.1 },
+  { date: "2025-01-07", short: 10.86, close: 138.7 },
+  { date: "2025-01-08", short: 10.69, close: 134.2 },
+  { date: "2025-01-09", short: 10.59, close: 134.25 },
+  { date: "2025-01-10", short: 10.49, close: 124.95 },
+  { date: "2025-01-13", short: 10.83, close: 123.3 },
+  { date: "2025-01-14", short: 11.2, close: 123.9 },
   { date: "2025-01-15", short: 11.34, close: 128.3 },
-  { date: "2025-03-05", short: 9.83, close: 123.0 },
+  { date: "2025-01-16", short: 10.97, close: 123.25 },
+  { date: "2025-01-17", short: 11.13, close: 124.25 },
+  { date: "2025-01-20", short: 11.12, close: 128.65 },
+  { date: "2025-01-21", short: 11.02, close: 131.2 },
+  { date: "2025-01-22", short: 10.98, close: 132.5 },
+  { date: "2025-01-23", short: 11.05, close: 132.7 },
+  { date: "2025-01-24", short: 11.26, close: 132.7 },
+  { date: "2025-01-27", short: 11.26, close: 136.55 },
+  { date: "2025-01-28", short: 11.22, close: 134.7 },
+  { date: "2025-01-29", short: 11.27, close: 143 },
+  { date: "2025-01-30", short: 11.19, close: 151.2 },
+  { date: "2025-01-31", short: 10.6, close: 148.2 },
+  { date: "2025-02-03", short: 10.17, close: 142 },
+  { date: "2025-02-04", short: 10.26, close: 153.95 },
+  { date: "2025-02-05", short: 9.78, close: 150.6 },
+  { date: "2025-02-06", short: 9.7, close: 149 },
+  { date: "2025-02-07", short: 9.98, close: 144.05 },
+  { date: "2025-02-10", short: 9.97, close: 139.9 },
+  { date: "2025-02-11", short: 9.88, close: 142.85 },
+  { date: "2025-02-12", short: 9.49, close: 141.35 },
+  { date: "2025-02-13", short: 9.63, close: 141.5 },
+  { date: "2025-02-14", short: 9.7, close: 143.05 },
+  { date: "2025-02-17", short: 9.7, close: 139.6 },
+  { date: "2025-02-18", short: 9.85, close: 142.25 },
+  { date: "2025-02-19", short: 9.95, close: 137.95 },
+  { date: "2025-02-20", short: 9.95, close: 137.55 },
+  { date: "2025-02-21", short: 9.95, close: 137.6 },
+  { date: "2025-02-24", short: 9.95, close: 135.35 },
+  { date: "2025-02-25", short: 9.7, close: 134.4 },
+  { date: "2025-02-26", short: 9.6, close: 137.05 },
+  { date: "2025-02-27", short: 9.6, close: 128.8 },
+  { date: "2025-02-28", short: 9.56, close: 127.5 },
+  { date: "2025-03-03", short: 9.61, close: 127.8 },
+  { date: "2025-03-04", short: 9.69, close: 117.1 },
+  { date: "2025-03-05", short: 9.83, close: 123 },
+  { date: "2025-03-06", short: 9.83, close: 124.6 },
+  { date: "2025-03-07", short: 9.83, close: 125 },
+  { date: "2025-03-10", short: 9.94, close: 122.55 },
+  { date: "2025-03-11", short: 9.91, close: 119.25 },
+  { date: "2025-03-12", short: 10.02, close: 117.35 },
+  { date: "2025-03-13", short: 10.02, close: 118.15 },
+  { date: "2025-03-14", short: 10.1, close: 117.65 },
+  { date: "2025-03-17", short: 10.1, close: 118.4 },
+  { date: "2025-03-18", short: 9.8, close: 118.5 },
+  { date: "2025-03-19", short: 9.97, close: 122.15 },
+  { date: "2025-03-20", short: 9.97, close: 121.4 },
+  { date: "2025-03-21", short: 10.19, close: 117.2 },
+  { date: "2025-03-24", short: 10.39, close: 119.1 },
+  { date: "2025-03-25", short: 10.29, close: 120.2 },
+  { date: "2025-03-26", short: 10.28, close: 116.5 },
+  { date: "2025-03-27", short: 10.29, close: 111.7 },
+  { date: "2025-03-28", short: 10.11, close: 114.1 },
+  { date: "2025-03-31", short: 10.04, close: 107.05 },
+  { date: "2025-04-01", short: 9.88, close: 110.2 },
+  { date: "2025-04-02", short: 9.65, close: 108.5 },
+  { date: "2025-04-03", short: 9.8, close: 99.52 },
+  { date: "2025-04-04", short: 9.45, close: 91.18 },
+  { date: "2025-04-07", short: 9.81, close: 91.42 },
+  { date: "2025-04-08", short: 9.53, close: 90.66 },
   { date: "2025-04-09", short: 8.85, close: 82.56 },
+  { date: "2025-04-10", short: 9.17, close: 88.52 },
+  { date: "2025-04-11", short: 8.95, close: 88.76 },
+  { date: "2025-04-14", short: 8.74, close: 94.32 },
+  { date: "2025-04-15", short: 8.28, close: 95.54 },
+  { date: "2025-04-16", short: 7.99, close: 93.98 },
+  { date: "2025-04-17", short: 7.81, close: 93.98 },
+  { date: "2025-04-18", short: 7.81, close: 93.98 },
+  { date: "2025-04-21", short: 7.81, close: 93.98 },
+  { date: "2025-04-22", short: 7.81, close: 92.26 },
+  { date: "2025-04-23", short: 7.98, close: 102 },
+  { date: "2025-04-24", short: 8.41, close: 100 },
+  { date: "2025-04-25", short: 8.3, close: 98.92 },
+  { date: "2025-04-28", short: 8.38, close: 98.7 },
+  { date: "2025-04-29", short: 8.48, close: 99.52 },
+  { date: "2025-04-30", short: 8.56, close: 98.58 },
+  { date: "2025-05-01", short: 8.56, close: 86.76 },
+  { date: "2025-05-02", short: 8.95, close: 90.54 },
+  { date: "2025-05-05", short: 9.51, close: 90.9 },
+  { date: "2025-05-06", short: 9.94, close: 90 },
+  { date: "2025-05-07", short: 10.14, close: 87.96 },
   { date: "2025-05-08", short: 10.09, close: 88.58 },
+  { date: "2025-05-09", short: 9.81, close: 91.2 },
+  { date: "2025-05-12", short: 9.31, close: 97.12 },
+  { date: "2025-05-13", short: 9.1, close: 95.9 },
+  { date: "2025-05-14", short: 9.47, close: 95 },
+  { date: "2025-05-15", short: 9.59, close: 93.74 },
+  { date: "2025-05-16", short: 9.76, close: 92.6 },
+  { date: "2025-05-19", short: 10.03, close: 92.06 },
+  { date: "2025-05-20", short: 9.84, close: 94.8 },
+  { date: "2025-05-21", short: 9.83, close: 94.3 },
+  { date: "2025-05-22", short: 9.83, close: 91.28 },
+  { date: "2025-05-23", short: 9.59, close: 89.54 },
+  { date: "2025-05-26", short: 9.41, close: 91.26 },
+  { date: "2025-05-27", short: 9.41, close: 94.7 },
+  { date: "2025-05-28", short: 9.24, close: 96.18 },
+  { date: "2025-05-29", short: 9.32, close: 96.18 },
+  { date: "2025-05-30", short: 9.32, close: 96.18 },
+  { date: "2025-06-02", short: 9.32, close: 93.88 },
+  { date: "2025-06-03", short: 9.87, close: 93.46 },
+  { date: "2025-06-04", short: 9.57, close: 93.7 },
+  { date: "2025-06-05", short: 9.53, close: 93.7 },
+  { date: "2025-06-06", short: 9.53, close: 94.92 },
+  { date: "2025-06-09", short: 9.54, close: 94.92 },
+  { date: "2025-06-10", short: 9.54, close: 101.3 },
+  { date: "2025-06-11", short: 9.42, close: 102.45 },
+  { date: "2025-06-12", short: 8.89, close: 99.18 },
+  { date: "2025-06-13", short: 8.83, close: 97.6 },
+  { date: "2025-06-16", short: 8.69, close: 100.55 },
+  { date: "2025-06-17", short: 8.62, close: 98.34 },
+  { date: "2025-06-18", short: 8.59, close: 97.4 },
+  { date: "2025-06-19", short: 8.68, close: 96.24 },
+  { date: "2025-06-20", short: 8.72, close: 94.98 },
+  { date: "2025-06-23", short: 8.68, close: 94.74 },
+  { date: "2025-06-24", short: 8.56, close: 99.34 },
+  { date: "2025-06-25", short: 8.52, close: 95.4 },
+  { date: "2025-06-26", short: 8.71, close: 97.14 },
+  { date: "2025-06-27", short: 8.61, close: 97.7 },
+  { date: "2025-06-30", short: 8.7, close: 97.5 },
+  { date: "2025-07-01", short: 8.6, close: 99.5 },
+  { date: "2025-07-02", short: 8.52, close: 103.15 },
+  { date: "2025-07-03", short: 8.25, close: 102.65 },
+  { date: "2025-07-04", short: 8.25, close: 99.88 },
+  { date: "2025-07-07", short: 8.57, close: 97.16 },
+  { date: "2025-07-08", short: 8.93, close: 99.1 },
+  { date: "2025-07-09", short: 8.72, close: 99 },
+  { date: "2025-07-10", short: 8.72, close: 100.5 },
+  { date: "2025-07-11", short: 8.47, close: 96.04 },
+  { date: "2025-07-14", short: 8.47, close: 94.78 },
+  { date: "2025-07-15", short: 8.29, close: 97.44 },
+  { date: "2025-07-16", short: 8.29, close: 98.3 },
+  { date: "2025-07-17", short: 8.3, close: 100.1 },
   { date: "2025-07-18", short: 8.08, close: 100.05 },
+  { date: "2025-07-21", short: 7.99, close: 98.14 },
+  { date: "2025-07-22", short: 7.99, close: 97.86 },
+  { date: "2025-07-23", short: 8, close: 102.25 },
+  { date: "2025-07-24", short: 7.61, close: 103.25 },
+  { date: "2025-07-25", short: 7.71, close: 102.85 },
+  { date: "2025-07-28", short: 7.71, close: 103.15 },
+  { date: "2025-07-29", short: 7.61, close: 101.3 },
+  { date: "2025-07-30", short: 7.77, close: 93.44 },
+  { date: "2025-07-31", short: 7.63, close: 93.74 },
+  { date: "2025-08-01", short: 7.85, close: 91 },
+  { date: "2025-08-04", short: 7.85, close: 92.3 },
+  { date: "2025-08-05", short: 7.96, close: 93.58 },
+  { date: "2025-08-06", short: 8.06, close: 92.82 },
+  { date: "2025-08-07", short: 8.2, close: 96.46 },
+  { date: "2025-08-08", short: 8.15, close: 97.3 },
+  { date: "2025-08-11", short: 8.31, close: 96.3 },
+  { date: "2025-08-12", short: 8.36, close: 97.74 },
+  { date: "2025-08-13", short: 8.18, close: 94.74 },
+  { date: "2025-08-14", short: 8.27, close: 96.5 },
+  { date: "2025-08-15", short: 8.27, close: 98 },
+  { date: "2025-08-18", short: 8.15, close: 100.05 },
+  { date: "2025-08-19", short: 8.25, close: 103.55 },
+  { date: "2025-08-20", short: 8.25, close: 102.3 },
+  { date: "2025-08-21", short: 7.7, close: 122.7 },
+  { date: "2025-08-22", short: 7.58, close: 119.5 },
+  { date: "2025-08-25", short: 7.58, close: 115 },
+  { date: "2025-08-26", short: 7.51, close: 116 },
+  { date: "2025-08-27", short: 7.57, close: 116 },
+  { date: "2025-08-28", short: 7.28, close: 116 },
+  { date: "2025-08-29", short: 7.28, close: 115.6 },
   { date: "2025-09-01", short: 7.18, close: 115.6 },
+  { date: "2025-09-02", short: 7.18, close: 112 },
+  { date: "2025-09-03", short: 7.11, close: 111 },
+  { date: "2025-09-04", short: 7.23, close: 111.5 },
+  { date: "2025-09-05", short: 7.17, close: 113.95 },
+  { date: "2025-09-08", short: 7.17, close: 118.95 },
+  { date: "2025-09-09", short: 6.98, close: 118.9 },
+  { date: "2025-09-10", short: 7.06, close: 118.15 },
+  { date: "2025-09-11", short: 7, close: 116.05 },
+  { date: "2025-09-12", short: 7, close: 116.3 },
+  { date: "2025-09-15", short: 6.88, close: 116.6 },
+  { date: "2025-09-16", short: 6.87, close: 117.6 },
+  { date: "2025-09-17", short: 6.87, close: 118.3 },
+  { date: "2025-09-18", short: 6.87, close: 116.7 },
+  { date: "2025-09-19", short: 6.75, close: 115.65 },
+  { date: "2025-09-22", short: 6.75, close: 115 },
+  { date: "2025-09-23", short: 6.75, close: 117.9 },
+  { date: "2025-09-24", short: 6.75, close: 116.3 },
+  { date: "2025-09-25", short: 6.76, close: 108.6 },
+  { date: "2025-09-26", short: 6.76, close: 107.4 },
+  { date: "2025-09-29", short: 7.39, close: 110.35 },
+  { date: "2025-09-30", short: 7.54, close: 107.4 },
+  { date: "2025-10-01", short: 7.97, close: 107.15 },
   { date: "2025-10-02", short: 8.49, close: 107.15 },
+  { date: "2025-10-03", short: 8.61, close: 111.15 },
+  { date: "2025-10-06", short: 8.52, close: 118.9 },
+  { date: "2025-10-07", short: 8.5, close: 117.65 },
+  { date: "2025-10-08", short: 8.4, close: 119.55 },
+  { date: "2025-10-09", short: 8.48, close: 118.05 },
+  { date: "2025-10-10", short: 8.47, close: 117.35 },
+  { date: "2025-10-13", short: 8.47, close: 113.3 },
+  { date: "2025-10-14", short: 8.57, close: 110.35 },
+  { date: "2025-10-15", short: 8.82, close: 111.6 },
+  { date: "2025-10-16", short: 8.92, close: 114 },
+  { date: "2025-10-17", short: 8.92, close: 115.65 },
+  { date: "2025-10-20", short: 8.92, close: 115.8 },
+  { date: "2025-10-21", short: 9.01, close: 116.4 },
+  { date: "2025-10-22", short: 9.01, close: 116.75 },
+  { date: "2025-10-23", short: 9.12, close: 115.6 },
+  { date: "2025-10-24", short: 9.12, close: 115.15 },
+  { date: "2025-10-27", short: 9.13, close: 112.15 },
+  { date: "2025-10-28", short: 9.13, close: 110.8 },
+  { date: "2025-10-29", short: 9.31, close: 115.3 },
+  { date: "2025-10-30", short: 9.35, close: 115.75 },
+  { date: "2025-10-31", short: 9.36, close: 113.45 },
+  { date: "2025-11-03", short: 9.46, close: 110.15 },
+  { date: "2025-11-04", short: 9.47, close: 107.05 },
+  { date: "2025-11-05", short: 9.55, close: 107.85 },
+  { date: "2025-11-06", short: 9.48, close: 106.75 },
+  { date: "2025-11-07", short: 9.77, close: 102.1 },
+  { date: "2025-11-10", short: 9.79, close: 103.45 },
+  { date: "2025-11-11", short: 9.52, close: 107.4 },
+  { date: "2025-11-12", short: 9.42, close: 109.9 },
+  { date: "2025-11-13", short: 9.2, close: 107.3 },
+  { date: "2025-11-14", short: 9.09, close: 102.45 },
+  { date: "2025-11-17", short: 9.32, close: 98.8 },
+  { date: "2025-11-18", short: 9.32, close: 93.34 },
+  { date: "2025-11-19", short: 9.27, close: 94.74 },
+  { date: "2025-11-20", short: 9.16, close: 93.5 },
+  { date: "2025-11-21", short: 9.38, close: 95.38 },
   { date: "2025-11-24", short: 9.35, close: 96.94 },
+  { date: "2025-11-25", short: 9.35, close: 98.2 },
+  { date: "2025-11-26", short: 9.35, close: 97.6 },
+  { date: "2025-11-27", short: 9.35, close: 103.35 },
+  { date: "2025-11-28", short: 9.35, close: 103.55 },
+  { date: "2025-12-01", short: 9.35, close: 106.5 },
+  { date: "2025-12-03", short: 9.35, close: 101.7 },
+  { date: "2025-12-04", short: 9.35, close: 104.3 },
+  { date: "2025-12-05", short: 9.35, close: 102.25 },
+  { date: "2025-12-08", short: 9.35, close: 102.1 },
+  { date: "2025-12-09", short: 9.35, close: 102 },
+  { date: "2025-12-10", short: 9.35, close: 105.3 },
+  { date: "2025-12-11", short: 9.35, close: 112.3 },
+  { date: "2025-12-12", short: 9.35, close: 113.05 },
+  { date: "2025-12-15", short: 9.35, close: 108.6 },
+  { date: "2025-12-16", short: 9.35, close: 106.65 },
+  { date: "2025-12-17", short: 9.35, close: 105.05 },
+  { date: "2025-12-18", short: 9.35, close: 103.5 },
+  { date: "2025-12-19", short: 9.35, close: 102.8 },
   { date: "2026-01-07", short: 10.11, close: 112.9 },
+  { date: "2026-01-08", short: 9.95, close: 111.7 },
+  { date: "2026-01-09", short: 9.76, close: 112.05 },
+  { date: "2026-01-12", short: 9.85, close: 112.35 },
+  { date: "2026-01-13", short: 9.75, close: 118.2 },
+  { date: "2026-01-14", short: 9.56, close: 117.1 },
+  { date: "2026-01-15", short: 9.48, close: 116.6 },
+  { date: "2026-01-16", short: 9.41, close: 117.5 },
+  { date: "2026-01-19", short: 9.41, close: 110 },
+  { date: "2026-01-20", short: 9.41, close: 112.05 },
+  { date: "2026-01-21", short: 9.55, close: 111.8 },
+  { date: "2026-01-22", short: 9.69, close: 110.6 },
+  { date: "2026-01-23", short: 10.03, close: 111 },
+  { date: "2026-01-26", short: 10.5, close: 112.55 },
+  { date: "2026-01-27", short: 10.57, close: 111 },
+  { date: "2026-01-28", short: 10.73, close: 107.85 },
+  { date: "2026-01-29", short: 11.07, close: 108.2 },
+  { date: "2026-01-30", short: 11.02, close: 111.05 },
+  { date: "2026-02-02", short: 11.4, close: 112.1 },
+  { date: "2026-02-03", short: 11.63, close: 107.45 },
   { date: "2026-02-04", short: 12.05, close: 106.35 },
+  { date: "2026-02-05", short: 12.25, close: 92.76 },
+  { date: "2026-02-06", short: 12.15, close: 98.86 },
+  { date: "2026-02-09", short: 12.18, close: 97 },
+  { date: "2026-02-10", short: 12.59, close: 98.7 },
+  { date: "2026-02-11", short: 12.59, close: 96.5 },
+  { date: "2026-02-12", short: 12.59, close: 96.68 },
+  { date: "2026-02-13", short: 12.43, close: 98 },
+  { date: "2026-02-16", short: 12.28, close: 99.18 },
+  { date: "2026-02-17", short: 12.25, close: 96.88 },
+  { date: "2026-02-18", short: 12.19, close: 97.9 },
+  { date: "2026-02-19", short: 12.29, close: 95.34 },
+  { date: "2026-02-20", short: 12.29, close: 98.04 },
+  { date: "2026-02-23", short: 12.69, close: 93.4 },
+  { date: "2026-02-24", short: 12.84, close: 91.32 },
   { date: "2026-02-25", short: 12.85, close: 92.98 },
-  { date: "2026-03-11", short: 12.9, close: 89.0 },
+  { date: "2026-02-26", short: 12.88, close: 95.48 },
+  { date: "2026-02-27", short: 12.63, close: 93.64 },
+  { date: "2026-03-02", short: 12.66, close: 94.38 },
+  { date: "2026-03-03", short: 12.66, close: 91 },
+  { date: "2026-03-04", short: 12.44, close: 93.98 },
+  { date: "2026-03-05", short: 12.44, close: 92.8 },
+  { date: "2026-03-06", short: 12.43, close: 90.86 },
+  { date: "2026-03-09", short: 12.61, close: 92 },
+  { date: "2026-03-10", short: 12.57, close: 91.14 },
+  { date: "2026-03-11", short: 12.9, close: 89 },
+  { date: "2026-03-12", short: 12.72, close: 87.08 },
+  { date: "2026-03-13", short: 12.84, close: 86.9 },
   { date: "2026-03-16", short: 13.04, close: 105.3 },
-  { date: "2026-03-18", short: 10.85, close: 98.0 },
+  { date: "2026-03-17", short: 11.36, close: 105.2 },
+  { date: "2026-03-18", short: 10.85, close: 98 },
+  { date: "2026-03-19", short: 11.04, close: 91.9 },
+  { date: "2026-03-20", short: 11.32, close: 96.5 },
+  { date: "2026-03-23", short: 10.89, close: 96.06 },
+  { date: "2026-03-24", short: 10.81, close: 94.24 },
+  { date: "2026-03-25", short: 10.84, close: 94 },
+  { date: "2026-03-26", short: 11.21, close: 95.86 },
+  { date: "2026-03-27", short: 11.03, close: 94.82 },
+  { date: "2026-03-30", short: 11.11, close: 97.26 },
+  { date: "2026-03-31", short: 10.93, close: 100.85 },
   { date: "2026-04-01", short: 10.31, close: 100.7 },
+  { date: "2026-04-02", short: 10.4, close: 100.7 },
+  { date: "2026-04-03", short: 10.4, close: 100.7 },
+  { date: "2026-04-06", short: 10.4, close: 100.7 },
+  { date: "2026-04-07", short: 10.4, close: 98.04 },
+  { date: "2026-04-08", short: 10.4, close: 98.22 },
+  { date: "2026-04-09", short: 10.42, close: 95.42 },
+  { date: "2026-04-10", short: 10.34, close: 96.68 },
+  { date: "2026-04-13", short: 10.55, close: 95.64 },
+  { date: "2026-04-14", short: 10.54, close: 98.16 },
+  { date: "2026-04-15", short: 10.54, close: 101.75 },
   { date: "2026-04-16", short: 10.71, close: 104.5 },
+  { date: "2026-04-17", short: 10.5, close: 109.7 },
+  { date: "2026-04-20", short: 10.12, close: 108.1 },
+  { date: "2026-04-21", short: 10.02, close: 104.3 },
+  { date: "2026-04-22", short: 10.22, close: 101.05 },
+  { date: "2026-04-23", short: 10.52, close: 99 },
+  { date: "2026-04-24", short: 10.52, close: 97.48 },
+  { date: "2026-04-27", short: 10.73, close: 97.92 },
+  { date: "2026-04-28", short: 10.83, close: 98.74 },
+  { date: "2026-04-29", short: 10.72, close: 96.86 },
   { date: "2026-04-30", short: 10.97, close: 95.74 },
+  { date: "2026-05-01", short: 11.11, close: 99.8 },
+  { date: "2026-05-04", short: 11.04, close: 99.52 },
+  { date: "2026-05-05", short: 11.34, close: 99.02 },
+  { date: "2026-05-06", short: 10.85, close: 103.7 },
+  { date: "2026-05-07", short: 11.15, close: 96.72 },
   { date: "2026-05-08", short: 10.2, close: 95.44 },
+  { date: "2026-05-11", short: 9.99, close: 97 },
   { date: "2026-05-12", short: 9.92, close: 95.58 },
+  { date: "2026-05-13", short: 9.7, close: 94.5 },
+  { date: "2026-05-14", short: 9.7, close: 94.5 },
+  { date: "2026-05-15", short: 9.7, close: 94.5 },
+  { date: "2026-05-18", short: 9.71, close: 95.26 },
+  { date: "2026-05-19", short: 9.61, close: 92.78 },
+  { date: "2026-05-20", short: 9.61, close: 94.1 },
   { date: "2026-05-21", short: 9.6, close: 93.66 },
+  { date: "2026-05-22", short: 9.48, close: 94.54 },
+  { date: "2026-05-25", short: 9.5, close: 94.54 },
+  { date: "2026-05-26", short: 9.5, close: 97.12 },
   { date: "2026-05-27", short: 9.39, close: 97.52 },
+  { date: "2026-05-28", short: 9.4, close: 95.94 },
+  { date: "2026-05-29", short: 9.4, close: 98.26 },
   { date: "2026-06-01", short: 9.3, close: 96.22 },
+  { date: "2026-06-02", short: 9.37, close: 97.12 },
+  { date: "2026-06-03", short: 9.34, close: 95.28 },
   { date: "2026-06-04", short: 9.17, close: 95.44 },
+  { date: "2026-06-05", short: 9.38, close: 95.44 },
+  { date: "2026-06-08", short: 9.38, close: 95.12 },
   { date: "2026-06-09", short: 9.43, close: 93.9 },
+  { date: "2026-06-10", short: 9.43, close: 92.52 },
   { date: "2026-06-11", short: 9.51, close: 89.84 },
+  { date: "2026-06-12", short: 9.47, close: 90.36 },
+  { date: "2026-06-15", short: 9.61, close: 90.78 },
   { date: "2026-06-16", short: 9.51, close: 89.04 },
+  { date: "2026-06-17", short: 9.6, close: 88.8 },
+  { date: "2026-06-18", short: 9.6, close: 88.56 },
   { date: "2026-06-19", short: 9.9, close: 91.86 },
   { date: "2026-06-22", short: 10.15, close: 89.02 },
+  { date: "2026-06-23", short: 10.01, close: 89.58 },
+  { date: "2026-06-24", short: 9.91, close: 89.44 },
+  { date: "2026-06-25", short: 9.91, close: 89.32 },
   { date: "2026-06-26", short: 9.85, close: 87.3 },
 ];
 
 // Full-period price flow per 2%-wide band, in millions of shares.
 // Computed from daily short interest changes assigned to the previous
-// trading day's close (same method as the Prisstrøm tab).
+// trading day's typical price (high+low+close)/3 (same method as the
+// Prisstrøm tab in computePriceFlow.ts).
 const FLOW_FULL = [
-  { mid: 83.4, shorted: 0.47, covered: 0.0, net: 0.47 },
-  { mid: 86.8, shorted: 1.03, covered: 0.0, net: 1.03 },
-  { mid: 88.5, shorted: 0.57, covered: 1.66, net: -1.09 },
-  { mid: 90.3, shorted: 2.68, covered: 1.92, net: 0.76 },
-  { mid: 92.1, shorted: 2.43, covered: 1.98, net: 0.45 },
-  { mid: 93.9, shorted: 3.01, covered: 2.75, net: 0.26 },
-  { mid: 95.8, shorted: 2.24, covered: 4.73, net: -2.49 },
-  { mid: 97.7, shorted: 3.51, covered: 2.3, net: 1.21 },
-  { mid: 99.7, shorted: 1.57, covered: 3.28, net: -1.7 },
-  { mid: 101.6, shorted: 2.04, covered: 3.22, net: -1.18 },
-  { mid: 103.7, shorted: 1.98, covered: 1.24, net: 0.74 },
-  { mid: 105.8, shorted: 0.71, covered: 3.19, net: -2.48 },
-  { mid: 107.9, shorted: 3.92, covered: 0.86, net: 3.06 },
-  { mid: 110.0, shorted: 3.0, covered: 1.21, net: 1.79 },
-  { mid: 112.2, shorted: 1.27, covered: 1.24, net: 0.03 },
-  { mid: 114.5, shorted: 0.22, covered: 0.35, net: -0.13 },
-  { mid: 116.8, shorted: 1.05, covered: 1.15, net: -0.1 },
-  { mid: 119.1, shorted: 0.76, covered: 1.63, net: -0.87 },
-  { mid: 121.5, shorted: 0.32, covered: 0.45, net: -0.13 },
-  { mid: 123.9, shorted: 1.63, covered: 0.19, net: 1.44 },
-  { mid: 126.4, shorted: 0.07, covered: 0.0, net: 0.07 },
-  { mid: 128.9, shorted: 0.74, covered: 0.74, net: 0.0 },
-  { mid: 131.5, shorted: 1.57, covered: 0.68, net: 0.89 },
-  { mid: 134.1, shorted: 1.85, covered: 2.81, net: -0.96 },
-  { mid: 136.8, shorted: 1.89, covered: 0.77, net: 1.12 },
-  { mid: 139.5, shorted: 1.54, covered: 0.48, net: 1.06 },
-  { mid: 142.3, shorted: 0.58, covered: 1.02, net: -0.44 },
-  { mid: 145.2, shorted: 1.28, covered: 0.01, net: 1.27 },
-  { mid: 148.1, shorted: 1.3, covered: 1.11, net: 0.19 },
-  { mid: 151.0, shorted: 0.28, covered: 2.02, net: -1.75 },
-  { mid: 154.1, shorted: 1.7, covered: 1.99, net: -0.29 },
-  { mid: 157.1, shorted: 1.59, covered: 0.51, net: 1.08 },
-  { mid: 160.3, shorted: 1.35, covered: 0.67, net: 0.68 },
-  { mid: 163.5, shorted: 3.0, covered: 0.35, net: 2.65 },
-  { mid: 166.8, shorted: 0.39, covered: 0.8, net: -0.41 },
-  { mid: 170.1, shorted: 1.59, covered: 0.25, net: 1.34 },
-  { mid: 173.5, shorted: 0.68, covered: 1.76, net: -1.08 },
-  { mid: 177.0, shorted: 1.14, covered: 2.07, net: -0.93 },
-  { mid: 180.5, shorted: 1.41, covered: 0.87, net: 0.54 },
-  { mid: 184.1, shorted: 0.68, covered: 0.28, net: 0.41 },
-  { mid: 187.8, shorted: 0.66, covered: 0.57, net: 0.09 },
-  { mid: 191.6, shorted: 0.71, covered: 0.32, net: 0.39 },
-  { mid: 195.4, shorted: 0.26, covered: 0.13, net: 0.13 },
-  { mid: 199.3, shorted: 0.26, covered: 0.48, net: -0.22 },
-  { mid: 203.3, shorted: 0.67, covered: 1.02, net: -0.35 },
-  { mid: 207.3, shorted: 0.23, covered: 1.3, net: -1.06 },
-  { mid: 211.5, shorted: 0.2, covered: 0.0, net: 0.2 },
-  { mid: 215.7, shorted: 0.01, covered: 0.61, net: -0.6 },
-  { mid: 220.0, shorted: 0.0, covered: 0.38, net: -0.38 },
-  { mid: 224.4, shorted: 0.84, covered: 0.0, net: 0.84 },
+  { mid: 84.1, shorted: 0.47, covered: 0.0, net: 0.47 },
+  { mid: 87.5, shorted: 0.47, covered: 0.41, net: 0.06 },
+  { mid: 89.2, shorted: 1.95, covered: 1.49, net: 0.47 },
+  { mid: 91.0, shorted: 2.24, covered: 2.87, net: -0.63 },
+  { mid: 92.8, shorted: 2.42, covered: 1.11, net: 1.31 },
+  { mid: 94.7, shorted: 3.29, covered: 4.05, net: -0.76 },
+  { mid: 96.6, shorted: 2.62, covered: 3.09, net: -0.47 },
+  { mid: 98.5, shorted: 3.06, covered: 5.14, net: -2.08 },
+  { mid: 100.5, shorted: 1.88, covered: 2.9, net: -1.02 },
+  { mid: 102.5, shorted: 1.24, covered: 1.5, net: -0.26 },
+  { mid: 104.6, shorted: 1.91, covered: 1.28, net: 0.63 },
+  { mid: 106.6, shorted: 0.68, covered: 0.15, net: 0.54 },
+  { mid: 108.8, shorted: 3.95, covered: 1.4, net: 2.55 },
+  { mid: 110.9, shorted: 3.35, covered: 3.61, net: -0.26 },
+  { mid: 113.2, shorted: 0.83, covered: 0.7, net: 0.13 },
+  { mid: 115.4, shorted: 0.67, covered: 0.77, net: -0.1 },
+  { mid: 117.7, shorted: 0.83, covered: 1.75, net: -0.92 },
+  { mid: 120.1, shorted: 0.93, covered: 0.68, net: 0.25 },
+  { mid: 122.5, shorted: 0.54, covered: 0.47, net: 0.07 },
+  { mid: 124.9, shorted: 0.6, covered: 0.0, net: 0.6 },
+  { mid: 127.4, shorted: 0.68, covered: 0.68, net: -0.0 },
+  { mid: 130.0, shorted: 0.95, covered: 0.26, net: 0.68 },
+  { mid: 132.6, shorted: 1.44, covered: 1.41, net: 0.03 },
+  { mid: 135.2, shorted: 2.4, covered: 2.3, net: 0.1 },
+  { mid: 138.0, shorted: 1.94, covered: 0.63, net: 1.31 },
+  { mid: 140.7, shorted: 1.34, covered: 0.89, net: 0.45 },
+  { mid: 143.5, shorted: 0.31, covered: 0.35, net: -0.04 },
+  { mid: 146.4, shorted: 0.98, covered: 0.48, net: 0.5 },
+  { mid: 149.3, shorted: 1.57, covered: 2.74, net: -1.16 },
+  { mid: 152.3, shorted: 0.96, covered: 2.01, net: -1.05 },
+  { mid: 155.4, shorted: 0.74, covered: 0.32, net: 0.42 },
+  { mid: 158.5, shorted: 2.04, covered: 0.39, net: 1.65 },
+  { mid: 161.6, shorted: 1.83, covered: 0.6, net: 1.24 },
+  { mid: 164.9, shorted: 2.24, covered: 0.33, net: 1.91 },
+  { mid: 168.2, shorted: 0.6, covered: 0.58, net: 0.01 },
+  { mid: 171.5, shorted: 1.62, covered: 1.3, net: 0.32 },
+  { mid: 175.0, shorted: 1.14, covered: 2.07, net: -0.93 },
+  { mid: 178.5, shorted: 1.22, covered: 1.14, net: 0.09 },
+  { mid: 182.0, shorted: 0.79, covered: 0.5, net: 0.29 },
+  { mid: 185.7, shorted: 1.0, covered: 0.45, net: 0.55 },
+  { mid: 189.4, shorted: 0.6, covered: 0.35, net: 0.25 },
+  { mid: 193.2, shorted: 0.13, covered: 0.32, net: -0.19 },
+  { mid: 197.0, shorted: 0.26, covered: 0.13, net: 0.13 },
+  { mid: 201.0, shorted: 0.33, covered: 0.47, net: -0.13 },
+  { mid: 205.0, shorted: 0.6, covered: 1.05, net: -0.45 },
+  { mid: 209.1, shorted: 0.22, covered: 1.14, net: -0.92 },
+  { mid: 213.3, shorted: 0.22, covered: 0.67, net: -0.45 },
+  { mid: 217.5, shorted: 0.01, covered: 0.35, net: -0.33 },
+  { mid: 221.9, shorted: 0.84, covered: 0.12, net: 0.73 },
 ];
 
 // Price flow for the last 3 months (since the end of March 2026), millions of
-// shares, sorted by price band, highest first (same order as the app)
+// shares, sorted by price band, highest first (typical-price bands, as in the app)
 const FLOW_3M = [
-  { band: "108,55-110,72", shorted: 0.0, covered: 0.55, net: -0.55 },
-  { band: "106,42-108,55", shorted: 0.0, covered: 0.15, net: -0.15 },
-  { band: "104,33-106,42", shorted: 0.0, covered: 0.31, net: -0.31 },
-  { band: "102,29-104,33", shorted: 0.73, covered: 0.0, net: 0.73 },
-  { band: "100,28-102,29", shorted: 0.82, covered: 0.9, net: -0.09 },
-  { band: "98,31-100,28", shorted: 0.44, covered: 0.98, net: -0.54 },
-  { band: "96,39-98,31", shorted: 1.16, covered: 2.1, net: -0.93 },
-  { band: "94,50-96,39", shorted: 0.84, covered: 1.15, net: -0.31 },
-  { band: "92,64-94,50", shorted: 0.0, covered: 0.19, net: -0.19 },
-  { band: "90,83-92,64", shorted: 0.48, covered: 0.0, net: 0.48 },
-  { band: "89,05-90,83", shorted: 0.2, covered: 0.44, net: -0.23 },
-  { band: "87,30-89,05", shorted: 0.57, covered: 0.2, net: 0.36 },
+  { band: "107,53-109,68", shorted: 0.0, covered: 0.7, net: -0.7 },
+  { band: "105,42-107,53", shorted: 0.29, covered: 0.0, net: 0.29 },
+  { band: "103,36-105,42", shorted: 0.0, covered: 0.31, net: -0.31 },
+  { band: "101,33-103,36", shorted: 1.0, covered: 0.0, net: 1.0 },
+  { band: "99,34-101,33", shorted: 0.71, covered: 0.0, net: 0.71 },
+  { band: "97,39-99,34", shorted: 0.47, covered: 3.41, net: -2.94 },
+  { band: "95,48-97,39", shorted: 0.77, covered: 1.25, net: -0.48 },
+  { band: "93,61-95,48", shorted: 0.74, covered: 0.66, net: 0.09 },
+  { band: "91,78-93,61", shorted: 0.12, covered: 0.0, net: 0.12 },
+  { band: "89,98-91,78", shorted: 0.57, covered: 0.2, net: 0.36 },
+  { band: "88,21-89,98", shorted: 0.57, covered: 0.44, net: 0.13 },
 ];
 
 // ─── format helpers ─────────────────────────────────────────────────────────
@@ -178,10 +818,16 @@ function FlowTooltip({ active, payload }: TooltipContentProps<ValueType, NameTyp
   );
 }
 
-function KPI({ value, label }: { value: string; label: string }) {
+function KPI({ value, label, highlight, tone = "blue" }: { value: string; label: string; highlight?: boolean; tone?: "blue" | "red" | "green" }) {
+  const toneClasses = {
+    blue:  { bg: "bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800",             text: "text-blue-600 dark:text-blue-400" },
+    red:   { bg: "bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800",                 text: "text-red-700 dark:text-red-400" },
+    green: { bg: "bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800", text: "text-emerald-700 dark:text-emerald-400" },
+  };
+  const t = toneClasses[tone];
   return (
-    <div className="bg-white dark:bg-[#19191f] rounded-2xl border border-gray-100 dark:border-gray-800 p-5 text-center">
-      <p className="text-lg sm:text-xl font-bold tabular-nums text-gray-900 dark:text-white">{value}</p>
+    <div className={`rounded-2xl border p-4 sm:p-5 text-center ${highlight ? t.bg : "bg-white dark:bg-[#19191f] border-gray-100 dark:border-gray-800"}`}>
+      <p className={`text-lg sm:text-xl font-bold tabular-nums ${highlight ? t.text : "text-gray-900 dark:text-white"}`}>{value}</p>
       <p className="text-xs text-gray-500 dark:text-gray-300 mt-1 leading-tight">{label}</p>
     </div>
   );
@@ -268,7 +914,7 @@ const GNPriceFlowAnalysisPage: React.FC = () => {
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-white mb-3 leading-tight">
             Sådan bruger du prisstrømmen: Hvor har shorterne handlet GN?
           </h1>
-          <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
+          <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
             GN Store Nord (GN)
           </p>
           <p className="text-gray-600 dark:text-gray-300 mt-3 leading-relaxed">
@@ -281,10 +927,10 @@ const GNPriceFlowAnalysisPage: React.FC = () => {
 
         {/* ── KPIs ── */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-12">
-          <KPI value="9,85%" label="Short-interesse (26. juni)" />
+          <KPI value="9,85%" label="Short-interesse (26. juni)" highlight tone="blue" />
           <KPI value="87,30 DKK" label="Seneste lukkekurs (26. juni)" />
-          <KPI value="62,9 mio." label="Aktier shortet siden nov. 2023" />
-          <KPI value="57,4 mio." label="Aktier dækket siden nov. 2023" />
+          <KPI value="62,9 mio." label="Aktier shortet siden nov. 2023" highlight tone="red" />
+          <KPI value="57,4 mio." label="Aktier dækket siden nov. 2023" highlight tone="green" />
         </div>
 
         {/* ── 1. Hvad er prisstrømmen ── */}
@@ -306,7 +952,7 @@ const GNPriceFlowAnalysisPage: React.FC = () => {
               <span className="text-blue-500 font-bold shrink-0">2.</span>
               <span><strong>Kursen sættes til forrige handelsdag:</strong> Ændringer indberettes typisk dagen
               efter handlen (T+1). En ændring, der bliver synlig tirsdag, afspejler derfor mest sandsynligt
-              en handel mandag, og den tildeles mandagens kurs.</span>
+              en handel mandag, og den tildeles gennemsnittet af mandagens høj, lav og luk.</span>
             </li>
             <li className="flex gap-3">
               <span className="text-blue-500 font-bold shrink-0">3.</span>
@@ -325,7 +971,7 @@ const GNPriceFlowAnalysisPage: React.FC = () => {
         {/* ── 2. Short-interesse vs. aktiekurs ── */}
         <section className="mb-12">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2">2. Konteksten: Short-interesse vs. aktiekurs</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-300 mb-4">
+          <p className="text-gray-500 dark:text-gray-300 mb-4">
             Historik siden november 2023. Blå = short-interesse, lilla = lukkekurs. Det er disse to
             kurver, prisstrømmen kombinerer til ét billede.
           </p>
@@ -365,7 +1011,7 @@ const GNPriceFlowAnalysisPage: React.FC = () => {
         {/* ── 3. Hele historikken ── */}
         <section className="mb-12">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2">3. Hele historikken i ét billede</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-300 mb-4">
+          <p className="text-gray-500 dark:text-gray-300 mb-4">
             Nettostrøm per 2%-bredt kursbånd siden november 2023. Rød = netto åbnede shorts, grøn = netto
             dækkede shorts. Den stiplede linje markerer den aktuelle kurs.
           </p>
@@ -377,7 +1023,7 @@ const GNPriceFlowAnalysisPage: React.FC = () => {
                 <YAxis tick={{ fontSize: 10, fill: tickColor }} tickFormatter={(v) => `${v}`} label={{ value: "mio. aktier", angle: -90, position: "insideLeft", fontSize: 10, fill: tickColor }} />
                 <Tooltip content={FlowTooltip} cursor={{ fill: isDark ? "#ffffff10" : "#00000008" }} />
                 <ReferenceLine y={0} stroke={isDark ? "#555" : "#ccc"} />
-                <ReferenceLine x={86.8} stroke="#eab308" strokeDasharray="4 4" strokeWidth={1.5} />
+                <ReferenceLine x={87.5} stroke="#eab308" strokeDasharray="4 4" strokeWidth={1.5} />
                 <Bar dataKey="net" radius={[3, 3, 0, 0]}>
                   {FLOW_FULL.map((b) => (
                     <Cell key={b.mid} fill={b.net > 0 ? "#e63946" : "#2a9d8f"} />
@@ -392,24 +1038,27 @@ const GNPriceFlowAnalysisPage: React.FC = () => {
             </div>
           </div>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mt-4 mb-4">
-            Tre bånd springer i øjnene. Det største røde bånd ligger ved 106,80-108,94 DKK, hvor der netto
-            er åbnet 3,1 mio. aktier, med yderligere 1,8 mio. i nabobåndet 108,94-111,11 DKK. Det andet
-            store røde område ligger ved 161,87-165,11 DKK med netto 2,7 mio. aktier, som primært blev
-            åbnet i efteråret 2024, da aktien stadig handlede over 160 DKK.
+            Det største røde bånd ligger ved 107,70-109,85 DKK, hvor der netto er åbnet 2,55 mio. aktier.
+            Derudover er der store røde bånd højere oppe, ved 156,89-160,03 (netto 1,65 mio.), 160,03-163,23
+            (1,24 mio.) og 163,23-166,50 DKK (1,91 mio.), som primært blev åbnet i 2024, da aktien handlede
+            over 150 DKK.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            De største grønne bånd ligger til gengæld lavt: 94,84-96,73 DKK (netto dækket 2,5 mio. aktier),
-            104,71-106,80 DKK (netto 2,5 mio.), 149,55-152,54 DKK (netto 1,7 mio.) og 98,67-100,64 DKK
-            (netto 1,7 mio.). Mønstret er altså, at shorts netto er åbnet på høje kursniveauer og dækket
-            på lavere. Lægger man båndene sammen, er der over 113 DKK netto åbnet ca. 4,7 mio. aktier,
-            mens der under 100 DKK netto er dækket ca. 1,1 mio.
+            De største grønne bånd ligger til gengæld lavere: 97,54-99,50 DKK (netto dækket 2,08 mio. aktier),
+            99,50-101,49 DKK (netto 1,02 mio.), 147,84-150,80 DKK (netto 1,16 mio.) og 150,80-153,82 DKK
+            (netto 1,05 mio.). Mønstret er altså, at shorts netto er åbnet på høje kursniveauer og dækket
+            på lavere: Over 100 DKK er der netto åbnet ca. 7,2 mio. aktier, mens der under 100 netto er
+            dækket ca. 1,6 mio. Bemærk dog ét rødt bånd helt nede ved 91,92-93,76 DKK (netto åbnet 1,3 mio.),
+            de første tegn på, at nogle shorts åbner igen på de lave niveauer.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-            Hvad kan man bruge det til? Hvis de positioner, der blev åbnet ved 107-111 og 160-170 DKK,
+            Hvad kan man bruge det til? Hvis de positioner, der blev åbnet ved 108 og 157-166 DKK,
             stadig er åbne, sidder de på solide gevinster ved den aktuelle kurs på ca. 87 DKK. Det er
-            shorts med en stor buffer, som ikke er tvunget til at reagere på mindre kursudsving. Omvendt
-            betyder den massive dækning under 100 DKK, at mange shorts allerede har taget gevinsten her,
-            og kursen er nu faldet ned under det tunge dækningsbånd ved 95-106 DKK.
+            shorts med en stor buffer, som ikke er tvunget til at reagere på mindre kursudsving. Den massive
+            dækning ved 97-101 DKK var ligeledes gevinsthjemtagning, ikke panik. Derfor er den fortsat høje
+            shortinteresse på over 9% ikke en sammenpresset fjeder af nødlidende positioner: Hovedparten af
+            de tilbageværende shorts er åbnet højere oppe og sidder i plus, så de kan selv vælge, hvornår de
+            dækker.
           </p>
         </section>
 
@@ -417,24 +1066,30 @@ const GNPriceFlowAnalysisPage: React.FC = () => {
         <section className="mb-12">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">4. Casen: Amplifon-dagene viser, hvordan strømmen skal læses</h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            Den 16. marts 2026 annoncerede GN salget af sin høreapparatdivision til Amplifon, og aktien
-            lukkede i 105,30 DKK efter et stort hop. I de følgende to dage faldt shortinteressen fra
-            13,04% til 10,85%, det vil sige 2,19 procentpoint eller ca. 3,2 mio. aktier. Fordi
-            ændringerne tildeles forrige handelsdags kurs, lander stort set hele dækningen i båndet
-            104,71-106,80 DKK.
+            Den 16. marts 2026 annoncerede GN salget af sin høreapparatdivision (GN Hearing) til Amplifon
+            for 17 mia. kr. Aktien sprang voldsomt: Den var oppe i 123,75 DKK intradag og lukkede i 105,30
+            efter en meget urolig session. I de følgende to dage faldt shortinteressen fra 13,04%
+            (datasættets højeste) til 10,85%, altså 2,19 procentpoint eller ca. 3,2 mio. aktier, som
+            shorterne dækkede.
+          </p>
+          <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
+            Casen viser også, hvorfor prisstrømmen bruger dagens gennemsnitskurs, altså gennemsnittet af
+            høj, lav og luk, frem for lukkekursen. Den 16. marts var lukkekursen 105,30, men
+            gennemsnitskursen 111,43, fordi aktien havde været helt oppe i 123,75 undervejs. Den største enkeltstående dækning i
+            hele datasættet, 2,45 mio. aktier den 17. marts, bliver derfor placeret ved ca. 111 DKK, ikke
+            ved 105. På en rolig dag ligger de to kurser tæt, men på en vild dag som denne skiller de godt
+            6 DKK, en påmindelse om, at placeringen er et estimat, ikke en eksakt handelskurs.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-            Det er den største enkeltstående dækning i hele GN-datasættet, og den forklarer, hvorfor
-            båndet omkring 105 DKK lyser grønt i grafen ovenfor. Pointen er generel: Når du ser et
-            stort grønt eller rødt bånd, er det ofte en enkelt begivenhed, der ligger bag. Datokolonnen
-            i appen viser, hvornår hvert bånd sidst var aktivt, så du kan koble strømmen til konkrete
-            nyheder.
+            Pointen er generel: Store udsving i strømmen har næsten altid en konkret anledning, et
+            regnskab, en nedjustering eller, som her, et frasalg. Datokolonnen i appen viser, hvornår
+            hvert bånd sidst var aktivt, så du kan koble strømmen til konkrete nyheder.
           </p>
         </section>
 
         {/* ── 5. Seneste 3 måneder ── */}
         <section className="mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">5. De seneste 3 måneder: Mild dækning, men ny shorting i bunden</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">5. De seneste 3 måneder: Mild dækning og ny shorting omkring 100 DKK</h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             Periodeknapperne på detaljesiden filtrerer også prisstrømmen. Det er vigtigt, for det fulde
             billede ovenfor blander to år gamle handler sammen med sidste uges. Vælger man kun de seneste
@@ -468,27 +1123,27 @@ const GNPriceFlowAnalysisPage: React.FC = () => {
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             Siden slutningen af marts er der netto dækket ca. 1,7 mio. aktier, og shortinteressen er
             faldet fra 11,03% til 9,85%. Brutto er der dækket 7,0 mio. aktier og åbnet 5,2 mio. Dækningen
-            er koncentreret omkring 96-100 DKK, hvor der netto er dækket ca. 1,5 mio. aktier i april og
-            maj. Bemærk, at de store Amplifon-dage fra marts nu er gledet ud af 3-måneders-vinduet, så
-            billedet her er renset for det enkeltstående hop og viser, hvad shorterne har gjort siden.
+            er stærkt koncentreret ved 97-99 DKK, hvor der netto er dækket knap 3 mio. aktier, da aktien
+            handlede der i april og maj. Bemærk, at de store Amplifon-dage fra marts nu er gledet ud af
+            3-måneders-vinduet, så billedet her er renset for det enkeltstående hop og viser, hvad
+            shorterne har gjort siden.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-            Mere interessant er de røde bånd i bunden af tabellen: I båndene under ca. 92 DKK
-            (87,30-89,05 og 90,83-92,64) har strømmen de seneste 3 måneder været netto rød, og det samme
-            gælder et enkelt bånd ved 102-104 DKK. Det tyder på, at nogle shorts genåbner positioner, når
-            aktien falder ned i 80'erne. Shortinteressen har i juni svinget mellem ca. 9,5% og 10,2% og
-            ligger nu på 9,85%, så det samlede pres er ikke aftaget, det har bare flyttet sig ned ad
-            kursskalaen.
+            Mere interessant er de røde bånd: Mens shorterne dækkede ved 98, åbnede de samtidig nye
+            positioner lige over, ved 99-103 DKK (godt 1,7 mio. aktier tilsammen), og lagde lidt nyt til
+            spredt ud ved 88-95 DKK. Det er altså mindre ren gevinsthjemtagning og mere en rokering af
+            positionerne omkring 100 DKK. Shortinteressen har i juni svinget mellem ca. 9,5% og 10,2% og
+            ligger nu på 9,85%, så presset er ikke for alvor aftaget.
           </p>
         </section>
 
         {/* ── 6. Sådan bruger du fanen ── */}
         <section className="mb-12">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">6. Sådan bruger du fanen i praksis</h2>
-          <div className="space-y-4 text-sm text-gray-600 dark:text-gray-300">
+          <div className="space-y-4 text-gray-600 dark:text-gray-300">
             <div className="bg-gray-50 dark:bg-[#15151a] rounded-2xl border border-gray-100 dark:border-gray-800 p-5">
               <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Brug periodeknapperne aktivt</h4>
-              <p>Det fulde billede viser, hvor de historiske positioner er bygget op, mens 1M/3M viser, hvad shorterne gør lige nu. Som i GN-eksemplet kan de to fortælle vidt forskellige historier: Historisk netto-shorting ved 107-111 DKK, men overvejende dækning de seneste måneder.</p>
+              <p>Det fulde billede viser, hvor de historiske positioner er bygget op, mens 1M/3M viser, hvad shorterne gør lige nu. Som i GN-eksemplet kan de to fortælle vidt forskellige historier: Historisk netto-shorting ved 108 DKK, men overvejende dækning de seneste måneder.</p>
             </div>
             <div className="bg-gray-50 dark:bg-[#15151a] rounded-2xl border border-gray-100 dark:border-gray-800 p-5">
               <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Læg mærke til farveintensiteten og datoerne</h4>
@@ -496,7 +1151,7 @@ const GNPriceFlowAnalysisPage: React.FC = () => {
             </div>
             <div className="bg-gray-50 dark:bg-[#15151a] rounded-2xl border border-gray-100 dark:border-gray-800 p-5">
               <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Sammenlign med den aktuelle kurs</h4>
-              <p>Ligger kursen under de store røde bånd, er shorterne samlet set i plus, og de har råd til at være tålmodige. Ligger kursen over dem, er de pressede, og en yderligere kursstigning kan tvinge dem til at dække. For GN ligger de store røde bånd ved 107-111 og 160-170 DKK, altså et godt stykke over den aktuelle kurs på ca. 87 DKK.</p>
+              <p>Ligger kursen under de store røde bånd, er shorterne samlet set i plus, og de har råd til at være tålmodige. Ligger kursen over dem, er de pressede, og en yderligere kursstigning kan tvinge dem til at dække. For GN ligger de store røde bånd ved 108 og 157-166 DKK, altså et godt stykke over den aktuelle kurs på ca. 87 DKK.</p>
             </div>
             <div className="bg-gray-50 dark:bg-[#15151a] rounded-2xl border border-gray-100 dark:border-gray-800 p-5">
               <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Kobl store bånd til begivenheder</h4>
@@ -543,18 +1198,18 @@ const GNPriceFlowAnalysisPage: React.FC = () => {
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
             Prisstrømmen besvarer det spørgsmål, som den rå shortinteresse ikke kan: Ikke bare hvor meget
             der er shortet, men hvor. For GN viser den, at den stående shortposition primært er bygget op
-            ved 107-111 DKK og oppe ved 160-170 DKK, mens der under 100 DKK netto er blevet dækket. Ved
+            ved 108 DKK og oppe ved 157-166 DKK, mens der under 100 DKK netto er blevet dækket. Ved
             den aktuelle kurs på ca. 87 DKK er den gennemsnitlige tilbageværende short derfor i plus,
             og selvom de seneste 3 måneder samlet set har været domineret af gevinsthjemtagning, er der
-            samtidig dukket ny netto-shorting op i de laveste bånd.
+            samtidig dukket ny netto-shorting op omkring 100 DKK og spredt i de lave bånd.
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
             Og det er netop det mest interessante at holde øje med herfra: farven på båndene omkring
-            87-92 DKK. I 3M-visningen er de nu netop blevet røde, altså genopbygger nogle shorts
-            positioner, efterhånden som aktien er faldet ned i 80'erne. Fortsætter det mønster, er
-            historien om GN som en af de mest shortede danske aktier langtfra slut. Vender båndene tilbage
-            til grøn, er dækningen i gang igen. Prisstrømmen giver dig svaret løbende, opdateret hver dag
-            på aktiens detaljeside.
+            87-95 DKK, hvor kursen ligger nu. I 3M-visningen er der allerede dukket lidt ny netto-shorting
+            op her. Bliver de bånd ved med at være røde, genopbygger shorterne positioner på de lave
+            niveauer, og så er historien om GN som en af de mest shortede danske aktier langtfra slut.
+            Vender de til grøn, er dækningen i gang igen. Prisstrømmen giver dig svaret løbende, opdateret
+            hver dag på aktiens detaljeside.
           </p>
         </section>
 
