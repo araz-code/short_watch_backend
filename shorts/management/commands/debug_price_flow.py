@@ -54,7 +54,7 @@ class Command(BaseCommand):
             ShortPositionChart.objects
             .filter(stock=stock)
             .order_by('date')
-            .values('date', 'value', 'close')
+            .values('date', 'value', 'close', 'high', 'low')
         )
         usable = [
             r for r in rows
@@ -69,20 +69,27 @@ class Command(BaseCommand):
             raise CommandError('Not enough usable rows to compute deltas')
 
         shares_out = stock.shares_outstanding
-        min_price = min(r['close'] for r in usable)
+
+        def typical_price(r):
+            if r['high'] is not None and r['low'] is not None:
+                return (r['high'] + r['low'] + r['close']) / 3
+            return r['close']
+
+        min_price = min(typical_price(r) for r in usable)
         log_step = math.log(1 + BUCKET_WIDTH)
 
         # Per-day breakdown.
-        # Bucket is assigned by *prev* row's close, because DFSA T+1 disclosure
-        # means a delta first visible on day N reflects a trade executed on
-        # ~day N-1.
+        # Bucket is assigned by the *prev* row's typical price (high+low+close)/3,
+        # because DFSA T+1 disclosure means a delta first visible on day N
+        # reflects a trade executed on ~day N-1. Mirrors _compute_price_flow.
         per_day = []
         buckets = {}
         prev = usable[0]
         for cur in usable[1:]:
             delta_pct = cur['value'] - prev['value']
             delta_shares = delta_pct / 100.0 * shares_out
-            idx = int(math.log(prev['close'] / min_price) / log_step)
+            trade_price = typical_price(prev)
+            idx = int(math.log(trade_price / min_price) / log_step)
             low = min_price * (1 + BUCKET_WIDTH) ** idx
             high = low * (1 + BUCKET_WIDTH)
             per_day.append({
@@ -92,7 +99,7 @@ class Command(BaseCommand):
                 'prev_value': prev['value'],
                 'delta_pct': delta_pct,
                 'delta_shares': delta_shares,
-                'trade_close': prev['close'],
+                'trade_price': trade_price,
                 'report_close': cur['close'],
                 'bucket_idx': idx,
                 'bucket_low': low,
@@ -114,19 +121,19 @@ class Command(BaseCommand):
         out = self.stdout.write
         out(f'Stock:  {stock.symbol}  ({stock.code})  {stock.name}')
         out(f'Shares outstanding: {shares_out:,}')
-        out(f'Min observed close: {min_price:.4f}    Bucket width: {BUCKET_WIDTH * 100:.1f}%')
+        out(f'Min typical price: {min_price:.4f}    Bucket width: {BUCKET_WIDTH * 100:.1f}%')
         out(f'Rows in calc:        {len(per_day)}')
         out('')
         out('Per-day deltas (skip days where value or close is null):')
-        out('Bucket is assigned by trade_close = previous row\'s close (T+1 disclosure).')
+        out('Bucket is assigned by trade_price = previous row\'s typical price (T+1 disclosure).')
         out(f'{"report_date":<12} {"trade_date":<12} {"value%":>8} {"prev%":>8} {"Δ%":>9}'
-            f' {"Δ_shares":>14} {"trade_close":>12} {"bkt":>4} {"range":>20}')
+            f' {"Δ_shares":>14} {"trade_price":>12} {"bkt":>4} {"range":>20}')
         for r in per_day:
             sign = '+' if r['delta_shares'] >= 0 else ''
             out(f'{str(r["date"]):<12} {str(r["prev_date"]):<12}'
                 f' {r["value"]:>8.4f} {r["prev_value"]:>8.4f}'
                 f' {r["delta_pct"]:>+9.4f} {sign}{r["delta_shares"]:>13,.0f}'
-                f' {r["trade_close"]:>12.4f} {r["bucket_idx"]:>4d}'
+                f' {r["trade_price"]:>12.4f} {r["bucket_idx"]:>4d}'
                 f' {r["bucket_low"]:>8.2f}–{r["bucket_high"]:>8.2f}')
 
         out('')
@@ -161,12 +168,12 @@ class Command(BaseCommand):
         w.writerow(['# bucket_width', BUCKET_WIDTH])
         w.writerow([])
         w.writerow(['report_date', 'trade_date', 'value_pct', 'prev_value_pct',
-                    'delta_pct', 'delta_shares', 'trade_close', 'report_close',
+                    'delta_pct', 'delta_shares', 'trade_price', 'report_close',
                     'bucket_idx', 'bucket_low', 'bucket_high'])
         for r in per_day:
             w.writerow([r['date'], r['prev_date'], r['value'], r['prev_value'],
                         r['delta_pct'], round(r['delta_shares'], 4),
-                        r['trade_close'], r['report_close'], r['bucket_idx'],
+                        r['trade_price'], r['report_close'], r['bucket_idx'],
                         round(r['bucket_low'], 4), round(r['bucket_high'], 4)])
         w.writerow([])
         w.writerow(['bucket_idx', 'bucket_low', 'bucket_high', 'mid', 'shorted', 'covered', 'net'])
